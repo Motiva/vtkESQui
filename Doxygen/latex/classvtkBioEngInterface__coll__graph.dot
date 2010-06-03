@@ -1,0 +1,17 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="vtkBioEngInterface",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [dir=back,color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="vtkCollisionDetectionLibrary",height=0.2,width=0.4,color="black",URL="$classvtkCollisionDetectionLibrary.html",tooltip="Generic interface of the Collision Detection Library."];
+  Node3 -> Node2 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Contacts"];
+  Node3 [label="vtkContactCollection",height=0.2,width=0.4,color="black",URL="$classvtkContactCollection.html",tooltip="Collection of contact information."];
+  Node4 -> Node2 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Tools"];
+  Node4 [label="vtkToolCollection",height=0.2,width=0.4,color="black",URL="$classvtkToolCollection.html",tooltip="Collection of tools."];
+  Node5 -> Node2 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Organs"];
+  Node5 [label="vtkOrganCollection",height=0.2,width=0.4,color="black",URL="$classvtkOrganCollection.html",tooltip="Collection of organs."];
+  Node6 -> Node1 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="DetectionFilter"];
+  Node6 [label="vtkCollisionDetectionFilter",height=0.2,width=0.4,color="black",URL="$classvtkCollisionDetectionFilter.html"];
+}

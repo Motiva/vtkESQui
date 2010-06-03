@@ -1,0 +1,18 @@
+package ifneeded {vtkbioeng} {5.4} {
+  if {1} {
+    package require -exact vtkinit {5.4}
+    foreach kit { vtkCommon vtkFiltering vtkGraphics vtkRendering} {
+      package require -exact "${kit}TCL" {5.4}
+    }
+    ::vtk::init::load_library_package {vtkBioengTCL} {C:/src/esqui/src/CDM/vtkbioeng/bin}
+  } else {
+    error {Error loading vtkBioengTCL.  vtkBioeng must be built\
+ with shared libraries for loading as a Tcl package.}
+  }
+  
+  if {[catch {source [file join C:/src/esqui/src/CDM/vtkbioeng Wrapping tcl vtkbioeng vtkbioeng.tcl]} errorMessage]} {
+    puts $errorMessage
+  } else {
+    package provide vtkbioeng 5.4
+  }
+}

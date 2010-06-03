@@ -1,0 +1,200 @@
+#ifndef __vtkSRMLImporter_h
+#define __vtkSRMLImporter_h
+
+#include "vtkESQuiUtilitiesWin32Header.h"
+
+#include "vtkObjectFactory.h"
+#include "vtkObject.h"
+#include "vtkImporter.h"
+#include "vtkXMLDataParser.h"
+#include "vtkXMLDataElement.h"
+#include "vtkDataSet.h"
+#include "vtkCamera.h"
+#include "vtkLight.h"
+#include "vtkLightCollection.h"
+#include "vtkActor.h"
+#include "vtkActorCollection.h"
+
+#include "vtkSimulation.h"
+#include "vtkScenario.h"
+#include "vtkTool.h"
+#include "vtkToolCollection.h"
+#include "vtkPiece.h"
+#include "vtkPieceCollection.h"
+#include "vtkToolPincers.h"
+#include "vtkOrgan.h"
+#include "vtkOrganCollection.h"
+#include "vtkMSSInterface.h"
+#include "vtkRDMInterface.h"
+
+#ifndef VTKESQUI_USE_NO_HAPTICS
+	#include "vtkHaptic.h"
+	#include "vtkIHP.h"
+	#include "vtkVSP.h"
+	#include "vtkLSW.h"
+#endif
+
+class VTK_ESQUI_UTILITIES_EXPORT vtkSRMLImporter: public vtkImporter
+{
+public:
+
+	vtkTypeRevisionMacro(vtkSRMLImporter,vtkImporter);
+	// Instancia un nuevo objeto
+	//!Create new vtkSRMLImporter object
+	static vtkSRMLImporter *New();
+
+	//Devuelve el nombre de la clase
+	//!Return class name
+	const char *GetClassName() { return "vtkSRMLImporter"; }
+
+	// Imprime el valor de los atributos
+	//!Print the attributes value
+	void PrintSelf(ostream& os, vtkIndent indent);
+
+	// Get/Set the name of the input file.
+	void SetFileName(const char * filename);
+	const char * GetFileName();
+
+	// Get/Set the data path.
+	void SetDataPath(const char * path);
+	const char * GetDataPath();
+
+	// Get/Set the Simulation
+	void SetSimulation(vtkSimulation * simulation);
+	vtkSimulation * GetSimulation();
+
+protected:	
+
+	vtkSRMLImporter();
+	~vtkSRMLImporter();
+
+	// Description:
+	// Get/Set the Scenario
+	void SetScenario(vtkScenario * scenario);
+	vtkScenario * GetScenario();
+
+	//! Starts the Import process
+	virtual int ImportBegin ();
+	//! Finalize the import process
+	virtual void ImportEnd ();
+	//! Import all the scenario actors (tools, organs, extras)
+	virtual void ImportActors (vtkRenderer * renderer);
+	//! Import scenario cameras
+	virtual void ImportCameras (vtkRenderer * renderer);
+	//! Import scenario lights
+	virtual void ImportLights (vtkRenderer * renderer);
+	//! Import specific scenario props
+	virtual void ImportProperties (vtkRenderer * renderer);
+
+	//! Import tools from the SRML file
+	void ImportTools();
+	//! Import organs from the SRML file
+	void ImportOrgans();
+	//! Import the extras from the SRML file
+	void ImportExtras();
+	//! Import haptic device information
+	void ImportHaptic();
+
+	//!A SRML file is a basic XML file, so the parser corresponds to a vtkXMLParser object
+	vtkXMLDataParser * SRMLParser;
+	//!Basic XMLElement used in XML Parsing
+	vtkXMLDataElement * Element;
+	//!Input SRML Filename
+	const char * FileName;
+	//!Path of the data files
+	const char * Path;
+	//!XML data stream
+	istream * Stream;
+	//!Read error flag
+	int ReadError;
+	//!Data error flag
+	int DataError;
+	//!Information error flag
+	int InformationError;
+
+	//! Simulation object to be imported
+	vtkSimulation * Simulation;
+	//! Simulation Scenario. It is automatically set through the SetSimulation method
+	vtkScenario * Scenario;
+
+private:
+
+	vtkSRMLImporter (const vtkSRMLImporter &); //Not Implemented
+	void operator =(const vtkSRMLImporter &); //Not Implemented
+
+	//! Opens the SRML file for parsing its content
+	int OpenSRMLFile();
+
+	//! Reads the SRML file
+	int ReadSRMLFile(vtkXMLDataElement * e);
+
+	//! Closes the SRML file after parsing its content
+	void CloseSRMLFile();
+
+	//! Create a new SRML file parser (XML file parser)
+	void CreateSRMLParser();
+
+	//! Destroy the SRML file parser after its execution
+	void DestroySRMLParser();
+
+	//! Parse SRML information
+	int ReadSRMLData();
+
+	//! Read parsed information
+	void ReadData();
+
+	//! Set specific camera values
+	/*!
+	 * \param camera camera object
+	 * \param item parsed XMLDataElement that contains element info
+	 */
+	void SetCameraData(vtkCamera * camera, vtkXMLDataElement * item);
+	//! Set specific light values
+	/*!
+	 * \param light light object
+	 * \param item parsed XMLDataElement that contains element info
+	 */
+	void SetLightData(vtkLight * light, vtkXMLDataElement * item);
+	//! Set specific actor values
+	/*!
+	 * \param actor scenario item actor object
+	 * \param item parsed XMLDataElement that contains element info
+	 */
+	void SetActorData(vtkActor * actor, vtkXMLDataElement * item);
+	//! Set specific tool values
+	/*!
+	 * \param tool scenario tool object
+	 * \param item parsed XMLDataElement that contains element info
+	 */
+	void SetToolData(vtkTool * tool, vtkXMLDataElement * item);
+	//! Set specific laparoscopic pincers values
+	/*!
+	 * \param tool pincers tool object
+	 * \param item parsed XMLDataElement that contains element info
+	 */
+	void SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElement * item);
+	//! Set specific organ values
+	/*!
+	 * \param organ organ object
+	 * \param item parsed XMLDataElement that contains element info
+	 */
+	void SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item);
+	//! Set initial biomechanical model properties
+	/*!
+	 * \param model biomechanical model
+	 * \param item parsed XMLDataElement that contains element info
+	 */
+	void SetBioMechanicalModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item);
+
+	const char * ExpandDataFileName(const char * fname);
+
+#ifndef VTKESQUI_USE_NO_HAPTICS
+	void SetHapticData(vtkHaptic * haptic, vtkXMLDataElement * item);
+#endif
+
+	//! File stream to retrieve SRML file content
+	ifstream * FileStream;
+
+};
+#endif
+

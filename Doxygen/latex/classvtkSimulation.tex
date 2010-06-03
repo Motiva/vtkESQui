@@ -1,0 +1,197 @@
+\hypertarget{classvtkSimulation}{
+\section{vtkSimulation Class Reference}
+\label{classvtkSimulation}\index{vtkSimulation@{vtkSimulation}}
+}
+
+
+Implementation of the simulation manager. Manages all the operations required to run the simulation.  
+
+
+{\ttfamily \#include $<$vtkSimulation.h$>$}Collaboration diagram for vtkSimulation:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSimulation_a8e06717c5dd8ce0adadd7b61ae366d50}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkSimulation}{vtkSimulation}, vtkObject)}
+\label{classvtkSimulation_a8e06717c5dd8ce0adadd7b61ae366d50}
+
+\item 
+\hypertarget{classvtkSimulation_a7bb94f3b9a7e1f60048554726a1130b4}{
+const char $\ast$ {\bfseries GetClassName} ()}
+\label{classvtkSimulation_a7bb94f3b9a7e1f60048554726a1130b4}
+
+\item 
+\hypertarget{classvtkSimulation_a152b2ade8f62f1448bf16666fb3e91e0}{
+void \hyperlink{classvtkSimulation_a152b2ade8f62f1448bf16666fb3e91e0}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkSimulation_a152b2ade8f62f1448bf16666fb3e91e0}
+
+\begin{DoxyCompactList}\small\item\em Print class values. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a386a0ef552396a6348a9aa0fa389a6ca}{
+void \hyperlink{classvtkSimulation_a386a0ef552396a6348a9aa0fa389a6ca}{Init} ()}
+\label{classvtkSimulation_a386a0ef552396a6348a9aa0fa389a6ca}
+
+\begin{DoxyCompactList}\small\item\em Initializes the simulation (Haptic, Manager, etc...). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_accdfa33a6f7b3bfcff9fdb4f345f852e}{
+void \hyperlink{classvtkSimulation_accdfa33a6f7b3bfcff9fdb4f345f852e}{Update} ()}
+\label{classvtkSimulation_accdfa33a6f7b3bfcff9fdb4f345f852e}
+
+\begin{DoxyCompactList}\small\item\em Executes a simulation step calling the needed methods. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a5e937f6a563eb3c6334489ed2170992d}{
+void \hyperlink{classvtkSimulation_a5e937f6a563eb3c6334489ed2170992d}{UpdateManager} ()}
+\label{classvtkSimulation_a5e937f6a563eb3c6334489ed2170992d}
+
+\begin{DoxyCompactList}\small\item\em Update the simulation Manager. The whole Scenario is updated. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_ad06d10364d93a8c7743129232de29133}{
+void \hyperlink{classvtkSimulation_ad06d10364d93a8c7743129232de29133}{UpdateHaptic} ()}
+\label{classvtkSimulation_ad06d10364d93a8c7743129232de29133}
+
+\begin{DoxyCompactList}\small\item\em Update the haptic state and obtains the value of the force feedback for the haptic device. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a243777646629d5364d15c52ae1d7d146}{
+void \hyperlink{classvtkSimulation_a243777646629d5364d15c52ae1d7d146}{SetUseHaptic} (bool value)}
+\label{classvtkSimulation_a243777646629d5364d15c52ae1d7d146}
+
+\begin{DoxyCompactList}\small\item\em Set/Get the use of haptic in the simulation. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a0042f7aa2f36725f2e3acd9d81f491a4}{
+bool {\bfseries GetUseHaptic} ()}
+\label{classvtkSimulation_a0042f7aa2f36725f2e3acd9d81f491a4}
+
+\item 
+\hypertarget{classvtkSimulation_a52411abfc00f3220b23a7a16edc18c38}{
+void \hyperlink{classvtkSimulation_a52411abfc00f3220b23a7a16edc18c38}{UseHapticOn} ()}
+\label{classvtkSimulation_a52411abfc00f3220b23a7a16edc18c38}
+
+\begin{DoxyCompactList}\small\item\em Enable the use of haptic. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_acfcdbf46baa7db1258e690dd8f4ecf0a}{
+void \hyperlink{classvtkSimulation_acfcdbf46baa7db1258e690dd8f4ecf0a}{UseHapticOff} ()}
+\label{classvtkSimulation_acfcdbf46baa7db1258e690dd8f4ecf0a}
+
+\begin{DoxyCompactList}\small\item\em Disable the use of haptic. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkSimulation_ae07347b307c27d7a322a29b5f14f2715}{SetSimulationManager} (\hyperlink{classvtkSimulationManager}{vtkSimulationManager} $\ast$manager)
+\begin{DoxyCompactList}\small\item\em Set the collision detection manager. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkSimulationManager}{vtkSimulationManager} $\ast$ \hyperlink{classvtkSimulation_a24f8f2f19d4d068aa53d24bc3a2ec9d1}{GetSimulationManager} ()
+\begin{DoxyCompactList}\small\item\em Get the collision detection manager. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkSimulation_a1f7164f2c7bfe4c3b2498d913d5ecf63}{SetActiveTool} (vtkIdType Tool)
+\begin{DoxyCompactList}\small\item\em Set active tool on the simulation. \item\end{DoxyCompactList}\item 
+vtkIdType \hyperlink{classvtkSimulation_a832386edded984585c69bcdaf4800f60}{GetActiveTool} ()
+\begin{DoxyCompactList}\small\item\em Get active tool on the simulation. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_ae4b7e2fe91b05ed7319b01a1ab067f74}{
+void \hyperlink{classvtkSimulation_ae4b7e2fe91b05ed7319b01a1ab067f74}{PrintContacts} ()}
+\label{classvtkSimulation_ae4b7e2fe91b05ed7319b01a1ab067f74}
+
+\begin{DoxyCompactList}\small\item\em Print all the contact points and its values. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a1071d2cbaa5744869054516946e8d1e0}{
+void \hyperlink{classvtkSimulation_a1071d2cbaa5744869054516946e8d1e0}{SetHapticDevice} (\hyperlink{classvtkHaptic}{vtkHaptic} $\ast$Haptic)}
+\label{classvtkSimulation_a1071d2cbaa5744869054516946e8d1e0}
+
+\begin{DoxyCompactList}\small\item\em Set the haptic device for the simulation///. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a50c3e6a8584c6e807cf649541b1096ae}{
+\hyperlink{classvtkHaptic}{vtkHaptic} $\ast$ \hyperlink{classvtkSimulation_a50c3e6a8584c6e807cf649541b1096ae}{GetHapticDevice} ()}
+\label{classvtkSimulation_a50c3e6a8584c6e807cf649541b1096ae}
+
+\begin{DoxyCompactList}\small\item\em Get the haptic device for the simulation ///. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSimulation_a7a01eece6a34fb90b64f93e32c7b9d46}{
+static \hyperlink{classvtkSimulation}{vtkSimulation} $\ast$ {\bfseries New} ()}
+\label{classvtkSimulation_a7a01eece6a34fb90b64f93e32c7b9d46}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSimulation_aa2472aa6e93b91690a35f4675e8dab43}{
+\hyperlink{classvtkHaptic}{vtkHaptic} $\ast$ \hyperlink{classvtkSimulation_aa2472aa6e93b91690a35f4675e8dab43}{HapticDevice}}
+\label{classvtkSimulation_aa2472aa6e93b91690a35f4675e8dab43}
+
+\begin{DoxyCompactList}\small\item\em The haptic device for the simulator ///. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_ae8b90fb911d026f5ad94715073db740f}{
+\hyperlink{classvtkSimulationManager}{vtkSimulationManager} $\ast$ \hyperlink{classvtkSimulation_ae8b90fb911d026f5ad94715073db740f}{SimulationManager}}
+\label{classvtkSimulation_ae8b90fb911d026f5ad94715073db740f}
+
+\begin{DoxyCompactList}\small\item\em Collision detection manager. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a14344fc57758eb7b744abff156e0fb25}{
+vtkRenderWindowInteractor $\ast$ \hyperlink{classvtkSimulation_a14344fc57758eb7b744abff156e0fb25}{Interactor}}
+\label{classvtkSimulation_a14344fc57758eb7b744abff156e0fb25}
+
+\begin{DoxyCompactList}\small\item\em Window interactor to control simulation display. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_af8d8d5df4ce87a773be0145fda791215}{
+vtkMultiThreader $\ast$ \hyperlink{classvtkSimulation_af8d8d5df4ce87a773be0145fda791215}{Threader}}
+\label{classvtkSimulation_af8d8d5df4ce87a773be0145fda791215}
+
+\begin{DoxyCompactList}\small\item\em Multiple Threader. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a6c6c63b3c756e8622b565584879472a0}{
+vtkIdType \hyperlink{classvtkSimulation_a6c6c63b3c756e8622b565584879472a0}{ActiveTool}}
+\label{classvtkSimulation_a6c6c63b3c756e8622b565584879472a0}
+
+\begin{DoxyCompactList}\small\item\em Currently active tool id. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_a0d962352d6b39be833179e572bb5ca48}{
+vtkPolyDataNormals $\ast$ \hyperlink{classvtkSimulation_a0d962352d6b39be833179e572bb5ca48}{NormalsFilter}}
+\label{classvtkSimulation_a0d962352d6b39be833179e572bb5ca48}
+
+\begin{DoxyCompactList}\small\item\em Organ mesh normal points. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSimulation_afd9fd6366920c569515356d88d6936ee}{
+bool \hyperlink{classvtkSimulation_afd9fd6366920c569515356d88d6936ee}{UseHaptic}}
+\label{classvtkSimulation_afd9fd6366920c569515356d88d6936ee}
+
+\begin{DoxyCompactList}\small\item\em Enable/disable haptic device usage. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implementation of the simulation manager. Manages all the operations required to run the simulation. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkSimulation_a832386edded984585c69bcdaf4800f60}{
+\index{vtkSimulation@{vtkSimulation}!GetActiveTool@{GetActiveTool}}
+\index{GetActiveTool@{GetActiveTool}!vtkSimulation@{vtkSimulation}}
+\subsubsection[{GetActiveTool}]{\setlength{\rightskip}{0pt plus 5cm}vtkIdType vtkSimulation::GetActiveTool ()}}
+\label{classvtkSimulation_a832386edded984585c69bcdaf4800f60}
+
+
+Get active tool on the simulation. \begin{DoxyReturn}{Returns}
+tool identifier 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkSimulation_a1f7164f2c7bfe4c3b2498d913d5ecf63}{SetActiveTool(vtkIdType Tool)} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkSimulation_a24f8f2f19d4d068aa53d24bc3a2ec9d1}{
+\index{vtkSimulation@{vtkSimulation}!GetSimulationManager@{GetSimulationManager}}
+\index{GetSimulationManager@{GetSimulationManager}!vtkSimulation@{vtkSimulation}}
+\subsubsection[{GetSimulationManager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkSimulationManager} $\ast$ vtkSimulation::GetSimulationManager ()}}
+\label{classvtkSimulation_a24f8f2f19d4d068aa53d24bc3a2ec9d1}
+
+
+Get the collision detection manager. \begin{DoxySeeAlso}{See also}
+SetCollisionManager(vtkCollisionManager $\ast$manager) 
+\end{DoxySeeAlso}
+\hypertarget{classvtkSimulation_a1f7164f2c7bfe4c3b2498d913d5ecf63}{
+\index{vtkSimulation@{vtkSimulation}!SetActiveTool@{SetActiveTool}}
+\index{SetActiveTool@{SetActiveTool}!vtkSimulation@{vtkSimulation}}
+\subsubsection[{SetActiveTool}]{\setlength{\rightskip}{0pt plus 5cm}void vtkSimulation::SetActiveTool (vtkIdType {\em Tool})}}
+\label{classvtkSimulation_a1f7164f2c7bfe4c3b2498d913d5ecf63}
+
+
+Set active tool on the simulation. 
+\begin{DoxyParams}{Parameters}
+\item[{\em Tool}]tool identifier \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkSimulation_a832386edded984585c69bcdaf4800f60}{GetActiveTool()} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkSimulation_ae07347b307c27d7a322a29b5f14f2715}{
+\index{vtkSimulation@{vtkSimulation}!SetSimulationManager@{SetSimulationManager}}
+\index{SetSimulationManager@{SetSimulationManager}!vtkSimulation@{vtkSimulation}}
+\subsubsection[{SetSimulationManager}]{\setlength{\rightskip}{0pt plus 5cm}void vtkSimulation::SetSimulationManager ({\bf vtkSimulationManager} $\ast$ {\em manager})}}
+\label{classvtkSimulation_ae07347b307c27d7a322a29b5f14f2715}
+
+
+Set the collision detection manager. 
+\begin{DoxyParams}{Parameters}
+\item[{\em manager}]collision detection manager \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+GetCollisionManager 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Manager/vtkSimulation.h\item 
+Manager/vtkSimulation.cxx\end{DoxyCompactItemize}

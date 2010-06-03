@@ -1,0 +1,90 @@
+\hypertarget{classvtkBioEngInterface}{
+\section{vtkBioEngInterface Class Reference}
+\label{classvtkBioEngInterface}\index{vtkBioEngInterface@{vtkBioEngInterface}}
+}
+
+
+This class acts as an interface to the collision detection library.  
+
+
+{\ttfamily \#include $<$vtkBioEngInterface.h$>$}
+
+Inherits \hyperlink{classvtkCollisionDetectionLibrary}{vtkCollisionDetectionLibrary}.Collaboration diagram for vtkBioEngInterface:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkBioEngInterface_afe62020c4d9112e40fdc089297defa5e}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkBioEngInterface}{vtkBioEngInterface}, \hyperlink{classvtkCollisionDetectionLibrary}{vtkCollisionDetectionLibrary})}
+\label{classvtkBioEngInterface_afe62020c4d9112e40fdc089297defa5e}
+
+\item 
+\hypertarget{classvtkBioEngInterface_a42df0bc0bdc717fb6c6eb187ac61523a}{
+const char $\ast$ {\bfseries GetClassName} ()}
+\label{classvtkBioEngInterface_a42df0bc0bdc717fb6c6eb187ac61523a}
+
+\item 
+void \hyperlink{classvtkBioEngInterface_a52f71a20ab8e16bbeb357642975a5b67}{Init} ()
+\begin{DoxyCompactList}\small\item\em Set up the collision detection library with the initial values,. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkBioEngInterface_af04a067b7a6f524faa7ff14552147260}{Update} ()
+\begin{DoxyCompactList}\small\item\em Update the collsion detection library. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkBioEngInterface_ab0bafffd48213a95c2fdc51261cd404e}{
+static \hyperlink{classvtkBioEngInterface}{vtkBioEngInterface} $\ast$ {\bfseries New} ()}
+\label{classvtkBioEngInterface_ab0bafffd48213a95c2fdc51261cd404e}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classvtkBioEngInterface_a99709eb5036d8015bb14ecf3a40c8374}{vtkBioEngInterface} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioEngInterface_ac707a179d980d5c5f55786c35549c517}{
+\hyperlink{classvtkBioEngInterface_ac707a179d980d5c5f55786c35549c517}{$\sim$vtkBioEngInterface} ()}
+\label{classvtkBioEngInterface_ac707a179d980d5c5f55786c35549c517}
+
+\begin{DoxyCompactList}\small\item\em Default destructor. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class acts as an interface to the collision detection library. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classvtkBioEngInterface_a99709eb5036d8015bb14ecf3a40c8374}{
+\index{vtkBioEngInterface@{vtkBioEngInterface}!vtkBioEngInterface@{vtkBioEngInterface}}
+\index{vtkBioEngInterface@{vtkBioEngInterface}!vtkBioEngInterface@{vtkBioEngInterface}}
+\subsubsection[{vtkBioEngInterface}]{\setlength{\rightskip}{0pt plus 5cm}vtkBioEngInterface::vtkBioEngInterface ()\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classvtkBioEngInterface_a99709eb5036d8015bb14ecf3a40c8374}
+
+
+Default constructor. 
+
+constructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkBioEngInterface_a52f71a20ab8e16bbeb357642975a5b67}{
+\index{vtkBioEngInterface@{vtkBioEngInterface}!Init@{Init}}
+\index{Init@{Init}!vtkBioEngInterface@{vtkBioEngInterface}}
+\subsubsection[{Init}]{\setlength{\rightskip}{0pt plus 5cm}void vtkBioEngInterface::Init ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkBioEngInterface_a52f71a20ab8e16bbeb357642975a5b67}
+
+
+Set up the collision detection library with the initial values,. This method will vary depending on the collision detection library 
+
+Implements \hyperlink{classvtkCollisionDetectionLibrary_ac29256d189958f001608f8f5d170a73c}{vtkCollisionDetectionLibrary}.\hypertarget{classvtkBioEngInterface_af04a067b7a6f524faa7ff14552147260}{
+\index{vtkBioEngInterface@{vtkBioEngInterface}!Update@{Update}}
+\index{Update@{Update}!vtkBioEngInterface@{vtkBioEngInterface}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkBioEngInterface::Update ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkBioEngInterface_af04a067b7a6f524faa7ff14552147260}
+
+
+Update the collsion detection library. Executes the collision detection process between an tool and an organ 
+
+Get the organs and tools from the collections. Set Inputs of the collision library The organ (converted to vtkPolydata) and a bounding box of the tool. This bounding box (polydata) is returned by a method created in \hyperlink{classvtkTool}{vtkTool} 
+
+Implements \hyperlink{classvtkCollisionDetectionLibrary_ae3ce4d5055eee783a8bf9f06f62f5667}{vtkCollisionDetectionLibrary}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Manager/vtkBioEngInterface.h\item 
+Manager/vtkBioEngInterface.cxx\end{DoxyCompactItemize}

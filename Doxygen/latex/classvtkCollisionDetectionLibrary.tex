@@ -1,0 +1,91 @@
+\hypertarget{classvtkCollisionDetectionLibrary}{
+\section{vtkCollisionDetectionLibrary Class Reference}
+\label{classvtkCollisionDetectionLibrary}\index{vtkCollisionDetectionLibrary@{vtkCollisionDetectionLibrary}}
+}
+
+
+Generic interface of the Collision Detection Library.  
+
+
+{\ttfamily \#include $<$vtkCollisionDetectionLibrary.h$>$}
+
+Inherited by \hyperlink{classvtkBioEngInterface}{vtkBioEngInterface}.Collaboration diagram for vtkCollisionDetectionLibrary:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkCollisionDetectionLibrary_a2acb486cd6986078710736aa56725fa2}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkCollisionDetectionLibrary}{vtkCollisionDetectionLibrary}, vtkObject)}
+\label{classvtkCollisionDetectionLibrary_a2acb486cd6986078710736aa56725fa2}
+
+\item 
+virtual void \hyperlink{classvtkCollisionDetectionLibrary_ae3ce4d5055eee783a8bf9f06f62f5667}{Update} ()=0
+\begin{DoxyCompactList}\small\item\em Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkCollisionDetectionLibrary_ac29256d189958f001608f8f5d170a73c}{Init} ()=0
+\begin{DoxyCompactList}\small\item\em Initializes the CollisionDetectionLibrary. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkCollisionDetectionLibrary_ada19fa3bacecc30fac20ea0b81b5a3cc}{
+void \hyperlink{classvtkCollisionDetectionLibrary_ada19fa3bacecc30fac20ea0b81b5a3cc}{SetOrgans} (\hyperlink{classvtkOrganCollection}{vtkOrganCollection} $\ast$organs)}
+\label{classvtkCollisionDetectionLibrary_ada19fa3bacecc30fac20ea0b81b5a3cc}
+
+\begin{DoxyCompactList}\small\item\em Specify the organs to be checked in the collision detection process. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkCollisionDetectionLibrary_a9ce6f59fdb8ffbd87f9faa396d001413}{
+void \hyperlink{classvtkCollisionDetectionLibrary_a9ce6f59fdb8ffbd87f9faa396d001413}{SetTools} (\hyperlink{classvtkToolCollection}{vtkToolCollection} $\ast$tools)}
+\label{classvtkCollisionDetectionLibrary_a9ce6f59fdb8ffbd87f9faa396d001413}
+
+\begin{DoxyCompactList}\small\item\em Specify the tools to be checked in the collision detection process. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkCollisionDetectionLibrary_a2e6f361824a6264e506fed2737f03819}{
+\hyperlink{classvtkContactCollection}{vtkContactCollection} $\ast$ \hyperlink{classvtkCollisionDetectionLibrary_a2e6f361824a6264e506fed2737f03819}{GetContacts} ()}
+\label{classvtkCollisionDetectionLibrary_a2e6f361824a6264e506fed2737f03819}
+
+\begin{DoxyCompactList}\small\item\em Return the contacts obtained after collision detection has been performed. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkCollisionDetectionLibrary_afd05001689b2ae40d13aa1c6fcdb4d47}{
+vtkIdType \hyperlink{classvtkCollisionDetectionLibrary_afd05001689b2ae40d13aa1c6fcdb4d47}{GetNumberOfContacts} ()}
+\label{classvtkCollisionDetectionLibrary_afd05001689b2ae40d13aa1c6fcdb4d47}
+
+\begin{DoxyCompactList}\small\item\em Get total number of contacts detected. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkCollisionDetectionLibrary_aee838a43b1b179dd1b76be2988ee3778}{
+\hyperlink{classvtkOrganCollection}{vtkOrganCollection} $\ast$ \hyperlink{classvtkCollisionDetectionLibrary_aee838a43b1b179dd1b76be2988ee3778}{Organs}}
+\label{classvtkCollisionDetectionLibrary_aee838a43b1b179dd1b76be2988ee3778}
+
+\begin{DoxyCompactList}\small\item\em Collection of Organs. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkCollisionDetectionLibrary_a02da266da879cea37a6974cc29ea1306}{
+\hyperlink{classvtkToolCollection}{vtkToolCollection} $\ast$ \hyperlink{classvtkCollisionDetectionLibrary_a02da266da879cea37a6974cc29ea1306}{Tools}}
+\label{classvtkCollisionDetectionLibrary_a02da266da879cea37a6974cc29ea1306}
+
+\begin{DoxyCompactList}\small\item\em Collection of Tools. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkCollisionDetectionLibrary_aca2cf2786e46292084f241754ba7722f}{
+\hyperlink{classvtkContactCollection}{vtkContactCollection} $\ast$ \hyperlink{classvtkCollisionDetectionLibrary_aca2cf2786e46292084f241754ba7722f}{Contacts}}
+\label{classvtkCollisionDetectionLibrary_aca2cf2786e46292084f241754ba7722f}
+
+\begin{DoxyCompactList}\small\item\em Collection of Contacts. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Generic interface of the Collision Detection Library. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkCollisionDetectionLibrary_ac29256d189958f001608f8f5d170a73c}{
+\index{vtkCollisionDetectionLibrary@{vtkCollisionDetectionLibrary}!Init@{Init}}
+\index{Init@{Init}!vtkCollisionDetectionLibrary@{vtkCollisionDetectionLibrary}}
+\subsubsection[{Init}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkCollisionDetectionLibrary::Init ()\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classvtkCollisionDetectionLibrary_ac29256d189958f001608f8f5d170a73c}
+
+
+Initializes the CollisionDetectionLibrary. Abstract method to be defined on each implementation class 
+
+Implemented in \hyperlink{classvtkBioEngInterface_a52f71a20ab8e16bbeb357642975a5b67}{vtkBioEngInterface}.\hypertarget{classvtkCollisionDetectionLibrary_ae3ce4d5055eee783a8bf9f06f62f5667}{
+\index{vtkCollisionDetectionLibrary@{vtkCollisionDetectionLibrary}!Update@{Update}}
+\index{Update@{Update}!vtkCollisionDetectionLibrary@{vtkCollisionDetectionLibrary}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkCollisionDetectionLibrary::Update ()\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classvtkCollisionDetectionLibrary_ae3ce4d5055eee783a8bf9f06f62f5667}
+
+
+Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use. Abstract method to be defined on each implementation class 
+
+Implemented in \hyperlink{classvtkBioEngInterface_af04a067b7a6f524faa7ff14552147260}{vtkBioEngInterface}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Manager/vtkCollisionDetectionLibrary.h\item 
+Manager/vtkCollisionDetectionLibrary.cxx\end{DoxyCompactItemize}

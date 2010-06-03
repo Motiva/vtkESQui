@@ -1,0 +1,22 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="vtkLSW",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [dir=back,color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="vtkHaptic",height=0.2,width=0.4,color="black",URL="$classvtkHaptic.html",tooltip="Generic Haptic Class."];
+  Node3 -> Node1 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="LSWRightTool\nLSWLeftTool"];
+  Node3 [label="vtkLSWTool",height=0.2,width=0.4,color="black",URL="$classvtkLSWTool.html"];
+  Node4 -> Node3 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Data"];
+  Node4 [label="vtkLSWDataTool",height=0.2,width=0.4,color="black",URL="$structvtkLSWDataTool.html"];
+  Node5 -> Node4 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Force\nPosition"];
+  Node5 [label="ImmCoord3",height=0.2,width=0.4,color="black",URL="$structImmCoord3.html"];
+  Node5 -> Node3 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="ForceValue\nForceIncrement\nPointForceOrige\nActualForceValue\nPrevPoint\nForceStep\nDistance\nActForce\nPrevForce"];
+  Node6 -> Node3 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="LSWTool"];
+  Node6 [label="ImmSWTool",height=0.2,width=0.4,color="black",URL="$classImmSWTool.html"];
+  Node7 -> Node6 [dir=back,color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="ImmDevice3",height=0.2,width=0.4,color="black",URL="$classImmDevice3.html"];
+  Node8 -> Node1 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="LSWDevice"];
+  Node8 [label="ImmSurgicalWorkstation",height=0.2,width=0.4,color="black",URL="$classImmSurgicalWorkstation.html"];
+}

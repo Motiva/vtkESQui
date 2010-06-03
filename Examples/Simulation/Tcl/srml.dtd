@@ -1,0 +1,18 @@
+<!ELEMENT Simulation (Scenario, Haptic*)>
+<!ELEMENT Scenario (Environment, Items*)>
+<!ELEMENT Haptic (#PCDATA)>
+<!ELEMENT Environment (Cameras, Lights)>
+<!ELEMENT Cameras (Camera+)>
+<!ELEMENT Camera (#PCDATA)>
+<!ELEMENT Lights (Light+)>
+<!ELEMENT Light (#PCDATA)>
+<!ELEMENT Items (Tools, Organs, Extras)>
+<!ELEMENT Tools (Tool*)>
+<!ELEMENT Tool (Piece+)>
+<!ELEMENT Piece (#PCDATA)>
+<!ELEMENT Organs (Organ*)>
+<!ELEMENT Organ (BMM)>
+<!ELEMENT BMM (BC*)>
+<!ELEMENT BC (#PCDATA)>
+<!ELEMENT Extras (Extra*)>
+<!ELEMENT Extra (#PCDATA)>

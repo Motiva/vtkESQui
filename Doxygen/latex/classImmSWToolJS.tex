@@ -1,0 +1,43 @@
+\hypertarget{classImmSWToolJS}{
+\section{ImmSWToolJS Class Reference}
+\label{classImmSWToolJS}\index{ImmSWToolJS@{ImmSWToolJS}}
+}
+
+
+{\ttfamily \#include $<$ImmSurgicalWorkstation.h$>$}
+
+Inherits \hyperlink{classImmSWTool}{ImmSWTool}.Collaboration diagram for ImmSWToolJS:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual int \hyperlink{classImmSWToolJS_ad0901e3f1fc9fb3788f96ec74d43da3a}{SetYawTorque} (double yaw\_\-torque)=0
+\item 
+virtual int \hyperlink{classImmSWToolJS_a9512db780275a00a5ba48f1d4f160549}{SetPitchTorque} (double pitch\_\-torque)=0
+\item 
+virtual int \hyperlink{classImmSWToolJS_a0525da3b9b1274d6dc747da86da49552}{SetInsertionForce} (double axial\_\-force)=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classImmSWToolJS}{ImmSWToolJS} class is new level of abstraction introduced to include the additional functionality of direct joint moment/force control of the Surgical Workstation's Laproscopic haptic interface. This class derives from \hyperlink{classImmSWTool}{ImmSWTool}. The \hyperlink{classImmSWToolJS}{ImmSWToolJS} class is not thread-\/safe. You must perform locking and synchronization on your own. The following describes the general implementation philosophy of the \hyperlink{classImmSWToolJS}{ImmSWToolJS} class. The Set methods are very lightweight. They basically write to state variables. You do not need to call the update method after calling these methods. Calling the SetMoment and SetForce methods of the \hyperlink{classImmSWTool}{ImmSWTool} class overwrites the values set by these methods. Also when you call the Set methods of this class, only the force/moment value of that particular joint in written. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classImmSWToolJS_a0525da3b9b1274d6dc747da86da49552}{
+\index{ImmSWToolJS@{ImmSWToolJS}!SetInsertionForce@{SetInsertionForce}}
+\index{SetInsertionForce@{SetInsertionForce}!ImmSWToolJS@{ImmSWToolJS}}
+\subsubsection[{SetInsertionForce}]{\setlength{\rightskip}{0pt plus 5cm}virtual int ImmSWToolJS::SetInsertionForce (double {\em axial\_\-force})\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classImmSWToolJS_a0525da3b9b1274d6dc747da86da49552}
+Set the force in N for the insertion link of the Laparoscopic haptic interafce. This value is immediately reflected in the hardware. \hypertarget{classImmSWToolJS_a9512db780275a00a5ba48f1d4f160549}{
+\index{ImmSWToolJS@{ImmSWToolJS}!SetPitchTorque@{SetPitchTorque}}
+\index{SetPitchTorque@{SetPitchTorque}!ImmSWToolJS@{ImmSWToolJS}}
+\subsubsection[{SetPitchTorque}]{\setlength{\rightskip}{0pt plus 5cm}virtual int ImmSWToolJS::SetPitchTorque (double {\em pitch\_\-torque})\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classImmSWToolJS_a9512db780275a00a5ba48f1d4f160549}
+Set the torque in mNm for the Pitch axis. This value is immediately reflected in the hardware \hypertarget{classImmSWToolJS_ad0901e3f1fc9fb3788f96ec74d43da3a}{
+\index{ImmSWToolJS@{ImmSWToolJS}!SetYawTorque@{SetYawTorque}}
+\index{SetYawTorque@{SetYawTorque}!ImmSWToolJS@{ImmSWToolJS}}
+\subsubsection[{SetYawTorque}]{\setlength{\rightskip}{0pt plus 5cm}virtual int ImmSWToolJS::SetYawTorque (double {\em yaw\_\-torque})\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classImmSWToolJS_ad0901e3f1fc9fb3788f96ec74d43da3a}
+Set the torque in mNm for the Yaw axis. This value is immediately reflected in the hardware 
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+Haptics/ImmSurgicalWorkstation.h\end{DoxyCompactItemize}

@@ -1,0 +1,95 @@
+\hypertarget{classvtkToolCollection}{
+\section{vtkToolCollection Class Reference}
+\label{classvtkToolCollection}\index{vtkToolCollection@{vtkToolCollection}}
+}
+
+
+Collection of tools.  
+
+
+{\ttfamily \#include $<$vtkToolCollection.h$>$}\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkToolCollection_a86b0f1336ec168b8e8da4c8b103a8b4f}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkToolCollection}{vtkToolCollection}, vtkCollection)}
+\label{classvtkToolCollection_a86b0f1336ec168b8e8da4c8b103a8b4f}
+
+\item 
+\hypertarget{classvtkToolCollection_a37e5cbc34a1fc7d2d7052e3f98a1a0d7}{
+const char $\ast$ {\bfseries GetClassName} ()}
+\label{classvtkToolCollection_a37e5cbc34a1fc7d2d7052e3f98a1a0d7}
+
+\item 
+\hypertarget{classvtkToolCollection_ade9221fb1eb1d55b01b051954ffd2d54}{
+virtual void {\bfseries PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkToolCollection_ade9221fb1eb1d55b01b051954ffd2d54}
+
+\item 
+void \hyperlink{classvtkToolCollection_a7bf8d8954ceaafb5c5985eac7d96eb18}{InsertTool} (vtkIdType id, \hyperlink{classvtkTool}{vtkTool} $\ast$tool)
+\begin{DoxyCompactList}\small\item\em Insert tool into the collection at the specified id. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolCollection_a77f6ddcba9da4caf9bd9204f20c1c6f2}{InsertNextTool} (\hyperlink{classvtkTool}{vtkTool} $\ast$tool)
+\begin{DoxyCompactList}\small\item\em Insert tool at the last position of the collection. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkTool}{vtkTool} $\ast$ \hyperlink{classvtkToolCollection_aaf3ad76ac0105f5f83775f189a56046b}{GetTool} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Return tool at the specified id. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkTool}{vtkTool} $\ast$ \hyperlink{classvtkToolCollection_ad58c5c348bd19de77143836948761d61}{GetNextTool} ()
+\begin{DoxyCompactList}\small\item\em Return the next tool. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkToolCollection_ac61f3f35811b04742d5cfa36e513cdac}{
+static \hyperlink{classvtkToolCollection}{vtkToolCollection} $\ast$ {\bfseries New} ()}
+\label{classvtkToolCollection_ac61f3f35811b04742d5cfa36e513cdac}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Collection of tools. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkToolCollection_ad58c5c348bd19de77143836948761d61}{
+\index{vtkToolCollection@{vtkToolCollection}!GetNextTool@{GetNextTool}}
+\index{GetNextTool@{GetNextTool}!vtkToolCollection@{vtkToolCollection}}
+\subsubsection[{GetNextTool}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkTool} $\ast$ vtkToolCollection::GetNextTool ()}}
+\label{classvtkToolCollection_ad58c5c348bd19de77143836948761d61}
+
+
+Return the next tool. Return the tool located at the pointer position + 1 \begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkToolCollection_aaf3ad76ac0105f5f83775f189a56046b}{GetTool(vtkIdType id)} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkToolCollection_aaf3ad76ac0105f5f83775f189a56046b}{
+\index{vtkToolCollection@{vtkToolCollection}!GetTool@{GetTool}}
+\index{GetTool@{GetTool}!vtkToolCollection@{vtkToolCollection}}
+\subsubsection[{GetTool}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkTool} $\ast$ vtkToolCollection::GetTool (vtkIdType {\em id})}}
+\label{classvtkToolCollection_aaf3ad76ac0105f5f83775f189a56046b}
+
+
+Return tool at the specified id. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]identifier key of the tool \end{DoxyParams}
+\hypertarget{classvtkToolCollection_a77f6ddcba9da4caf9bd9204f20c1c6f2}{
+\index{vtkToolCollection@{vtkToolCollection}!InsertNextTool@{InsertNextTool}}
+\index{InsertNextTool@{InsertNextTool}!vtkToolCollection@{vtkToolCollection}}
+\subsubsection[{InsertNextTool}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolCollection::InsertNextTool ({\bf vtkTool} $\ast$ {\em tool})}}
+\label{classvtkToolCollection_a77f6ddcba9da4caf9bd9204f20c1c6f2}
+
+
+Insert tool at the last position of the collection. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]identifier key of the tool \item[{\em tool}]\hyperlink{classvtkTool}{vtkTool} object to be inserted \end{DoxyParams}
+\hypertarget{classvtkToolCollection_a7bf8d8954ceaafb5c5985eac7d96eb18}{
+\index{vtkToolCollection@{vtkToolCollection}!InsertTool@{InsertTool}}
+\index{InsertTool@{InsertTool}!vtkToolCollection@{vtkToolCollection}}
+\subsubsection[{InsertTool}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolCollection::InsertTool (vtkIdType {\em id}, \/  {\bf vtkTool} $\ast$ {\em tool})}}
+\label{classvtkToolCollection_a7bf8d8954ceaafb5c5985eac7d96eb18}
+
+
+Insert tool into the collection at the specified id. 
+\begin{DoxyParams}{Parameters}
+\item[{\em tool}]\hyperlink{classvtkTool}{vtkTool} object to be inserted \end{DoxyParams}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Scenario/vtkToolCollection.h\item 
+Scenario/vtkToolCollection.cxx\end{DoxyCompactItemize}

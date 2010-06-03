@@ -1,0 +1,206 @@
+
+/*
+--------------------
+Program: ESQUI
+Info and Bugs: {marf,rsantana}@ctm.ulpgc.es 
+-------------------------------------------
+
+Copyright (c) 2006, Center for Technology in Medicine, University of Las Palmas
+de Gran Canaria (Canary Islands, Spain).
+All rights reserved.
+
+This program is free software; you can redistribute it and/or modify it under 
+the terms of the Creative Commons' "by-attribution" license 
+(http://creativecommons.org/licenses/by/2.5).
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1) Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2) Redistributions in binary form must reproduce the above copyright 
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+=============================================================================*/
+
+#include "vtkSimulation.h"
+
+
+VTK_THREAD_RETURN_TYPE SIMULATIONThread( void *arg )						///
+{																			///
+	vtkSimulation* This;													///
+	This = (vtkSimulation *)(((ThreadInfoStruct *)(arg))->UserData);		///
+	This->UpdateManager();													///
+	return VTK_THREAD_RETURN_VALUE;											///
+}																			///
+
+VTK_THREAD_RETURN_TYPE Dummy1Thread( void *arg )							///
+{
+	vtkSimulation* This;
+	This = (vtkSimulation *)(((ThreadInfoStruct *)(arg))->UserData);
+	std::cout << "Dummy1Thread" << std::endl;
+	return VTK_THREAD_RETURN_VALUE;
+}
+
+VTK_THREAD_RETURN_TYPE HAPTICThread( void *arg )							///
+{																			///
+	vtkSimulation* This;													///
+	This = (vtkSimulation *)(((ThreadInfoStruct *)(arg))->UserData);		///
+	if(This->GetUseHaptic()) This->UpdateHaptic();	///
+	//TODO:Add feedback force support this->UpdateHaptic()
+	return VTK_THREAD_RETURN_VALUE;											///
+}
+
+///
+///////////////////////////////////////////////////////////////////////////////
+
+vtkCxxRevisionMacro(vtkSimulation, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkSimulation);
+
+vtkSimulation::vtkSimulation() {
+	this->NormalsFilter = vtkPolyDataNormals::New();
+	this->NormalsFilter->ComputePointNormalsOn();
+	this->NormalsFilter->FlipNormalsOff();
+	this->NormalsFilter->NonManifoldTraversalOn();
+	this->NormalsFilter->SetFeatureAngle(60.0);
+
+	this->UseHaptic = false;
+
+	this->Threader = vtkMultiThreader::New();
+	this->Threader->SetNumberOfThreads(2);
+	this->Threader->SetMultipleMethod(0,SIMULATIONThread,this);
+	this->Threader->SetMultipleMethod(1,HAPTICThread,this);
+}
+
+vtkSimulation::~vtkSimulation() {
+	this->NormalsFilter->Delete();
+	this->Threader->Delete();
+}
+
+void vtkSimulation::Init() {
+#ifndef VTKESQUI_USE_NO_HAPTICS
+	if(this->UseHaptic)
+	{
+		int connected = this->HapticDevice->Init();
+		if(connected > 0){
+			std::cout << "Haptic device is connected..." << std::endl;
+			for(int i = 0; i < this->HapticDevice->GetNumberOfTools(); i++)
+			{
+				vtkTool * tool =  this->SimulationManager->GetScenario()->GetTool(i);
+				tool->UseHapticOn();
+				tool->SetHapticDevice(this->HapticDevice);
+			}
+		}
+		else
+		{
+			std::cout << "Haptic device is not connected... \nPlease startup device and restart the application" << std::endl;
+			exit(0);
+		}
+	}
+#endif
+}
+
+void vtkSimulation::Update() {
+	this->Threader->MultipleMethodExecute();
+}
+
+void vtkSimulation::UpdateManager(){
+	this->SimulationManager->Update();
+}
+
+void vtkSimulation::UpdateHaptic() {
+
+	#ifndef VTKESQUI_USE_NO_HAPTICS
+	const char * name = HapticDevice->GetName();
+	this->GetHapticDevice()->Update();
+
+	#endif
+
+	//FIXME: Calculate Feedback Force
+	/*
+	vtkOrgan *organ;
+	vtkContact *contact;
+	vtkTool *tool;
+	float contactForce[3];
+	float toolForce[3];
+	toolForce[0] = toolForce[1] = toolForce[2] = 0;
+
+	vtkOrganCollection * organs = this->Scenario->GetOrganCollection();
+	vtkToolCollection * tools = this->Scenario->GetToolCollection();
+
+	for (vtkIdType toolId = 0; toolId < tools->GetNumberOfItems(); toolId++) {
+		tools->GetTool(toolId)->SetForceFeedback(toolForce);
+		//tools->GetTool(toolId)->SetNumberOfContacts(0);
+	}
+
+	for (vtkIdType organId = 0; organId < organs->GetNumberOfItems(); organId++) {
+		organ = organs->GetOrgan(organId);
+		//Updating Haptic force feedback
+		vtkContactCollection * contacts = organ->GetContacts();
+
+		for (int contactId = 0; contactId < contacts->GetNumberOfItems() ; contactId++) {
+			contact = contacts->GetContact(contactId);
+			tool = tools->GetTool(contact->GetToolId());
+			tool->GetForceFeedback(toolForce);
+			//TODO: Calculate contact force
+			/contact->GetForceFeedback(contactForce);
+			if (contactForce[0] != 0 || contactForce[2] != 0 || contactForce[2] != 0) {
+				toolForce[0] = toolForce[0] + contactForce[0];
+				toolForce[1] = toolForce[1] + contactForce[1];
+				toolForce[2] = toolForce[2] + contactForce[2];
+				tool->SetForceFeedback(toolForce);
+				//tool->SetNumberOfContacts(tool->GetNumberOfContacts()+1);
+			}
+		}
+	}
+	for (int toolId = 0; toolId < tools->GetNumberOfItems(); toolId ++) {
+		tool = tools->GetTool(toolId);
+		tool->GetForceFeedback(toolForce);
+		if (tool->GetNumberOfContacts() != 0) {
+			toolForce[0] = toolForce[0] / tool->GetNumberOfContacts();
+			toolForce[1] = toolForce[1] / tool->GetNumberOfContacts();
+			toolForce[2] = toolForce[2] / tool->GetNumberOfContacts();
+		} else {
+			toolForce[0] = toolForce[1] = toolForce[2] = 0;
+		}
+		tool->SetForceFeedback(toolForce);
+	}*/
+}
+
+void vtkSimulation::SetSimulationManager(vtkSimulationManager *manager) {
+	this->SimulationManager = manager;
+}
+
+vtkSimulationManager* vtkSimulation::GetSimulationManager() {
+	return this->SimulationManager;
+}
+
+void vtkSimulation::SetActiveTool(vtkIdType toolId) {
+	this->ActiveTool = toolId;
+}
+
+vtkIdType vtkSimulation::GetActiveTool() {
+	return this->ActiveTool;
+}
+
+void vtkSimulation::PrintContacts() {
+	vtkContactCollection * contacts = this->SimulationManager->GetScenario()->GetOrganCollection()->GetOrgan(0)->GetContacts();
+	for (vtkIdType i = 0; i < contacts->GetNumberOfItems(); i++)
+		contacts->GetContact(i)->Print(std::cout);
+}
+
+void vtkSimulation::PrintSelf(ostream& os,vtkIndent indent) {
+	this->Superclass::PrintSelf(os,indent);
+}

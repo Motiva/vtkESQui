@@ -1,0 +1,96 @@
+\hypertarget{classvtkToolDummy}{
+\section{vtkToolDummy Class Reference}
+\label{classvtkToolDummy}\index{vtkToolDummy@{vtkToolDummy}}
+}
+
+
+Implementation class of pincers.  
+
+
+{\ttfamily \#include $<$vtkToolDummy.h$>$}
+
+Inherits \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy}.Collaboration diagram for vtkToolDummy:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkToolDummy_a7e647f03fad14d87b9f9ee9fb793d664}{
+const char $\ast$ \hyperlink{classvtkToolDummy_a7e647f03fad14d87b9f9ee9fb793d664}{GetClassName} ()}
+\label{classvtkToolDummy_a7e647f03fad14d87b9f9ee9fb793d664}
+
+\begin{DoxyCompactList}\small\item\em Return class name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolDummy_acaaa2e036bc347ffae575d818fbc943f}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkToolDummy}{vtkToolDummy}, \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy})}
+\label{classvtkToolDummy_acaaa2e036bc347ffae575d818fbc943f}
+
+\item 
+\hypertarget{classvtkToolDummy_abfdf88480ec5e4abd7046b36549cc0f6}{
+void \hyperlink{classvtkToolDummy_abfdf88480ec5e4abd7046b36549cc0f6}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkToolDummy_abfdf88480ec5e4abd7046b36549cc0f6}
+
+\begin{DoxyCompactList}\small\item\em Print the attributes value. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkToolDummy_aaf4c69a9c0fc3432e678ca9fffc913dc}{Init} ()
+\begin{DoxyCompactList}\small\item\em Initialize the tool from VTK file. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkToolDummy_a19cda726ffda0a3955e519d7b42e4882}{Update} ()
+\begin{DoxyCompactList}\small\item\em Update the tool. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolDummy_a3170be76c18a7507cb6014fc49123919}{SetPolyData} (vtkIdType id, vtkPolyData $\ast$polyData)
+\item 
+\hypertarget{classvtkToolDummy_ae5dce01d7d7cf21ca321d0899531cc1c}{
+void \hyperlink{classvtkToolDummy_ae5dce01d7d7cf21ca321d0899531cc1c}{Yaw} (double angle)}
+\label{classvtkToolDummy_ae5dce01d7d7cf21ca321d0899531cc1c}
+
+\begin{DoxyCompactList}\small\item\em Sets the pincers yaw angle. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolDummy_a5ea0a677fb4cae300394b118197f2c8b}{
+void \hyperlink{classvtkToolDummy_a5ea0a677fb4cae300394b118197f2c8b}{Pitch} (double angle)}
+\label{classvtkToolDummy_a5ea0a677fb4cae300394b118197f2c8b}
+
+\begin{DoxyCompactList}\small\item\em Sets the pincers pitch angle. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolDummy_af3e1893d057ad3db3775c4cffd6a8b18}{
+void \hyperlink{classvtkToolDummy_af3e1893d057ad3db3775c4cffd6a8b18}{Roll} (double angle)}
+\label{classvtkToolDummy_af3e1893d057ad3db3775c4cffd6a8b18}
+
+\begin{DoxyCompactList}\small\item\em Sets the pincers roll angle. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkToolDummy_a3fc4028c21d848a4eb9db02555689c1a}{
+static \hyperlink{classvtkToolDummy}{vtkToolDummy} $\ast$ \hyperlink{classvtkToolDummy_a3fc4028c21d848a4eb9db02555689c1a}{New} ()}
+\label{classvtkToolDummy_a3fc4028c21d848a4eb9db02555689c1a}
+
+\begin{DoxyCompactList}\small\item\em Create new vtkToolGPincers object. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implementation class of pincers. vtkToolGPincers is the class that implements the pincers tool, inside the scene. Contains methods for position control of the tool in the scene and collision detection. Pincers are composed of 3 pieces: 1 stick and 2 graspers (\hyperlink{classvtkPiece}{vtkPiece}) 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkToolDummy_aaf4c69a9c0fc3432e678ca9fffc913dc}{
+\index{vtkToolDummy@{vtkToolDummy}!Init@{Init}}
+\index{Init@{Init}!vtkToolDummy@{vtkToolDummy}}
+\subsubsection[{Init}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolDummy::Init ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkToolDummy_aaf4c69a9c0fc3432e678ca9fffc913dc}
+
+
+Initialize the tool from VTK file. This function initializes the tool whose mesh is described on a VTK file 
+
+Implements \hyperlink{classvtkToolLaparoscopy_ace75ea21a3ddb27547976ddea0ebb60e}{vtkToolLaparoscopy}.\hypertarget{classvtkToolDummy_a3170be76c18a7507cb6014fc49123919}{
+\index{vtkToolDummy@{vtkToolDummy}!SetPolyData@{SetPolyData}}
+\index{SetPolyData@{SetPolyData}!vtkToolDummy@{vtkToolDummy}}
+\subsubsection[{SetPolyData}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolDummy::SetPolyData (vtkIdType {\em id}, \/  vtkPolyData $\ast$ {\em polyData})}}
+\label{classvtkToolDummy_a3170be76c18a7507cb6014fc49123919}
+Set Polydata object to the tool. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]identifier of the piece \end{DoxyParams}
+\hypertarget{classvtkToolDummy_a19cda726ffda0a3955e519d7b42e4882}{
+\index{vtkToolDummy@{vtkToolDummy}!Update@{Update}}
+\index{Update@{Update}!vtkToolDummy@{vtkToolDummy}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolDummy::Update (void)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkToolDummy_a19cda726ffda0a3955e519d7b42e4882}
+
+
+Update the tool. This function update the tool values 
+
+Reimplemented from \hyperlink{classvtkToolLaparoscopy_a4445a0cfabd77b50a06929b04cb71f9e}{vtkToolLaparoscopy}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Scenario/vtkToolDummy.h\item 
+Scenario/vtkToolDummy.cxx\end{DoxyCompactItemize}

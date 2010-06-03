@@ -1,0 +1,342 @@
+\hypertarget{classvtkTool}{
+\section{vtkTool Class Reference}
+\label{classvtkTool}\index{vtkTool@{vtkTool}}
+}
+
+
+Class \hyperlink{classvtkTool}{vtkTool}, abstract the use of a surgical tool.  
+
+
+{\ttfamily \#include $<$vtkTool.h$>$}
+
+Inherits \hyperlink{classvtkScenarioItem}{vtkScenarioItem}.
+
+Inherited by \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy}.Collaboration diagram for vtkTool:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkTool_afd4b5a15701d73c9ea10dd86960ff180}{
+\hyperlink{classvtkTool_afd4b5a15701d73c9ea10dd86960ff180}{vtkTypeRevisionMacro} (\hyperlink{classvtkTool}{vtkTool}, \hyperlink{classvtkScenarioItem}{vtkScenarioItem})}
+\label{classvtkTool_afd4b5a15701d73c9ea10dd86960ff180}
+
+\begin{DoxyCompactList}\small\item\em Type revision macro. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a36e7d337037abb2ba43ec2b5bea26bfc}{
+const char $\ast$ \hyperlink{classvtkTool_a36e7d337037abb2ba43ec2b5bea26bfc}{GetClassName} ()}
+\label{classvtkTool_a36e7d337037abb2ba43ec2b5bea26bfc}
+
+\begin{DoxyCompactList}\small\item\em Return the class name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a9858b0b58f68255aa112301628e9a32d}{
+void \hyperlink{classvtkTool_a9858b0b58f68255aa112301628e9a32d}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkTool_a9858b0b58f68255aa112301628e9a32d}
+
+\begin{DoxyCompactList}\small\item\em Print class values. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a47c15af2e5a24c7931621ab49aff0876}{
+void {\bfseries SetFileName} (vtkIdType id, const char $\ast$filename)}
+\label{classvtkTool_a47c15af2e5a24c7931621ab49aff0876}
+
+\item 
+\hypertarget{classvtkTool_a5ed1a313cc4e75648ea2bea6362465ce}{
+const char $\ast$ {\bfseries GetFileName} (vtkIdType id)}
+\label{classvtkTool_a5ed1a313cc4e75648ea2bea6362465ce}
+
+\item 
+\hyperlink{classvtkPiece}{vtkPiece} $\ast$ \hyperlink{classvtkTool_a4316c5cd3281c663da03f6854c350788}{GetPiece} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Return tool piece with the specified id. \item\end{DoxyCompactList}\item 
+vtkIdType \hyperlink{classvtkTool_a22808ab908533188843b2970424d8310}{GetNumberOfPieces} ()
+\begin{DoxyCompactList}\small\item\em Return the number of pieces. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a85c781ea4c52e8512b2628e0262a99ca}{
+void \hyperlink{classvtkTool_a85c781ea4c52e8512b2628e0262a99ca}{SetType} (const char $\ast$type)}
+\label{classvtkTool_a85c781ea4c52e8512b2628e0262a99ca}
+
+\begin{DoxyCompactList}\small\item\em Set tool type. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_ab09b1fa6f511ca80859b3e59cedd62de}{
+const char $\ast$ \hyperlink{classvtkTool_ab09b1fa6f511ca80859b3e59cedd62de}{GetType} ()}
+\label{classvtkTool_ab09b1fa6f511ca80859b3e59cedd62de}
+
+\begin{DoxyCompactList}\small\item\em Return tool type. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkTool_a6b9e7743cde1b61b252abef17248a913}{Init} ()=0
+\begin{DoxyCompactList}\small\item\em Abstract initialization function. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkTool_a0f1b6e049d7ff5420f4f4604434a9da7}{Update} ()
+\begin{DoxyCompactList}\small\item\em Abstract update function. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkTool_ac44896d171f0512b821f7ab031f7fed7}{UpdateSimpleMesh} ()
+\begin{DoxyCompactList}\small\item\em Abstract initialization function. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkTool_af5802e4ba0d2c217bef741ce55ee2b0e}{ApplyInitialTransform} ()
+\begin{DoxyCompactList}\small\item\em Applies the initial transformation to the tool loaded from vtk files. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkTool_a8f036524a724871dd5f7317e3000611c}{SetRenderWindow} (vtkRenderWindow $\ast$window)
+\begin{DoxyCompactList}\small\item\em Set the render window of the tool. \item\end{DoxyCompactList}\item 
+vtkRenderWindow $\ast$ \hyperlink{classvtkTool_ab156b5e1d4a9974b6b4a9809fdb10dc1}{GetRenderWindow} ()
+\begin{DoxyCompactList}\small\item\em Get the render window of the tool. \item\end{DoxyCompactList}\item 
+vtkActorCollection $\ast$ \hyperlink{classvtkTool_a395a049fb5376df57590b96fc64d8092}{GetActorCollection} ()
+\begin{DoxyCompactList}\small\item\em Return the actors collection of the tool. \item\end{DoxyCompactList}\item 
+vtkActor $\ast$ \hyperlink{classvtkTool_a2e87421054997a9c6e69302516064dab}{GetActor} (vtkIdType Id)
+\begin{DoxyCompactList}\small\item\em Return the actor of the specified piece. \item\end{DoxyCompactList}\item 
+vtkTransform $\ast$ \hyperlink{classvtkTool_aa7c8e40f5216213e56cc7307bd16460a}{GetTransform} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Get tool piece transform function with the specified id. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkTool_a387cd53a14d1d40035f63a255eb57165}{RemoveContacts} ()
+\begin{DoxyCompactList}\small\item\em Remove all contacts from the collection. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkTool_ae32bfdeb6ede9c25b0956fad8c15ba98}{InsertNextContact} (\hyperlink{classvtkContact}{vtkContact} $\ast$contact)
+\begin{DoxyCompactList}\small\item\em Add a contact to the collection. \item\end{DoxyCompactList}\item 
+vtkIdType \hyperlink{classvtkTool_a30d28cc8f7799ffac0527482c848f92a}{GetNumberOfContacts} ()
+\begin{DoxyCompactList}\small\item\em Returns the number of contacts the tool has made. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a769feb08ca71704f997ce8a18cb60ebd}{
+void \hyperlink{classvtkTool_a769feb08ca71704f997ce8a18cb60ebd}{SetUseHaptic} (int value)}
+\label{classvtkTool_a769feb08ca71704f997ce8a18cb60ebd}
+
+\begin{DoxyCompactList}\small\item\em Set/Get the use of haptic in the simulation. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_ab45c67813a8a720fd8316c5404272ed6}{
+int {\bfseries GetUseHaptic} ()}
+\label{classvtkTool_ab45c67813a8a720fd8316c5404272ed6}
+
+\item 
+\hypertarget{classvtkTool_a90f29a8672f01fac0e22c54b704f8bb4}{
+void \hyperlink{classvtkTool_a90f29a8672f01fac0e22c54b704f8bb4}{UseHapticOn} ()}
+\label{classvtkTool_a90f29a8672f01fac0e22c54b704f8bb4}
+
+\begin{DoxyCompactList}\small\item\em Enable the use of haptic. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_af9c1ebcf72b55b97daf6c22023f3b063}{
+void \hyperlink{classvtkTool_af9c1ebcf72b55b97daf6c22023f3b063}{UseHapticOff} ()}
+\label{classvtkTool_af9c1ebcf72b55b97daf6c22023f3b063}
+
+\begin{DoxyCompactList}\small\item\em Disable the use of haptic. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_aef7be40911dabe0da8e3ab32ef9b5f80}{
+void \hyperlink{classvtkTool_aef7be40911dabe0da8e3ab32ef9b5f80}{SetHapticDevice} (\hyperlink{classvtkHaptic}{vtkHaptic} $\ast$haptic)}
+\label{classvtkTool_aef7be40911dabe0da8e3ab32ef9b5f80}
+
+\begin{DoxyCompactList}\small\item\em Set the haptic device for the tool. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a2ad2583dbcf7a7363107a2c29e1b8543}{
+\hyperlink{classvtkHaptic}{vtkHaptic} $\ast$ \hyperlink{classvtkTool_a2ad2583dbcf7a7363107a2c29e1b8543}{GetHapticDevice} ()}
+\label{classvtkTool_a2ad2583dbcf7a7363107a2c29e1b8543}
+
+\begin{DoxyCompactList}\small\item\em Get the haptic device for the tool. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classvtkTool_a4749077c4b6e05d9dc965a94c0ca14a0}{Translate} (double x, double y, double z)
+\begin{DoxyCompactList}\small\item\em Implements the translation of the tool (Local coordinate system). \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkTool_a34b408444b681853b5dabbda6b971223}{RotateX} (double x)
+\begin{DoxyCompactList}\small\item\em Implements the lateral movements of the tool (Local coordinate system). \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkTool_ad37e6208805e0fddd07dfc783a70fceb}{RotateY} (double y)
+\begin{DoxyCompactList}\small\item\em Implements the lateral movements of the tool (Local coordinate system). \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkTool_a80c0ca1937ce97c98d70364cac281ff2}{RotateZ} (double rotation)
+\begin{DoxyCompactList}\small\item\em Rotate the tool on its own axes (Local coordinate system). \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkTool_ae2af04329a7a2b42f564cd3824f26580}{
+\hyperlink{classvtkHaptic}{vtkHaptic} $\ast$ \hyperlink{classvtkTool_ae2af04329a7a2b42f564cd3824f26580}{Haptic}}
+\label{classvtkTool_ae2af04329a7a2b42f564cd3824f26580}
+
+\begin{DoxyCompactList}\small\item\em The haptic device for the tool. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a70eb4cd41b67e113e8f56de3577c7983}{
+const char $\ast$ {\bfseries Type}}
+\label{classvtkTool_a70eb4cd41b67e113e8f56de3577c7983}
+
+\item 
+\hypertarget{classvtkTool_a694917425d159b8ab997846a8a367804}{
+int {\bfseries UseHaptic}}
+\label{classvtkTool_a694917425d159b8ab997846a8a367804}
+
+\item 
+\hypertarget{classvtkTool_a285fe7adc43ad3d2230b26e1573f86e6}{
+\hyperlink{classvtkPieceCollection}{vtkPieceCollection} $\ast$ \hyperlink{classvtkTool_a285fe7adc43ad3d2230b26e1573f86e6}{Pieces}}
+\label{classvtkTool_a285fe7adc43ad3d2230b26e1573f86e6}
+
+\begin{DoxyCompactList}\small\item\em Collection of tool pieces. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a3c64ea14aa96aeb7f2667f54a0a6d3ee}{
+vtkActorCollection $\ast$ \hyperlink{classvtkTool_a3c64ea14aa96aeb7f2667f54a0a6d3ee}{Actors}}
+\label{classvtkTool_a3c64ea14aa96aeb7f2667f54a0a6d3ee}
+
+\begin{DoxyCompactList}\small\item\em Collection of tool pieces actors. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a806769bafe81e79da3de7f0fa5cdef18}{
+vtkTransformCollection $\ast$ \hyperlink{classvtkTool_a806769bafe81e79da3de7f0fa5cdef18}{Transforms}}
+\label{classvtkTool_a806769bafe81e79da3de7f0fa5cdef18}
+
+\begin{DoxyCompactList}\small\item\em Collection of tool pieces transforms. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkTool_a4c5762114b1d850f0f471d260c45ebaf}{
+\hyperlink{classvtkContactCollection}{vtkContactCollection} $\ast$ \hyperlink{classvtkTool_a4c5762114b1d850f0f471d260c45ebaf}{Contacts}}
+\label{classvtkTool_a4c5762114b1d850f0f471d260c45ebaf}
+
+\begin{DoxyCompactList}\small\item\em Collection of contact point information. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class \hyperlink{classvtkTool}{vtkTool}, abstract the use of a surgical tool. \hyperlink{classvtkTool}{vtkTool} abstracts the use of a surgical tool during the simulation exercise. This provide an easy use of surgical tools collections. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkTool_af5802e4ba0d2c217bef741ce55ee2b0e}{
+\index{vtkTool@{vtkTool}!ApplyInitialTransform@{ApplyInitialTransform}}
+\index{ApplyInitialTransform@{ApplyInitialTransform}!vtkTool@{vtkTool}}
+\subsubsection[{ApplyInitialTransform}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::ApplyInitialTransform ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkTool_af5802e4ba0d2c217bef741ce55ee2b0e}
+
+
+Applies the initial transformation to the tool loaded from vtk files. Applies the initial transformation, placing the tool in its position in the scene. 
+
+Reimplemented in \hyperlink{classvtkToolLaparoscopy_a55c7ce0e9156ae3547dbe32a4fef1057}{vtkToolLaparoscopy}.\hypertarget{classvtkTool_a2e87421054997a9c6e69302516064dab}{
+\index{vtkTool@{vtkTool}!GetActor@{GetActor}}
+\index{GetActor@{GetActor}!vtkTool@{vtkTool}}
+\subsubsection[{GetActor}]{\setlength{\rightskip}{0pt plus 5cm}vtkActor $\ast$ vtkTool::GetActor (vtkIdType {\em Id})}}
+\label{classvtkTool_a2e87421054997a9c6e69302516064dab}
+
+
+Return the actor of the specified piece. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]Identifier of the piece \end{DoxyParams}
+\hypertarget{classvtkTool_a395a049fb5376df57590b96fc64d8092}{
+\index{vtkTool@{vtkTool}!GetActorCollection@{GetActorCollection}}
+\index{GetActorCollection@{GetActorCollection}!vtkTool@{vtkTool}}
+\subsubsection[{GetActorCollection}]{\setlength{\rightskip}{0pt plus 5cm}vtkActorCollection $\ast$ vtkTool::GetActorCollection ()}}
+\label{classvtkTool_a395a049fb5376df57590b96fc64d8092}
+
+
+Return the actors collection of the tool. Return a pointer to the object who stores all tool's actors \hypertarget{classvtkTool_a30d28cc8f7799ffac0527482c848f92a}{
+\index{vtkTool@{vtkTool}!GetNumberOfContacts@{GetNumberOfContacts}}
+\index{GetNumberOfContacts@{GetNumberOfContacts}!vtkTool@{vtkTool}}
+\subsubsection[{GetNumberOfContacts}]{\setlength{\rightskip}{0pt plus 5cm}vtkIdType vtkTool::GetNumberOfContacts ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkTool_a30d28cc8f7799ffac0527482c848f92a}
+
+
+Returns the number of contacts the tool has made. Total number of tool contact points \hypertarget{classvtkTool_a22808ab908533188843b2970424d8310}{
+\index{vtkTool@{vtkTool}!GetNumberOfPieces@{GetNumberOfPieces}}
+\index{GetNumberOfPieces@{GetNumberOfPieces}!vtkTool@{vtkTool}}
+\subsubsection[{GetNumberOfPieces}]{\setlength{\rightskip}{0pt plus 5cm}vtkIdType vtkTool::GetNumberOfPieces ()}}
+\label{classvtkTool_a22808ab908533188843b2970424d8310}
+
+
+Return the number of pieces. Total number of pieces of the tool \hypertarget{classvtkTool_a4316c5cd3281c663da03f6854c350788}{
+\index{vtkTool@{vtkTool}!GetPiece@{GetPiece}}
+\index{GetPiece@{GetPiece}!vtkTool@{vtkTool}}
+\subsubsection[{GetPiece}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkPiece} $\ast$ vtkTool::GetPiece (vtkIdType {\em id})}}
+\label{classvtkTool_a4316c5cd3281c663da03f6854c350788}
+
+
+Return tool piece with the specified id. id Identifier of the tool piece \hypertarget{classvtkTool_ab156b5e1d4a9974b6b4a9809fdb10dc1}{
+\index{vtkTool@{vtkTool}!GetRenderWindow@{GetRenderWindow}}
+\index{GetRenderWindow@{GetRenderWindow}!vtkTool@{vtkTool}}
+\subsubsection[{GetRenderWindow}]{\setlength{\rightskip}{0pt plus 5cm}vtkRenderWindow $\ast$ vtkTool::GetRenderWindow ()}}
+\label{classvtkTool_ab156b5e1d4a9974b6b4a9809fdb10dc1}
+
+
+Get the render window of the tool. Return the render window of the tool 
+
+Reimplemented from \hyperlink{classvtkScenarioItem_a9d7908b11d2a477827342c05bb505e66}{vtkScenarioItem}.\hypertarget{classvtkTool_aa7c8e40f5216213e56cc7307bd16460a}{
+\index{vtkTool@{vtkTool}!GetTransform@{GetTransform}}
+\index{GetTransform@{GetTransform}!vtkTool@{vtkTool}}
+\subsubsection[{GetTransform}]{\setlength{\rightskip}{0pt plus 5cm}vtkTransform $\ast$ vtkTool::GetTransform (vtkIdType {\em id})}}
+\label{classvtkTool_aa7c8e40f5216213e56cc7307bd16460a}
+
+
+Get tool piece transform function with the specified id. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]Identifier of the piece \end{DoxyParams}
+\hypertarget{classvtkTool_a6b9e7743cde1b61b252abef17248a913}{
+\index{vtkTool@{vtkTool}!Init@{Init}}
+\index{Init@{Init}!vtkTool@{vtkTool}}
+\subsubsection[{Init}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkTool::Init ()\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classvtkTool_a6b9e7743cde1b61b252abef17248a913}
+
+
+Abstract initialization function. This method initializes the tool physical values, scale, position, etc... 
+
+Implements \hyperlink{classvtkScenarioItem_a87f01894de62f23433aa2eb3f995c216}{vtkScenarioItem}.
+
+Implemented in \hyperlink{classvtkToolDummy_aaf4c69a9c0fc3432e678ca9fffc913dc}{vtkToolDummy}, \hyperlink{classvtkToolLaparoscopy_ace75ea21a3ddb27547976ddea0ebb60e}{vtkToolLaparoscopy}, \hyperlink{classvtkToolPincers_ae4918610073324c94dddd8da234742a9}{vtkToolPincers}, and \hyperlink{classvtkToolScissors_a5fc5884ce0fd1723ecf86888bdbba7a6}{vtkToolScissors}.\hypertarget{classvtkTool_ae32bfdeb6ede9c25b0956fad8c15ba98}{
+\index{vtkTool@{vtkTool}!InsertNextContact@{InsertNextContact}}
+\index{InsertNextContact@{InsertNextContact}!vtkTool@{vtkTool}}
+\subsubsection[{InsertNextContact}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::InsertNextContact ({\bf vtkContact} $\ast$ {\em contact})}}
+\label{classvtkTool_ae32bfdeb6ede9c25b0956fad8c15ba98}
+
+
+Add a contact to the collection. Add a single contact to the collection of contacts 
+\begin{DoxyParams}{Parameters}
+\item[{\em contact}]Contact point \end{DoxyParams}
+\hypertarget{classvtkTool_a387cd53a14d1d40035f63a255eb57165}{
+\index{vtkTool@{vtkTool}!RemoveContacts@{RemoveContacts}}
+\index{RemoveContacts@{RemoveContacts}!vtkTool@{vtkTool}}
+\subsubsection[{RemoveContacts}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::RemoveContacts ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkTool_a387cd53a14d1d40035f63a255eb57165}
+
+
+Remove all contacts from the collection. All Contacts are cleared but not erased on memory \hypertarget{classvtkTool_a34b408444b681853b5dabbda6b971223}{
+\index{vtkTool@{vtkTool}!RotateX@{RotateX}}
+\index{RotateX@{RotateX}!vtkTool@{vtkTool}}
+\subsubsection[{RotateX}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::RotateX (double {\em x})\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classvtkTool_a34b408444b681853b5dabbda6b971223}
+
+
+Implements the lateral movements of the tool (Local coordinate system). The X parameter contains the relative movement in the horizontal axes 
+\begin{DoxyParams}{Parameters}
+\item[{\em x}]x orientation angle \item[{\em y}]y orientation angle \end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classvtkToolLaparoscopy_a6894dddee203102828358697e8214974}{vtkToolLaparoscopy}, and \hyperlink{classvtkToolPincers_ac6b80a0c7a43ae67cfafbe29772b41d0}{vtkToolPincers}.\hypertarget{classvtkTool_ad37e6208805e0fddd07dfc783a70fceb}{
+\index{vtkTool@{vtkTool}!RotateY@{RotateY}}
+\index{RotateY@{RotateY}!vtkTool@{vtkTool}}
+\subsubsection[{RotateY}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::RotateY (double {\em y})\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classvtkTool_ad37e6208805e0fddd07dfc783a70fceb}
+
+
+Implements the lateral movements of the tool (Local coordinate system). The Y parameter contains the relative movement in the vertical axes 
+\begin{DoxyParams}{Parameters}
+\item[{\em y}]y orientation angle \end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classvtkToolLaparoscopy_ae0245eaa9aa765a675da5135c4af422a}{vtkToolLaparoscopy}, and \hyperlink{classvtkToolPincers_aa2a15405aa65c96dd971e3c06d98d197}{vtkToolPincers}.\hypertarget{classvtkTool_a80c0ca1937ce97c98d70364cac281ff2}{
+\index{vtkTool@{vtkTool}!RotateZ@{RotateZ}}
+\index{RotateZ@{RotateZ}!vtkTool@{vtkTool}}
+\subsubsection[{RotateZ}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::RotateZ (double {\em rotation})\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classvtkTool_a80c0ca1937ce97c98d70364cac281ff2}
+
+
+Rotate the tool on its own axes (Local coordinate system). This function rotate the tool on its own axis the value of an angle given by the \char`\"{}Rotation\char`\"{} variable the rotation is produced acting on the actors who compose the tool. 
+\begin{DoxyParams}{Parameters}
+\item[{\em Rotation}]rotation angle (radians) \end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classvtkToolLaparoscopy_a3849ce4caa8283696433cb1ac0466bc5}{vtkToolLaparoscopy}, and \hyperlink{classvtkToolPincers_ad7a4a9f0e3291b88eb4e30986784539a}{vtkToolPincers}.\hypertarget{classvtkTool_a8f036524a724871dd5f7317e3000611c}{
+\index{vtkTool@{vtkTool}!SetRenderWindow@{SetRenderWindow}}
+\index{SetRenderWindow@{SetRenderWindow}!vtkTool@{vtkTool}}
+\subsubsection[{SetRenderWindow}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::SetRenderWindow (vtkRenderWindow $\ast$ {\em window})}}
+\label{classvtkTool_a8f036524a724871dd5f7317e3000611c}
+
+
+Set the render window of the tool. Assign the render window for the tool 
+\begin{DoxyParams}{Parameters}
+\item[{\em window}]Render Window where tool will be displayed \end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classvtkScenarioItem_a3ce404404d36c342b947f29fa02b6170}{vtkScenarioItem}.\hypertarget{classvtkTool_a4749077c4b6e05d9dc965a94c0ca14a0}{
+\index{vtkTool@{vtkTool}!Translate@{Translate}}
+\index{Translate@{Translate}!vtkTool@{vtkTool}}
+\subsubsection[{Translate}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::Translate (double {\em x}, \/  double {\em y}, \/  double {\em z})\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classvtkTool_a4749077c4b6e05d9dc965a94c0ca14a0}
+
+
+Implements the translation of the tool (Local coordinate system). The X \& Y parameters contains the relative movement in the horizontal and vertical axes respectively 
+\begin{DoxyParams}{Parameters}
+\item[{\em x}]x position of the tool \item[{\em y}]y position of the tool \item[{\em z}]z position of the tool \end{DoxyParams}
+\hypertarget{classvtkTool_a0f1b6e049d7ff5420f4f4604434a9da7}{
+\index{vtkTool@{vtkTool}!Update@{Update}}
+\index{Update@{Update}!vtkTool@{vtkTool}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::Update (void)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkTool_a0f1b6e049d7ff5420f4f4604434a9da7}
+
+
+Abstract update function. This method updates the tool physical values, scale, position, etc... 
+
+Reimplemented from \hyperlink{classvtkScenarioItem_ad29b7f2958399100f919b4eb9627fbc1}{vtkScenarioItem}.
+
+Reimplemented in \hyperlink{classvtkToolDummy_a19cda726ffda0a3955e519d7b42e4882}{vtkToolDummy}, \hyperlink{classvtkToolLaparoscopy_a4445a0cfabd77b50a06929b04cb71f9e}{vtkToolLaparoscopy}, \hyperlink{classvtkToolPincers_a57986aee2bcfa04472410cd7bf5c7929}{vtkToolPincers}, and \hyperlink{classvtkToolScissors_afe574b6b9e809f746308a157b6525c4b}{vtkToolScissors}.\hypertarget{classvtkTool_ac44896d171f0512b821f7ab031f7fed7}{
+\index{vtkTool@{vtkTool}!UpdateSimpleMesh@{UpdateSimpleMesh}}
+\index{UpdateSimpleMesh@{UpdateSimpleMesh}!vtkTool@{vtkTool}}
+\subsubsection[{UpdateSimpleMesh}]{\setlength{\rightskip}{0pt plus 5cm}void vtkTool::UpdateSimpleMesh ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkTool_ac44896d171f0512b821f7ab031f7fed7}
+
+
+Abstract initialization function. This method updates the simplified mesh physical values, scale, position, etc... 
+
+Implements \hyperlink{classvtkScenarioItem_a75b837f36e8f79f51999dc1a7eecbe4b}{vtkScenarioItem}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Scenario/vtkTool.h\item 
+Scenario/vtkTool.cxx\end{DoxyCompactItemize}

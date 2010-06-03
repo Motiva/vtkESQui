@@ -1,0 +1,399 @@
+\hypertarget{classvtkScenarioItem}{
+\section{vtkScenarioItem Class Reference}
+\label{classvtkScenarioItem}\index{vtkScenarioItem@{vtkScenarioItem}}
+}
+
+
+Class \hyperlink{classvtkScenarioItem}{vtkScenarioItem}, abstract the use of a surgical item.  
+
+
+{\ttfamily \#include $<$vtkScenarioItem.h$>$}
+
+Inherited by \hyperlink{classvtkOrgan}{vtkOrgan}, and \hyperlink{classvtkTool}{vtkTool}.\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classvtkScenarioItem_a77bcdf6979a30db08fa7934f218994e0}{vtkScenarioItemType} \{ {\bfseries Tool} =  0, 
+{\bfseries Organ} =  1, 
+{\bfseries Extra} =  2
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of piece types. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkScenarioItem_ac1b3cca069a98dc214fe9b3e0058bc6c}{
+\hyperlink{classvtkScenarioItem_ac1b3cca069a98dc214fe9b3e0058bc6c}{vtkTypeRevisionMacro} (\hyperlink{classvtkScenarioItem}{vtkScenarioItem}, vtkObject)}
+\label{classvtkScenarioItem_ac1b3cca069a98dc214fe9b3e0058bc6c}
+
+\begin{DoxyCompactList}\small\item\em Type revision macro. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_ae81ad46352f0a673792f2964de67efc1}{
+const char $\ast$ \hyperlink{classvtkScenarioItem_ae81ad46352f0a673792f2964de67efc1}{GetClassName} ()}
+\label{classvtkScenarioItem_ae81ad46352f0a673792f2964de67efc1}
+
+\begin{DoxyCompactList}\small\item\em Return the class name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a6cc74a69d066978485087c6dea3b72d1}{
+void \hyperlink{classvtkScenarioItem_a6cc74a69d066978485087c6dea3b72d1}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkScenarioItem_a6cc74a69d066978485087c6dea3b72d1}
+
+\begin{DoxyCompactList}\small\item\em Print class values. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkScenarioItem_a87f01894de62f23433aa2eb3f995c216}{Init} ()=0
+\begin{DoxyCompactList}\small\item\em Abstract initialization function. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkScenarioItem_ad29b7f2958399100f919b4eb9627fbc1}{Update} ()
+\begin{DoxyCompactList}\small\item\em Abstract update function. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkScenarioItem_a75b837f36e8f79f51999dc1a7eecbe4b}{UpdateSimpleMesh} ()=0
+\begin{DoxyCompactList}\small\item\em Abstract simple mesh update function. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkScenarioItem_afd99a6db7187837d0129e9898478ec60}{SetId} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Assign the identifying key of the item. \item\end{DoxyCompactList}\item 
+vtkIdType \hyperlink{classvtkScenarioItem_a9884061bd42ee058291d95a67ddcac20}{GetId} ()
+\begin{DoxyCompactList}\small\item\em Returns the identifying key of the item. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkScenarioItem_a9bf24104bbf25c469fa151816afdcb52}{SetType} (\hyperlink{classvtkScenarioItem_a77bcdf6979a30db08fa7934f218994e0}{vtkScenarioItem::vtkScenarioItemType} type)
+\begin{DoxyCompactList}\small\item\em Assign the identifying key of the item. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkScenarioItem_a77bcdf6979a30db08fa7934f218994e0}{vtkScenarioItem::vtkScenarioItemType} \hyperlink{classvtkScenarioItem_ae0fec908b834864a99e2907e57c71081}{GetType} ()
+\begin{DoxyCompactList}\small\item\em Returns the identifying key of the item. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkScenarioItem_a199f87511e99386bb9f271d91c2d0caf}{SetName} (const char $\ast$name)
+\begin{DoxyCompactList}\small\item\em Assign item name. \item\end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{classvtkScenarioItem_a41ebb204b2879d9dd14a392c1cb3c2fe}{GetName} ()
+\begin{DoxyCompactList}\small\item\em Return item scale. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkScenarioItem_a4d199d1138fbfe835c36cd20efbedb1e}{SetScale} (double value)
+\begin{DoxyCompactList}\small\item\em Assign item scale. \item\end{DoxyCompactList}\item 
+double \hyperlink{classvtkScenarioItem_a136a346d222abe59fd63b2f4ced9b3fa}{GetScale} ()
+\begin{DoxyCompactList}\small\item\em Return item scale. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkScenarioItem_a3ce404404d36c342b947f29fa02b6170}{SetRenderWindow} (vtkRenderWindow $\ast$window)
+\begin{DoxyCompactList}\small\item\em Set the render window of the item. \item\end{DoxyCompactList}\item 
+vtkRenderWindow $\ast$ \hyperlink{classvtkScenarioItem_a9d7908b11d2a477827342c05bb505e66}{GetRenderWindow} ()
+\begin{DoxyCompactList}\small\item\em Get the render window of the item. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_aaf1b9a0bbce0602583bd37a9d3817c75}{
+void \hyperlink{classvtkScenarioItem_aaf1b9a0bbce0602583bd37a9d3817c75}{SetOrigin} (double x, double y, double z)}
+\label{classvtkScenarioItem_aaf1b9a0bbce0602583bd37a9d3817c75}
+
+\begin{DoxyCompactList}\small\item\em Set the object origin Point. Reference point where the rotation calculus are made. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a9d7677711458629579e7cac7594af341}{
+void \hyperlink{classvtkScenarioItem_a9d7677711458629579e7cac7594af341}{SetOrigin} (double origin\mbox{[}3\mbox{]})}
+\label{classvtkScenarioItem_a9d7677711458629579e7cac7594af341}
+
+\begin{DoxyCompactList}\small\item\em Set the object origin Point. Reference point where the rotation calculus are made. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_aaf647b14f09405367835eb9585456d4c}{
+double $\ast$ \hyperlink{classvtkScenarioItem_aaf647b14f09405367835eb9585456d4c}{GetOrigin} ()}
+\label{classvtkScenarioItem_aaf647b14f09405367835eb9585456d4c}
+
+\begin{DoxyCompactList}\small\item\em Get the object origin Point. Reference point where the rotation calculus are made. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a82c77d1cbae1b9735ef0dcbfa59d1e5a}{
+void \hyperlink{classvtkScenarioItem_a82c77d1cbae1b9735ef0dcbfa59d1e5a}{GetOrigin} (double origin\mbox{[}3\mbox{]})}
+\label{classvtkScenarioItem_a82c77d1cbae1b9735ef0dcbfa59d1e5a}
+
+\begin{DoxyCompactList}\small\item\em Get the object origin Point. Reference point where the rotation calculus are made. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a026e114a0221d67218b1bd0fc7bd155d}{
+void \hyperlink{classvtkScenarioItem_a026e114a0221d67218b1bd0fc7bd155d}{SetOrientation} (double yaw, double pitch, double roll)}
+\label{classvtkScenarioItem_a026e114a0221d67218b1bd0fc7bd155d}
+
+\begin{DoxyCompactList}\small\item\em Set object orientation angles. (yaw, pitch, roll) (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a9ee0114bd902d31a0bf11bc4f72e9587}{
+void \hyperlink{classvtkScenarioItem_a9ee0114bd902d31a0bf11bc4f72e9587}{SetOrientation} (double orientation\mbox{[}3\mbox{]})}
+\label{classvtkScenarioItem_a9ee0114bd902d31a0bf11bc4f72e9587}
+
+\begin{DoxyCompactList}\small\item\em Set object orientation angles. (yaw, pitch, roll) (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a39dcbfadb0def37468ebcb1869693789}{
+double $\ast$ \hyperlink{classvtkScenarioItem_a39dcbfadb0def37468ebcb1869693789}{GetOrientation} ()}
+\label{classvtkScenarioItem_a39dcbfadb0def37468ebcb1869693789}
+
+\begin{DoxyCompactList}\small\item\em Get object orientation angles. (yaw, pitch, roll) (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a210ed163f21df3f344ba2d13c6d50fcf}{
+void \hyperlink{classvtkScenarioItem_a210ed163f21df3f344ba2d13c6d50fcf}{GetOrientation} (double orientation\mbox{[}3\mbox{]})}
+\label{classvtkScenarioItem_a210ed163f21df3f344ba2d13c6d50fcf}
+
+\begin{DoxyCompactList}\small\item\em Get object orientation angles. (yaw, pitch, roll) (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a004fe7d03bfb56a842a52aafbeb8506b}{
+void \hyperlink{classvtkScenarioItem_a004fe7d03bfb56a842a52aafbeb8506b}{SetPosition} (double x, double y, double z)}
+\label{classvtkScenarioItem_a004fe7d03bfb56a842a52aafbeb8506b}
+
+\begin{DoxyCompactList}\small\item\em Set the Object position (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_ad9289040db530909a73784e759204593}{
+void \hyperlink{classvtkScenarioItem_ad9289040db530909a73784e759204593}{SetPosition} (double position\mbox{[}3\mbox{]})}
+\label{classvtkScenarioItem_ad9289040db530909a73784e759204593}
+
+\begin{DoxyCompactList}\small\item\em Set the Object position (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a335a82a650c20a23042780a1bc21d6c8}{
+double $\ast$ \hyperlink{classvtkScenarioItem_a335a82a650c20a23042780a1bc21d6c8}{GetPosition} ()}
+\label{classvtkScenarioItem_a335a82a650c20a23042780a1bc21d6c8}
+
+\begin{DoxyCompactList}\small\item\em Get the Object position (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a923912fa6cca08c3e450ae2d010f83f1}{
+void \hyperlink{classvtkScenarioItem_a923912fa6cca08c3e450ae2d010f83f1}{GetPosition} (double position\mbox{[}3\mbox{]})}
+\label{classvtkScenarioItem_a923912fa6cca08c3e450ae2d010f83f1}
+
+\begin{DoxyCompactList}\small\item\em Get the Object position (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_acbb650d8324e6a0b8a33945cb5c06e8f}{
+double $\ast$ \hyperlink{classvtkScenarioItem_acbb650d8324e6a0b8a33945cb5c06e8f}{GetDirection} ()}
+\label{classvtkScenarioItem_acbb650d8324e6a0b8a33945cb5c06e8f}
+
+\begin{DoxyCompactList}\small\item\em Get the object direction unit vector (WXYZ). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_aeb259958cef65962ce34e2cd9826283c}{
+void \hyperlink{classvtkScenarioItem_aeb259958cef65962ce34e2cd9826283c}{GetDirection} (double direction\mbox{[}3\mbox{]})}
+\label{classvtkScenarioItem_aeb259958cef65962ce34e2cd9826283c}
+
+\begin{DoxyCompactList}\small\item\em Get the object direction unit vector (WXYZ). \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkScenarioItem_a9bd7ffa58d7ed0c8f577d127c1654641}{DisplaySimpleMeshOn} ()
+\begin{DoxyCompactList}\small\item\em Enable simple mesh display. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkScenarioItem_ab8c3d0fa282116ca0144cd8fba9545c0}{DisplaySimpleMeshOff} ()
+\begin{DoxyCompactList}\small\item\em Enable simple mesh display. \item\end{DoxyCompactList}\item 
+vtkPolyData $\ast$ \hyperlink{classvtkScenarioItem_a1c8a6fcb05ff01e2fda8034078f46236}{GetSimpleMesh} ()
+\begin{DoxyCompactList}\small\item\em function that returns simplified mesh \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkScenarioItem_ae630f872b3b85fec80518b1ad9cee0ff}{
+void {\bfseries UpdateDirection} ()}
+\label{classvtkScenarioItem_ae630f872b3b85fec80518b1ad9cee0ff}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkScenarioItem_a30d34cd69bd0ba4f133312a830c78a3d}{
+vtkIdType {\bfseries Id}}
+\label{classvtkScenarioItem_a30d34cd69bd0ba4f133312a830c78a3d}
+
+\item 
+\hypertarget{classvtkScenarioItem_acbddd248c94ce369e17e978748a81a26}{
+\hyperlink{classvtkScenarioItem_a77bcdf6979a30db08fa7934f218994e0}{vtkScenarioItemType} {\bfseries Type}}
+\label{classvtkScenarioItem_acbddd248c94ce369e17e978748a81a26}
+
+\item 
+\hypertarget{classvtkScenarioItem_ac99d4959ab6fca2b24cc37fcf0301f6e}{
+const char $\ast$ {\bfseries Name}}
+\label{classvtkScenarioItem_ac99d4959ab6fca2b24cc37fcf0301f6e}
+
+\item 
+\hypertarget{classvtkScenarioItem_ade73a444d0e321d8fa58dcc983e7c2bd}{
+double {\bfseries Origin} \mbox{[}3\mbox{]}}
+\label{classvtkScenarioItem_ade73a444d0e321d8fa58dcc983e7c2bd}
+
+\item 
+\hypertarget{classvtkScenarioItem_ac340c5c2354a091f7cc61cf8a30c683d}{
+double {\bfseries Position} \mbox{[}3\mbox{]}}
+\label{classvtkScenarioItem_ac340c5c2354a091f7cc61cf8a30c683d}
+
+\item 
+\hypertarget{classvtkScenarioItem_adf8fdd601f8909cd71204faab5d05ca3}{
+double {\bfseries Orientation} \mbox{[}3\mbox{]}}
+\label{classvtkScenarioItem_adf8fdd601f8909cd71204faab5d05ca3}
+
+\item 
+\hypertarget{classvtkScenarioItem_adf8878f2674890cfe83d68ef49d36831}{
+double {\bfseries Direction} \mbox{[}3\mbox{]}}
+\label{classvtkScenarioItem_adf8878f2674890cfe83d68ef49d36831}
+
+\item 
+\hypertarget{classvtkScenarioItem_a915d41b95816865b9b78e2073a1d7d73}{
+double \hyperlink{classvtkScenarioItem_a915d41b95816865b9b78e2073a1d7d73}{ScaleFactor}}
+\label{classvtkScenarioItem_a915d41b95816865b9b78e2073a1d7d73}
+
+\begin{DoxyCompactList}\small\item\em Scale factor (size). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a0eab54cacf6c48af77d85017368bfa3f}{
+vtkIdType {\bfseries DisplaySimpleMesh}}
+\label{classvtkScenarioItem_a0eab54cacf6c48af77d85017368bfa3f}
+
+\item 
+\hypertarget{classvtkScenarioItem_a23c0b3a217359ad91a865093fafaa4b4}{
+vtkRenderWindow $\ast$ \hyperlink{classvtkScenarioItem_a23c0b3a217359ad91a865093fafaa4b4}{RenderWindow}}
+\label{classvtkScenarioItem_a23c0b3a217359ad91a865093fafaa4b4}
+
+\begin{DoxyCompactList}\small\item\em Render Window of the item. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a3474fdd82bc9a699ada6238884890ef9}{
+vtkRenderer $\ast$ \hyperlink{classvtkScenarioItem_a3474fdd82bc9a699ada6238884890ef9}{Renderer}}
+\label{classvtkScenarioItem_a3474fdd82bc9a699ada6238884890ef9}
+
+\begin{DoxyCompactList}\small\item\em Renderer of the item. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkScenarioItem_a3438222b65bb2a271eeb2be1eaa109b2}{
+vtkPolyData $\ast$ \hyperlink{classvtkScenarioItem_a3438222b65bb2a271eeb2be1eaa109b2}{SimpleMesh}}
+\label{classvtkScenarioItem_a3438222b65bb2a271eeb2be1eaa109b2}
+
+\begin{DoxyCompactList}\small\item\em Simplified Mesh for collision detection purposes. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class \hyperlink{classvtkScenarioItem}{vtkScenarioItem}, abstract the use of a surgical item. \hyperlink{classvtkScenarioItem}{vtkScenarioItem} abstracts the use of a surgical item during the simulation exercise. This provide an easy use of surgical items collections. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkScenarioItem_ab8c3d0fa282116ca0144cd8fba9545c0}{
+\index{vtkScenarioItem@{vtkScenarioItem}!DisplaySimpleMeshOff@{DisplaySimpleMeshOff}}
+\index{DisplaySimpleMeshOff@{DisplaySimpleMeshOff}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{DisplaySimpleMeshOff}]{\setlength{\rightskip}{0pt plus 5cm}void vtkScenarioItem::DisplaySimpleMeshOff ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkScenarioItem_ab8c3d0fa282116ca0144cd8fba9545c0}
+
+
+Enable simple mesh display. \begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_ab8c3d0fa282116ca0144cd8fba9545c0}{DisplaySimpleMeshOff()} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkScenarioItem_a9bd7ffa58d7ed0c8f577d127c1654641}{
+\index{vtkScenarioItem@{vtkScenarioItem}!DisplaySimpleMeshOn@{DisplaySimpleMeshOn}}
+\index{DisplaySimpleMeshOn@{DisplaySimpleMeshOn}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{DisplaySimpleMeshOn}]{\setlength{\rightskip}{0pt plus 5cm}void vtkScenarioItem::DisplaySimpleMeshOn ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkScenarioItem_a9bd7ffa58d7ed0c8f577d127c1654641}
+
+
+Enable simple mesh display. \begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_ab8c3d0fa282116ca0144cd8fba9545c0}{DisplaySimpleMeshOff()} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkScenarioItem_a9884061bd42ee058291d95a67ddcac20}{
+\index{vtkScenarioItem@{vtkScenarioItem}!GetId@{GetId}}
+\index{GetId@{GetId}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{GetId}]{\setlength{\rightskip}{0pt plus 5cm}vtkIdType vtkScenarioItem::GetId ()}}
+\label{classvtkScenarioItem_a9884061bd42ee058291d95a67ddcac20}
+
+
+Returns the identifying key of the item. \begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_afd99a6db7187837d0129e9898478ec60}{SetId(vtkIdType Id)} 
+\end{DoxySeeAlso}
+
+
+Reimplemented in \hyperlink{classvtkOrgan_a8e45f79da9c4e7029492ced2f55c25ed}{vtkOrgan}.\hypertarget{classvtkScenarioItem_a41ebb204b2879d9dd14a392c1cb3c2fe}{
+\index{vtkScenarioItem@{vtkScenarioItem}!GetName@{GetName}}
+\index{GetName@{GetName}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{GetName}]{\setlength{\rightskip}{0pt plus 5cm}const char $\ast$ vtkScenarioItem::GetName ()}}
+\label{classvtkScenarioItem_a41ebb204b2879d9dd14a392c1cb3c2fe}
+
+
+Return item scale. \begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_a199f87511e99386bb9f271d91c2d0caf}{SetName(const char $\ast$ name)} 
+\end{DoxySeeAlso}
+
+
+Reimplemented in \hyperlink{classvtkOrgan_a8421389b02b00b42b0899b75d00633b4}{vtkOrgan}.\hypertarget{classvtkScenarioItem_a9d7908b11d2a477827342c05bb505e66}{
+\index{vtkScenarioItem@{vtkScenarioItem}!GetRenderWindow@{GetRenderWindow}}
+\index{GetRenderWindow@{GetRenderWindow}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{GetRenderWindow}]{\setlength{\rightskip}{0pt plus 5cm}vtkRenderWindow $\ast$ vtkScenarioItem::GetRenderWindow ()}}
+\label{classvtkScenarioItem_a9d7908b11d2a477827342c05bb505e66}
+
+
+Get the render window of the item. Return the render window of the item 
+
+Reimplemented in \hyperlink{classvtkOrgan_ae670e2727313073a9659a2795ce64c98}{vtkOrgan}, and \hyperlink{classvtkTool_ab156b5e1d4a9974b6b4a9809fdb10dc1}{vtkTool}.\hypertarget{classvtkScenarioItem_a136a346d222abe59fd63b2f4ced9b3fa}{
+\index{vtkScenarioItem@{vtkScenarioItem}!GetScale@{GetScale}}
+\index{GetScale@{GetScale}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{GetScale}]{\setlength{\rightskip}{0pt plus 5cm}double vtkScenarioItem::GetScale ()}}
+\label{classvtkScenarioItem_a136a346d222abe59fd63b2f4ced9b3fa}
+
+
+Return item scale. \begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_a4d199d1138fbfe835c36cd20efbedb1e}{SetScale(double scale)} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkScenarioItem_a1c8a6fcb05ff01e2fda8034078f46236}{
+\index{vtkScenarioItem@{vtkScenarioItem}!GetSimpleMesh@{GetSimpleMesh}}
+\index{GetSimpleMesh@{GetSimpleMesh}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{GetSimpleMesh}]{\setlength{\rightskip}{0pt plus 5cm}vtkPolyData$\ast$ vtkScenarioItem::GetSimpleMesh ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkScenarioItem_a1c8a6fcb05ff01e2fda8034078f46236}
+
+
+function that returns simplified mesh This method returns a simplified mesh for collision detection purposes \hypertarget{classvtkScenarioItem_ae0fec908b834864a99e2907e57c71081}{
+\index{vtkScenarioItem@{vtkScenarioItem}!GetType@{GetType}}
+\index{GetType@{GetType}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{GetType}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkScenarioItem::vtkScenarioItemType} vtkScenarioItem::GetType ()}}
+\label{classvtkScenarioItem_ae0fec908b834864a99e2907e57c71081}
+
+
+Returns the identifying key of the item. \begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_afd99a6db7187837d0129e9898478ec60}{SetId(vtkIdType Id)} 
+\end{DoxySeeAlso}
+
+
+Reimplemented in \hyperlink{classvtkTool_ab09b1fa6f511ca80859b3e59cedd62de}{vtkTool}.\hypertarget{classvtkScenarioItem_a87f01894de62f23433aa2eb3f995c216}{
+\index{vtkScenarioItem@{vtkScenarioItem}!Init@{Init}}
+\index{Init@{Init}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{Init}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkScenarioItem::Init ()\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classvtkScenarioItem_a87f01894de62f23433aa2eb3f995c216}
+
+
+Abstract initialization function. This method initializes the item physical values, scale, position, etc... 
+
+Implemented in \hyperlink{classvtkOrgan_a48aa20d7255903b3f7ac5cd2a4adec8c}{vtkOrgan}, \hyperlink{classvtkTool_a6b9e7743cde1b61b252abef17248a913}{vtkTool}, \hyperlink{classvtkToolDummy_aaf4c69a9c0fc3432e678ca9fffc913dc}{vtkToolDummy}, \hyperlink{classvtkToolLaparoscopy_ace75ea21a3ddb27547976ddea0ebb60e}{vtkToolLaparoscopy}, \hyperlink{classvtkToolPincers_ae4918610073324c94dddd8da234742a9}{vtkToolPincers}, and \hyperlink{classvtkToolScissors_a5fc5884ce0fd1723ecf86888bdbba7a6}{vtkToolScissors}.\hypertarget{classvtkScenarioItem_afd99a6db7187837d0129e9898478ec60}{
+\index{vtkScenarioItem@{vtkScenarioItem}!SetId@{SetId}}
+\index{SetId@{SetId}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{SetId}]{\setlength{\rightskip}{0pt plus 5cm}void vtkScenarioItem::SetId (vtkIdType {\em id})}}
+\label{classvtkScenarioItem_afd99a6db7187837d0129e9898478ec60}
+
+
+Assign the identifying key of the item. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]identifying key of the item \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_a9884061bd42ee058291d95a67ddcac20}{GetId()} 
+\end{DoxySeeAlso}
+
+
+Reimplemented in \hyperlink{classvtkOrgan_a0aab831b4e0a9d33ba961a0907b73e80}{vtkOrgan}.\hypertarget{classvtkScenarioItem_a199f87511e99386bb9f271d91c2d0caf}{
+\index{vtkScenarioItem@{vtkScenarioItem}!SetName@{SetName}}
+\index{SetName@{SetName}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{SetName}]{\setlength{\rightskip}{0pt plus 5cm}void vtkScenarioItem::SetName (const char $\ast$ {\em name})}}
+\label{classvtkScenarioItem_a199f87511e99386bb9f271d91c2d0caf}
+
+
+Assign item name. 
+\begin{DoxyParams}{Parameters}
+\item[{\em name}]name of the item \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_a41ebb204b2879d9dd14a392c1cb3c2fe}{GetName()} 
+\end{DoxySeeAlso}
+
+
+Reimplemented in \hyperlink{classvtkOrgan_a55ca17e15fea6a6c1672f8b271546e6b}{vtkOrgan}.\hypertarget{classvtkScenarioItem_a3ce404404d36c342b947f29fa02b6170}{
+\index{vtkScenarioItem@{vtkScenarioItem}!SetRenderWindow@{SetRenderWindow}}
+\index{SetRenderWindow@{SetRenderWindow}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{SetRenderWindow}]{\setlength{\rightskip}{0pt plus 5cm}void vtkScenarioItem::SetRenderWindow (vtkRenderWindow $\ast$ {\em window})}}
+\label{classvtkScenarioItem_a3ce404404d36c342b947f29fa02b6170}
+
+
+Set the render window of the item. Assign the render window for the item 
+\begin{DoxyParams}{Parameters}
+\item[{\em window}]Render Window where item will be displayed \end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classvtkOrgan_a2b6a862da0f1ca6cd192138cdd00b04b}{vtkOrgan}, and \hyperlink{classvtkTool_a8f036524a724871dd5f7317e3000611c}{vtkTool}.\hypertarget{classvtkScenarioItem_a4d199d1138fbfe835c36cd20efbedb1e}{
+\index{vtkScenarioItem@{vtkScenarioItem}!SetScale@{SetScale}}
+\index{SetScale@{SetScale}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{SetScale}]{\setlength{\rightskip}{0pt plus 5cm}void vtkScenarioItem::SetScale (double {\em value})}}
+\label{classvtkScenarioItem_a4d199d1138fbfe835c36cd20efbedb1e}
+
+
+Assign item scale. 
+\begin{DoxyParams}{Parameters}
+\item[{\em value}]scale factor \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_a136a346d222abe59fd63b2f4ced9b3fa}{GetScale()} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkScenarioItem_a9bf24104bbf25c469fa151816afdcb52}{
+\index{vtkScenarioItem@{vtkScenarioItem}!SetType@{SetType}}
+\index{SetType@{SetType}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{SetType}]{\setlength{\rightskip}{0pt plus 5cm}void vtkScenarioItem::SetType ({\bf vtkScenarioItem::vtkScenarioItemType} {\em type})}}
+\label{classvtkScenarioItem_a9bf24104bbf25c469fa151816afdcb52}
+
+
+Assign the identifying key of the item. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]identifying key of the item \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkScenarioItem_a9884061bd42ee058291d95a67ddcac20}{GetId()} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkScenarioItem_ad29b7f2958399100f919b4eb9627fbc1}{
+\index{vtkScenarioItem@{vtkScenarioItem}!Update@{Update}}
+\index{Update@{Update}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkScenarioItem::Update (void)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkScenarioItem_ad29b7f2958399100f919b4eb9627fbc1}
+
+
+Abstract update function. This method updates the item physical values, scale, position, etc... 
+
+Reimplemented in \hyperlink{classvtkOrgan_a267da8ba8d4cfcef50b70dc5b9d19ae9}{vtkOrgan}, \hyperlink{classvtkTool_a0f1b6e049d7ff5420f4f4604434a9da7}{vtkTool}, \hyperlink{classvtkToolDummy_a19cda726ffda0a3955e519d7b42e4882}{vtkToolDummy}, \hyperlink{classvtkToolLaparoscopy_a4445a0cfabd77b50a06929b04cb71f9e}{vtkToolLaparoscopy}, \hyperlink{classvtkToolPincers_a57986aee2bcfa04472410cd7bf5c7929}{vtkToolPincers}, and \hyperlink{classvtkToolScissors_afe574b6b9e809f746308a157b6525c4b}{vtkToolScissors}.\hypertarget{classvtkScenarioItem_a75b837f36e8f79f51999dc1a7eecbe4b}{
+\index{vtkScenarioItem@{vtkScenarioItem}!UpdateSimpleMesh@{UpdateSimpleMesh}}
+\index{UpdateSimpleMesh@{UpdateSimpleMesh}!vtkScenarioItem@{vtkScenarioItem}}
+\subsubsection[{UpdateSimpleMesh}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkScenarioItem::UpdateSimpleMesh ()\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classvtkScenarioItem_a75b837f36e8f79f51999dc1a7eecbe4b}
+
+
+Abstract simple mesh update function. This method updates the simplified mesh item physical values, scale, position, etc... 
+
+Implemented in \hyperlink{classvtkOrgan_a943994fbb1b4f8a8e72f647f631cdd81}{vtkOrgan}, and \hyperlink{classvtkTool_ac44896d171f0512b821f7ab031f7fed7}{vtkTool}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Scenario/vtkScenarioItem.h\item 
+Scenario/vtkScenarioItem.cxx\end{DoxyCompactItemize}

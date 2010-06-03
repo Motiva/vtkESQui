@@ -1,0 +1,331 @@
+\hypertarget{XiTrocarInterface_8h}{
+\section{Haptics/XiTrocarInterface.h File Reference}
+\label{XiTrocarInterface_8h}\index{Haptics/XiTrocarInterface.h@{Haptics/XiTrocarInterface.h}}
+}
+
+
+Declaration of C interface for Xitact Laparoscopic simulation devices.  
+This graph shows which files directly or indirectly include this file:\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structXiToolState__}{XiToolState\_\-}
+\item 
+struct \hyperlink{structXiToolForce__}{XiToolForce\_\-}
+\end{DoxyCompactItemize}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{XiTrocarInterface_8h_a5e8a6f8a908be3e650fb4f1607e81eee}{
+\#define {\bfseries XIFUNC}~\_\-\_\-declspec(dllimport)}
+\label{XiTrocarInterface_8h_a5e8a6f8a908be3e650fb4f1607e81eee}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{XiTrocarInterface_8h_a9ca07454ab32bc555ae3cd40efb521dc}{
+typedef unsigned {\bfseries XiDWord}}
+\label{XiTrocarInterface_8h_a9ca07454ab32bc555ae3cd40efb521dc}
+
+\item 
+\hypertarget{XiTrocarInterface_8h_a800c6f6d718bd32ad8e52905f1e6db6a}{
+typedef XiDWord {\bfseries XiBool}}
+\label{XiTrocarInterface_8h_a800c6f6d718bd32ad8e52905f1e6db6a}
+
+\item 
+\hypertarget{XiTrocarInterface_8h_a06a7e16fbdaa0ed722c0cee692396ff7}{
+typedef XiDWord {\bfseries XiStateFlags}}
+\label{XiTrocarInterface_8h_a06a7e16fbdaa0ed722c0cee692396ff7}
+
+\item 
+\hypertarget{XiTrocarInterface_8h_aa495b9a210b96618e65369e55f5c5e59}{
+typedef struct \hyperlink{structXiToolState__}{XiToolState\_\-} {\bfseries XiToolState}}
+\label{XiTrocarInterface_8h_aa495b9a210b96618e65369e55f5c5e59}
+
+\item 
+\hypertarget{XiTrocarInterface_8h_a430c6855b0587c559ed633aec9a00aed}{
+typedef struct \hyperlink{structXiToolForce__}{XiToolForce\_\-} {\bfseries XiToolForce}}
+\label{XiTrocarInterface_8h_a430c6855b0587c559ed633aec9a00aed}
+
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \par
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a7fe12a80305a52e6a942b53730bf871d}{XI\_\-TrocarIsPresent} =  1$<$$<$ 0, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7afd664f12d9d7ed99f1d6030c0fe53867}{XI\_\-TrocarHasHaptics} =  1$<$$<$ 1, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a14c4a5117dc7aba1dc9deb6608edd6e4}{XI\_\-TrocarIsInitialized} =  1$<$$<$ 2, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a2c41641f897e4de34d212df14e378dfe}{XI\_\-ToolIsConnected\_\-OLD} =  1$<$$<$ 3, 
+\par
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ab1cec642a8864b65fc156585c1fc4518}{XI\_\-ToolIsInserted} =  1$<$$<$ 4, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ad0d5874b4b059cd1e60c0fd68bab6662}{XI\_\-TrocarHasFFBPower} =  1$<$$<$ 6, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a83cc87e80b14c22755e08ea43134ad96}{XI\_\-TrocarHasFFBEnabled} =  1$<$$<$ 7, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a876cc42ef6fd9256063f9fcf306fffd4}{XI\_\-ToolButtonMain} =  1$<$$<$ 8, 
+\par
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7aa4e5039a536a04af244b912ec5bce6b4}{XI\_\-ToolButtonLeft} =  1$<$$<$ 9, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a949971bb5813294017a05dcb4f172af6}{XI\_\-ToolButtonRight} =  1$<$$<$10, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a44f4648cc9e32317dbf9a9d12302bbf9}{XI\_\-InitNeedToolOut} =  1$<$$<$16, 
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7aa0ef4ea2d06de3d56a61fa0017447da9}{XI\_\-InitNeedLeftIPulse} =  1$<$$<$17, 
+\par
+\hyperlink{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ae999c123413d4b54290b8bc1bc0c029b}{XI\_\-InitNeedRightIPulse} =  1$<$$<$18
+ \}
+\item 
+enum \{ \hyperlink{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a323ba31c8c55f406861a06b60f0fe192}{XI\_\-ToolIDDisconnected} =  0, 
+\hyperlink{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5ac5d990b0fd88d68606670b009e235d8e}{XI\_\-ToolIDHandle} =  1, 
+\hyperlink{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a77ffa54ee17d47adbdc48e1b6983f703}{XI\_\-ToolIDReversedHandle} =  2, 
+\hyperlink{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a36646d139c264dc68cf265af369618ee}{XI\_\-ToolIDCamera} =  3
+ \}
+\item 
+enum \hyperlink{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132}{XiConnector} \{ \hyperlink{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132ad0112e82321c90bd705c02935462d41d}{XI\_\-ConnectorRight}, 
+\hyperlink{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132ac740054670cd8a0c18846a757eff02bc}{XI\_\-ConnectorLeft}
+ \}
+\begin{DoxyCompactList}\small\item\em enumeration for describing the tool connector \item\end{DoxyCompactList}\item 
+enum \hyperlink{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00}{XiHandleType} \{ \hyperlink{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00a153ae318b990d42408940e9f1904958c}{XI\_\-HandleDisconnected}, 
+\hyperlink{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00acbc12df6161e48f270314fdc9841d1b3}{XI\_\-HandleNormal}, 
+\hyperlink{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00aca82ca36f46eae127c29875d764f926b}{XI\_\-HandleReversed}, 
+\hyperlink{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00a482505ff0b4e501c259071743dbe17f8}{XI\_\-HandleCamera}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration for describing the type of handle coonected to the device. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{XiTrocarInterface_8h_a56ebcced9eefe40be5dc67f73630f748}{
+XIFUNC void \hyperlink{XiTrocarInterface_8h_a56ebcced9eefe40be5dc67f73630f748}{xiSoftwareVendor} (const char $\ast$key)}
+\label{XiTrocarInterface_8h_a56ebcced9eefe40be5dc67f73630f748}
+
+\begin{DoxyCompactList}\small\item\em This call will allow the customization of vendor-\/specific features. Use the vendor string that was assigned to you. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a866f5afdf6d7956672959a21031783a0}{
+XIFUNC int \hyperlink{XiTrocarInterface_8h_a866f5afdf6d7956672959a21031783a0}{xiTrocarAcquire} ()}
+\label{XiTrocarInterface_8h_a866f5afdf6d7956672959a21031783a0}
+
+\begin{DoxyCompactList}\small\item\em returns connected robot count, -\/1 if none found, or $<$0 error code. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_ada5d65c4863f6098e8adbc0dcf7ff911}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_ada5d65c4863f6098e8adbc0dcf7ff911}{xiTrocarRelease} ()}
+\label{XiTrocarInterface_8h_ada5d65c4863f6098e8adbc0dcf7ff911}
+
+\begin{DoxyCompactList}\small\item\em release the robots and stop communication \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a5749e787a120955d351b9e9c9044110c}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a5749e787a120955d351b9e9c9044110c}{xiTrocarQueryStates} ()}
+\label{XiTrocarInterface_8h_a5749e787a120955d351b9e9c9044110c}
+
+\begin{DoxyCompactList}\small\item\em read the most recent position information to internal buffer \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_ab77c30ffc1b1e3a9af7d110c9eb48db5}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_ab77c30ffc1b1e3a9af7d110c9eb48db5}{xiTrocarFlushForces} ()}
+\label{XiTrocarInterface_8h_ab77c30ffc1b1e3a9af7d110c9eb48db5}
+
+\begin{DoxyCompactList}\small\item\em send the forces currently set in the internal buffer, and clear stored forces \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a5832a91a3c3f68afae5b4b789c43d0ab}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a5832a91a3c3f68afae5b4b789c43d0ab}{xiTrocarGetState} (int index, \hyperlink{structXiToolState__}{XiToolState} $\ast$buf)}
+\label{XiTrocarInterface_8h_a5832a91a3c3f68afae5b4b789c43d0ab}
+
+\begin{DoxyCompactList}\small\item\em Read into $\ast$buf info about the specified robot. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a5745c894c1f26562f0ca4e0b34cbd7be}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a5745c894c1f26562f0ca4e0b34cbd7be}{xiTrocarSetForce} (int index, \hyperlink{structXiToolForce__}{XiToolForce} const $\ast$buf)}
+\label{XiTrocarInterface_8h_a5745c894c1f26562f0ca4e0b34cbd7be}
+
+\begin{DoxyCompactList}\small\item\em Save to internal buffer of specified robot the forces defined in $\ast$buf. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a7cfc3f7d30a4c3b27ce25e01f74b8982}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a7cfc3f7d30a4c3b27ce25e01f74b8982}{xiTrocarGetDeviceDescription} (int index, char dstBuf\mbox{[}1024\mbox{]})}
+\label{XiTrocarInterface_8h_a7cfc3f7d30a4c3b27ce25e01f74b8982}
+
+\begin{DoxyCompactList}\small\item\em put the selected device's internal description string with serial number into dstBuffer. Buffer must be 1024 characters long. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a50c192f0a07a0fbc20aa5e0c944b94d1}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a50c192f0a07a0fbc20aa5e0c944b94d1}{xiTrocarGetSerialNumber} (int index, char dstBuf\mbox{[}16\mbox{]})}
+\label{XiTrocarInterface_8h_a50c192f0a07a0fbc20aa5e0c944b94d1}
+
+\begin{DoxyCompactList}\small\item\em put the selected device's serial number (as a null terminated string) into dstBuffer. Buffer must be 16 characters long. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_acd56339af30a2110a4e4fa3d4cb7569f}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_acd56339af30a2110a4e4fa3d4cb7569f}{xiTrocarCalibrate} ()}
+\label{XiTrocarInterface_8h_acd56339af30a2110a4e4fa3d4cb7569f}
+
+\begin{DoxyCompactList}\small\item\em Runs the calibration wizard. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a7ddf15faa7808c538674297ebaa89fe5}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a7ddf15faa7808c538674297ebaa89fe5}{xiTrocarGetDLLTimeStamp} (char dstBuf\mbox{[}128\mbox{]})}
+\label{XiTrocarInterface_8h_a7ddf15faa7808c538674297ebaa89fe5}
+
+\begin{DoxyCompactList}\small\item\em Put the DLL time stamps in dstBuf (that Xitact use as a version number). \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a8884d251a456d8e0db3a52dc196c66d5}{
+XIFUNC void \hyperlink{XiTrocarInterface_8h_a8884d251a456d8e0db3a52dc196c66d5}{xiShowAboutDialog} (char const $\ast$appName)}
+\label{XiTrocarInterface_8h_a8884d251a456d8e0db3a52dc196c66d5}
+
+\begin{DoxyCompactList}\small\item\em Display a MFC dialog with diagnostic information about the xitact hardware. Pass the name of the calling application as a parameter. Always return true;. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a0c4b29d3dce8107b246fd5b03d8e4581}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a0c4b29d3dce8107b246fd5b03d8e4581}{XiTrocarGetOpeningInput} (int index, \hyperlink{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132}{XiConnector} connector, float $\ast$outSignal, \hyperlink{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00}{XiHandleType} $\ast$outHandleType)}
+\label{XiTrocarInterface_8h_a0c4b29d3dce8107b246fd5b03d8e4581}
+
+\begin{DoxyCompactList}\small\item\em Returns information about the raw opening signal of a specific device and connector (scaled to a 0..1 interval). \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a03e22d1e611e3be90e483467c9f657ed}{
+XIFUNC XiBool {\bfseries XiTrocarGetOpeningInput\_\-} (int index, \hyperlink{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132}{XiConnector} connector, float $\ast$outSignal)}
+\label{XiTrocarInterface_8h_a03e22d1e611e3be90e483467c9f657ed}
+
+\item 
+\hypertarget{XiTrocarInterface_8h_a0f37986ba5d12d16ccc6d5dd35abc0c9}{
+XIFUNC XiBool {\bfseries XiTrocarGetForceSensorValue} (int index, unsigned short $\ast$value)}
+\label{XiTrocarInterface_8h_a0f37986ba5d12d16ccc6d5dd35abc0c9}
+
+\item 
+\hypertarget{XiTrocarInterface_8h_a89cb2ef0a390b4b96671ffb330d97bb2}{
+XIFUNC XiBool {\bfseries XiTrocarSetMotorOutputFilterCallback} (void($\ast$callback)(int deviceIndex, short $\ast$leftPanto, short $\ast$rightPanto, short $\ast$upLinrot, short $\ast$downLinrot))}
+\label{XiTrocarInterface_8h_a89cb2ef0a390b4b96671ffb330d97bb2}
+
+\item 
+\hypertarget{XiTrocarInterface_8h_a62e4f9c4e55ed0322a9a3aec18187a2c}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a62e4f9c4e55ed0322a9a3aec18187a2c}{xiSetDisplayMessageBoxOnFailedLicenseCheck} (XiBool value)}
+\label{XiTrocarInterface_8h_a62e4f9c4e55ed0322a9a3aec18187a2c}
+
+\begin{DoxyCompactList}\small\item\em Set if a message box should be displayed in case of license check failure (defaults to true). \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_a48b3ed8474ea1e90da5def26c3192c18}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_a48b3ed8474ea1e90da5def26c3192c18}{xiGetFailedLicenseCount} (int $\ast$count)}
+\label{XiTrocarInterface_8h_a48b3ed8474ea1e90da5def26c3192c18}
+
+\begin{DoxyCompactList}\small\item\em Retrieve the number of license check that failed during the last call to xiCathAcquire. \item\end{DoxyCompactList}\item 
+\hypertarget{XiTrocarInterface_8h_abb46985d33dfbf566f8e337d7e3d5ab9}{
+XIFUNC XiBool \hyperlink{XiTrocarInterface_8h_abb46985d33dfbf566f8e337d7e3d5ab9}{xiGetFailedLicenseSerialNumber} (int index, char dstBuf\mbox{[}16\mbox{]})}
+\label{XiTrocarInterface_8h_abb46985d33dfbf566f8e337d7e3d5ab9}
+
+\begin{DoxyCompactList}\small\item\em Retrieve the device serial number associated with a failed license check. index must be in the range \mbox{[}0..LicenseFailedCount). \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Declaration of C interface for Xitact Laparoscopic simulation devices. \begin{DoxyAuthor}{Author}
+Xavier Michelon, Ivan Vecerina -\/ (C) Xitact S.A. 2003-\/2007
+\end{DoxyAuthor}
+For comments and technical requests, contact \href{mailto:support2007@xitact.com}{\tt support2007@xitact.com} 
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7}{
+\subsubsection[{"@1}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7}
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{XI\_\-TrocarIsPresent@{XI\_\-TrocarIsPresent}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-TrocarIsPresent@{XI\_\-TrocarIsPresent}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a7fe12a80305a52e6a942b53730bf871d}{
+XI\_\-TrocarIsPresent}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a7fe12a80305a52e6a942b53730bf871d}
+}]Initially set, cleared if the device is disconnected. \index{XI\_\-TrocarHasHaptics@{XI\_\-TrocarHasHaptics}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-TrocarHasHaptics@{XI\_\-TrocarHasHaptics}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7afd664f12d9d7ed99f1d6030c0fe53867}{
+XI\_\-TrocarHasHaptics}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7afd664f12d9d7ed99f1d6030c0fe53867}
+}]Set if the robot is haptic-\/enabled (i.e. it is an IHP). \index{XI\_\-TrocarIsInitialized@{XI\_\-TrocarIsInitialized}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-TrocarIsInitialized@{XI\_\-TrocarIsInitialized}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a14c4a5117dc7aba1dc9deb6608edd6e4}{
+XI\_\-TrocarIsInitialized}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a14c4a5117dc7aba1dc9deb6608edd6e4}
+}]If not set, the instrument must be moved to allow determination of its absolute position (see the XI\_\-InitNeed$\ast$ bits). \index{XI\_\-ToolIsConnected\_\-OLD@{XI\_\-ToolIsConnected\_\-OLD}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolIsConnected\_\-OLD@{XI\_\-ToolIsConnected\_\-OLD}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a2c41641f897e4de34d212df14e378dfe}{
+XI\_\-ToolIsConnected\_\-OLD}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a2c41641f897e4de34d212df14e378dfe}
+}]Set if an instrument handle has been connected (WARNING: this flag is deprecated and should not be used). \index{XI\_\-ToolIsInserted@{XI\_\-ToolIsInserted}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolIsInserted@{XI\_\-ToolIsInserted}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ab1cec642a8864b65fc156585c1fc4518}{
+XI\_\-ToolIsInserted}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ab1cec642a8864b65fc156585c1fc4518}
+}]Set if an instrument is currently present in the trocar. \index{XI\_\-TrocarHasFFBPower@{XI\_\-TrocarHasFFBPower}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-TrocarHasFFBPower@{XI\_\-TrocarHasFFBPower}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ad0d5874b4b059cd1e60c0fd68bab6662}{
+XI\_\-TrocarHasFFBPower}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ad0d5874b4b059cd1e60c0fd68bab6662}
+}]Set if the power supply for haptic motors is connected to the device. \index{XI\_\-TrocarHasFFBEnabled@{XI\_\-TrocarHasFFBEnabled}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-TrocarHasFFBEnabled@{XI\_\-TrocarHasFFBEnabled}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a83cc87e80b14c22755e08ea43134ad96}{
+XI\_\-TrocarHasFFBEnabled}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a83cc87e80b14c22755e08ea43134ad96}
+}]Set if the robot has internally enabled the force feedback motors. \index{XI\_\-ToolButtonMain@{XI\_\-ToolButtonMain}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolButtonMain@{XI\_\-ToolButtonMain}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a876cc42ef6fd9256063f9fcf306fffd4}{
+XI\_\-ToolButtonMain}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a876cc42ef6fd9256063f9fcf306fffd4}
+}]Set if main/default instrument button is pressed. \index{XI\_\-ToolButtonLeft@{XI\_\-ToolButtonLeft}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolButtonLeft@{XI\_\-ToolButtonLeft}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7aa4e5039a536a04af244b912ec5bce6b4}{
+XI\_\-ToolButtonLeft}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7aa4e5039a536a04af244b912ec5bce6b4}
+}]Set if left instrument button/footswitch is pressed. \index{XI\_\-ToolButtonRight@{XI\_\-ToolButtonRight}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolButtonRight@{XI\_\-ToolButtonRight}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a949971bb5813294017a05dcb4f172af6}{
+XI\_\-ToolButtonRight}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a949971bb5813294017a05dcb4f172af6}
+}]Set if right instrument button/footswitch is pressed. \index{XI\_\-InitNeedToolOut@{XI\_\-InitNeedToolOut}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-InitNeedToolOut@{XI\_\-InitNeedToolOut}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a44f4648cc9e32317dbf9a9d12302bbf9}{
+XI\_\-InitNeedToolOut}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7a44f4648cc9e32317dbf9a9d12302bbf9}
+}]Indicates that tool needs to be taken out to establish reference depth. \index{XI\_\-InitNeedLeftIPulse@{XI\_\-InitNeedLeftIPulse}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-InitNeedLeftIPulse@{XI\_\-InitNeedLeftIPulse}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7aa0ef4ea2d06de3d56a61fa0017447da9}{
+XI\_\-InitNeedLeftIPulse}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7aa0ef4ea2d06de3d56a61fa0017447da9}
+}]Indicates that left index pulse still needs to be detected. \index{XI\_\-InitNeedRightIPulse@{XI\_\-InitNeedRightIPulse}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-InitNeedRightIPulse@{XI\_\-InitNeedRightIPulse}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ae999c123413d4b54290b8bc1bc0c029b}{
+XI\_\-InitNeedRightIPulse}
+\label{XiTrocarInterface_8h_adf764cbdea00d65edcd07bb9953ad2b7ae999c123413d4b54290b8bc1bc0c029b}
+}]Indicates that right index pulse still needs to be detected. \end{description}
+\end{Desc}
+
+\hypertarget{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5}{
+\subsubsection[{"@2}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}}
+\label{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5}
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{XI\_\-ToolIDDisconnected@{XI\_\-ToolIDDisconnected}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolIDDisconnected@{XI\_\-ToolIDDisconnected}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a323ba31c8c55f406861a06b60f0fe192}{
+XI\_\-ToolIDDisconnected}
+\label{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a323ba31c8c55f406861a06b60f0fe192}
+}]No tool is connected. \index{XI\_\-ToolIDHandle@{XI\_\-ToolIDHandle}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolIDHandle@{XI\_\-ToolIDHandle}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5ac5d990b0fd88d68606670b009e235d8e}{
+XI\_\-ToolIDHandle}
+\label{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5ac5d990b0fd88d68606670b009e235d8e}
+}]A handle is connected. \index{XI\_\-ToolIDReversedHandle@{XI\_\-ToolIDReversedHandle}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolIDReversedHandle@{XI\_\-ToolIDReversedHandle}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a77ffa54ee17d47adbdc48e1b6983f703}{
+XI\_\-ToolIDReversedHandle}
+\label{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a77ffa54ee17d47adbdc48e1b6983f703}
+}]A reversed handle is connected. \index{XI\_\-ToolIDCamera@{XI\_\-ToolIDCamera}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ToolIDCamera@{XI\_\-ToolIDCamera}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a36646d139c264dc68cf265af369618ee}{
+XI\_\-ToolIDCamera}
+\label{XiTrocarInterface_8h_a99fb83031ce9923c84392b4e92f956b5a36646d139c264dc68cf265af369618ee}
+}]A camera is connected. \end{description}
+\end{Desc}
+
+\hypertarget{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132}{
+\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XiConnector@{XiConnector}}
+\index{XiConnector@{XiConnector}!XiTrocarInterface.h@{XiTrocarInterface.h}}
+\subsubsection[{XiConnector}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf XiConnector}}}
+\label{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132}
+
+
+enumeration for describing the tool connector \begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{XI\_\-ConnectorRight@{XI\_\-ConnectorRight}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ConnectorRight@{XI\_\-ConnectorRight}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132ad0112e82321c90bd705c02935462d41d}{
+XI\_\-ConnectorRight}
+\label{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132ad0112e82321c90bd705c02935462d41d}
+}]The right connector of the Robot (looking from behind). \index{XI\_\-ConnectorLeft@{XI\_\-ConnectorLeft}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-ConnectorLeft@{XI\_\-ConnectorLeft}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132ac740054670cd8a0c18846a757eff02bc}{
+XI\_\-ConnectorLeft}
+\label{XiTrocarInterface_8h_a291cffcd76720adbebc1e7abfb3ef132ac740054670cd8a0c18846a757eff02bc}
+}]The left connector of the robot. \end{description}
+\end{Desc}
+
+\hypertarget{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00}{
+\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XiHandleType@{XiHandleType}}
+\index{XiHandleType@{XiHandleType}!XiTrocarInterface.h@{XiTrocarInterface.h}}
+\subsubsection[{XiHandleType}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf XiHandleType}}}
+\label{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00}
+
+
+Enumeration for describing the type of handle coonected to the device. \begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{XI\_\-HandleDisconnected@{XI\_\-HandleDisconnected}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-HandleDisconnected@{XI\_\-HandleDisconnected}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00a153ae318b990d42408940e9f1904958c}{
+XI\_\-HandleDisconnected}
+\label{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00a153ae318b990d42408940e9f1904958c}
+}]No handle is connected. \index{XI\_\-HandleNormal@{XI\_\-HandleNormal}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-HandleNormal@{XI\_\-HandleNormal}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00acbc12df6161e48f270314fdc9841d1b3}{
+XI\_\-HandleNormal}
+\label{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00acbc12df6161e48f270314fdc9841d1b3}
+}]A standard handle is connected (open handle is associated with high value). \index{XI\_\-HandleReversed@{XI\_\-HandleReversed}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-HandleReversed@{XI\_\-HandleReversed}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00aca82ca36f46eae127c29875d764f926b}{
+XI\_\-HandleReversed}
+\label{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00aca82ca36f46eae127c29875d764f926b}
+}]A reversed handle is connected (open handle is associated with low value). \index{XI\_\-HandleCamera@{XI\_\-HandleCamera}!XiTrocarInterface.h@{XiTrocarInterface.h}}\index{XiTrocarInterface.h@{XiTrocarInterface.h}!XI\_\-HandleCamera@{XI\_\-HandleCamera}}\item[{\em 
+\hypertarget{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00a482505ff0b4e501c259071743dbe17f8}{
+XI\_\-HandleCamera}
+\label{XiTrocarInterface_8h_a3535c862c41e5720330d60e103654b00a482505ff0b4e501c259071743dbe17f8}
+}]A camera is connected. \end{description}
+\end{Desc}
+

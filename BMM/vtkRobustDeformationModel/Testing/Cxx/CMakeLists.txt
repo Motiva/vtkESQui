@@ -1,0 +1,2 @@
+ADD_EXECUTABLE(vtkRDMTest vtkRDMTest.cxx)
+TARGET_LINK_LIBRARIES(vtkRDMTest vtkRobustDeformationModel rdm_vtk)

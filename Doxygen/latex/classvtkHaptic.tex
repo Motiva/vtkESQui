@@ -1,0 +1,147 @@
+\hypertarget{classvtkHaptic}{
+\section{vtkHaptic Class Reference}
+\label{classvtkHaptic}\index{vtkHaptic@{vtkHaptic}}
+}
+
+
+Generic Haptic Class.  
+
+
+{\ttfamily \#include $<$vtkHaptic.h$>$}
+
+Inherited by \hyperlink{classvtkIHP}{vtkIHP}, \hyperlink{classvtkLSW}{vtkLSW}, and \hyperlink{classvtkVSP}{vtkVSP}.\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkHaptic_ae3394196586f112adfd8196a15b1df4a}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkHaptic}{vtkHaptic}, vtkObject)}
+\label{classvtkHaptic_ae3394196586f112adfd8196a15b1df4a}
+
+\item 
+\hypertarget{classvtkHaptic_a0ca1c58149ad2218a07663d4f0b95582}{
+const char $\ast$ {\bfseries GetClassName} ()}
+\label{classvtkHaptic_a0ca1c58149ad2218a07663d4f0b95582}
+
+\item 
+\hypertarget{classvtkHaptic_aa091582526f7b7197a91bee363a04359}{
+void {\bfseries PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkHaptic_aa091582526f7b7197a91bee363a04359}
+
+\item 
+virtual int \hyperlink{classvtkHaptic_a164a353869ace1e3b359da03ce873066}{Init} ()=0
+\begin{DoxyCompactList}\small\item\em Set up the haptic device. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkHaptic_ae05171fc9104c679ebd3bad356104fdb}{Update} ()=0
+\begin{DoxyCompactList}\small\item\em Executes the control of the haptic device, reimplemented in all subclasses. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkHaptic_a6bfd7e7ad232325a84ca586d92b4c3fa}{Release} ()=0
+\begin{DoxyCompactList}\small\item\em Liberates the haptic connection. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkHaptic_a03c7815125924b8771372879ad367e09}{SetName} (const char $\ast$name)
+\begin{DoxyCompactList}\small\item\em Set the haptic name. \item\end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{classvtkHaptic_abdf00bb1f22ee8c984982c4e90c729a5}{GetName} ()
+\begin{DoxyCompactList}\small\item\em Return the haptic name. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkHaptic_a2c0be36812179261262d89ae91c31013}{SetNumberOfTools} (int numberOfTools)
+\begin{DoxyCompactList}\small\item\em Set the haptic number of tools. \item\end{DoxyCompactList}\item 
+int \hyperlink{classvtkHaptic_a6572234c6e1448d8244d1ae7ebad4985}{GetNumberOfTools} ()
+\begin{DoxyCompactList}\small\item\em Return the haptic number of tools. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkHaptic_a219429c7185471e84c9ea33275c0ab32}{
+const char $\ast$ \hyperlink{classvtkHaptic_a219429c7185471e84c9ea33275c0ab32}{Name}}
+\label{classvtkHaptic_a219429c7185471e84c9ea33275c0ab32}
+
+\begin{DoxyCompactList}\small\item\em Haptic device name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkHaptic_a4837e3d8ae7cce4cc3ff8851409176bd}{
+int \hyperlink{classvtkHaptic_a4837e3d8ae7cce4cc3ff8851409176bd}{NumberOfTools}}
+\label{classvtkHaptic_a4837e3d8ae7cce4cc3ff8851409176bd}
+
+\begin{DoxyCompactList}\small\item\em Number of tools of the haptic device. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Generic Haptic Class. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkHaptic_abdf00bb1f22ee8c984982c4e90c729a5}{
+\index{vtkHaptic@{vtkHaptic}!GetName@{GetName}}
+\index{GetName@{GetName}!vtkHaptic@{vtkHaptic}}
+\subsubsection[{GetName}]{\setlength{\rightskip}{0pt plus 5cm}const char $\ast$ vtkHaptic::GetName ()}}
+\label{classvtkHaptic_abdf00bb1f22ee8c984982c4e90c729a5}
+
+
+Return the haptic name. \begin{DoxyReturn}{Returns}
+haptic device name 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkHaptic_a03c7815125924b8771372879ad367e09}{SetName(const char $\ast$ name)} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkHaptic_a6572234c6e1448d8244d1ae7ebad4985}{
+\index{vtkHaptic@{vtkHaptic}!GetNumberOfTools@{GetNumberOfTools}}
+\index{GetNumberOfTools@{GetNumberOfTools}!vtkHaptic@{vtkHaptic}}
+\subsubsection[{GetNumberOfTools}]{\setlength{\rightskip}{0pt plus 5cm}int vtkHaptic::GetNumberOfTools ()}}
+\label{classvtkHaptic_a6572234c6e1448d8244d1ae7ebad4985}
+
+
+Return the haptic number of tools. \begin{DoxyReturn}{Returns}
+number of tools of the haptic device 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkHaptic_a2c0be36812179261262d89ae91c31013}{SetNumberOfTools(int numberOfTools)} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkHaptic_a164a353869ace1e3b359da03ce873066}{
+\index{vtkHaptic@{vtkHaptic}!Init@{Init}}
+\index{Init@{Init}!vtkHaptic@{vtkHaptic}}
+\subsubsection[{Init}]{\setlength{\rightskip}{0pt plus 5cm}virtual int vtkHaptic::Init ()\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classvtkHaptic_a164a353869ace1e3b359da03ce873066}
+
+
+Set up the haptic device. Abstract method that must be defined in the implementation class 
+
+Implemented in \hyperlink{classvtkIHP_a055cc6c8150236aa3899647e32c3a0da}{vtkIHP}, \hyperlink{classvtkLSW_a9de1e9f2b2e3a2ad0e7a92b1597ab2f7}{vtkLSW}, and \hyperlink{classvtkVSP_a4b48949e4b916ebd142ef165d9e6897a}{vtkVSP}.\hypertarget{classvtkHaptic_a6bfd7e7ad232325a84ca586d92b4c3fa}{
+\index{vtkHaptic@{vtkHaptic}!Release@{Release}}
+\index{Release@{Release}!vtkHaptic@{vtkHaptic}}
+\subsubsection[{Release}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkHaptic::Release ()\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classvtkHaptic_a6bfd7e7ad232325a84ca586d92b4c3fa}
+
+
+Liberates the haptic connection. Abstract method that must be defined in the implementation class 
+
+Implemented in \hyperlink{classvtkIHP_a7b0ac0f3e862d015fa3f27489679aad3}{vtkIHP}, \hyperlink{classvtkLSW_a69520b1ae3e7549094ba60eb55a41cdf}{vtkLSW}, and \hyperlink{classvtkVSP_a91bfd5c41c807ab1dcbff59ff56a4d72}{vtkVSP}.\hypertarget{classvtkHaptic_a03c7815125924b8771372879ad367e09}{
+\index{vtkHaptic@{vtkHaptic}!SetName@{SetName}}
+\index{SetName@{SetName}!vtkHaptic@{vtkHaptic}}
+\subsubsection[{SetName}]{\setlength{\rightskip}{0pt plus 5cm}void vtkHaptic::SetName (const char $\ast$ {\em name})}}
+\label{classvtkHaptic_a03c7815125924b8771372879ad367e09}
+
+
+Set the haptic name. 
+\begin{DoxyParams}{Parameters}
+\item[{\em name}]name of the haptic device \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkHaptic_abdf00bb1f22ee8c984982c4e90c729a5}{GetName()} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkHaptic_a2c0be36812179261262d89ae91c31013}{
+\index{vtkHaptic@{vtkHaptic}!SetNumberOfTools@{SetNumberOfTools}}
+\index{SetNumberOfTools@{SetNumberOfTools}!vtkHaptic@{vtkHaptic}}
+\subsubsection[{SetNumberOfTools}]{\setlength{\rightskip}{0pt plus 5cm}void vtkHaptic::SetNumberOfTools (int {\em numberOfTools})}}
+\label{classvtkHaptic_a2c0be36812179261262d89ae91c31013}
+
+
+Set the haptic number of tools. 
+\begin{DoxyParams}{Parameters}
+\item[{\em numberOfTools}]number of tools of the haptic device \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkHaptic_a6572234c6e1448d8244d1ae7ebad4985}{GetNumberOfTools} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkHaptic_ae05171fc9104c679ebd3bad356104fdb}{
+\index{vtkHaptic@{vtkHaptic}!Update@{Update}}
+\index{Update@{Update}!vtkHaptic@{vtkHaptic}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkHaptic::Update ()\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classvtkHaptic_ae05171fc9104c679ebd3bad356104fdb}
+
+
+Executes the control of the haptic device, reimplemented in all subclasses. Abstract method that must be defined in the implementation class 
+
+Implemented in \hyperlink{classvtkIHP_a0777ce95f933e80ccfb47f4ebadcf1ec}{vtkIHP}, \hyperlink{classvtkLSW_ade67f3385b72c50988016692a03e97ae}{vtkLSW}, and \hyperlink{classvtkVSP_a84afcaaf6dab2a0fe19b7021e44796e7}{vtkVSP}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Haptics/vtkHaptic.h\item 
+Haptics/vtkHaptic.cxx\end{DoxyCompactItemize}

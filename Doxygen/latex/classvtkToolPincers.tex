@@ -1,0 +1,194 @@
+\hypertarget{classvtkToolPincers}{
+\section{vtkToolPincers Class Reference}
+\label{classvtkToolPincers}\index{vtkToolPincers@{vtkToolPincers}}
+}
+
+
+Implementation class of pincers.  
+
+
+{\ttfamily \#include $<$vtkToolPincers.h$>$}
+
+Inherits \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy}.Collaboration diagram for vtkToolPincers:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkToolPincers_a6661419bfbcf7514872938af5a08495a}{
+const char $\ast$ \hyperlink{classvtkToolPincers_a6661419bfbcf7514872938af5a08495a}{GetClassName} ()}
+\label{classvtkToolPincers_a6661419bfbcf7514872938af5a08495a}
+
+\begin{DoxyCompactList}\small\item\em Return class name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolPincers_a871bfe207f7733755b8912751cf2f58c}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkToolPincers}{vtkToolPincers}, \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy})}
+\label{classvtkToolPincers_a871bfe207f7733755b8912751cf2f58c}
+
+\item 
+\hypertarget{classvtkToolPincers_a16520112493e44a56045b00a1f65ba34}{
+void \hyperlink{classvtkToolPincers_a16520112493e44a56045b00a1f65ba34}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkToolPincers_a16520112493e44a56045b00a1f65ba34}
+
+\begin{DoxyCompactList}\small\item\em Print the attributes value. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkToolPincers_ae4918610073324c94dddd8da234742a9}{Init} ()
+\begin{DoxyCompactList}\small\item\em Initialize the tool from VTK file. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkToolPincers_a57986aee2bcfa04472410cd7bf5c7929}{Update} ()
+\begin{DoxyCompactList}\small\item\em Update the tool. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolPincers_a478f107b430191c0e1098e938b35b975}{SetGrasperFileName} (vtkIdType id, const char $\ast$path)
+\begin{DoxyCompactList}\small\item\em Set grasper polydata filename. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolPincers_a844db9dccd0034605ddd23de176ac9dc}{SetStickFileName} (const char $\ast$path)
+\begin{DoxyCompactList}\small\item\em Set stick polydata filename. \item\end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{classvtkToolPincers_a1f673edc2bee876530a721833f1c77f1}{GetGrasperFileName} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Return the grasper polydata file name. \item\end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{classvtkToolPincers_acb1210b1b77be2a7030b05c3b9e63ff5}{GetStickFileName} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Return the stick polydata file name. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolPincers_a0a0d2fdd1ac4ccc1823de3969a0aa45d}{Open} ()
+\begin{DoxyCompactList}\small\item\em Open the pincers moving piece actors. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolPincers_ab32a090979f21b03f57347c4635d2b76}{Close} ()
+\begin{DoxyCompactList}\small\item\em Close the pincers moving piece actors. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolPincers_a6314454d06c23e49fe1908812441658f}{SetOpening} (double opening)
+\begin{DoxyCompactList}\small\item\em Set the tool's aperture according with the value given in the \char`\"{}Aperture\char`\"{} parameter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolPincers_ae88874d711a3d2a748ec43b9ed546863}{
+bool \hyperlink{classvtkToolPincers_ae88874d711a3d2a748ec43b9ed546863}{IsClosed} ()}
+\label{classvtkToolPincers_ae88874d711a3d2a748ec43b9ed546863}
+
+\begin{DoxyCompactList}\small\item\em Return whether the grasper is closed or not. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolPincers_a462ddc9c30e720c4b86de714c5ac566c}{
+void \hyperlink{classvtkToolPincers_a462ddc9c30e720c4b86de714c5ac566c}{SetDepth} (double position)}
+\label{classvtkToolPincers_a462ddc9c30e720c4b86de714c5ac566c}
+
+\begin{DoxyCompactList}\small\item\em Sets the pincers' depth in its own coordinate system. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolPincers_ac6b80a0c7a43ae67cfafbe29772b41d0}{RotateX} (double angle)
+\begin{DoxyCompactList}\small\item\em Rotate the pincers in degrees from current orientation about the X axis using the right hand rule. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolPincers_aa2a15405aa65c96dd971e3c06d98d197}{RotateY} (double angle)
+\begin{DoxyCompactList}\small\item\em Rotate the pincers in degrees from current orientation about the Y axis using the right hand rule. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkToolPincers_ad7a4a9f0e3291b88eb4e30986784539a}{RotateZ} (double angle)
+\begin{DoxyCompactList}\small\item\em Rotate the pincers in degrees from current orientation about the Y axis using the right hand rule. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolPincers_a745e9e89bf3e6af18e0773832f12cd32}{
+void \hyperlink{classvtkToolPincers_a745e9e89bf3e6af18e0773832f12cd32}{Yaw} (double angle)}
+\label{classvtkToolPincers_a745e9e89bf3e6af18e0773832f12cd32}
+
+\begin{DoxyCompactList}\small\item\em Sets the pincers yaw angle. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolPincers_adc735e3595ec2aa0657949f0ede82a26}{
+void \hyperlink{classvtkToolPincers_adc735e3595ec2aa0657949f0ede82a26}{Pitch} (double angle)}
+\label{classvtkToolPincers_adc735e3595ec2aa0657949f0ede82a26}
+
+\begin{DoxyCompactList}\small\item\em Sets the pincers pitch angle. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkToolPincers_a490fe992c0a475b4ade44cca05521d71}{
+void \hyperlink{classvtkToolPincers_a490fe992c0a475b4ade44cca05521d71}{Roll} (double angle)}
+\label{classvtkToolPincers_a490fe992c0a475b4ade44cca05521d71}
+
+\begin{DoxyCompactList}\small\item\em Sets the pincers roll angle. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkToolPincers_af39bbc40147ab2f325c1ff6c17e10361}{
+static \hyperlink{classvtkToolPincers}{vtkToolPincers} $\ast$ \hyperlink{classvtkToolPincers_af39bbc40147ab2f325c1ff6c17e10361}{New} ()}
+\label{classvtkToolPincers_af39bbc40147ab2f325c1ff6c17e10361}
+
+\begin{DoxyCompactList}\small\item\em Create new \hyperlink{classvtkToolPincers}{vtkToolPincers} object. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implementation class of pincers. \hyperlink{classvtkToolPincers}{vtkToolPincers} is the class that implements the pincers tool, inside the scene. Contains methods for position control of the tool in the scene and collision detection. Pincers are composed of 3 pieces: 1 stick and 2 graspers (\hyperlink{classvtkPiece}{vtkPiece}) Inherits vtkToolLaparascopy class 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkToolPincers_ab32a090979f21b03f57347c4635d2b76}{
+\index{vtkToolPincers@{vtkToolPincers}!Close@{Close}}
+\index{Close@{Close}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{Close}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::Close ()}}
+\label{classvtkToolPincers_ab32a090979f21b03f57347c4635d2b76}
+
+
+Close the pincers moving piece actors. Piece actors are transformed to perform tool closing Bounding boxes are recalculated. \hypertarget{classvtkToolPincers_a1f673edc2bee876530a721833f1c77f1}{
+\index{vtkToolPincers@{vtkToolPincers}!GetGrasperFileName@{GetGrasperFileName}}
+\index{GetGrasperFileName@{GetGrasperFileName}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{GetGrasperFileName}]{\setlength{\rightskip}{0pt plus 5cm}const char $\ast$ vtkToolPincers::GetGrasperFileName (vtkIdType {\em id})}}
+\label{classvtkToolPincers_a1f673edc2bee876530a721833f1c77f1}
+
+
+Return the grasper polydata file name. Path of the file that contains the grasper piece polydata \hypertarget{classvtkToolPincers_acb1210b1b77be2a7030b05c3b9e63ff5}{
+\index{vtkToolPincers@{vtkToolPincers}!GetStickFileName@{GetStickFileName}}
+\index{GetStickFileName@{GetStickFileName}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{GetStickFileName}]{\setlength{\rightskip}{0pt plus 5cm}const char $\ast$ vtkToolPincers::GetStickFileName (vtkIdType {\em id})}}
+\label{classvtkToolPincers_acb1210b1b77be2a7030b05c3b9e63ff5}
+
+
+Return the stick polydata file name. Path of the file that contains the grasper piece polydata \hypertarget{classvtkToolPincers_ae4918610073324c94dddd8da234742a9}{
+\index{vtkToolPincers@{vtkToolPincers}!Init@{Init}}
+\index{Init@{Init}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{Init}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::Init ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkToolPincers_ae4918610073324c94dddd8da234742a9}
+
+
+Initialize the tool from VTK file. This function initializes the tool whose mesh is described on a VTK file 
+
+Implements \hyperlink{classvtkToolLaparoscopy_ace75ea21a3ddb27547976ddea0ebb60e}{vtkToolLaparoscopy}.\hypertarget{classvtkToolPincers_a0a0d2fdd1ac4ccc1823de3969a0aa45d}{
+\index{vtkToolPincers@{vtkToolPincers}!Open@{Open}}
+\index{Open@{Open}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{Open}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::Open ()}}
+\label{classvtkToolPincers_a0a0d2fdd1ac4ccc1823de3969a0aa45d}
+
+
+Open the pincers moving piece actors. Piece actors are transformed to perform tool opening Bounding boxes are recalculated. \hypertarget{classvtkToolPincers_ac6b80a0c7a43ae67cfafbe29772b41d0}{
+\index{vtkToolPincers@{vtkToolPincers}!RotateX@{RotateX}}
+\index{RotateX@{RotateX}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{RotateX}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::RotateX (double {\em angle})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkToolPincers_ac6b80a0c7a43ae67cfafbe29772b41d0}
+
+
+Rotate the pincers in degrees from current orientation about the X axis using the right hand rule. Pincers specific X-\/axis rotation. 
+
+Reimplemented from \hyperlink{classvtkToolLaparoscopy_a6894dddee203102828358697e8214974}{vtkToolLaparoscopy}.\hypertarget{classvtkToolPincers_aa2a15405aa65c96dd971e3c06d98d197}{
+\index{vtkToolPincers@{vtkToolPincers}!RotateY@{RotateY}}
+\index{RotateY@{RotateY}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{RotateY}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::RotateY (double {\em angle})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkToolPincers_aa2a15405aa65c96dd971e3c06d98d197}
+
+
+Rotate the pincers in degrees from current orientation about the Y axis using the right hand rule. Pincers specific X-\/axis rotation. 
+
+Reimplemented from \hyperlink{classvtkToolLaparoscopy_ae0245eaa9aa765a675da5135c4af422a}{vtkToolLaparoscopy}.\hypertarget{classvtkToolPincers_ad7a4a9f0e3291b88eb4e30986784539a}{
+\index{vtkToolPincers@{vtkToolPincers}!RotateZ@{RotateZ}}
+\index{RotateZ@{RotateZ}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{RotateZ}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::RotateZ (double {\em angle})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkToolPincers_ad7a4a9f0e3291b88eb4e30986784539a}
+
+
+Rotate the pincers in degrees from current orientation about the Y axis using the right hand rule. Pincers specific X-\/axis rotation. 
+
+Reimplemented from \hyperlink{classvtkToolLaparoscopy_a3849ce4caa8283696433cb1ac0466bc5}{vtkToolLaparoscopy}.\hypertarget{classvtkToolPincers_a478f107b430191c0e1098e938b35b975}{
+\index{vtkToolPincers@{vtkToolPincers}!SetGrasperFileName@{SetGrasperFileName}}
+\index{SetGrasperFileName@{SetGrasperFileName}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{SetGrasperFileName}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::SetGrasperFileName (vtkIdType {\em id}, \/  const char $\ast$ {\em path})}}
+\label{classvtkToolPincers_a478f107b430191c0e1098e938b35b975}
+
+
+Set grasper polydata filename. Specify the path of the file that contains the grasper piece polydata \hypertarget{classvtkToolPincers_a6314454d06c23e49fe1908812441658f}{
+\index{vtkToolPincers@{vtkToolPincers}!SetOpening@{SetOpening}}
+\index{SetOpening@{SetOpening}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{SetOpening}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::SetOpening (double {\em opening})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkToolPincers_a6314454d06c23e49fe1908812441658f}
+
+
+Set the tool's aperture according with the value given in the \char`\"{}Aperture\char`\"{} parameter. This function set the tool's aperture in function of the value given in the \char`\"{}Aperture\char`\"{} parameter. The aperture is established modifying the tool's mesh position. The \char`\"{}Aperture\char`\"{} parameter can take any value between \char`\"{}0\char`\"{} \$ \char`\"{}1\char`\"{}: \char`\"{}0\char`\"{} -\/$>$ to close the tool \char`\"{}1\char`\"{} -\/$>$ to open the tool 
+
+Reimplemented from \hyperlink{classvtkToolLaparoscopy_a870cb47bfdd67a9aecaba2fb7fbfa0ba}{vtkToolLaparoscopy}.\hypertarget{classvtkToolPincers_a844db9dccd0034605ddd23de176ac9dc}{
+\index{vtkToolPincers@{vtkToolPincers}!SetStickFileName@{SetStickFileName}}
+\index{SetStickFileName@{SetStickFileName}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{SetStickFileName}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::SetStickFileName (const char $\ast$ {\em path})}}
+\label{classvtkToolPincers_a844db9dccd0034605ddd23de176ac9dc}
+
+
+Set stick polydata filename. Specify the path of the file that contains the stick piece polydata \hypertarget{classvtkToolPincers_a57986aee2bcfa04472410cd7bf5c7929}{
+\index{vtkToolPincers@{vtkToolPincers}!Update@{Update}}
+\index{Update@{Update}!vtkToolPincers@{vtkToolPincers}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolPincers::Update (void)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkToolPincers_a57986aee2bcfa04472410cd7bf5c7929}
+
+
+Update the tool. This function update the tool values 
+
+Reimplemented from \hyperlink{classvtkToolLaparoscopy_a4445a0cfabd77b50a06929b04cb71f9e}{vtkToolLaparoscopy}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Scenario/vtkToolPincers.h\item 
+Scenario/vtkToolPincers.cxx\end{DoxyCompactItemize}

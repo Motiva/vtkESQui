@@ -1,0 +1,109 @@
+\hypertarget{classvtkMSSInterface}{
+\section{vtkMSSInterface Class Reference}
+\label{classvtkMSSInterface}\index{vtkMSSInterface@{vtkMSSInterface}}
+}
+
+
+Implementation of the generic Biomechanical Model interface for a mass-\/spring deformation system.  
+
+
+{\ttfamily \#include $<$vtkMSSInterface.h$>$}
+
+Inherits \hyperlink{classvtkBioMechanicalModel}{vtkBioMechanicalModel}.Collaboration diagram for vtkMSSInterface:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkMSSInterface_affc5ecb0c7c66d68ae107225347072ef}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkMSSInterface}{vtkMSSInterface}, \hyperlink{classvtkBioMechanicalModel}{vtkBioMechanicalModel})}
+\label{classvtkMSSInterface_affc5ecb0c7c66d68ae107225347072ef}
+
+\item 
+\hypertarget{classvtkMSSInterface_ab647cba98bea1852e4d53e2be3cf8f80}{
+const char $\ast$ {\bfseries GetClassName} ()}
+\label{classvtkMSSInterface_ab647cba98bea1852e4d53e2be3cf8f80}
+
+\item 
+\hypertarget{classvtkMSSInterface_a1acd50c44acb3d4a28269d6ac3012b3f}{
+void \hyperlink{classvtkMSSInterface_a1acd50c44acb3d4a28269d6ac3012b3f}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkMSSInterface_a1acd50c44acb3d4a28269d6ac3012b3f}
+
+\begin{DoxyCompactList}\small\item\em Print class object values. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkMSSInterface_a34c770467bd94f9323e956f0fc36c2f4}{SetInput} (vtkUnstructuredGrid $\ast$data)
+\begin{DoxyCompactList}\small\item\em Set input data (organ mesh) to the mass-\/spring deformation system. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkMSSInterface_a542094518ae8779c3bad93206750de9b}{Update} ()
+\begin{DoxyCompactList}\small\item\em Perform an update of the mass-\/spring system. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkMSSInterface_afdf90505776fe9e4431c8df912d80944}{
+virtual void \hyperlink{classvtkMSSInterface_afdf90505776fe9e4431c8df912d80944}{Init} ()}
+\label{classvtkMSSInterface_afdf90505776fe9e4431c8df912d80944}
+
+\begin{DoxyCompactList}\small\item\em Initialize the Biomechanical Model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkMSSInterface_a8c49d7fce1fb40dd86938fd35dd568e4}{
+virtual vtkUnstructuredGrid $\ast$ \hyperlink{classvtkMSSInterface_a8c49d7fce1fb40dd86938fd35dd568e4}{GetOutput} ()}
+\label{classvtkMSSInterface_a8c49d7fce1fb40dd86938fd35dd568e4}
+
+\begin{DoxyCompactList}\small\item\em Return updated organ mesh (data) after updating the biomechanical model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkMSSInterface_a9db7eaca5b4cb6f90c1b222c20ffbf0a}{
+void \hyperlink{classvtkMSSInterface_a9db7eaca5b4cb6f90c1b222c20ffbf0a}{SetDistanceCoefficient} (double value)}
+\label{classvtkMSSInterface_a9db7eaca5b4cb6f90c1b222c20ffbf0a}
+
+\begin{DoxyCompactList}\small\item\em Set the MSS Distance coefficient. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkMSSInterface_a891333114a439fa884475e8493507335}{
+void \hyperlink{classvtkMSSInterface_a891333114a439fa884475e8493507335}{SetDampingCoefficient} (double value)}
+\label{classvtkMSSInterface_a891333114a439fa884475e8493507335}
+
+\begin{DoxyCompactList}\small\item\em Set the MSS Damping coefficient. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkMSSInterface_af9f984cda3312427de2ecf4131eaa855}{
+void \hyperlink{classvtkMSSInterface_af9f984cda3312427de2ecf4131eaa855}{SetMass} (double value)}
+\label{classvtkMSSInterface_af9f984cda3312427de2ecf4131eaa855}
+
+\begin{DoxyCompactList}\small\item\em Set the MSS Mass value. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkMSSInterface_a75cec8adf1e5809460ced32d0dc04154}{
+void \hyperlink{classvtkMSSInterface_a75cec8adf1e5809460ced32d0dc04154}{SetDeltaT} (double value)}
+\label{classvtkMSSInterface_a75cec8adf1e5809460ced32d0dc04154}
+
+\begin{DoxyCompactList}\small\item\em Set the MSS time step. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkMSSInterface_af76881ad53260da7c0f75dff1249599f}{
+void \hyperlink{classvtkMSSInterface_af76881ad53260da7c0f75dff1249599f}{SetSteps} (int value)}
+\label{classvtkMSSInterface_af76881ad53260da7c0f75dff1249599f}
+
+\begin{DoxyCompactList}\small\item\em Set the MSS number of steps. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkMSSInterface_a7713b1d53daffc5c9df7da3c8629bae3}{
+static \hyperlink{classvtkMSSInterface}{vtkMSSInterface} $\ast$ {\bfseries New} ()}
+\label{classvtkMSSInterface_a7713b1d53daffc5c9df7da3c8629bae3}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implementation of the generic Biomechanical Model interface for a mass-\/spring deformation system. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkMSSInterface_a34c770467bd94f9323e956f0fc36c2f4}{
+\index{vtkMSSInterface@{vtkMSSInterface}!SetInput@{SetInput}}
+\index{SetInput@{SetInput}!vtkMSSInterface@{vtkMSSInterface}}
+\subsubsection[{SetInput}]{\setlength{\rightskip}{0pt plus 5cm}void vtkMSSInterface::SetInput (vtkUnstructuredGrid $\ast$ {\em data})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkMSSInterface_a34c770467bd94f9323e956f0fc36c2f4}
+
+
+Set input data (organ mesh) to the mass-\/spring deformation system. A vtkUnstructuredGrid is required due to 3D deformation 
+\begin{DoxyParams}{Parameters}
+\item[{\em data}]vtkUnstructured 3d organ mesh data \end{DoxyParams}
+
+
+Implements \hyperlink{classvtkBioMechanicalModel_ac729eb24ed495e450a16ce369ad70f69}{vtkBioMechanicalModel}.\hypertarget{classvtkMSSInterface_a542094518ae8779c3bad93206750de9b}{
+\index{vtkMSSInterface@{vtkMSSInterface}!Update@{Update}}
+\index{Update@{Update}!vtkMSSInterface@{vtkMSSInterface}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkMSSInterface::Update (void)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkMSSInterface_a542094518ae8779c3bad93206750de9b}
+
+
+Perform an update of the mass-\/spring system. Once collision detection process has been performed, if any contact between a tool and organ has occured the organ must be updated, so mass-\/spring system. 
+
+Implements \hyperlink{classvtkBioMechanicalModel_a147f53dac1854b61f88330c59817b822}{vtkBioMechanicalModel}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Scenario/vtkMSSInterface.h\item 
+Scenario/vtkMSSInterface.cxx\end{DoxyCompactItemize}

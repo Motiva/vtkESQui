@@ -1,0 +1,19 @@
+/* 
+ * Here is where system computed values get stored.
+ * These values should only change when the target compile platform changes.
+ */
+
+#cmakedefine VTKESQUI_BUILD_SHARED_LIBS
+#ifndef VTKESQUI_BUILD_SHARED_LIBS
+#define VTKESQUI_STATIC
+#endif
+
+#cmakedefine VTKESQUI_USE_HAPTICS
+#ifndef VTKESQUI_USE_HAPTICS
+#define VTKESQUI_USE_NO_HAPTICS
+#endif
+
+#if defined(_MSC_VER) && !defined(VTKESQUI_STATIC)
+#pragma warning ( disable : 4275 )
+#pragma warning ( disable : 4996 )
+#endif

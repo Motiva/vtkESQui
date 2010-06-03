@@ -1,0 +1,216 @@
+\hypertarget{classvtkVSP}{
+\section{vtkVSP Class Reference}
+\label{classvtkVSP}\index{vtkVSP@{vtkVSP}}
+}
+
+
+Class \hyperlink{classvtkVSP}{vtkVSP}, wraps the VSP haptic device.  
+
+
+{\ttfamily \#include $<$vtkVSP.h$>$}
+
+Inherits \hyperlink{classvtkHaptic}{vtkHaptic}.Collaboration diagram for vtkVSP:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkVSP_aec56264131580b3029ef3647730934ee}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkVSP}{vtkVSP}, vtkObject)}
+\label{classvtkVSP_aec56264131580b3029ef3647730934ee}
+
+\item 
+\hypertarget{classvtkVSP_a74a399b542a119b33800a25816fb3ee5}{
+const char $\ast$ {\bfseries GetClassName} ()}
+\label{classvtkVSP_a74a399b542a119b33800a25816fb3ee5}
+
+\item 
+\hypertarget{classvtkVSP_aff2c09d180386b3633f19785d339bac1}{
+void \hyperlink{classvtkVSP_aff2c09d180386b3633f19785d339bac1}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkVSP_aff2c09d180386b3633f19785d339bac1}
+
+\begin{DoxyCompactList}\small\item\em Print class values. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a4b48949e4b916ebd142ef165d9e6897a}{
+virtual int \hyperlink{classvtkVSP_a4b48949e4b916ebd142ef165d9e6897a}{Init} ()}
+\label{classvtkVSP_a4b48949e4b916ebd142ef165d9e6897a}
+
+\begin{DoxyCompactList}\small\item\em Initialize the VSP system. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a84afcaaf6dab2a0fe19b7021e44796e7}{
+virtual void \hyperlink{classvtkVSP_a84afcaaf6dab2a0fe19b7021e44796e7}{Update} ()}
+\label{classvtkVSP_a84afcaaf6dab2a0fe19b7021e44796e7}
+
+\begin{DoxyCompactList}\small\item\em Update the device. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a91bfd5c41c807ab1dcbff59ff56a4d72}{
+virtual void \hyperlink{classvtkVSP_a91bfd5c41c807ab1dcbff59ff56a4d72}{Release} ()}
+\label{classvtkVSP_a91bfd5c41c807ab1dcbff59ff56a4d72}
+
+\begin{DoxyCompactList}\small\item\em Liberates the VSP system. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a421a984e61da77184fc1e1c0eedd5956}{
+void \hyperlink{classvtkVSP_a421a984e61da77184fc1e1c0eedd5956}{UpdateDevice} ()}
+\label{classvtkVSP_a421a984e61da77184fc1e1c0eedd5956}
+
+\begin{DoxyCompactList}\small\item\em Update the state of the VSP system. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a18aefac07bea39778d9965de22665111}{
+float $\ast$ \hyperlink{classvtkVSP_a18aefac07bea39778d9965de22665111}{GetLeftJoystickState} ()}
+\label{classvtkVSP_a18aefac07bea39778d9965de22665111}
+
+\begin{DoxyCompactList}\small\item\em Return the position of the left joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a706f76c150a0de378fbf86e9bc44e0f4}{
+void \hyperlink{classvtkVSP_a706f76c150a0de378fbf86e9bc44e0f4}{GetLeftJoystickState} (float data\mbox{[}2\mbox{]})}
+\label{classvtkVSP_a706f76c150a0de378fbf86e9bc44e0f4}
+
+\begin{DoxyCompactList}\small\item\em Return the position of the left joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a55af41bd4362fe00025d9a90aea7f088}{
+void \hyperlink{classvtkVSP_a55af41bd4362fe00025d9a90aea7f088}{GetLeftJoystickState} (float $\ast$data1, float $\ast$data2)}
+\label{classvtkVSP_a55af41bd4362fe00025d9a90aea7f088}
+
+\begin{DoxyCompactList}\small\item\em Return the position of the left joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a4ec2368aca2a41fa84ac3216c7bc95cd}{
+float $\ast$ \hyperlink{classvtkVSP_a4ec2368aca2a41fa84ac3216c7bc95cd}{GetRightJoystickState} ()}
+\label{classvtkVSP_a4ec2368aca2a41fa84ac3216c7bc95cd}
+
+\begin{DoxyCompactList}\small\item\em Return the position of the right joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_ac1791508a42682b6574ffb8d01ac0586}{
+void \hyperlink{classvtkVSP_ac1791508a42682b6574ffb8d01ac0586}{GetRightJoystickState} (float data\mbox{[}2\mbox{]})}
+\label{classvtkVSP_ac1791508a42682b6574ffb8d01ac0586}
+
+\begin{DoxyCompactList}\small\item\em Return the position of the left joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a093602da6356d7a2d83d4b1e0c820969}{
+void \hyperlink{classvtkVSP_a093602da6356d7a2d83d4b1e0c820969}{GetRightJoystickState} (float $\ast$data1, float $\ast$data2)}
+\label{classvtkVSP_a093602da6356d7a2d83d4b1e0c820969}
+
+\begin{DoxyCompactList}\small\item\em Return the position of the left joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_ac672ef2c63798003b5b802eb2995c7db}{
+float \hyperlink{classvtkVSP_ac672ef2c63798003b5b802eb2995c7db}{GetLeftJoystickYPosition} ()}
+\label{classvtkVSP_ac672ef2c63798003b5b802eb2995c7db}
+
+\begin{DoxyCompactList}\small\item\em Return the Y position of the left joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_abc5c4b774170f69a1e653a830eaa850e}{
+float \hyperlink{classvtkVSP_abc5c4b774170f69a1e653a830eaa850e}{GetLeftJoystickXPosition} ()}
+\label{classvtkVSP_abc5c4b774170f69a1e653a830eaa850e}
+
+\begin{DoxyCompactList}\small\item\em Return the X position of the left joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_af0900941205cbf30865951fed08c90d8}{
+float \hyperlink{classvtkVSP_af0900941205cbf30865951fed08c90d8}{GetRightJoystickYPosition} ()}
+\label{classvtkVSP_af0900941205cbf30865951fed08c90d8}
+
+\begin{DoxyCompactList}\small\item\em Return the Y position of the right joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_ab338cddba4dd2a4f12a5859d0475da26}{
+float \hyperlink{classvtkVSP_ab338cddba4dd2a4f12a5859d0475da26}{GetRightJoystickXPosition} ()}
+\label{classvtkVSP_ab338cddba4dd2a4f12a5859d0475da26}
+
+\begin{DoxyCompactList}\small\item\em Return the X position of the right joystick. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a659a26e683c6084077de26cebc592d0f}{
+int \hyperlink{classvtkVSP_a659a26e683c6084077de26cebc592d0f}{GetButtonsState} ()}
+\label{classvtkVSP_a659a26e683c6084077de26cebc592d0f}
+
+\begin{DoxyCompactList}\small\item\em Return the state of the buttons of the control panel. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_acfd028901c1201d7f6683302f729866e}{
+int \hyperlink{classvtkVSP_acfd028901c1201d7f6683302f729866e}{GetZoomState} ()}
+\label{classvtkVSP_acfd028901c1201d7f6683302f729866e}
+
+\begin{DoxyCompactList}\small\item\em Return Zoom Button State. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_ae86717a441882e461ae6589ce9132488}{
+int \hyperlink{classvtkVSP_ae86717a441882e461ae6589ce9132488}{GetLeftPedalState} ()}
+\label{classvtkVSP_ae86717a441882e461ae6589ce9132488}
+
+\begin{DoxyCompactList}\small\item\em Return Left Pedal Button State. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a2478197c4643ef8f8909e98160cecd41}{
+int \hyperlink{classvtkVSP_a2478197c4643ef8f8909e98160cecd41}{GetCenterPedalState} ()}
+\label{classvtkVSP_a2478197c4643ef8f8909e98160cecd41}
+
+\begin{DoxyCompactList}\small\item\em Return Center Pedal Button State. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a52dbc63b8c38792574b84410e30ff380}{
+int \hyperlink{classvtkVSP_a52dbc63b8c38792574b84410e30ff380}{GetRightPedalState} ()}
+\label{classvtkVSP_a52dbc63b8c38792574b84410e30ff380}
+
+\begin{DoxyCompactList}\small\item\em Return Right Pedal Button State. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a3c1800e84f6cd86412e69a195335c249}{
+float \hyperlink{classvtkVSP_a3c1800e84f6cd86412e69a195335c249}{GetCatheterDepth} (int id)}
+\label{classvtkVSP_a3c1800e84f6cd86412e69a195335c249}
+
+\begin{DoxyCompactList}\small\item\em Return the depth of the catheter specified by the id parameter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_ab6b0f6233332fda07b6a9ac81c2f743c}{
+int \hyperlink{classvtkVSP_ab6b0f6233332fda07b6a9ac81c2f743c}{GetCatheterState} (int id)}
+\label{classvtkVSP_ab6b0f6233332fda07b6a9ac81c2f743c}
+
+\begin{DoxyCompactList}\small\item\em Return the state of the catheter specified by the id parameter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_af4dcfbcd86f249c6ef503ac3ddd8e726}{
+float \hyperlink{classvtkVSP_af4dcfbcd86f249c6ef503ac3ddd8e726}{GetCatheterRoll} (int id)}
+\label{classvtkVSP_af4dcfbcd86f249c6ef503ac3ddd8e726}
+
+\begin{DoxyCompactList}\small\item\em Return the roll of the catheter specified by the id parameter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a273686a9916cd9ee186eaba47f5c6821}{
+int \hyperlink{classvtkVSP_a273686a9916cd9ee186eaba47f5c6821}{GetCatheter0State} ()}
+\label{classvtkVSP_a273686a9916cd9ee186eaba47f5c6821}
+
+\begin{DoxyCompactList}\small\item\em Return the state flag of the 8F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_ac8f05fd20cd3e3a46d7905b8a74047a4}{
+float \hyperlink{classvtkVSP_ac8f05fd20cd3e3a46d7905b8a74047a4}{GetCatheter0Depth} ()}
+\label{classvtkVSP_ac8f05fd20cd3e3a46d7905b8a74047a4}
+
+\begin{DoxyCompactList}\small\item\em Return the depth of the 8F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a25bd4f1453fed3313fd6311b7d59be98}{
+float \hyperlink{classvtkVSP_a25bd4f1453fed3313fd6311b7d59be98}{GetCatheter0Roll} ()}
+\label{classvtkVSP_a25bd4f1453fed3313fd6311b7d59be98}
+
+\begin{DoxyCompactList}\small\item\em Return the roll value of the 8F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a60c7a368b17b23ddc9e8899211318d1e}{
+int \hyperlink{classvtkVSP_a60c7a368b17b23ddc9e8899211318d1e}{GetCatheter1State} ()}
+\label{classvtkVSP_a60c7a368b17b23ddc9e8899211318d1e}
+
+\begin{DoxyCompactList}\small\item\em Return the state flag of the 5F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a00f912f5e3a6b995341ea59712a09609}{
+float \hyperlink{classvtkVSP_a00f912f5e3a6b995341ea59712a09609}{GetCatheter1Depth} ()}
+\label{classvtkVSP_a00f912f5e3a6b995341ea59712a09609}
+
+\begin{DoxyCompactList}\small\item\em Return the depth of the 5F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a2bd0656b6943f372082c6a60abd1ea8f}{
+float \hyperlink{classvtkVSP_a2bd0656b6943f372082c6a60abd1ea8f}{GetCatheter1Roll} ()}
+\label{classvtkVSP_a2bd0656b6943f372082c6a60abd1ea8f}
+
+\begin{DoxyCompactList}\small\item\em Return the roll value of the 5F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a9ffc93c092f6c0dd4a217f221eaa2056}{
+int \hyperlink{classvtkVSP_a9ffc93c092f6c0dd4a217f221eaa2056}{GetCatheter2State} ()}
+\label{classvtkVSP_a9ffc93c092f6c0dd4a217f221eaa2056}
+
+\begin{DoxyCompactList}\small\item\em Return the state flag of the 2.5F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a562a02d929ce09aa856167257bcd0381}{
+float \hyperlink{classvtkVSP_a562a02d929ce09aa856167257bcd0381}{GetCatheter2Depth} ()}
+\label{classvtkVSP_a562a02d929ce09aa856167257bcd0381}
+
+\begin{DoxyCompactList}\small\item\em Return the depth of the 2.5F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_afc01854a1a1f7dffaf0e6563eda84119}{
+float \hyperlink{classvtkVSP_afc01854a1a1f7dffaf0e6563eda84119}{GetCatheter2Roll} ()}
+\label{classvtkVSP_afc01854a1a1f7dffaf0e6563eda84119}
+
+\begin{DoxyCompactList}\small\item\em Return the roll value of the 2.5F catheter. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a47ca891db4ba2d8b6f06cbfafcb07152}{
+float \hyperlink{classvtkVSP_a47ca891db4ba2d8b6f06cbfafcb07152}{GetStentDeployment} ()}
+\label{classvtkVSP_a47ca891db4ba2d8b6f06cbfafcb07152}
+
+\begin{DoxyCompactList}\small\item\em Return Stent Deployment. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a36c67b53377b842de0baa568b62cea8a}{
+float \hyperlink{classvtkVSP_a36c67b53377b842de0baa568b62cea8a}{GetContrastFlow} ()}
+\label{classvtkVSP_a36c67b53377b842de0baa568b62cea8a}
+
+\begin{DoxyCompactList}\small\item\em Return Contrast Flow. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVSP_a75642238e29ebd171de9c9786eac0361}{
+float \hyperlink{classvtkVSP_a75642238e29ebd171de9c9786eac0361}{GetInflationPressure} ()}
+\label{classvtkVSP_a75642238e29ebd171de9c9786eac0361}
+
+\begin{DoxyCompactList}\small\item\em Return Inflation Pressure. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkVSP_a0b460a3fa8f71d1b027471d7e171c68e}{
+static \hyperlink{classvtkVSP}{vtkVSP} $\ast$ {\bfseries New} ()}
+\label{classvtkVSP_a0b460a3fa8f71d1b027471d7e171c68e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class \hyperlink{classvtkVSP}{vtkVSP}, wraps the VSP haptic device. 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Haptics/vtkVSP.h\item 
+Haptics/vtkVSP.cxx\end{DoxyCompactItemize}

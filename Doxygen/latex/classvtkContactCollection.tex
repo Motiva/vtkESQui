@@ -1,0 +1,138 @@
+\hypertarget{classvtkContactCollection}{
+\section{vtkContactCollection Class Reference}
+\label{classvtkContactCollection}\index{vtkContactCollection@{vtkContactCollection}}
+}
+
+
+Collection of contact information.  
+
+
+{\ttfamily \#include $<$vtkContactCollection.h$>$}\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkContactCollection_aa1965951c55bd491c4d9fe629da9870b}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkContactCollection}{vtkContactCollection}, vtkCollection)}
+\label{classvtkContactCollection_aa1965951c55bd491c4d9fe629da9870b}
+
+\item 
+\hypertarget{classvtkContactCollection_a0fa034d882bea337b33eee17cee78c18}{
+virtual void {\bfseries PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkContactCollection_a0fa034d882bea337b33eee17cee78c18}
+
+\item 
+void \hyperlink{classvtkContactCollection_ac35b5e32c81e6f21e4115591b282489a}{DeepCopy} (\hyperlink{classvtkContactCollection}{vtkContactCollection} $\ast$collection)
+\begin{DoxyCompactList}\small\item\em Perform a deep copy of the \hyperlink{classvtkContactCollection}{vtkContactCollection} Object. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkContactCollection_a5ef415a23ede7e5f198a94380c9eec44}{InsertNextContact} (\hyperlink{classvtkContact}{vtkContact} $\ast$contact)
+\begin{DoxyCompactList}\small\item\em Add a Contact to the list. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkContactCollection_a0e50a84b758bf14a4936fffb51a39287}{InsertContact} (vtkIdType id, \hyperlink{classvtkContact}{vtkContact} $\ast$contact)
+\begin{DoxyCompactList}\small\item\em Replace the Contact on id position. \item\end{DoxyCompactList}\item 
+vtkIdType \hyperlink{classvtkContactCollection_a4cb4194315844f6db614c37efcb069d0}{ContainsContact} (\hyperlink{classvtkContact}{vtkContact} $\ast$contact)
+\begin{DoxyCompactList}\small\item\em Check if the contact exists within the collection. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkContact}{vtkContact} $\ast$ \hyperlink{classvtkContactCollection_a0f3dcad137c9a1d088c1ca6585c2120c}{GetContact} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Return the Contact on id position. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkContact}{vtkContact} $\ast$ \hyperlink{classvtkContactCollection_a4e9a9f6aec44e28433aaa02bb7aca941}{GetNextContact} ()
+\begin{DoxyCompactList}\small\item\em Return iteratively each contact. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkContactCollection_acb592cfee4ec93e6580d5a44da8b85c3}{RemoveContact} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Remove the Contact at the id position. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkContactCollection_a9b85a9624245a174cd43c2c12962fd0c}{RemoveContacts} ()
+\begin{DoxyCompactList}\small\item\em Remove All Contacts. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkContactCollection_a6ad4805a4d60d6754ea5b3f656af6bfc}{
+static \hyperlink{classvtkContactCollection}{vtkContactCollection} $\ast$ {\bfseries New} ()}
+\label{classvtkContactCollection_a6ad4805a4d60d6754ea5b3f656af6bfc}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Collection of contact information. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkContactCollection_a4cb4194315844f6db614c37efcb069d0}{
+\index{vtkContactCollection@{vtkContactCollection}!ContainsContact@{ContainsContact}}
+\index{ContainsContact@{ContainsContact}!vtkContactCollection@{vtkContactCollection}}
+\subsubsection[{ContainsContact}]{\setlength{\rightskip}{0pt plus 5cm}vtkIdType vtkContactCollection::ContainsContact ({\bf vtkContact} $\ast$ {\em contact})}}
+\label{classvtkContactCollection_a4cb4194315844f6db614c37efcb069d0}
+
+
+Check if the contact exists within the collection. 
+\begin{DoxyParams}{Parameters}
+\item[{\em contact}]contact to be located in the collection \end{DoxyParams}
+\hypertarget{classvtkContactCollection_ac35b5e32c81e6f21e4115591b282489a}{
+\index{vtkContactCollection@{vtkContactCollection}!DeepCopy@{DeepCopy}}
+\index{DeepCopy@{DeepCopy}!vtkContactCollection@{vtkContactCollection}}
+\subsubsection[{DeepCopy}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContactCollection::DeepCopy ({\bf vtkContactCollection} $\ast$ {\em collection})}}
+\label{classvtkContactCollection_ac35b5e32c81e6f21e4115591b282489a}
+
+
+Perform a deep copy of the \hyperlink{classvtkContactCollection}{vtkContactCollection} Object. 
+\begin{DoxyParams}{Parameters}
+\item[{\em collection}]collection of contacts to be copied. \end{DoxyParams}
+\hypertarget{classvtkContactCollection_a0f3dcad137c9a1d088c1ca6585c2120c}{
+\index{vtkContactCollection@{vtkContactCollection}!GetContact@{GetContact}}
+\index{GetContact@{GetContact}!vtkContactCollection@{vtkContactCollection}}
+\subsubsection[{GetContact}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkContact} $\ast$ vtkContactCollection::GetContact (vtkIdType {\em id})}}
+\label{classvtkContactCollection_a0f3dcad137c9a1d088c1ca6585c2120c}
+
+
+Return the Contact on id position. identifier of the contact that will be returned \begin{DoxyReturn}{Returns}
+\hyperlink{classvtkContact}{vtkContact} object stored in the collection 
+\end{DoxyReturn}
+\hypertarget{classvtkContactCollection_a4e9a9f6aec44e28433aaa02bb7aca941}{
+\index{vtkContactCollection@{vtkContactCollection}!GetNextContact@{GetNextContact}}
+\index{GetNextContact@{GetNextContact}!vtkContactCollection@{vtkContactCollection}}
+\subsubsection[{GetNextContact}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkContact} $\ast$ vtkContactCollection::GetNextContact ()}}
+\label{classvtkContactCollection_a4e9a9f6aec44e28433aaa02bb7aca941}
+
+
+Return iteratively each contact. \begin{DoxyReturn}{Returns}
+\hyperlink{classvtkContact}{vtkContact} object stored in the collection 
+\end{DoxyReturn}
+\hypertarget{classvtkContactCollection_a0e50a84b758bf14a4936fffb51a39287}{
+\index{vtkContactCollection@{vtkContactCollection}!InsertContact@{InsertContact}}
+\index{InsertContact@{InsertContact}!vtkContactCollection@{vtkContactCollection}}
+\subsubsection[{InsertContact}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContactCollection::InsertContact (vtkIdType {\em id}, \/  {\bf vtkContact} $\ast$ {\em contact})}}
+\label{classvtkContactCollection_a0e50a84b758bf14a4936fffb51a39287}
+
+
+Replace the Contact on id position. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]contact identifier on the collection \item[{\em contact}]contact to be added to the collection \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkContactCollection_a5ef415a23ede7e5f198a94380c9eec44}{InsertNextContact(vtkContact $\ast$contact)} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkContactCollection_a5ef415a23ede7e5f198a94380c9eec44}{
+\index{vtkContactCollection@{vtkContactCollection}!InsertNextContact@{InsertNextContact}}
+\index{InsertNextContact@{InsertNextContact}!vtkContactCollection@{vtkContactCollection}}
+\subsubsection[{InsertNextContact}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContactCollection::InsertNextContact ({\bf vtkContact} $\ast$ {\em contact})}}
+\label{classvtkContactCollection_a5ef415a23ede7e5f198a94380c9eec44}
+
+
+Add a Contact to the list. 
+\begin{DoxyParams}{Parameters}
+\item[{\em contact}]contact to be added to the collection \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkContactCollection_a0e50a84b758bf14a4936fffb51a39287}{InsertContact(vtkIdType id, vtkContact $\ast$contact)} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkContactCollection_acb592cfee4ec93e6580d5a44da8b85c3}{
+\index{vtkContactCollection@{vtkContactCollection}!RemoveContact@{RemoveContact}}
+\index{RemoveContact@{RemoveContact}!vtkContactCollection@{vtkContactCollection}}
+\subsubsection[{RemoveContact}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContactCollection::RemoveContact (vtkIdType {\em id})}}
+\label{classvtkContactCollection_acb592cfee4ec93e6580d5a44da8b85c3}
+
+
+Remove the Contact at the id position. This method only removes the contact from the collection. The object itself must be deleted. \hypertarget{classvtkContactCollection_a9b85a9624245a174cd43c2c12962fd0c}{
+\index{vtkContactCollection@{vtkContactCollection}!RemoveContacts@{RemoveContacts}}
+\index{RemoveContacts@{RemoveContacts}!vtkContactCollection@{vtkContactCollection}}
+\subsubsection[{RemoveContacts}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContactCollection::RemoveContacts ()}}
+\label{classvtkContactCollection_a9b85a9624245a174cd43c2c12962fd0c}
+
+
+Remove All Contacts. This method only removes the contact from the collection. The object itself must be deleted. 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Common/vtkContactCollection.h\item 
+Common/vtkContactCollection.cxx\end{DoxyCompactItemize}

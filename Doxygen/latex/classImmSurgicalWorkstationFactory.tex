@@ -1,0 +1,46 @@
+\hypertarget{classImmSurgicalWorkstationFactory}{
+\section{ImmSurgicalWorkstationFactory Class Reference}
+\label{classImmSurgicalWorkstationFactory}\index{ImmSurgicalWorkstationFactory@{ImmSurgicalWorkstationFactory}}
+}
+
+
+{\ttfamily \#include $<$ImmSurgicalWorkstation.h$>$}\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classImmSurgicalWorkstation}{ImmSurgicalWorkstation} $\ast$ \hyperlink{classImmSurgicalWorkstationFactory_a9af1521e1dd6f60c427999d70caf606e}{AcquireSW} ()
+\item 
+static void \hyperlink{classImmSurgicalWorkstationFactory_aea3cddc144fe3f15f5518f6f9f234209}{ReleaseSW} (\hyperlink{classImmSurgicalWorkstation}{ImmSurgicalWorkstation} $\ast$pSW)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classImmSurgicalWorkstationFactory}{ImmSurgicalWorkstationFactory} class is responsible for creating and destroying \hyperlink{classImmSurgicalWorkstation}{ImmSurgicalWorkstation} objects. It is entirely composed of static methods. There is an AcquireSW method for each kind of interface. There is a single Release method for destroying previously acquired \hyperlink{classImmSurgicalWorkstation}{ImmSurgicalWorkstation} objects.
+
+The \hyperlink{classImmSurgicalWorkstationFactory}{ImmSurgicalWorkstationFactory} class is not thread-\/safe. You must perform locking and synchronization on your own. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classImmSurgicalWorkstationFactory_a9af1521e1dd6f60c427999d70caf606e}{
+\index{ImmSurgicalWorkstationFactory@{ImmSurgicalWorkstationFactory}!AcquireSW@{AcquireSW}}
+\index{AcquireSW@{AcquireSW}!ImmSurgicalWorkstationFactory@{ImmSurgicalWorkstationFactory}}
+\subsubsection[{AcquireSW}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf ImmSurgicalWorkstation}$\ast$ ImmSurgicalWorkstationFactory::AcquireSW ()\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}
+\label{classImmSurgicalWorkstationFactory_a9af1521e1dd6f60c427999d70caf606e}
+Acquires a Surgical Workstation
+
+\begin{DoxyReturn}{Returns}
+A pointer to an \hyperlink{classImmSurgicalWorkstation}{ImmSurgicalWorkstation} interface. It returns a NULL pointer if the method fails. 
+\end{DoxyReturn}
+\hypertarget{classImmSurgicalWorkstationFactory_aea3cddc144fe3f15f5518f6f9f234209}{
+\index{ImmSurgicalWorkstationFactory@{ImmSurgicalWorkstationFactory}!ReleaseSW@{ReleaseSW}}
+\index{ReleaseSW@{ReleaseSW}!ImmSurgicalWorkstationFactory@{ImmSurgicalWorkstationFactory}}
+\subsubsection[{ReleaseSW}]{\setlength{\rightskip}{0pt plus 5cm}static void ImmSurgicalWorkstationFactory::ReleaseSW ({\bf ImmSurgicalWorkstation} $\ast$ {\em pSW})\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}
+\label{classImmSurgicalWorkstationFactory_aea3cddc144fe3f15f5518f6f9f234209}
+Releases the acquired Surgical Workstation
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em pSW}]points to a surgical workstaion acquired from the AcquireSW method. \end{DoxyParams}
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+Haptics/ImmSurgicalWorkstation.h\end{DoxyCompactItemize}

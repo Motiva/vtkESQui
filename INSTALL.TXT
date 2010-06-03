@@ -1,0 +1,86 @@
+=======================================================================
+(c) 2010 ESQUi: An environment for Surgical Simulation
+Licensed under the conditions at LICENSE.TXT in the software directory.		
+		
+Bugs, information and comments: {marf,jballesteros}@itccanarias.org
+Institute of Technology from Canary Islands (ITC)
+========================================================================
+
+Thank you very much for trying ESQUi
+			
+*** PLEASE READ THE "LICENSE.TXT" FILE  ***
+
+Distribution
+------------
+ESQUI is a vtk-based software project. The distribution follows the standard
+structure for vtk's projects.
+
+This ESQUI release includes the following folders:
+
+-BMM: Biomechanical models coded under vtk classes.  
+-CDM: Collision detection models coded under vtk classes.
+-Common: General vtk classes needed by the project.
+-Doxygen: Documentation of the code.
+-Examples: A list of examples under C++ and Tcl.
+-Haptics: vtk classes that wrap the haptic's API. 
+-Manager: vtk classes that manage the software pipeline.
+-Scenario: vtk classes that manage the rendered's objects.
+-Utilities: Scripts and C++ classes to share/export/import models from
+other packages used in ESQUi (i.e. Blender).
+-Wrapping: The vtk's code for wrapping under Tcl.
+	
+Install
+-------
+In order to use this software the following packages must be installed:
+
+ * VTK. version > 5.4
+ * Tcl/Tk. version > 8.4
+ * CMake. version > 2.5
+
+This software has been compiled and tested in:
+
+ * Windows (Visual Studio 2005 and Visual Studio 2008) 
+ * Unix (gcc > 4.4).
+
+Compiling
+---------
+This software has been tested under windows and linux. To compile it you 
+need to follow the next steps (a vtk project building):
+
+1- Download the source code.
+2- Create a ESQUiBin folder and run ccmake in:
+
+	ccmake <path of ESQUI Source code>
+
+	i.e.(under linux): /<path>/ESQUibin/ccmake ../ESQUI
+	if ESQUI is in <path>.
+
+3- Follow the ccmake configuration. Remind to set the VTK_DIR
+path (the folder where you have compiled vtk and you have your
+VTKConfig.cmake file), and the Tcl/Tk libraries path.
+If you would like to use the software with haptics (LWS-Immersion Corp, 
+IHP,etc), please set the CMake variable VTKESQUI_USE_HAPTICS to ON.
+The wrapping and other configuration are done by default (they
+are included in the CMakelist.txt file).
+4- Make the vtk-project
+
+	i.e. (under linux) /<path>/ESQUIbin/make
+
+5- You shouldn't get any error. If you have any problem, please
+let us know.
+7- Set the environment variables: LD_LIBRARY_PATH and TCLLIBPATH to
+the path where are the (.so/dlls) vtk/wrapping libraries.
+If you have other Tcl/Tk versions, you should declare the TK_LIBRARY
+and TCL_LIBRARY variables.
+
+	i.e. (under linux) 
+
+export LD_LIBRARY_PATH=/usr/local/lib/vtk-5.4:/home/marf/software/ESQUI/EsquiBin/bin/
+
+export TCLLIBPATH=/home/marf/software/ESQUI/ESQUI/Wrapping/Tcl
+
+8- See the Examples folder to run applications that use the package.
+
+In the file "quickstart.pdf/.odt" you can find a short guide to run 
+a simple example.	 
+

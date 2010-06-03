@@ -1,0 +1,145 @@
+\hypertarget{classvtkBioMechanicalModel}{
+\section{vtkBioMechanicalModel Class Reference}
+\label{classvtkBioMechanicalModel}\index{vtkBioMechanicalModel@{vtkBioMechanicalModel}}
+}
+
+
+Generic interface to the Biomechanical Model.  
+
+
+{\ttfamily \#include $<$vtkBioMechanicalModel.h$>$}
+
+Inherited by \hyperlink{classvtkFeMeshInterface}{vtkFeMeshInterface}, and \hyperlink{classvtkMSSInterface}{vtkMSSInterface}.\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkBioMechanicalModel_ad1da24ecf194be6112ca4cf2786bc527}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkBioMechanicalModel}{vtkBioMechanicalModel}, vtkObject)}
+\label{classvtkBioMechanicalModel_ad1da24ecf194be6112ca4cf2786bc527}
+
+\item 
+\hypertarget{classvtkBioMechanicalModel_a8c46194cc806ce28298d52ce117c2cce}{
+const char $\ast$ {\bfseries GetClassName} ()}
+\label{classvtkBioMechanicalModel_a8c46194cc806ce28298d52ce117c2cce}
+
+\item 
+\hypertarget{classvtkBioMechanicalModel_ad25f66c609caa39610c22ef4261b1199}{
+void \hyperlink{classvtkBioMechanicalModel_ad25f66c609caa39610c22ef4261b1199}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkBioMechanicalModel_ad25f66c609caa39610c22ef4261b1199}
+
+\begin{DoxyCompactList}\small\item\em Print class object values. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_ac729eb24ed495e450a16ce369ad70f69}{
+virtual void \hyperlink{classvtkBioMechanicalModel_ac729eb24ed495e450a16ce369ad70f69}{SetInput} (vtkUnstructuredGrid $\ast$data)=0}
+\label{classvtkBioMechanicalModel_ac729eb24ed495e450a16ce369ad70f69}
+
+\begin{DoxyCompactList}\small\item\em Set input data to the biomechanical model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a147f53dac1854b61f88330c59817b822}{
+virtual void \hyperlink{classvtkBioMechanicalModel_a147f53dac1854b61f88330c59817b822}{Update} ()=0}
+\label{classvtkBioMechanicalModel_a147f53dac1854b61f88330c59817b822}
+
+\begin{DoxyCompactList}\small\item\em Method used to perform an update on the scenario item biomechanical model: deformations, cuts, etc... \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a0bc6867a67529170c43a279af9f86aa8}{
+virtual vtkUnstructuredGrid $\ast$ \hyperlink{classvtkBioMechanicalModel_a0bc6867a67529170c43a279af9f86aa8}{GetOutput} ()=0}
+\label{classvtkBioMechanicalModel_a0bc6867a67529170c43a279af9f86aa8}
+
+\begin{DoxyCompactList}\small\item\em Returns data used in the biomechanical model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a9f1e1d9704e92272d237cfb79bfa0c97}{
+virtual void \hyperlink{classvtkBioMechanicalModel_a9f1e1d9704e92272d237cfb79bfa0c97}{Init} ()=0}
+\label{classvtkBioMechanicalModel_a9f1e1d9704e92272d237cfb79bfa0c97}
+
+\begin{DoxyCompactList}\small\item\em Initialize the Biomechanical Model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a4030145604846601b466b1b460121467}{
+virtual void \hyperlink{classvtkBioMechanicalModel_a4030145604846601b466b1b460121467}{Clear} ()}
+\label{classvtkBioMechanicalModel_a4030145604846601b466b1b460121467}
+
+\begin{DoxyCompactList}\small\item\em Cleans algorithm from previous executions. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_aaaba67cef144b685b570f04824c1afef}{
+void \hyperlink{classvtkBioMechanicalModel_aaaba67cef144b685b570f04824c1afef}{SetName} (const char $\ast$name)}
+\label{classvtkBioMechanicalModel_aaaba67cef144b685b570f04824c1afef}
+
+\begin{DoxyCompactList}\small\item\em Set BioMechanical model name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a5bf40a4f9f51ce7863fff6471fd1b679}{
+const char $\ast$ \hyperlink{classvtkBioMechanicalModel_a5bf40a4f9f51ce7863fff6471fd1b679}{GetName} ()}
+\label{classvtkBioMechanicalModel_a5bf40a4f9f51ce7863fff6471fd1b679}
+
+\begin{DoxyCompactList}\small\item\em Get BioMechanical model name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a179b870e005db07779090962ca4bf39b}{
+virtual void \hyperlink{classvtkBioMechanicalModel_a179b870e005db07779090962ca4bf39b}{InsertNextContact} (\hyperlink{classvtkContact}{vtkContact} $\ast$contact)}
+\label{classvtkBioMechanicalModel_a179b870e005db07779090962ca4bf39b}
+
+\begin{DoxyCompactList}\small\item\em Insert a contact into the biomechanical model. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkBioMechanicalModel_a6856ee291a45b9a0332e9319c383d189}{InsertContacts} (\hyperlink{classvtkContactCollection}{vtkContactCollection} $\ast$collection)
+\begin{DoxyCompactList}\small\item\em Insert a collection of contacts into the biomechanical model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a7f37494761cad528563094c3570eec7f}{
+virtual void \hyperlink{classvtkBioMechanicalModel_a7f37494761cad528563094c3570eec7f}{DeleteContacts} ()}
+\label{classvtkBioMechanicalModel_a7f37494761cad528563094c3570eec7f}
+
+\begin{DoxyCompactList}\small\item\em Remove contacts of the biomechanical model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a9509f53b091978d1149a9e538995288f}{
+virtual vtkPoints $\ast$ \hyperlink{classvtkBioMechanicalModel_a9509f53b091978d1149a9e538995288f}{GetContactPoints} ()}
+\label{classvtkBioMechanicalModel_a9509f53b091978d1149a9e538995288f}
+
+\begin{DoxyCompactList}\small\item\em Return the contact points. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a4046ce861cca17c60ad4229f92d022b5}{
+virtual vtkCell $\ast$ \hyperlink{classvtkBioMechanicalModel_a4046ce861cca17c60ad4229f92d022b5}{GetMeshCell} (vtkIdType id)}
+\label{classvtkBioMechanicalModel_a4046ce861cca17c60ad4229f92d022b5}
+
+\begin{DoxyCompactList}\small\item\em Return the organ mesh cell specified with the id. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkBioMechanicalModel_a988e5243b65f14bed2b9b5c7cf0667d4}{
+const char $\ast$ \hyperlink{classvtkBioMechanicalModel_a988e5243b65f14bed2b9b5c7cf0667d4}{Name}}
+\label{classvtkBioMechanicalModel_a988e5243b65f14bed2b9b5c7cf0667d4}
+
+\begin{DoxyCompactList}\small\item\em Model Name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_ab69c6742c2c5fbb1505fe89164f6b2d6}{
+vtkUnstructuredGrid $\ast$ \hyperlink{classvtkBioMechanicalModel_ab69c6742c2c5fbb1505fe89164f6b2d6}{Mesh}}
+\label{classvtkBioMechanicalModel_ab69c6742c2c5fbb1505fe89164f6b2d6}
+
+\begin{DoxyCompactList}\small\item\em 3D Surface Input \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a7f4813048adf49d939f10f65b515560f}{
+vtkPoints $\ast$ \hyperlink{classvtkBioMechanicalModel_a7f4813048adf49d939f10f65b515560f}{ContactPoints}}
+\label{classvtkBioMechanicalModel_a7f4813048adf49d939f10f65b515560f}
+
+\begin{DoxyCompactList}\small\item\em Contacted points. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_ae6f2f1bd55d63ed4a0078da177e8f948}{
+vtkIdList $\ast$ \hyperlink{classvtkBioMechanicalModel_ae6f2f1bd55d63ed4a0078da177e8f948}{ContactPointIds}}
+\label{classvtkBioMechanicalModel_ae6f2f1bd55d63ed4a0078da177e8f948}
+
+\begin{DoxyCompactList}\small\item\em Contacted point ids. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a821864c1b55fcacbeafa0ace1ca306d6}{
+vtkIdList $\ast$ \hyperlink{classvtkBioMechanicalModel_a821864c1b55fcacbeafa0ace1ca306d6}{ContactCelltIds}}
+\label{classvtkBioMechanicalModel_a821864c1b55fcacbeafa0ace1ca306d6}
+
+\begin{DoxyCompactList}\small\item\em Contacted cell ids. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_a5c654834f7c6c121a3dd38df5baf343e}{
+vtkDoubleArray $\ast$ \hyperlink{classvtkBioMechanicalModel_a5c654834f7c6c121a3dd38df5baf343e}{Forces}}
+\label{classvtkBioMechanicalModel_a5c654834f7c6c121a3dd38df5baf343e}
+
+\begin{DoxyCompactList}\small\item\em Contact force of each contact points. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkBioMechanicalModel_accf0613204c31119952f80219983a521}{
+vtkIdType \hyperlink{classvtkBioMechanicalModel_accf0613204c31119952f80219983a521}{Updated}}
+\label{classvtkBioMechanicalModel_accf0613204c31119952f80219983a521}
+
+\begin{DoxyCompactList}\small\item\em Check if system has been updated. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Generic interface to the Biomechanical Model. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkBioMechanicalModel_a6856ee291a45b9a0332e9319c383d189}{
+\index{vtkBioMechanicalModel@{vtkBioMechanicalModel}!InsertContacts@{InsertContacts}}
+\index{InsertContacts@{InsertContacts}!vtkBioMechanicalModel@{vtkBioMechanicalModel}}
+\subsubsection[{InsertContacts}]{\setlength{\rightskip}{0pt plus 5cm}void vtkBioMechanicalModel::InsertContacts ({\bf vtkContactCollection} $\ast$ {\em collection})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkBioMechanicalModel_a6856ee291a45b9a0332e9319c383d189}
+
+
+Insert a collection of contacts into the biomechanical model. 
+
+Set contact points, its related cells, and its forces 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Scenario/vtkBioMechanicalModel.h\item 
+Scenario/vtkBioMechanicalModel.cxx\end{DoxyCompactItemize}

@@ -1,0 +1,86 @@
+\hypertarget{classvtkFeMeshInterface}{
+\section{vtkFeMeshInterface Class Reference}
+\label{classvtkFeMeshInterface}\index{vtkFeMeshInterface@{vtkFeMeshInterface}}
+}
+
+
+Implementation of the generic Biomechanical Model interface for a Finite Element Model based deformation system.  
+
+
+{\ttfamily \#include $<$vtkFeMeshInterface.h$>$}
+
+Inherits \hyperlink{classvtkBioMechanicalModel}{vtkBioMechanicalModel}.Collaboration diagram for vtkFeMeshInterface:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkFeMeshInterface_a30e52fc9776971d6a0ef3ea1a51dd4db}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkFeMeshInterface}{vtkFeMeshInterface}, \hyperlink{classvtkBioMechanicalModel}{vtkBioMechanicalModel})}
+\label{classvtkFeMeshInterface_a30e52fc9776971d6a0ef3ea1a51dd4db}
+
+\item 
+\hypertarget{classvtkFeMeshInterface_ab123f967cfdb9c1ff70cc9e7810d182f}{
+const char $\ast$ {\bfseries GetClassName} ()}
+\label{classvtkFeMeshInterface_ab123f967cfdb9c1ff70cc9e7810d182f}
+
+\item 
+\hypertarget{classvtkFeMeshInterface_acec139dd01cbdba5f1b37c308be273d3}{
+void \hyperlink{classvtkFeMeshInterface_acec139dd01cbdba5f1b37c308be273d3}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkFeMeshInterface_acec139dd01cbdba5f1b37c308be273d3}
+
+\begin{DoxyCompactList}\small\item\em Print class object values. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkFeMeshInterface_ad3b9e23968d1f8b8519cedcfd781ee26}{SetInput} (vtkUnstructuredGrid $\ast$data)
+\begin{DoxyCompactList}\small\item\em Set input data (organ mesh) to the FEM-\/based deformation model. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkFeMeshInterface_a6d2c5a76db4549d74075c88691d03447}{Update} ()
+\begin{DoxyCompactList}\small\item\em Perform an update of the FEM-\/based deformation model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkFeMeshInterface_ad779b72b01dd020c6e07312b40bbb77e}{
+virtual void \hyperlink{classvtkFeMeshInterface_ad779b72b01dd020c6e07312b40bbb77e}{Init} ()}
+\label{classvtkFeMeshInterface_ad779b72b01dd020c6e07312b40bbb77e}
+
+\begin{DoxyCompactList}\small\item\em Initialize the Biomechanical Model. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkFeMeshInterface_a7dce06411f5bdee1e5d737043ad87e0b}{
+virtual vtkUnstructuredGrid $\ast$ \hyperlink{classvtkFeMeshInterface_a7dce06411f5bdee1e5d737043ad87e0b}{GetOutput} ()}
+\label{classvtkFeMeshInterface_a7dce06411f5bdee1e5d737043ad87e0b}
+
+\begin{DoxyCompactList}\small\item\em Return updated organ mesh (data) after updating the biomechanical model. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkFeMeshInterface_a25b7c0b6398c8401bdf0a05cd1c047cb}{
+static \hyperlink{classvtkFeMeshInterface}{vtkFeMeshInterface} $\ast$ {\bfseries New} ()}
+\label{classvtkFeMeshInterface_a25b7c0b6398c8401bdf0a05cd1c047cb}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implementation of the generic Biomechanical Model interface for a Finite Element Model based deformation system. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkFeMeshInterface_ad3b9e23968d1f8b8519cedcfd781ee26}{
+\index{vtkFeMeshInterface@{vtkFeMeshInterface}!SetInput@{SetInput}}
+\index{SetInput@{SetInput}!vtkFeMeshInterface@{vtkFeMeshInterface}}
+\subsubsection[{SetInput}]{\setlength{\rightskip}{0pt plus 5cm}void vtkFeMeshInterface::SetInput (vtkUnstructuredGrid $\ast$ {\em data})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkFeMeshInterface_ad3b9e23968d1f8b8519cedcfd781ee26}
+
+
+Set input data (organ mesh) to the FEM-\/based deformation model. A vtkUnstructuredGrid is required due to 3D deformation 
+\begin{DoxyParams}{Parameters}
+\item[{\em data}]vtkUnstructured 3d organ mesh data \end{DoxyParams}
+
+
+Set input mesh where deformation will be calculated 
+
+Implements \hyperlink{classvtkBioMechanicalModel_ac729eb24ed495e450a16ce369ad70f69}{vtkBioMechanicalModel}.\hypertarget{classvtkFeMeshInterface_a6d2c5a76db4549d74075c88691d03447}{
+\index{vtkFeMeshInterface@{vtkFeMeshInterface}!Update@{Update}}
+\index{Update@{Update}!vtkFeMeshInterface@{vtkFeMeshInterface}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkFeMeshInterface::Update (void)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkFeMeshInterface_a6d2c5a76db4549d74075c88691d03447}
+
+
+Perform an update of the FEM-\/based deformation model. Once collision detection process has been performed, if any contact between a tool and organ has occured the organ must be updated, so FEM system. 
+
+Implements \hyperlink{classvtkBioMechanicalModel_a147f53dac1854b61f88330c59817b822}{vtkBioMechanicalModel}.
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Scenario/vtkFeMeshInterface.h\item 
+Scenario/vtkFeMeshInterface.cxx\end{DoxyCompactItemize}

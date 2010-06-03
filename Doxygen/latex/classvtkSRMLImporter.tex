@@ -1,0 +1,167 @@
+\hypertarget{classvtkSRMLImporter}{
+\section{vtkSRMLImporter Class Reference}
+\label{classvtkSRMLImporter}\index{vtkSRMLImporter@{vtkSRMLImporter}}
+}
+Collaboration diagram for vtkSRMLImporter:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSRMLImporter_a55112c27f26ed582ed654c2e0c44a8b5}{
+{\bfseries vtkTypeRevisionMacro} (\hyperlink{classvtkSRMLImporter}{vtkSRMLImporter}, vtkImporter)}
+\label{classvtkSRMLImporter_a55112c27f26ed582ed654c2e0c44a8b5}
+
+\item 
+\hypertarget{classvtkSRMLImporter_a6e6898f0899fa2de4029cb6ab7b4f911}{
+const char $\ast$ \hyperlink{classvtkSRMLImporter_a6e6898f0899fa2de4029cb6ab7b4f911}{GetClassName} ()}
+\label{classvtkSRMLImporter_a6e6898f0899fa2de4029cb6ab7b4f911}
+
+\begin{DoxyCompactList}\small\item\em Return class name. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a62d3aa1a2a9441077b1d3569f9f69e03}{
+void \hyperlink{classvtkSRMLImporter_a62d3aa1a2a9441077b1d3569f9f69e03}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkSRMLImporter_a62d3aa1a2a9441077b1d3569f9f69e03}
+
+\begin{DoxyCompactList}\small\item\em Print the attributes value. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_aab5e7b3ce67f1c7de8d7c7558416d879}{
+void {\bfseries SetFileName} (char $\ast$filename)}
+\label{classvtkSRMLImporter_aab5e7b3ce67f1c7de8d7c7558416d879}
+
+\item 
+\hypertarget{classvtkSRMLImporter_ade5dc137bb6978aae3d0597e33290c70}{
+char $\ast$ {\bfseries GetFileName} ()}
+\label{classvtkSRMLImporter_ade5dc137bb6978aae3d0597e33290c70}
+
+\item 
+\hypertarget{classvtkSRMLImporter_af48e96fae89287bed52774aa94155f1b}{
+void {\bfseries SetSimulation} (\hyperlink{classvtkSimulation}{vtkSimulation} $\ast$simulation)}
+\label{classvtkSRMLImporter_af48e96fae89287bed52774aa94155f1b}
+
+\item 
+\hypertarget{classvtkSRMLImporter_a98df8b0a01a661642e2a83d77fbf293c}{
+\hyperlink{classvtkSimulation}{vtkSimulation} $\ast$ {\bfseries GetSimulation} ()}
+\label{classvtkSRMLImporter_a98df8b0a01a661642e2a83d77fbf293c}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSRMLImporter_a8f4a15aba5778f358bdffd71f7b247bc}{
+static \hyperlink{classvtkSRMLImporter}{vtkSRMLImporter} $\ast$ \hyperlink{classvtkSRMLImporter_a8f4a15aba5778f358bdffd71f7b247bc}{New} ()}
+\label{classvtkSRMLImporter_a8f4a15aba5778f358bdffd71f7b247bc}
+
+\begin{DoxyCompactList}\small\item\em Create new \hyperlink{classvtkSRMLImporter}{vtkSRMLImporter} object. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSRMLImporter_a2b5fcae9b96eb80eea0bce8d7797ba08}{
+void {\bfseries SetScenario} (\hyperlink{classvtkScenario}{vtkScenario} $\ast$scenario)}
+\label{classvtkSRMLImporter_a2b5fcae9b96eb80eea0bce8d7797ba08}
+
+\item 
+\hypertarget{classvtkSRMLImporter_a9d10d61a264ce3cdf7fff2c97082b005}{
+\hyperlink{classvtkScenario}{vtkScenario} $\ast$ {\bfseries GetScenario} ()}
+\label{classvtkSRMLImporter_a9d10d61a264ce3cdf7fff2c97082b005}
+
+\item 
+\hypertarget{classvtkSRMLImporter_a2701378d0e3f51e45130fb4e3a7c1e1e}{
+virtual int \hyperlink{classvtkSRMLImporter_a2701378d0e3f51e45130fb4e3a7c1e1e}{ImportBegin} ()}
+\label{classvtkSRMLImporter_a2701378d0e3f51e45130fb4e3a7c1e1e}
+
+\begin{DoxyCompactList}\small\item\em Starts the Import process. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a34e78595a16f92d5f94e6b68cbf013a1}{
+virtual void \hyperlink{classvtkSRMLImporter_a34e78595a16f92d5f94e6b68cbf013a1}{ImportEnd} ()}
+\label{classvtkSRMLImporter_a34e78595a16f92d5f94e6b68cbf013a1}
+
+\begin{DoxyCompactList}\small\item\em Finalize the import process. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a99d8681ebe95807aaa083d13ab8e18b2}{
+virtual void \hyperlink{classvtkSRMLImporter_a99d8681ebe95807aaa083d13ab8e18b2}{ImportActors} (vtkRenderer $\ast$renderer)}
+\label{classvtkSRMLImporter_a99d8681ebe95807aaa083d13ab8e18b2}
+
+\begin{DoxyCompactList}\small\item\em Import all the scenario actors (tools, organs, extras). \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a05d3a78ee727341e8e983fdc20774fec}{
+virtual void \hyperlink{classvtkSRMLImporter_a05d3a78ee727341e8e983fdc20774fec}{ImportCameras} (vtkRenderer $\ast$renderer)}
+\label{classvtkSRMLImporter_a05d3a78ee727341e8e983fdc20774fec}
+
+\begin{DoxyCompactList}\small\item\em Import scenario cameras. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a61ab6f56309c9b6c43b3a95808289b15}{
+virtual void \hyperlink{classvtkSRMLImporter_a61ab6f56309c9b6c43b3a95808289b15}{ImportLights} (vtkRenderer $\ast$renderer)}
+\label{classvtkSRMLImporter_a61ab6f56309c9b6c43b3a95808289b15}
+
+\begin{DoxyCompactList}\small\item\em Import scenario lights. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a7ade871037a4eb59dc5ca1f992a317f8}{
+virtual void \hyperlink{classvtkSRMLImporter_a7ade871037a4eb59dc5ca1f992a317f8}{ImportProperties} (vtkRenderer $\ast$renderer)}
+\label{classvtkSRMLImporter_a7ade871037a4eb59dc5ca1f992a317f8}
+
+\begin{DoxyCompactList}\small\item\em Import specific scenario props. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_ab53a27248ca119d09471c76f6b917b4d}{
+void \hyperlink{classvtkSRMLImporter_ab53a27248ca119d09471c76f6b917b4d}{ImportTools} ()}
+\label{classvtkSRMLImporter_ab53a27248ca119d09471c76f6b917b4d}
+
+\begin{DoxyCompactList}\small\item\em Import tools from the SRML file. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_af6b4e429bdad5c181ccd705be44ca7a4}{
+void \hyperlink{classvtkSRMLImporter_af6b4e429bdad5c181ccd705be44ca7a4}{ImportOrgans} ()}
+\label{classvtkSRMLImporter_af6b4e429bdad5c181ccd705be44ca7a4}
+
+\begin{DoxyCompactList}\small\item\em Import organs from the SRML file. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a927423e106a4de3f28ede240178585a3}{
+void \hyperlink{classvtkSRMLImporter_a927423e106a4de3f28ede240178585a3}{ImportExtras} ()}
+\label{classvtkSRMLImporter_a927423e106a4de3f28ede240178585a3}
+
+\begin{DoxyCompactList}\small\item\em Import the extras from the SRML file. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a425aed7950be69ef8c5502087354b6f3}{
+void \hyperlink{classvtkSRMLImporter_a425aed7950be69ef8c5502087354b6f3}{ImportHaptic} ()}
+\label{classvtkSRMLImporter_a425aed7950be69ef8c5502087354b6f3}
+
+\begin{DoxyCompactList}\small\item\em Import haptic device information. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSRMLImporter_a65cc2991118b46c1404323568c3677e9}{
+vtkXMLDataParser $\ast$ \hyperlink{classvtkSRMLImporter_a65cc2991118b46c1404323568c3677e9}{SRMLParser}}
+\label{classvtkSRMLImporter_a65cc2991118b46c1404323568c3677e9}
+
+\begin{DoxyCompactList}\small\item\em A SRML file is a basic XML file, so the parser corresponds to a vtkXMLParser object. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_ab2947908aa3b3c13cf939a7f7234ec47}{
+vtkXMLDataElement $\ast$ \hyperlink{classvtkSRMLImporter_ab2947908aa3b3c13cf939a7f7234ec47}{Element}}
+\label{classvtkSRMLImporter_ab2947908aa3b3c13cf939a7f7234ec47}
+
+\begin{DoxyCompactList}\small\item\em Basic XMLElement used in XML Parsing. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a3fe69d9dfa445f116dc48f677263deb3}{
+char $\ast$ \hyperlink{classvtkSRMLImporter_a3fe69d9dfa445f116dc48f677263deb3}{FileName}}
+\label{classvtkSRMLImporter_a3fe69d9dfa445f116dc48f677263deb3}
+
+\begin{DoxyCompactList}\small\item\em Input SRML Filename. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a02805ba7383ee6f553ca38c8bf3d9a9c}{
+istream $\ast$ \hyperlink{classvtkSRMLImporter_a02805ba7383ee6f553ca38c8bf3d9a9c}{Stream}}
+\label{classvtkSRMLImporter_a02805ba7383ee6f553ca38c8bf3d9a9c}
+
+\begin{DoxyCompactList}\small\item\em XML data stream. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_ab32c7b873c730d367cbf115a4af0182b}{
+int \hyperlink{classvtkSRMLImporter_ab32c7b873c730d367cbf115a4af0182b}{ReadError}}
+\label{classvtkSRMLImporter_ab32c7b873c730d367cbf115a4af0182b}
+
+\begin{DoxyCompactList}\small\item\em Read error flag. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_ac2c32411de689f5dfed773e60b781b2b}{
+int \hyperlink{classvtkSRMLImporter_ac2c32411de689f5dfed773e60b781b2b}{DataError}}
+\label{classvtkSRMLImporter_ac2c32411de689f5dfed773e60b781b2b}
+
+\begin{DoxyCompactList}\small\item\em Data error flag. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a37fc532df5f0f9799ca43ddb1032cacb}{
+int \hyperlink{classvtkSRMLImporter_a37fc532df5f0f9799ca43ddb1032cacb}{InformationError}}
+\label{classvtkSRMLImporter_a37fc532df5f0f9799ca43ddb1032cacb}
+
+\begin{DoxyCompactList}\small\item\em Information error flag. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_ab0512ee42e60dd8862b8615d5bbecae7}{
+\hyperlink{classvtkSimulation}{vtkSimulation} $\ast$ \hyperlink{classvtkSRMLImporter_ab0512ee42e60dd8862b8615d5bbecae7}{Simulation}}
+\label{classvtkSRMLImporter_ab0512ee42e60dd8862b8615d5bbecae7}
+
+\begin{DoxyCompactList}\small\item\em Simulation object to be imported. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a8b939d3cfd5cfbfeaf8cc267afdc31e7}{
+\hyperlink{classvtkScenario}{vtkScenario} $\ast$ \hyperlink{classvtkSRMLImporter_a8b939d3cfd5cfbfeaf8cc267afdc31e7}{Scenario}}
+\label{classvtkSRMLImporter_a8b939d3cfd5cfbfeaf8cc267afdc31e7}
+
+\begin{DoxyCompactList}\small\item\em Simulation Scenario. It is automatically set through the SetSimulation method. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+Utilities/vtkSRMLImporter.h\item 
+Utilities/vtkSRMLImporter.cxx\end{DoxyCompactItemize}

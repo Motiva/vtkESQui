@@ -1,0 +1,128 @@
+Cambios Estructurales
+
+=== Nuevas Organizacion de librerias ===
+ * Se ha procedido a reestructurar la organización de las librerias de código.
+ == Colision ==
+  * Esta carpeta ha pasado a contener tanto, la gestión de la detección de colisiones como la del modelo biomecánico. Además se encarga de gestionar el entorno de simulación. Las clases relacionadas con la creación de las herramientas y el entorno han pasado a la carpeta scenario. Esta carpeta pasa a llamarse Manager
+ == Comun ==
+  * Por concordancia en la nomenclatura pasa a llamarse Common. Se han añadido algunas clases en esta librería.
+ == Simulation ==
+  * Esta libraria contiene 2 subcarpetas Haptic On/Off con en el código replicado a excepción de un include. Pasará a formar parte de la nueva carpeta Manager como una sola carpeta y el el include se hara en cMake. Pendiente 
+  
+Cambios en el código de ESQUI
+
+=== vtkCollision ===
+ * Cambio de nomenclatura. El paquete pasa a ser vtkManager. Las clases relacionadas con la creación del escenario pasan a la carpeta Scenario
+ 
+== vtkCollision ==
+
+ * Cambio de nombre de la clase vtkCollision.h .cpp -> vtkCollisionManager.h, .cpp
+ * Cambio de nombre de los atributos:
+   * VectorOfDeformables -> DeformableModelsVector;
+	 - VectorOfTools -> ToolModelsVector; 
+   - VectorOfCollisions ->  CollisionVector;	
+   - VectorOfIdCollisions ->  CollisionIdVector;
+ * Cambio de nombre en los métodos:
+   * int CollisionDetect(vtkInfoCollisionCollection *vCollisionCollection) -> int Update(vtkInfoCollisionCollection *vCollisionCollection);
+   * void SetLibrary (char *libreria) -> void SetLibrary (char *library);
+   * void CreateCollisions() -> void CreateCollisionModels();
+   * int AddDeformable(vtkOrgan* pDeformableModel) -> int AddDeformableModel(vtkOrgan* pDeformableModel);
+   * bool DeleteDeformable(int pos) -> bool DeleteDeformableModel(int pos);
+   * bool InsertDeformable(int pos,vtkOrgan* pDeformable) -> bool InsertDeformableModel(int pos,vtkOrgan* pDeformableModel);
+   * bool DeleteTool(int pos) -> bool DeleteToolModel(int pos);
+   * int InsertTool(int pos,vtkTool* pHerramienta, int bnueva = 0) -> int InsertToolModel(int pos,vtkTool* pTool, int bNew = 0);
+ 
+ * Métodos eliminados:
+   * bool Initializate() -> se sustituye por Initialize() y se crea un nuevo método para comprobar si esta inicializado bool IsInitialized();
+
+== vtkColDetect ==
+ * Esta clase ha quedado obsoleta ya que actualmente se emplea la librería vtkBioEng
+ 
+== inversa ==
+ * Esta clase ha quedado obsoleta ya que actualmente se emplea la librería vtkBioEng
+
+== vtkInfoCollision ==
+ * Se ha reestructurado la clase. Los atributos han pasado a ser privados y se ha creado por cada uno de los atributos los métodos Set/Get para acceder a ellos. Además se ha cambiado el tipo del atributo matrix.h:
+ * Cambio de nombre del atributo:
+   * bool PossibleGrasp -> bool Grasped;
+   * float [3] NewVertexPosition -> float [3] VertexPosition;
+ * Cambio de nombre de los métodos:
+   * bool GetposiblePinzamiento() -> bool IsGrasped();
+   * void SetposiblePinzamiento(bool valor) -> void SetAsGrasped(bool value);
+   * Set/Get de cada uno de los atributos. Se ha eliminado la "n" del nombre. En los que se operaba con id se ha modificado el nombre de la manera SetXId y GetXId
+ 
+=== vtkScenario === 
+
+== vtkTool ==
+ * Cambio de nombre en el método:
+   * bool vtkTool::Closed() -> bool vtkTool::IsClosed()
+   * void SetTieneHojas(bool bLeaves) -> void SetHasLeaves(bool bLeaves);
+	 * bool GetTieneHojas() -> bool GetHasLeaves();
+   * addContact -> AddContact
+   * getLastDirection -> GetLastDirection
+   * virtual void ActualizeAperture(double Aperture) {} -> virtual void UpdateAperture(double Aperture) {};
+   * void SetPinzaApertura(double GrasperAperture); -> void SetGrasperAperture(double GrasperAperture);
+   * virtual bool possibleClipped() -> virtual bool IsClipped();
+ * Cambio de nombre de los atributos
+   * vtkCubeSource *cubo -> vtkCubeSource *cubeSource;
+   * vtkPolyDataMapper *mapperfiltro -> vtkPolyDataMapper *mapperFilter;
+ * Funciones Eliminadas:
+   * void quaternion2Dir(float* q,float* vDir); //Sustituida por UpdateDirection(). Incluye la funcionalidad rerquerida empleando vtkMath
+	 * void multVM(float* vect,float* matrix,float* vResult); Incluida en matrix.h
+   * void vtkTool::MatrixTx(vtkMatrix4x4 *matrix,vtkMatrix4x4 *Matrix); Sustituida por el método DeepCopy de la clase vtkMatrix4x4
+
+== vtkToolGPincers ==
+ * Cambio de nombre en el método:
+   * virtual void ActualizeAperture(double Aperture) {} -> virtual void UpdateAperture(double Aperture) {};
+   * bool vtkTool::Closed() -> bool vtkTool::IsClosed()
+   * getLastDirection -> GetLastDirection
+   * void Transforma(double dato1, double dato2, double dato3) ->	void TransformData(double dato1, double dato2, double dato3);
+   * void updateCollisionModel() -> void UpdateCollisionModel();
+   * virtual bool possibleClipped() -> virtual bool IsClipped();
+ * Cambio de nombre en los atributos:
+   * bool _bClipped;
+ * Funciones Eliminadas:
+   * void multPM(float* vect,float* matrix,float* vResult); // se resuelve con métodos de la clase vtkMath en vtkTool
+ * Se ha modificado la asignación de los valores de los atributos tipo vtkOBB (Mirar nuevos métodos Set/Get de vtkOBB).
+   
+== vtkToolScissors ==
+ * Cambio de nombre en el método:
+   * virtual void ActualizeAperture(double Aperture) {} -> virtual void UpdateAperture(double Aperture) {};
+   * bool vtkTool::Closed() -> bool vtkTool::IsClosed()
+   * getLastDirection -> GetLastDirection
+   * void updateCollisionModel() -> void UpdateCollisionModel();
+   * 	bool possibleCut() -> bool IsClosed();
+   * 	int getType() -> 	int GetType();
+ * Funciones eliminadas:
+   * void multPM(float* vect,float* matrix,float* vResult);//Disponible en la clase matrix.h
+
+== vtkOBB ==
+ * Se ha reestructurado la clase. Los atributos han pasado a ser privados y se ha creado por cada uno de los atributos los métodos Set/Get para acceder a ellos. Además se ha cambiado el tipo del atributo matrix.h:
+ * Cambio de tipo del atributo:
+   * float matrix[16] -> vtkMatrix4x4 matrix; 
+   * float x[3] -> vtkPoints;
+   
+=== vtkSimulation ===   
+
+== vtkSimulation ==
+
+ * Cambio de Nombre en el método:
+   * void vtkSimulation::SetCollisionLibrary(vtkCollision *Library) -> void vtkSimulation::SetCollisionManager(vtkCollisionManager *manager)
+   * vtkCollision* vtkSimulation::GetCollisionLibrary() -> vtkCollisionManager* vtkSimulation::GetCollisionManager() {
+ * Cambio de nombre dwel atributo:
+   * vtkCollisionLibrary *CollisionLibrary -> vtkCollisionManager *CollisionManager;
+   
+=== vtkT2Mesh ===
+
+== vtkEsquiPolyData == 
+
+  * Se ha movido el include de macros (#include <Macros.h>) hasta arriba, por que se producía un confusión entre la macro "max" definida en Macros.h y la propia de vtk.
+  
+=== vtkColDetect ===
+
+ * Se han eliminado todas las referencias a este paquete ya que estaban obsoletas.
+
+=== Miscelaneous ===
+
+ * El módulo encargado de la detección de colisiones, vtkbioeng ha sido reubicado en /src/CDM/ para dotar a la estructura de la posibilidad de añadir nuevos modelos de detección de colisiones.
+ * Este módulo esta disponible como independiente, asi que no es necesaria su compilación: Se utliza el códigio fuente y las librerias precompiladas con cmake(src/CDM/vtkbioeng/bin). También se ha modificado el fichero CMakelists.txt de src/ para añadir los includes y links necesarios.
