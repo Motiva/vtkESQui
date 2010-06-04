@@ -25,7 +25,7 @@ void VerletSolver::ComputeNextStep(double* posNext,
 			//this->derivatives->evalSpeed(this->dx, posCurr, speedCurr);
 			this->derivatives->evalAcceleration(this->dv, posNext, speedNext);
 
-			for (vtkIdType i = 0; i < numPoints; i++) {
+			for (unsigned int i = 0; i < numPoints; i++) {
 
 				vtkIdType i3_0 = i*3;
 				vtkIdType i3_1 = i*3 + 1;
