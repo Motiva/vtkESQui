@@ -108,7 +108,7 @@ void vtkPiece::Init()
 		this->SimpleMeshActor->GetProperty()->SetOpacity(0.1);
 
 		this->Renderer->AddActor(this->Actor);
-		this->Renderer->AddActor(this->SimpleMeshActor);
+		//this->Renderer->AddActor(this->SimpleMeshActor);
 	}
 
 }
