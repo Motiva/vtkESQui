@@ -57,7 +57,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkPolyData.h"
 #include "vtkActorCollection.h"
 #include "vtkTransformPolyDataFilter.h"
-// Importa ficheros 3DS para usarlos en el simulador ESQUI
 
 //! Import 3DS files to VTK data structure
 class VTK_ESQUI_UTILITIES_EXPORT vtk3DSImporterEsqui : public vtk3DSImporter

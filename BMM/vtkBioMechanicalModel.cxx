@@ -140,6 +140,7 @@ void vtkBioMechanicalModel::InsertContacts(vtkContactCollection * collection)
 		this->InsertNextContact(c);
 		c = collection->GetNextContact();
 	}
+	cout << "Inserted Contacts: " << collection->GetNumberOfItems() << endl;
 }
 
 //--------------------------------------------------------------------------

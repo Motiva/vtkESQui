@@ -77,12 +77,19 @@ vtkIdType vtkContactCollection::ContainsContact(vtkContact * contact)
 	for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
 	{
 		local = this->GetContact(id);
+
+		//cout << "#-------------------------------#\n";
+		//cout << "#- " << id << "-#\n";
+		//local->Print(cout);
+		//cout << "#- new -#\n";
+		//contact->Print(cout);
+
 		if ((local) &&
 				(local->GetToolId() == contact->GetToolId()) &&
 				(local->GetOrganId() == contact->GetOrganId()) &&
-				(local->GetPointId(0) == contact->GetPointId(0)) &&
-				(local->GetPointId(1) == contact->GetPointId(1)))
+				(local->GetPointId(0) == contact->GetPointId(0)))
 		{
+			//cout << "Contact already exists...\n";
 			return 1;
 		}
 	}

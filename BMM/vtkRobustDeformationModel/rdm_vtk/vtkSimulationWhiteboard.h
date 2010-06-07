@@ -14,11 +14,11 @@
 #define __vtkSimulationWhiteboard_h
 
 // VTK includes
-#include <vtkUnstructuredGridAlgorithm.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkIdList.h>
-#include <vtkCollisionEventData.h>
-#include <vtkActor.h>
+#include "vtkUnstructuredGridAlgorithm.h"
+#include "vtkUnstructuredGrid.h"
+#include "vtkIdList.h"
+#include "vtkCollisionEventData.h"
+#include "vtkActor.h"
 
 #include <stack>
 

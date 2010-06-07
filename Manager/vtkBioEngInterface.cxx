@@ -159,8 +159,6 @@ void vtkBioEngInterface::Update()
 				contact->SetPoint(1, point);
 				contact->SetCellId(1, cellId);
 
-				//contact->Print(cout);
-
 				double vector[3];
 				tool->GetDirection(vector);
 				contact->SetDirectionVector(vector);

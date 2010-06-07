@@ -51,6 +51,7 @@ vtkContact::vtkContact() {
 	this->PointIds = vtkIdList::New();
 	this->CellIds = vtkIdList::New();
 	this->Points = vtkPoints::New();
+	this->Points->SetDataTypeToDouble();
 }
 
 //--------------------------------------------------------------------------

@@ -50,6 +50,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkScenario.h"
 #include "vtkSimulationManager.h"
+#include "vtkSimulationInteractorStyle.h"
+#include "vtkSimulation.h"
 #include "vtkToolCollection.h"
 #include "vtkOrganCollection.h"
 #include "vtkPolyDataReader.h"
@@ -62,7 +64,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLightCollection.h"
 #include "vtkToolPincers.h"
 #include "vtkCubeSource.h"
-#include "vtkSimulation.h"
 
 #include "vtkSRMLImporter.h"
 
@@ -72,7 +73,7 @@ namespace EsquiExampleNS{
 	//Note: Global variables may have its first letter on uppercase
 	const char * ExpandDataFileName(const char * fname);
 	//const char * path ="C:/Workspace/data/vtkESQuiData";
-	const char * path ="/home/jorge/Workspace/data/vtkESQuiData";
+	const char * path ="/home/jballesteros/Workspace/data/vtkESQuiData";
 }
 
 using namespace std;
@@ -109,11 +110,10 @@ int main(int argc, char * argv[])
 	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
 	iren->SetRenderWindow(renWin);
 
-
 	/**********  Scenario Definitions  ********/
 	vtkScenario * Scenario = vtkScenario::New();
 	Scenario->SetRenderWindow(renWin);
-	
+
 	/**********  Simulation Setup  ********/
 	vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
 	SimulationManager->SetCollisionDetectionLibrary("vtkbioeng");
@@ -123,10 +123,14 @@ int main(int argc, char * argv[])
 	vtkSimulation * Simulation = vtkSimulation::New();
 	Simulation->SetSimulationManager(SimulationManager);
 
+	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
+	style->SetScenario(Scenario);
+	iren->SetInteractorStyle(style);
+
 	/**********  Simulation Import from SRML File  ********/
 	vtkSRMLImporter * Importer = vtkSRMLImporter::New();
 	Importer->SetDataPath(path);
-	Importer->SetFileName(ExpandDataFileName("laparoscopy.srml"));
+	Importer->SetFileName(ExpandDataFileName("laparoscopyRDM.srml"));
 	Importer->SetSimulation(Simulation);
 	Importer->Read();
 

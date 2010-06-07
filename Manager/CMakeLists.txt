@@ -11,6 +11,7 @@ SET(UKIT MANAGER)  #Uppercase Kit Name
 SET (Kit_SRCS 
 vtkSimulation.cxx
 vtkSimulationManager.cxx
+vtkSimulationInteractorStyle.cxx
 vtkCollisionDetectionLibrary.cxx
 vtkBioEngInterface.cxx
 )
