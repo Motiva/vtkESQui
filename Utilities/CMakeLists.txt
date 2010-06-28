@@ -22,6 +22,9 @@ ${PROJECT_NAME}BMM
 vtkCommon 
 vtkRendering
 vtkHybrid
+vtkParticleSpringSystem
+vtkMSS
+vtkBioeng
 )
 
 # Set your list of TCL libraries here.

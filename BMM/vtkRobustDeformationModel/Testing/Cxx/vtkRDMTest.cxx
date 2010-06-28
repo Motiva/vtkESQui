@@ -7,6 +7,7 @@
 #include "vtkDataSetMapper.h"
 #include "vtkPoints.h"
 #include "vtkCellArray.h"
+#include "vtkIdList.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
 
@@ -27,11 +28,117 @@
 #include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
 
+#include "vtkCommand.h"
+
 #include "vtkRobustDeformationModel.h"
+
+
+class vtkTimerCallback : public vtkCommand
+{
+public:
+	static vtkTimerCallback *New()
+	{
+		vtkTimerCallback *cb = new vtkTimerCallback;
+		cb->FastTimerId = 0;
+		cb->FasterTimerId = 0;
+		cb->RenderTimerId = 0;
+		return cb;
+	}
+
+	virtual void Execute(vtkObject *caller, unsigned long eventId, void *callData)
+	{
+		if (vtkCommand::TimerEvent == eventId)
+		{
+			int tid = * static_cast<int *>(callData);
+
+			if (tid == this->FastTimerId)
+			{
+				//Update RDM
+				vtkUnstructuredGrid * mesh = vtkUnstructuredGrid::SafeDownCast(this->RDM->GetInput());
+				vtkIdList * idList = vtkIdList::New();
+				vtkDoubleArray * forces = vtkDoubleArray::New();
+				forces->SetNumberOfComponents(3);
+
+				//vtkPoints * points = mesh->GetPoints();
+				vtkIdList * cells = vtkIdList::New();
+				double force[3] = {0,0,-0.001};
+				cout << "#------------------------------------------------#\n";
+
+				for(vtkIdType i = 0; i<this->List->GetNumberOfIds(); i++)
+				{
+					vtkIdType pointId = this->List->GetId(i);
+					mesh->GetPointCells(pointId,cells);
+					//double * point = points->GetPoint(pointId);
+					//std::cout << "[vtkRobustModelDeformation] Inserted contact\nPoint["<< pointId << "]: " << point[0] << " | "     << point[1] << " | " << point[2] << "\n";
+					idList->InsertNextId(pointId);
+					forces->InsertNextTuple(force);
+				}
+
+				//Set a fictional force
+				this->RDM->SetContacts(idList, forces);
+
+			}
+			else if (tid == this->FasterTimerId)
+			{
+				vtkTimerLog * timer = vtkTimerLog::New();
+				timer->StartTimer();
+				this->RDM->Update();
+				timer->StopTimer();
+
+				//std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
+
+				//std::cout << "[Test] Output grid #points: " << ogrid->GetNumberOfPoints() << "\n";
+				//std::cout << "[Test] Output grid #cells: " << ogrid->GetNumberOfCells() << "\n";
+
+			}
+			else if (tid == this->RenderTimerId)
+			{
+				vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::SafeDownCast(caller);
+				if (iren && iren->GetRenderWindow() && iren->GetRenderWindow()->GetRenderers())
+				{
+					iren->Render();
+				}
+			}
+		}
+	}
+
+	void SetFastTimerId(int tid)
+	{
+		this->FastTimerId = tid;
+	}
+
+	void SetFasterTimerId(int tid)
+	{
+		this->FasterTimerId = tid;
+	}
+
+	void SetRenderTimerId(int tid)
+	{
+		this->RenderTimerId = tid;
+	}
+
+	void SetBMM(vtkRobustDeformationModel * rdm)
+	{
+		this->RDM = rdm;
+	}
+
+	void SetContactIds(vtkIdList * list)
+	{
+		this->List = list;
+	}
+private:
+	int FastTimerId;
+	int RenderTimerId;
+	int FasterTimerId;
+
+	vtkIdList * List;
+
+	vtkRobustDeformationModel * RDM;
+};
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "/home/jorge/Workspace/data/vtkESQuiData/Scenario/Organs/sphere.vtu";
+	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/cuboid.vtu";
 
 	if (argc > 1)
 	{
@@ -66,59 +173,11 @@ int main(int argc, char * argv[])
 
 	vtkRobustDeformationModel* rdm = vtkRobustDeformationModel::New();
 	rdm->SetInput(mesh);
-	rdm->SetDamping(2);//Friction
+	rdm->SetDamping(0.5);//Friction
 	rdm->SetDistanceForceCoefficient(500);
 	rdm->SetSurfaceForceCoefficient(0);
 	rdm->SetVolumeForceCoefficient(100);
 	rdm->Init();
-
-	vtkIdList * idList = vtkIdList::New();
-	vtkDoubleArray * forces = vtkDoubleArray::New();
-	forces->SetNumberOfComponents(3);
-
-	vtkPoints * points = mesh->GetPoints();
-	vtkIdList * cells = vtkIdList::New();
-
-	vtkPointLocator * locator = vtkPointLocator::New();
-	double bounds[6];
-	mesh->GetBounds(bounds);
-
-	std::cout << "[Test Bounds]: X(" << bounds[0] << "," << bounds[1] << "), Y(" << bounds[2] << "," << bounds[3] << "), Z(" << bounds[4] << "," << bounds[5] << ")\n";
-	double point[3] = {(bounds[0]+(bounds[1]-bounds[0])/2),
-	                       (bounds[2]+(bounds[3]-bounds[2])/2),
-	                        bounds[5]};
-	                       //(bounds[4]+(bounds[5]-bounds[4])/2)};
-
-	double force[3] = {0,0,0.1};
-
-	locator->SetDataSet(mesh);
-
-	vtkIdType id = locator->FindClosestPoint(point);
-
-	for(vtkIdType pointId=id; pointId<id+1; pointId++)
-	{
-		mesh->GetPointCells(pointId,cells);
-		double * point = points->GetPoint(pointId);
-		std::cout << "[vtkRobustModelDeformation] Inserted contact\nPoint["<< pointId << "]: " << point[0] << " | "     << point[1] << " | " << point[2] << "\n";
-		idList->InsertNextId(pointId);
-		forces->InsertNextTuple(force);
-	}
-
-	//Set a fictional force
-	rdm->SetContacts(idList, forces);
-
-	vtkTimerLog * timer = vtkTimerLog::New();
-	timer->StartTimer();
-	rdm->Update();
-	timer->StopTimer();
-
-	vtkUnstructuredGrid *ogrid = rdm->GetOutput();
-	std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
-
-
-	ogrid->Update();
-	std::cout << "[Test] Output grid #points: " << ogrid->GetNumberOfPoints() << "\n";
-	std::cout << "[Test] Output grid #cells: " << ogrid->GetNumberOfCells() << "\n";
 
 	vtkRenderer * renderer = vtkRenderer::New();
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
@@ -139,7 +198,7 @@ int main(int argc, char * argv[])
 	actor->GetProperty()->SetOpacity(0.8);
 
 	vtkDataSetMapper * mapper2 = vtkDataSetMapper::New();
-	mapper2->SetInput(ogrid);
+	mapper2->SetInput(rdm->GetOutput());
 	mapper2->ScalarVisibilityOff();
 
 	vtkActor * actor2 = vtkActor::New();
@@ -151,7 +210,42 @@ int main(int argc, char * argv[])
 
 	iren->Initialize();
 
-	renWin->Render();
+	// Sign up to receive TimerEvent:
+	//
+	vtkTimerCallback *cb = vtkTimerCallback::New();
+	iren->AddObserver(vtkCommand::TimerEvent, cb);
+	int tid;
+
+	cb->SetBMM(rdm);
+
+	vtkPointLocator * locator = vtkPointLocator::New();
+	double bounds[6];
+	mesh->GetBounds(bounds);
+
+	//std::cout << "[Test Bounds]: X(" << bounds[0] << "," << bounds[1] << "), Y(" << bounds[2] << "," << bounds[3] << "), Z(" << bounds[4] << "," << bounds[5] << ")\n";
+	double point[3] = {(bounds[0]+bounds[1])/2,
+				(bounds[2]+bounds[3])/2,
+				bounds[5]};
+
+	locator->SetDataSet(mesh);
+
+	vtkIdList * list = vtkIdList::New();
+	locator->FindClosestNPoints(3, point, list);
+	cb->SetContactIds(list);
+
+	// Create repeating timer for contact set
+	tid = iren->CreateRepeatingTimer(1000);
+	cb->SetFastTimerId(tid);
+
+	//Create a faster timer for BMM update
+	tid = iren->CreateRepeatingTimer(10);
+	cb->SetFasterTimerId(tid);
+
+	// Create a slower repeating timer to trigger Render calls.
+	// (This fires at the rate of approximately 20 frames per second.)
+	//
+	tid = iren->CreateRepeatingTimer(50);
+	cb->SetRenderTimerId(tid);
 
 	iren->Start();
 

@@ -164,7 +164,7 @@ int vtkRDM::RequestData(vtkInformation* request, vtkInformationVector** inputVec
 	vtkUnstructuredGrid *output = vtkUnstructuredGrid::SafeDownCast(
 			outInfo->Get(vtkDataObject::DATA_OBJECT()));
 	output->DeepCopy(input);
-	this->Step(0.01);
+	this->Step(0.001);
 	return 1;
 }
 

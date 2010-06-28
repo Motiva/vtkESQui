@@ -35,8 +35,7 @@ void vtkRobustDeformationModel::SetContacts(vtkIdList * ids, vtkDoubleArray * di
 		//Retrieve current Position from ugrid Accelerator
 		double* currPos = const_cast<double*>(this->gridAccel->getPoint(id));
 
-		cout << "id [" << id << "]\n";
-		cout << "currPos: " << currPos[0] << ", " << currPos[1] << ", " << currPos[2] << ", " << endl;
+		cout << "id [" << id << "] ";
 		cout << "point: " << point[0] << ", " << point[1] << ", " << point[2] << ", " << endl;
 		cout << "dir: " << dir[0] << ", " << dir[1] << ", " << dir[2] << ", " << endl;
 

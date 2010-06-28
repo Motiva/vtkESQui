@@ -55,10 +55,10 @@ vtkOrgan::vtkOrgan()
 	this->FileName = "";
 	this->TextureFileName = "";
 
-	this->Reader = vtkXMLUnstructuredGridReader::New();
+	this->Reader = vtkXMLPolyDataReader::New();
 
 	//Graphical Objects
-	this->TransformFilter = vtkTransformFilter::New();
+	this->TransformFilter = vtkTransformPolyDataFilter::New();
 	this->Transform = vtkTransform::New();
 	this->Actor = vtkActor::New();
 	this->Mapper = vtkDataSetMapper::New();
@@ -129,8 +129,7 @@ void vtkOrgan::Init()
 
 			this->TransformFilter->Update();
 
-			vtkUnstructuredGrid * txGrid = vtkUnstructuredGrid::SafeDownCast(this->TransformFilter->GetOutputDataObject(0));
-
+			vtkPolyData * txGrid = this->TransformFilter->GetOutput();
 			if (txGrid->GetPoints()->GetData()->GetDataType() != VTK_DOUBLE)
 			{
 				//Set input mesh where deformation will be calculated
@@ -144,7 +143,7 @@ void vtkOrgan::Init()
 			this->Bmm->SetInput(txGrid);
 			this->Bmm->Init();
 
-			vtkUnstructuredGrid * output = this->Bmm->GetOutput();
+			vtkPolyData * output = this->Bmm->GetOutput();
 			cout << "Bmm->GetOutput: " << output->GetNumberOfPoints() << endl;
 
 			if(!strcmp(this->TextureFileName, ""))
@@ -192,7 +191,7 @@ void vtkOrgan::Init()
 }
 
 //--------------------------------------------------------------------------
-void vtkOrgan::SetInput(vtkUnstructuredGrid * data)
+void vtkOrgan::SetInput(vtkPolyData * data)
 {
 	this->Input = data;
 }
@@ -231,7 +230,7 @@ void vtkOrgan::UpdateSimpleMesh()
 }
 
 //--------------------------------------------------------------------------
-vtkUnstructuredGrid * vtkOrgan::GetOutput()
+vtkPolyData * vtkOrgan::GetOutput()
 {
 	return this->Bmm->GetOutput();
 }

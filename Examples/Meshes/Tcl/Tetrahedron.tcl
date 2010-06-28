@@ -1,6 +1,6 @@
 package require vtk
 
-vtkUnstructuredGridWriter writer
+vtkXMLUnstructuredGridWriter writer
 
 #Generate a synthetic Tetrahedron
 vtkPoints points
@@ -26,6 +26,7 @@ tetraMesh SetInput tetraGrid
 tetraMesh Update
 
 set filename "tetra.vtu"
+writer SetDataModeToAscii
 writer SetInput [ tetraMesh GetOutput ]
 writer SetFileName $filename
 writer Update

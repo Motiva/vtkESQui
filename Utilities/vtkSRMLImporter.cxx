@@ -406,7 +406,10 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 {
 	organ->SetName(item->GetAttribute("Name"));
 	organ->SetFileName(ExpandDataFileName(item->GetAttribute("FileName")));
-	organ->SetTextureFileName(ExpandDataFileName(item->GetAttribute("TextureFile")));
+	if (item->GetAttribute("TextureFile"))
+	{
+		organ->SetTextureFileName(ExpandDataFileName(item->GetAttribute("TextureFile")));
+	}
 
 	double array[3];
 	item->GetVectorAttribute("Position", 3, array);
@@ -421,9 +424,15 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	//Biomechanical Model Import
 	vtkXMLDataElement * bmm = item->LookupElementWithName("BMM");
 	vtkBioMechanicalModel * model;
+	const char * name = bmm->GetAttribute("Name");
 	if(!strcmp(bmm->GetAttribute("Name"), "vtkMSS"))
 	{
 		model = vtkMSSInterface::New();
+	}
+	else if (!strcmp(bmm->GetAttribute("Name"), "vtkPSS"))
+	{
+		cout << "vtkParticleSpringSystem BioMech Model" << endl;
+		model = vtkPSSInterface::New();
 	}
 	else if (!strcmp(bmm->GetAttribute("Name"), "vtkFeMesh"))
 	{
@@ -463,6 +472,26 @@ void vtkSRMLImporter::SetBioMechanicalModelData(vtkBioMechanicalModel * model, v
 		int value;
 		item->GetScalarAttribute("Steps", value);
 		bmm->SetSteps(value);
+	}
+	else if(!strcmp(name, "vtkPSS"))
+	{
+		vtkPSSInterface * bmm = vtkPSSInterface::SafeDownCast(model);
+		double coefficient;
+		item->GetScalarAttribute("SpringCoefficient", coefficient);
+		bmm->SetSpringCoefficient(coefficient);
+		item->GetScalarAttribute("DampingCoefficient", coefficient);
+		bmm->SetDampingCoefficient(coefficient);
+		item->GetScalarAttribute("DistanceCoefficient", coefficient);
+		bmm->SetDistanceCoefficient(coefficient);
+		double mass;
+		item->GetScalarAttribute("Mass", mass);
+		bmm->SetMass(mass);
+		double delta;
+		item->GetScalarAttribute("DeltaT", delta);
+		bmm->SetDeltaT(delta);
+		int value;
+		item->GetScalarAttribute("RigidityFactor", value);
+		bmm->SetRigidityFactor(value);
 	}
 	else if (!strcmp(name, "vtkFeMesh"))
 	{

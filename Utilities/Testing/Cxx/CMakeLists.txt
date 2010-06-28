@@ -12,8 +12,7 @@ TARGET_LINK_LIBRARIES(${KIT}CxxTests
 	vtkGraphics 
 	vtkCommon 
 	vtkFiltering
-	vtkMSS
-	vtkBioeng)
+	)
 
 SET (TestsToRun ${Tests})
 REMOVE (TestsToRun ${KIT}CxxTests.cxx)

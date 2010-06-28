@@ -66,6 +66,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkOrgan.h"
 #include "vtkOrganCollection.h"
 #include "vtkMSSInterface.h"
+#include "vtkPSSInterface.h"
 #include "vtkRDMInterface.h"
 
 #ifndef VTKESQUI_USE_NO_HAPTICS

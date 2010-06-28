@@ -51,8 +51,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiBMMWin32Header.h"
 #include "vtkObject.h"
 #include "vtkObjectFactory.h"
-#include "vtkUnstructuredGrid.h"
-#include "vtkUnstructuredGridAlgorithm.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataAlgorithm.h"
 #include "vtkInformation.h"
 #include "vtkInformationVector.h"
 #include "vtkPolyData.h"
@@ -66,10 +66,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 //! Generic interface to the Biomechanical Model
 
-class VTK_ESQUI_BMM_EXPORT vtkBioMechanicalModel: public vtkUnstructuredGridAlgorithm
+class VTK_ESQUI_BMM_EXPORT vtkBioMechanicalModel: public vtkPolyDataAlgorithm
 {
 public:
-	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkUnstructuredGridAlgorithm);
+	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkPolyDataAlgorithm);
 
 	static vtkBioMechanicalModel *New();
 	const char *GetClassName() {return "vtkBioMechanicalModel";};
@@ -112,7 +112,7 @@ public:
 	const char * Name;
 
 	//!3D Surface Input
-	vtkUnstructuredGrid * Mesh;
+	vtkPolyData * Mesh;
 
 	//!Contacted points
 	vtkPoints * ContactPoints;

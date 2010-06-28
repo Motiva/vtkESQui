@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkDataSetMapper.h"
 #include "vtkTextureMapToSphere.h"
 #include "vtkTransformTextureCoords.h"
-#include "vtkXMLUnstructuredGridReader.h"
+#include "vtkXMLPolyDataReader.h"
 #include "vtkDelaunay2D.h"
 #include "vtkBioMechanicalModel.h"
 #include "vtkMSSInterface.h"
@@ -62,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkPointPlotter.h"
 #include "vtkJPEGReader.h"
 #include "vtkTransform.h"
-#include "vtkTransformFilter.h"
+#include "vtkTransformPolyDataFilter.h"
 
 #include "vtkTimerLog.h"
 
@@ -79,10 +79,10 @@ public:
 
 	//!Set input mesh dataset
 	/*!
-	* \param data vtkUnstructuredGrid object containing mesh data (points, cells...)
+	* \param data vtkPolyData object containing mesh data (points, cells...)
 	* \sa GetOutput()
 	*/
-	void SetInput(vtkUnstructuredGrid * data);
+	void SetInput(vtkPolyData * data);
 
 	//!Update the object
 	void Update();
@@ -90,11 +90,11 @@ public:
 	//!Regenerate simplified mesh after changes due to transformations/deformations
 	void UpdateSimpleMesh();
 
-	//!Return output data as an vtkUnstructuredGrid object
+	//!Return output data as an vtkPolyData object
 	/*!
-	* \sa SetInput(vtkUnstructuredGrid *data)
+	* \sa SetInput(vtkPolyData *data)
 	*/
-	vtkUnstructuredGrid * GetOutput();
+	vtkPolyData * GetOutput();
 
 	//!Set the Biomechanical Model of the organ
 	/*!
@@ -371,10 +371,10 @@ protected:
 	vtkTexture * Texture;
 
 	//!Input Unstructured Grid
-	vtkUnstructuredGrid * Input;
+	vtkPolyData * Input;
 
 	//!Unstructured grid reader
-	vtkXMLUnstructuredGridReader * Reader;
+	vtkXMLPolyDataReader * Reader;
 
 	//!BioMechamical Model of the organ
 	vtkBioMechanicalModel * Bmm;
@@ -423,7 +423,7 @@ protected:
 	vtkDataSetMapper * Mapper;
 
 	//!Transform filter of the organ
-	vtkTransformFilter *TransformFilter;
+	vtkTransformPolyDataFilter *TransformFilter;
 
 	//!Transform function of the organ
 	vtkTransform * Transform;

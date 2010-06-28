@@ -20,9 +20,9 @@
 #include "vtkCellDataToPointData.h"
 #include "vtkEdgePoints.h"
 
-#include "vtkUnstructuredGrid.h"
-#include "vtkUnstructuredGridWriter.h"
-#include "vtkXMLUnstructuredGridReader.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataWriter.h"
+#include "vtkXMLPolyDataReader.h"
 
 #include "vtkTimerLog.h"
 #include "vtkDoubleArray.h"
@@ -30,7 +30,7 @@
 
 #include "vtkCommand.h"
 
-#include "vtkMSS.h"
+#include "vtkParticleSpringSystem.h"
 
 
 class vtkTimerCallback : public vtkCommand
@@ -53,42 +53,17 @@ public:
 
 			if (tid == this->FastTimerId)
 			{
-				//Update RDM
-				vtkUnstructuredGrid * mesh = vtkUnstructuredGrid::SafeDownCast(this->BMM->GetInput());
-				vtkIdList * idList = vtkIdList::New();
-				vtkDoubleArray * forces = vtkDoubleArray::New();
-				forces->SetNumberOfComponents(3);
-
-				//vtkPoints * points = mesh->GetPoints();
-				vtkIdList * cells = vtkIdList::New();
-				double force[3] = {0,0,-0.1};
-				cout << "#------------------------------------------------#\n";
-
-				for(vtkIdType i = 0; i<this->List->GetNumberOfIds(); i++)
-				{
-					vtkIdType pointId = this->List->GetId(i);
-					mesh->GetPointCells(pointId,cells);
-					//double * point = points->GetPoint(pointId);
-					//std::cout << "[vtkRobustModelDeformation] Inserted contact\nPoint["<< pointId << "]: " << point[0] << " | "     << point[1] << " | " << point[2] << "\n";
-					idList->InsertNextId(pointId);
-					forces->InsertNextTuple(force);
-				}
-
-				//Set a fictional force
-				this->BMM->SetContacts(idList, forces);
 
 			}
 			else if (tid == this->FasterTimerId)
 			{
 				vtkTimerLog * timer = vtkTimerLog::New();
 				timer->StartTimer();
+				this->BMM->Modified();
 				this->BMM->Update();
 				timer->StopTimer();
 
-				//std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
-
-				//std::cout << "[Test] Output grid #points: " << ogrid->GetNumberOfPoints() << "\n";
-				//std::cout << "[Test] Output grid #cells: " << ogrid->GetNumberOfCells() << "\n";
+				std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
 
 			}
 			else if (tid == this->RenderTimerId)
@@ -117,7 +92,7 @@ public:
 		this->RenderTimerId = tid;
 	}
 
-	void SetBMM(vtkMSS * bmm)
+	void SetBMM(vtkParticleSpringSystem * bmm)
 	{
 		this->BMM = bmm;
 	}
@@ -133,23 +108,23 @@ private:
 
 	vtkIdList * List;
 
-	vtkMSS * BMM;
+	vtkParticleSpringSystem * BMM;
 };
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/cuboid.vtu";
+	const char * filename = "/home/jorge/Workspace/data/vtkESQuiData/Scenario/Meshes/cube.vtp";
 
 	if (argc > 1)
 	{
 		filename = argv[1];
 	}
 
-	vtkXMLUnstructuredGridReader * reader = vtkXMLUnstructuredGridReader::New();
+	vtkXMLPolyDataReader * reader = vtkXMLPolyDataReader::New();
 	reader->SetFileName(filename);
 	reader->Update();
 
-	vtkUnstructuredGrid * mesh = reader->GetOutput();
+	vtkPolyData * mesh = reader->GetOutput();
 
 	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
 	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
@@ -166,18 +141,15 @@ int main(int argc, char * argv[])
 
 	mesh->Update();
 
-	if (mesh->GetPoints()->GetData()->GetDataType() != VTK_DOUBLE) {
-		cout << "Error, mesh vtkUnstructuredGrid uses wrong data type, VTK_DOUBLE     is required!" << endl;
-		exit(0);
-		}
-
-	vtkMSS* mss = vtkMSS::New();
-	mss->SetInput(mesh);
-	mss->SetDistanceCoefficient(20);
-	mss->SetDampingCoefficient(0.5);//Friction
-	mss->SetMass(0.1);
-	mss->SetDeltaT(0.001);
-	mss->SetSteps(10);
+	vtkParticleSpringSystem* ParticleSpringSystem = vtkParticleSpringSystem::New();
+	ParticleSpringSystem->SetInput(mesh);
+	ParticleSpringSystem->SetSpringCoefficient(100);
+	ParticleSpringSystem->SetDistanceCoefficient(10);
+	ParticleSpringSystem->SetDampingCoefficient(2.0);//Friction
+	ParticleSpringSystem->SetMass(0.1);
+	ParticleSpringSystem->SetDeltaT(0.001);
+	ParticleSpringSystem->SetRigidityFactor(1);
+	ParticleSpringSystem->Init();
 
 	vtkRenderer * renderer = vtkRenderer::New();
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
@@ -193,23 +165,30 @@ int main(int argc, char * argv[])
 
 	vtkActor * actor = vtkActor::New();
 	actor->SetMapper(mapper);
-	actor->GetProperty()->SetColor(1,1,0);
-	actor->GetProperty()->SetRepresentationToWireframe();
-	actor->GetProperty()->SetOpacity(0.5);
+	actor->GetProperty()->SetColor(0,1,0);
+	//actor->GetProperty()->SetRepresentationToWireframe();
+	//actor->GetProperty()->SetOpacity(0.9);
 
 	vtkDataSetMapper * mapper2 = vtkDataSetMapper::New();
-	mapper2->SetInput(mss->GetOutput());
+	mapper2->SetInput(ParticleSpringSystem->GetOutput());
 	mapper2->ScalarVisibilityOff();
 
 	vtkActor * actor2 = vtkActor::New();
 	actor2->SetMapper(mapper2);
 	actor2->GetProperty()->SetColor(1,0,0);
-	actor2->GetProperty()->SetOpacity(0.8);
+	//actor2->GetProperty()->SetRepresentationToWireframe();
+	actor2->GetProperty()->SetOpacity(1.0);
 
-	renderer->AddActor(actor);
+
+	//renderer->AddActor(actor);
 	renderer->AddActor(actor2);
+	renderer->SetBackground(1,1,1);
+
+	renderer->ResetCamera();
 
 	iren->Initialize();
+
+	renWin->Render();
 
 	// Sign up to receive TimerEvent:
 	//
@@ -217,41 +196,51 @@ int main(int argc, char * argv[])
 	iren->AddObserver(vtkCommand::TimerEvent, cb);
 	int tid;
 
-	cb->SetBMM(mss);
+	cb->SetBMM(ParticleSpringSystem);
 
+	//Locate contact points
 	vtkPointLocator * locator = vtkPointLocator::New();
 	double bounds[6];
 	mesh->GetBounds(bounds);
 
-	//std::cout << "[Test Bounds]: X(" << bounds[0] << "," << bounds[1] << "), Y(" << bounds[2] << "," << bounds[3] << "), Z(" << bounds[4] << "," << bounds[5] << ")\n";
-	double point[3] = {(bounds[0]+bounds[1])/2,
-			(bounds[2]+bounds[3])/2,
-			bounds[5]};
+	double p[3] = {bounds[0], bounds[3], bounds[5]};
 
 	locator->SetDataSet(mesh);
 
 	vtkIdList * list = vtkIdList::New();
-	locator->FindClosestNPoints(3, point, list);
-	cb->SetContactIds(list);
+	vtkDoubleArray * directions = vtkDoubleArray::New();
+	directions->SetNumberOfComponents(3);
 
-	// Create repeating timer for contact set
-	tid = iren->CreateRepeatingTimer(1000);
-	cb->SetFastTimerId(tid);
+	list->InsertNextId(6);
+	//locator->FindClosestNPoints(1, p, list);
+
+	//Set Contact
+	double dir[3];
+	dir[0] = 0.0;
+	dir[1] = 0.05;
+	dir[2] = 0.1;
+
+	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
+	{
+		directions->InsertNextTuple(dir);
+	}
+
+	//Set a fictional force
+	ParticleSpringSystem->SetContacts(list, directions);
 
 	//Create a faster timer for BMM update
 	tid = iren->CreateRepeatingTimer(10);
 	cb->SetFasterTimerId(tid);
 
 	// Create a slower repeating timer to trigger Render calls.
-	// (This fires at the rate of approximately 20 frames per second.)
+	// (This fires at the rate of approximately 25 frames per second.)
 	//
-	tid = iren->CreateRepeatingTimer(50);
+	tid = iren->CreateRepeatingTimer(40);
 	cb->SetRenderTimerId(tid);
 
 	iren->Start();
 
-
-	mss->Delete();
+	ParticleSpringSystem->Delete();
 	mapper->Delete();
 	actor->Delete();
 	mapper2->Delete();

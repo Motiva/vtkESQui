@@ -145,7 +145,7 @@ int vtkMassSpring::RequestData(
         }
     }
     // write intermediate results to text files (vtkUnstructuredGrid)
-    else if (this->DisplayFrames >= 1) {
+    /*else if (this->DisplayFrames >= 1) {
         int frame = 0;
         for (; frame<this->DisplayFrames; frame++) {
             for (int i=0; i<this->Steps / this->DisplayFrames; i++) {
@@ -168,7 +168,7 @@ int vtkMassSpring::RequestData(
     } else {
         cerr << "Display Frame should be greater than 0" << endl;
         return -1;
-    }
+    }*/
     // For final output, points => output
     for (int i=0; i<this->numPoints; i++) {
         this->points->SetPoint(i, posNext[3*i], posNext[3*i+1], posNext[3*i+2]);

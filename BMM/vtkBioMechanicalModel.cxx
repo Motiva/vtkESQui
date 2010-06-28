@@ -47,7 +47,7 @@ vtkStandardNewMacro(vtkBioMechanicalModel);
 //--------------------------------------------------------------------------
 vtkBioMechanicalModel::vtkBioMechanicalModel()
 {
-	this->Mesh = vtkUnstructuredGrid::New();
+	this->Mesh = vtkPolyData::New();
 
 	this->ContactPoints = vtkPoints::New();
 	this->ContactPointIds = vtkIdList::New();
@@ -79,8 +79,8 @@ int vtkBioMechanicalModel::RequestData(
     //vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
     //vtkInformation *outInfo = outputVector->GetInformationObject(0);
     // get the input and output
-    //vtkUnstructuredGrid *input = vtkUnstructuredGrid::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-    //vtkUnstructuredGrid *output = vtkUnstructuredGrid::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+    //vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+    //vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
     std::cout << "vtkBioMechanicalModel::RequestData" << endl;
 
     //output->DeepCopy(input);

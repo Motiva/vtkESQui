@@ -39,73 +39,56 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkMSSInterface_h
-#define __vtkMSSInterface_h
+#include "vtkSpringCollection.h"
 
-#include "vtkESQuiBMMWin32Header.h"
+vtkCxxRevisionMacro(vtkSpringCollection, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkSpringCollection);
 
-#include "vtkTimerLog.h"
+//----------------------------------------------------------------------------
+void vtkSpringCollection::InsertSpring(vtkIdType id, vtkSpring *spring) {
+	this->vtkCollection::ReplaceItem(id, (vtkObject*) spring);
+}
 
-#include "vtkBioMechanicalModel.h"
-#include "vtkMSS.h"
-#include "vtkDelaunay3D.h"
+//--------------------------------------------------------------------------
+void vtkSpringCollection::InsertNextSpring(vtkSpring *spring) {
+	this->vtkCollection::AddItem((vtkObject *) spring);
+}
+
+//--------------------------------------------------------------------------
+vtkSpring * vtkSpringCollection::GetSpring(vtkIdType id) {
+	return static_cast <vtkSpring *>(this->GetItemAsObject(id));
+}
+
+//--------------------------------------------------------------------------
+vtkSpring * vtkSpringCollection::GetNextSpring() {
+	return static_cast <vtkSpring *>(this->GetNextItemAsObject());
+}
+
+//--------------------------------------------------------------------------
+bool vtkSpringCollection::ContainsSpring(vtkSpring * spring) {
+	for(vtkIdType i = 0; i < this->GetNumberOfItems(); i++)
+	{
+		vtkSpring * local = this->GetSpring(i);
+		/*if(local &&
+				(((local->GetParticle(0)->GetId() == Spring->GetParticle(0)->GetId()) &&
+				(local->GetParticle(1)->GetId() == Spring->GetParticle(1)->GetId())) ||
+				((local->GetParticle(1)->GetId() == Spring->GetParticle(0)->GetId()) &&
+				(local->GetParticle(0)->GetId() == Spring->GetParticle(1)->GetId()))))
+		{
+			return 1;
+		}*/
+		if(local->ContainsParticle(spring->GetParticle(0)) &&
+				local->ContainsParticle(spring->GetParticle(1)))
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
 
 
-//! Implementation of the generic Biomechanical Model interface for a mass-spring deformation system
-
-class VTK_ESQUI_BMM_EXPORT vtkMSSInterface : public vtkBioMechanicalModel
+//----------------------------------------------------------------------------
+void vtkSpringCollection::PrintSelf(ostream& os, vtkIndent indent)
 {
-public:
-	vtkTypeRevisionMacro(vtkMSSInterface, vtkBioMechanicalModel);
-	static vtkMSSInterface* New();
-	const char *GetClassName() {return "vtkMSSInterface";};
-	//! Print class object values
-	void PrintSelf(ostream& os, vtkIndent indent);
-
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
-
-	//!Initialize the Biomechanical Model
-	virtual void Init();
-
-	//! Set the MSS Distance coefficient
-	void SetDistanceCoefficient(double value);
-	//! Set the MSS Damping coefficient
-	void SetDampingCoefficient(double value);//Friction
-	//! Set the MSS Mass value
-	void SetMass(double value);
-	//! Set the MSS time step
-	void SetDeltaT(double value);
-	//! Set the MSS number of steps
-	void SetSteps(int value);
-
-protected:
-  vtkMSSInterface();
-  ~vtkMSSInterface();
-
-private:
-  vtkMSSInterface(const vtkMSSInterface&);  // Not implemented.
-  void operator=(const vtkMSSInterface&);  // Not implemented.
-
-  //!Mass-spring system mesh
-  vtkMSS * MSSMesh;
-
-  // MSS specific parameters
-  //! Distance coefficient.
-  double DistanceCoefficient;
-  //! Damping coefficient.
-  /*!
-   * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
-   * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
-   * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
-   */
-  double DampingCoefficient;
-  //! Mass value on each point
-  double Mass;
-  //! calculation time step
-  double DeltaT;
-  //! Number of steps
-  int Steps;
-
-};
-
-#endif
+	this->Superclass::PrintSelf(os,indent);
+}

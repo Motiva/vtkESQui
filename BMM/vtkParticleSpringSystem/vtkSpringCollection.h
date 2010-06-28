@@ -39,73 +39,70 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkMSSInterface_h
-#define __vtkMSSInterface_h
+#ifndef __vtkSpringCollection_h
+#define __vtkSpringCollection_h
 
-#include "vtkESQuiBMMWin32Header.h"
+#include "vtkCollection.h"
+#include "vtkParticleSpringSystemWin32Header.h"
+#include "vtkSpring.h"
 
-#include "vtkTimerLog.h"
-
-#include "vtkBioMechanicalModel.h"
-#include "vtkMSS.h"
-#include "vtkDelaunay3D.h"
-
-
-//! Implementation of the generic Biomechanical Model interface for a mass-spring deformation system
-
-class VTK_ESQUI_BMM_EXPORT vtkMSSInterface : public vtkBioMechanicalModel
+//!  Collection of Springs
+/*! 
+vtkSpringCollection represents and provides methods to manipulate a list of
+Springs (i.e., vtkSpring and subclasses). The list is unsorted and duplicate
+entries are not prevented.
+\sa vtkCollection, vtkSpring
+*/
+class VTK_vtkParticleSpringSystem_EXPORT vtkSpringCollection : public vtkCollection
 {
 public:
-	vtkTypeRevisionMacro(vtkMSSInterface, vtkBioMechanicalModel);
-	static vtkMSSInterface* New();
-	const char *GetClassName() {return "vtkMSSInterface";};
-	//! Print class object values
-	void PrintSelf(ostream& os, vtkIndent indent);
+	//!Create new object
+	static vtkSpringCollection *New();
+	//!Type Revision Macro
+	vtkTypeRevisionMacro(vtkSpringCollection,vtkCollection);
+	//!Print Class Values
+	virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+	//!Insert an Spring to the collection
+	/*!
+	* The Spring will be inserted at the end of the list
+	* \param Spring vtkSpring object to be inserted
+	* \sa InsertSpring(vtkIdType id, vtkSpring *Spring)
+	*/
+	void InsertNextSpring(vtkSpring *Spring);
 
-	//!Initialize the Biomechanical Model
-	virtual void Init();
+	//!Insert an Spring at the specified index
+	/*!
+	* \param id index of the list where the Spring will be inserted
+	* \param Spring vtkSpring object to be inserted
+	* \sa InsertNextSpring(vtkSpring *Spring)
+	*/
+	void InsertSpring(vtkIdType id, vtkSpring *Spring);
 
-	//! Set the MSS Distance coefficient
-	void SetDistanceCoefficient(double value);
-	//! Set the MSS Damping coefficient
-	void SetDampingCoefficient(double value);//Friction
-	//! Set the MSS Mass value
-	void SetMass(double value);
-	//! Set the MSS time step
-	void SetDeltaT(double value);
-	//! Set the MSS number of steps
-	void SetSteps(int value);
+	//!Return an Spring in specified position of the list.
+	/*!
+	* 	Get the Spring in the list with the position id. NULL is returned when the collection is exhausted.
+	* \param id index of the Spring to be returned
+	*/
+	vtkSpring *GetSpring(vtkIdType id);
+
+	//!Return the next Spring on the list.
+	/*!
+	* Get the Spring at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+	*/
+	vtkSpring * GetNextSpring();
+
+	//!Return whether the collection contains a Spring or not
+	bool ContainsSpring(vtkSpring * Spring);
+
 
 protected:
-  vtkMSSInterface();
-  ~vtkMSSInterface();
+	vtkSpringCollection() {};
+	~vtkSpringCollection() {};
 
 private:
-  vtkMSSInterface(const vtkMSSInterface&);  // Not implemented.
-  void operator=(const vtkMSSInterface&);  // Not implemented.
-
-  //!Mass-spring system mesh
-  vtkMSS * MSSMesh;
-
-  // MSS specific parameters
-  //! Distance coefficient.
-  double DistanceCoefficient;
-  //! Damping coefficient.
-  /*!
-   * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
-   * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
-   * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
-   */
-  double DampingCoefficient;
-  //! Mass value on each point
-  double Mass;
-  //! calculation time step
-  double DeltaT;
-  //! Number of steps
-  int Steps;
-
+	vtkSpringCollection(const vtkSpringCollection&);  // Not implemented.
+	void operator=(const vtkSpringCollection&);					// Not implemented.
 };
 
 #endif

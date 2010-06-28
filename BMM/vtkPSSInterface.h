@@ -39,26 +39,26 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkMSSInterface_h
-#define __vtkMSSInterface_h
+#ifndef __vtkPSSInterface_h
+#define __vtkPSSInterface_h
 
 #include "vtkESQuiBMMWin32Header.h"
 
 #include "vtkTimerLog.h"
 
 #include "vtkBioMechanicalModel.h"
-#include "vtkMSS.h"
+#include "vtkParticleSpringSystem.h"
 #include "vtkDelaunay3D.h"
 
 
 //! Implementation of the generic Biomechanical Model interface for a mass-spring deformation system
 
-class VTK_ESQUI_BMM_EXPORT vtkMSSInterface : public vtkBioMechanicalModel
+class VTK_ESQUI_BMM_EXPORT vtkPSSInterface : public vtkBioMechanicalModel
 {
 public:
-	vtkTypeRevisionMacro(vtkMSSInterface, vtkBioMechanicalModel);
-	static vtkMSSInterface* New();
-	const char *GetClassName() {return "vtkMSSInterface";};
+	vtkTypeRevisionMacro(vtkPSSInterface, vtkBioMechanicalModel);
+	static vtkPSSInterface* New();
+	const char *GetClassName() {return "vtkPSSInterface";};
 	//! Print class object values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
@@ -67,45 +67,52 @@ public:
 	//!Initialize the Biomechanical Model
 	virtual void Init();
 
-	//! Set the MSS Distance coefficient
-	void SetDistanceCoefficient(double value);
-	//! Set the MSS Damping coefficient
-	void SetDampingCoefficient(double value);//Friction
-	//! Set the MSS Mass value
-	void SetMass(double value);
-	//! Set the MSS time step
-	void SetDeltaT(double value);
-	//! Set the MSS number of steps
-	void SetSteps(int value);
+	//! Set the distance coefficient
+	vtkSetMacro(DistanceCoefficient, double);
+	//! Set the damping coefficient
+	vtkSetMacro(DampingCoefficient, double);
+	//! Set the damping coefficient
+	vtkSetMacro(SpringCoefficient, double);
+	//! Set the mass value
+	vtkSetMacro(Mass, double);
+	//! Set the time step
+	vtkSetMacro(DeltaT, double);
+	//! Set the neighborhood size
+	vtkSetMacro(RigidityFactor, int);
 
 protected:
-  vtkMSSInterface();
-  ~vtkMSSInterface();
+	vtkPSSInterface();
+	~vtkPSSInterface();
 
 private:
-  vtkMSSInterface(const vtkMSSInterface&);  // Not implemented.
-  void operator=(const vtkMSSInterface&);  // Not implemented.
+	vtkPSSInterface(const vtkPSSInterface&);  // Not implemented.
+	void operator=(const vtkPSSInterface&);  // Not implemented.
 
-  //!Mass-spring system mesh
-  vtkMSS * MSSMesh;
+	//!Particle-spring system mesh
+	vtkParticleSpringSystem * ParticleSpringSystem;
 
-  // MSS specific parameters
-  //! Distance coefficient.
-  double DistanceCoefficient;
-  //! Damping coefficient.
-  /*!
-   * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
-   * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
-   * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
-   */
-  double DampingCoefficient;
-  //! Mass value on each point
-  double Mass;
-  //! calculation time step
-  double DeltaT;
-  //! Number of steps
-  int Steps;
-
+	// PSS specific parameters
+	//! Distance coefficient.
+	double DistanceCoefficient;
+	//! Damping coefficient.
+	/*!
+	 * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
+	 * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
+	 * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
+	 */
+	double DampingCoefficient;
+	//! Spring Coefficient K
+	double SpringCoefficient;
+	//! Mass value on each point
+	double Mass;
+	//! calculation time step
+	double DeltaT;
+	//! Neighborhood size factor
+	int RigidityFactor;
+	//! Motion equation solver type
+	//BTX
+	vtkParticleSpringSystem::MotionEquationSolverType SolverType;
+	//ETX
 };
 
 #endif

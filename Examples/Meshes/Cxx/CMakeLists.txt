@@ -8,6 +8,7 @@ SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
     STLtoUnstructuredGrid
+    Cube
 )
 
  # Set your list of libraries here.

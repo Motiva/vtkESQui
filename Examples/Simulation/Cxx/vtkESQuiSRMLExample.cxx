@@ -73,7 +73,7 @@ namespace EsquiExampleNS{
 	//Note: Global variables may have its first letter on uppercase
 	const char * ExpandDataFileName(const char * fname);
 	//const char * path ="C:/Workspace/data/vtkESQuiData";
-	const char * path ="/home/jballesteros/Workspace/data/vtkESQuiData";
+	const char * path ="/home/jorge/Workspace/data/vtkESQuiData";
 }
 
 using namespace std;
@@ -130,7 +130,7 @@ int main(int argc, char * argv[])
 	/**********  Simulation Import from SRML File  ********/
 	vtkSRMLImporter * Importer = vtkSRMLImporter::New();
 	Importer->SetDataPath(path);
-	Importer->SetFileName(ExpandDataFileName("laparoscopyRDM.srml"));
+	Importer->SetFileName(ExpandDataFileName("laparoscopy.srml"));
 	Importer->SetSimulation(Simulation);
 	Importer->Read();
 

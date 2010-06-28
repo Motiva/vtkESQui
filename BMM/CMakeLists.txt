@@ -11,6 +11,7 @@ SET(UKIT BMM)  #Uppercase Kit Name
 SET (Kit_SRCS 
 vtkBioMechanicalModel.cxx
 vtkMSSInterface.cxx
+vtkPSSInterface.cxx
 vtkRDMInterface.cxx
 )
 
@@ -81,4 +82,5 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 
 SUBDIRS(vtkMSS)
 SUBDIRS(vtkRobustDeformationModel)
+SUBDIRS(vtkParticleSpringSystem)
 #SUBDIRS(vtkFeMesh)

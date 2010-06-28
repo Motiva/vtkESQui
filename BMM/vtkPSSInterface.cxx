@@ -39,34 +39,32 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkMSSInterface.h"
+#include "vtkPSSInterface.h"
 
-vtkCxxRevisionMacro(vtkMSSInterface, "$Revision: 1.2 $");
-vtkStandardNewMacro(vtkMSSInterface);
+vtkCxxRevisionMacro(vtkPSSInterface, "$Revision: 1.2 $");
+vtkStandardNewMacro(vtkPSSInterface);
 
 //----------------------------------------------------------------------------
-vtkMSSInterface::vtkMSSInterface()
+vtkPSSInterface::vtkPSSInterface()
 {
-	this->MSSMesh = vtkMSS::New();
+	this->ParticleSpringSystem = vtkParticleSpringSystem::New();
 	this->DistanceCoefficient = 0;
+	this->SpringCoefficient = 0;
 	this->DampingCoefficient = 0;
 	this->Mass = 0;
 	this->DeltaT = 0;
-	this->Steps = 0;
+	this->SolverType = vtkParticleSpringSystem::VelocityVerlet;
 }
 
 //----------------------------------------------------------------------------
-vtkMSSInterface::~vtkMSSInterface()
+vtkPSSInterface::~vtkPSSInterface()
 {
-	this->MSSMesh->Delete();
-	this->Mesh->Delete();
+	this->ParticleSpringSystem->Delete();
 }
-
-//TODO: Rewrite method to adapt to vtkBiomechanicalModel (vtkPolyDataAlgorithm) class
 
 // VTK specific method: This method is called when the pipeline is calculated.
 //----------------------------------------------------------------------------
-int vtkMSSInterface::RequestData(
+int vtkPSSInterface::RequestData(
 		vtkInformation *vtkNotUsed(request),
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
@@ -79,25 +77,13 @@ int vtkMSSInterface::RequestData(
 	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	output->DeepCopy(input);
+	cout << this->GetClassName() << "::RequestData()" << endl;
 
-	if (input->GetPoints()->GetData()->GetDataType() != VTK_DOUBLE)
-	{
-		//Set input mesh where deformation will be calculated
-		vtkPoints * ps = vtkPoints::New();
-		ps->SetDataTypeToDouble();
-		ps->DeepCopy(input->GetPoints());
-		input->SetPoints(ps);
-		input->Update();
-	}
+	this->ParticleSpringSystem->SetInput(this->GetInput());
+	this->ParticleSpringSystem->SetContacts(this->ContactPointIds, this->Directions);
+	this->ParticleSpringSystem->Update();
 
-	this->MSSMesh->SetContacts(this->ContactPointIds, this->Directions);
-	this->MSSMesh->Update();
-
-	vtkPoints * points = this->MSSMesh->GetOutput()->GetPoints();
-
-	output->SetPoints(points);
-	output->Modified();
+	this->GetOutput()->ShallowCopy(this->ParticleSpringSystem->GetOutput());
 
 	this->Clear();
 
@@ -105,63 +91,29 @@ int vtkMSSInterface::RequestData(
 }
 
 //--------------------------------------------------------------------------
-void vtkMSSInterface::Init()
+void vtkPSSInterface::Init()
 {
+	//Set input data
+	this->ParticleSpringSystem->SetInput(this->GetInput());
 	//Set Mass-Spring System parameters
-	this->MSSMesh->SetDistanceCoefficient(this->DistanceCoefficient);
-	this->MSSMesh->SetDampingCoefficient(this->DampingCoefficient);//Friction
-	this->MSSMesh->SetMass(this->Mass);
-	this->MSSMesh->SetDeltaT(this->DeltaT);
-	this->MSSMesh->SetSteps(this->Steps);
-
-	//Tetrahedralize mesh
-	vtkDelaunay3D * del = vtkDelaunay3D::New();
-	del->SetInput(vtkPolyData::SafeDownCast(this->GetInput()));
-	del->Update();
-
-	this->MSSMesh->SetInput(del->GetOutput());
-
-	//this->Print(cout);
+	this->ParticleSpringSystem->SetDistanceCoefficient(this->DistanceCoefficient);
+	this->ParticleSpringSystem->SetSpringCoefficient(this->SpringCoefficient);//Friction
+	this->ParticleSpringSystem->SetDampingCoefficient(this->DampingCoefficient);//Friction
+	this->ParticleSpringSystem->SetMass(this->Mass);
+	this->ParticleSpringSystem->SetDeltaT(this->DeltaT);
+	this->ParticleSpringSystem->SetRigidityFactor(this->RigidityFactor);
+	this->ParticleSpringSystem->SetSolverType(this->SolverType);
+	//Initialize system
+	this->ParticleSpringSystem->Init();
 }
 
 //--------------------------------------------------------------------------
-void vtkMSSInterface::SetDistanceCoefficient(double value)
-{
-	this->DistanceCoefficient = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetDampingCoefficient(double value)
-{
-	this->DampingCoefficient = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetMass(double value)
-{
-	this->Mass = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetDeltaT(double value)
-{
-	this->DeltaT = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetSteps(int value)
-{
-	this->Steps = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::PrintSelf(ostream& os, vtkIndent indent)
+void vtkPSSInterface::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
-
-  os << indent <<  "DistanceCoefficient: " << this->DistanceCoefficient << endl;
+  os << indent <<  "SpringCoefficient: " << this->SpringCoefficient << endl;
   os << indent <<  "DampingCoefficient: " << this->DampingCoefficient << endl;
+  os << indent <<  "DistanceCoefficient: " << this->DistanceCoefficient << endl;
   os << indent <<  "Mass: " << this->Mass << endl;
   os << indent <<  "DeltaT: " << this->DeltaT << endl;
-  os << indent <<  "Steps: " << this->Steps << endl;
 }

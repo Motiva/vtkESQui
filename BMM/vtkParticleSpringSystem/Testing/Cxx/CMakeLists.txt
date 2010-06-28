@@ -1,0 +1,2 @@
+ADD_EXECUTABLE(vtkParticleSpringSystemTest vtkParticleSpringSystemTest.cxx)
+TARGET_LINK_LIBRARIES(vtkParticleSpringSystemTest vtkParticleSpringSystem)
