@@ -33,7 +33,7 @@ Install
 -------
 In order to use this software the following packages must be installed:
 
- * VTK. version > 5.4
+ * VTK. version > 5.6
  * Tcl/Tk. version > 8.4
  * CMake. version > 2.5
 

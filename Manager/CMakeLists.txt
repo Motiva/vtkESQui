@@ -37,6 +37,7 @@ vtkCommon
 vtkIO
 vtkBioeng 
 vtkMSS
+vtkParticleSpringSystem
 )
 
 # Set your list of TCL libraries here.

@@ -39,6 +39,7 @@ vtkFiltering
 vtkGraphics
 vtkCommon
 vtkMSS
+vtkParticleSpringSystem
 #vtkFeMesh
 )
 
