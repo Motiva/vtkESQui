@@ -4246,7 +4246,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </UML:Class>
       <UML:Generalization isSpecification="false" child="OVXFfkk5RZTm" visibility="public" namespace="Logical View" xmi.id="x8dt9ZeAwiRZ" parent="FokMe4R4aGYH" discriminator="" name="" />
       <UML:Class comment="Program:   Visualization Toolkit
-odule:    $RCSfile: vtkVolumeCollection.h,v $
+Module:    $RCSfile: vtkVolumeCollection.h,v $
 Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen
 All rights reserved.
 See Copyright.txt or http://www.kitware.com/Copyright.htm for details.
