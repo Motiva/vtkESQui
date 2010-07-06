@@ -56,30 +56,46 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkMath.h"
 
-//! Implementation of the mass-spring deformation model
+//! Implementation of the abstract motion equation solver
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkMotionEquationSolver : public vtkObject {
 public:
 
-
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkMotionEquationSolver, vtkObject);
+	//! Print solver info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//! Set number of particles
 	vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
 
-	void SetDeformationModel(vtkParticleSpringSystem * model);
+	//! Set Deformation model
+	vtkSetObjectMacro(DeformationModel, vtkParticleSpringSystem);
 
+	//! Initialize solver.
+	/*!
+	 * Pure virtual method must be implemented in subclasses
+	 */
 	virtual void Init() = 0;
 
+	//! Compute next step for every particle
+	/*!
+	 * Pure virtual method must be implemented in subclasses
+	 * \param particles collection of particles
+	 * \param dt time step
+	 */
 	virtual void ComputeNextStep(vtkParticleCollection * particles, double dt) = 0;
 
 protected:
 	vtkMotionEquationSolver();
 	~vtkMotionEquationSolver();
 
+	//! Solver deformation model
 	vtkParticleSpringSystem * DeformationModel;
+	//! Number of particles
 	double NumberOfParticles;
 
+	//! Velocity derivative
 	vtkDoubleArray * dv;
 
 private:

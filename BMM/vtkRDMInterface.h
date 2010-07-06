@@ -50,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRobustDeformationModel.h"
 
 
-//! Implementation of the generic Biomechanical Model interface for a rdm system
+//! Interface to the abstract vtkBiomechanicalModel class for a RDM system
 
 class VTK_ESQUI_BMM_EXPORT vtkRDMInterface : public vtkBioMechanicalModel
 {
@@ -61,41 +61,23 @@ public:
 	//! Print class object values
 	void PrintSelf(ostream& os, vtkIndent indent);
 	
-	//!Set input data (organ mesh) to the mass-spring deformation system
-	/*!
-	 * A vtkUnstructuredGrid is required due to 3D deformation
-	 * \param data vtkUnstructured 3d organ mesh data
-	 */
-	//virtual void SetInput(vtkUnstructuredGrid * data);
-
-	//!Perform an update of the mass-spring system
-	/*!
-	 * Once collision detection process has been performed, if any contact between a tool and organ has occured the organ must be updated, so mass-spring system.
-	 */
-	//virtual void Update();
-
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Initialize the Biomechanical Model
 	virtual void Init();
 
-	//! Return updated organ mesh (data) after updating the biomechanical model
-	//virtual vtkUnstructuredGrid * GetOutput();
-	
 	//! Set the RDM Distance coefficient
-	void SetDistanceCoefficient(double value);
+	vtkSetMacro(DistanceCoefficient, double);
 	//! Set the RDM Damping coefficient
-	void SetDampingCoefficient(double value);//Friction
+	vtkSetMacro(DampingCoefficient, double);//Friction
 	//! Set the RDM Surface coefficient
-	void SetSurfaceCoefficient(double value);
+	vtkSetMacro(SurfaceCoefficient, double);
 	//! Set the RDM Volume coefficient
-	void SetVolumeCoefficient(double value);
+	vtkSetMacro(VolumeCoefficient, double);
 	//! Set the RDM Mass value
-	void SetMass(double value);
+	vtkSetMacro(Mass, double);
 	//! Set the RDM time step
-	void SetDeltaT(double value);
-	//! Set the RDM number of steps
-	void SetSteps(int value);
+	vtkSetMacro(DeltaT, double);
 
 protected:
   vtkRDMInterface();
@@ -114,6 +96,7 @@ private:
 
   //! Damping coefficient.
   /*!
+   * Damping Ratio = DampingCoefficient/(2*sqrt(Mass*DeltaT))
    * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
    * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
    * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
@@ -129,12 +112,8 @@ private:
   //! Mass value on each point
   double Mass;
 
-  //! calculation time step
+  //! Time step
   double DeltaT;
-
-  //! Number of steps
-  int Steps;
-
 };
 
 #endif

@@ -67,7 +67,11 @@ class vtkMotionEquationSolver;
 class vtkVelocityVerletSolver;
 //ETX
 
-//! Implementation of the mass-spring deformation model
+//! Implementation of the particle-spring deformation model
+/*!
+ * The system is compounded of several collections of elements: springs, particles, links.
+ * There are some system properties to define material behavior. All these properties must be set prior to the initialization Init()
+ */
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkParticleSpringSystem : public vtkPolyDataAlgorithm {
 public:
@@ -82,62 +86,105 @@ public:
 	};
 	//ETX
 
+	//!Type revision macro
 	vtkTypeRevisionMacro(vtkParticleSpringSystem,vtkPolyDataAlgorithm);
+	//! Create new particle spring system object
 	static vtkParticleSpringSystem * New();
+	//! Print system info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//! Initialize the particle spring system
+	/*!
+	 * Create springs, particles and the links between them.
+	 */
 	void Init();
 
+	//! Compute one step of the motion equation solver
+	/*!
+	 * The execution of the solver will be done through omputeNextStep() method. This method is executed on every time step to perform mesh deformation.
+	 */
 	void Step();
 
-	//get parameters for Mass Spring System
+	//Parameters for Particle-Spring System
+	//! Set spring coefficient
 	vtkSetMacro(SpringCoefficient, double);		// Spring coefficient
+	//! Set distance coefficient. Percentage
 	vtkSetMacro(DistanceCoefficient, double);	// Distance constraint coefficient
+	//! Set damping coefficient
 	vtkSetMacro(DampingCoefficient, double);	// Damping coefficient
+	//! Set time step
 	vtkSetMacro(DeltaT, double);				// dt for every step
+	//! Set mass of system particles
 	vtkSetMacro(Mass, double);					// Mass of all points (future work: specify different masses for different "layers")
+	//! Set rigidity factor.
 	vtkSetMacro(RigidityFactor, vtkIdType);		// Rigidity Factor -> neighborhood size
+	//! Set motion equation solver type.
 	vtkSetMacro(SolverType, MotionEquationSolverType);		// Motion equation solver type
 
+	//! Set particle-spring system contacts
+	/*!
+	 * \param ids List of particle ids
+	 * \param directions Array containing displacement directions
+	 */
 	void SetContacts(vtkIdList * ids, vtkDoubleArray * directions);
 
+	//! Compute the forces attending to the contacts
+	/*!
+	 * The solver is executed every step, in order to compute the force propagation along the whole system
+	 */
 	void ComputeForces();
 
 protected:
 	vtkParticleSpringSystem();
 	~vtkParticleSpringSystem();
 
-	int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+	//! VTK method for system update. Must be implemented
+	int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
 
 	//Particle-Spring System
+	//! Collection of springs
 	vtkSpringCollection * Springs;
+	//! Collection of particles
 	vtkParticleCollection * Particles;
+	//! Collection of links between particles and springs
 	vtkCellLinks * Links;
 
 	//Model Parameters
+	//! Spring stiffness k.
 	double SpringCoefficient;
+	//! Distance coefficient. Maximum Percentage of elongation
 	double DistanceCoefficient;
+	//! Damping coefficient
 	double DampingCoefficient;
+	//! Equation time step
 	double DeltaT;
+	//! Mass for each system particle
 	double Mass;
+	//! Size of particle neighborhood. The big
 	vtkIdType RigidityFactor;
 
 	//System Properties
+	//! System properties: volume, area, etc...
 	vtkMassProperties * SystemProperties;
+	//! Volume of the mesh
 	double Volume;
 
-	//Motion equation solver
+	//! Motion equation solver
 	vtkMotionEquationSolver * Solver;
+	//! Motion equation solver type
 	MotionEquationSolverType SolverType;
 
 	//Contact data
+	//! List of contact identifiers
 	vtkIdList* ContactIds;
+	//! List of contact directions
 	vtkDoubleArray* ContactDirections;
 
 private:
 	vtkParticleSpringSystem(const vtkParticleSpringSystem&);            // Not implemented.
 	void operator=(const vtkParticleSpringSystem&);           // Not implemented.
 
+	//! Compute inserted contacts
 	void ComputeContacts();
 
 };

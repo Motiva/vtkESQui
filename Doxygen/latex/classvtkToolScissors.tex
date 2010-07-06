@@ -7,9 +7,17 @@
 Implementation class of scissors.  
 
 
+
+
 {\ttfamily \#include $<$vtkToolScissors.h$>$}
 
-Inherits \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy}.Collaboration diagram for vtkToolScissors:\subsection*{Public Member Functions}
+
+
+Inherits \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy}.
+
+
+
+Collaboration diagram for vtkToolScissors:\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkToolScissors_a0dfdaf5d716eb50265221bbdef3f702d}{
@@ -66,6 +74,8 @@ Implementation class of scissors. \hyperlink{classvtkToolScissors}{vtkToolScisso
 
 
 Return the Blade polydata file name. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]identifier of the blade piece \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -79,6 +89,8 @@ path of the file that contains the blade piece polydata
 
 
 Return the stick polydata file name. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]identifier of the stick piece \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -91,9 +103,13 @@ path of the file that contains the stick piece polydata
 \label{classvtkToolScissors_a5fc5884ce0fd1723ecf86888bdbba7a6}
 
 
-Initialize the tool from VTK file. This function initializes the tool whose mesh is described on a VTK file 
+Initialize the tool from VTK file. 
 
-Implements \hyperlink{classvtkToolLaparoscopy_ace75ea21a3ddb27547976ddea0ebb60e}{vtkToolLaparoscopy}.\hypertarget{classvtkToolScissors_a7d769a793faf2cefaf2fd869a7d4d1e3}{
+This function initializes the tool whose mesh is described on a VTK file 
+
+Implements \hyperlink{classvtkToolLaparoscopy_ace75ea21a3ddb27547976ddea0ebb60e}{vtkToolLaparoscopy}.
+
+\hypertarget{classvtkToolScissors_a7d769a793faf2cefaf2fd869a7d4d1e3}{
 \index{vtkToolScissors@{vtkToolScissors}!SetBladeFileName@{SetBladeFileName}}
 \index{SetBladeFileName@{SetBladeFileName}!vtkToolScissors@{vtkToolScissors}}
 \subsubsection[{SetBladeFileName}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolScissors::SetBladeFileName (vtkIdType {\em id}, \/  const char $\ast$ {\em path})}}
@@ -101,6 +117,8 @@ Implements \hyperlink{classvtkToolLaparoscopy_ace75ea21a3ddb27547976ddea0ebb60e}
 
 
 Set Blade polydata filename. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em path}]path of the file that contains the blade polydata \end{DoxyParams}
 \hypertarget{classvtkToolScissors_a22475f67e31779d51b49af9a875269f7}{
@@ -111,18 +129,24 @@ Set Blade polydata filename.
 
 
 Set stick polydata filename. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em path}]path of the file that contains the stick piece polydata \end{DoxyParams}
 \hypertarget{classvtkToolScissors_afe574b6b9e809f746308a157b6525c4b}{
 \index{vtkToolScissors@{vtkToolScissors}!Update@{Update}}
 \index{Update@{Update}!vtkToolScissors@{vtkToolScissors}}
-\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolScissors::Update (void)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolScissors::Update ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
 \label{classvtkToolScissors_afe574b6b9e809f746308a157b6525c4b}
 
 
-Update the tool. This function update the tool values 
+Update the tool. 
+
+This function update the tool values 
 
 Reimplemented from \hyperlink{classvtkToolLaparoscopy_a4445a0cfabd77b50a06929b04cb71f9e}{vtkToolLaparoscopy}.
+
+
 
 The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 

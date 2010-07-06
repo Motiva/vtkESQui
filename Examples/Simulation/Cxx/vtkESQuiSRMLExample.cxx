@@ -73,13 +73,16 @@ namespace EsquiExampleNS{
 	//Note: Global variables may have its first letter on uppercase
 	const char * ExpandDataFileName(const char * fname);
 	//const char * path ="C:/Workspace/data/vtkESQuiData";
-	const char * path ="/home/jorge/Workspace/data/vtkESQuiData";
+	const char * path ="/home/jballesteros/Workspace/data/vtkESQuiData";
 }
 
 using namespace std;
 using namespace EsquiExampleNS;
 
 //!This test perform a standard execution of the ESQUI simulation process.
+/*!
+ * The scenario will be imported from an SRML file that contains all the info .
+ */
 
 const char * EsquiExampleNS::ExpandDataFileName(const char * fname)
 {
@@ -116,7 +119,7 @@ int main(int argc, char * argv[])
 
 	/**********  Simulation Setup  ********/
 	vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	SimulationManager->SetCollisionDetectionLibrary("vtkbioeng");
+	SimulationManager->SetLibraryName("vtkbioeng");
 	SimulationManager->SetScenario(Scenario);
 	SimulationManager->Init();
 

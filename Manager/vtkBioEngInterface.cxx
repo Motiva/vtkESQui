@@ -75,8 +75,8 @@ void vtkBioEngInterface::Init()
 	this->DetectionFilter->SetBoxTolerance (0.0);
 	this->DetectionFilter->SetCellTolerance (0.0);
 	this->DetectionFilter->SetNumberOfCellsPerBucket(2);
-	//this->DetectionFilter->SetCollisionModeToFirstContact();
-	this->DetectionFilter->SetCollisionModeToHalfContacts();
+	this->DetectionFilter->SetCollisionModeToFirstContact();
+	//this->DetectionFilter->SetCollisionModeToHalfContacts();
 	//this->DetectionFilter->SetCollisionModeToAllContacts();
 	//Debug. Display contact cells.
 	this->DetectionFilter->SetGenerateScalars(1);
@@ -145,27 +145,34 @@ void vtkBioEngInterface::Update()
 
 				vtkIdType cellId = this->DetectionFilter->GetContactCells(0)->GetValue(i);
 				vtkIdType pointId = organBox->GetCell(cellId)->GetPointId(0);
-				double * point = organBox->GetCell(cellId)->GetPoints()->GetPoint(0);
+				double * p0 = organBox->GetCell(cellId)->GetPoints()->GetPoint(0);
 
-				contact->SetPointId(0, pointId);
-				contact->SetPoint(0, point);
-				contact->SetCellId(0, cellId);
+				contact->InsertPointId(0, pointId);
+				contact->InsertPoint(0, p0);
+				contact->InsertCellId(0, cellId);
 
 				cellId = this->DetectionFilter->GetContactCells(1)->GetValue(i);
 				pointId = toolBox->GetCell(cellId)->GetPointId(0);
-				point = toolBox->GetCell(cellId)->GetPoints()->GetPoint(0);
+				double * p1 = toolBox->GetCell(cellId)->GetPoints()->GetPoint(0);
 
-				contact->SetPointId(1, pointId);
-				contact->SetPoint(1, point);
-				contact->SetCellId(1, cellId);
+				contact->InsertPointId(1, pointId);
+				contact->InsertPoint(1, p1);
+				contact->InsertCellId(1, cellId);
 
+				//Compute distance vector between tool and organ points
 				double vector[3];
-				tool->GetDirection(vector);
-				contact->SetDirectionVector(vector);
+				vtkMath::Subtract(p1, p0, vector);
+				double n = vtkMath::Norm(vector);
+				double dir[3];
+				tool->GetDirection(dir);
+				vtkMath::MultiplyScalar(dir, n);
+				contact->SetDirectionVector(dir);
 
 				if(!this->Contacts->ContainsContact(contact))
 				{
+					cout << "#######################################\n";
 					this->Contacts->InsertNextContact(contact);
+					contact->Print(cout);
 				}
 				else
 				{

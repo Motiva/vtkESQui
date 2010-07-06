@@ -33,6 +33,7 @@ vtkCommon
 vtkFiltering
 vtkRobustDeformationModel
 vtkMSS
+vtkParticleSpringSystem
 )
 
 # Set your list of TCL libraries here.

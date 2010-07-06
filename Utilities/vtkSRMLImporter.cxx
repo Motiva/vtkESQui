@@ -53,7 +53,9 @@ vtkSRMLImporter::vtkSRMLImporter()
 	this->SRMLParser = NULL;
 	this->Simulation = NULL;
 	this->Scenario = NULL;
-	this->Path = NULL;
+	this->RenderWindow = NULL;
+	this->Renderer = NULL;
+	this->DataPath = NULL;
 	this->FileName = NULL;
 	this->FileStream = NULL;
 	this->Stream = NULL;
@@ -72,56 +74,6 @@ vtkSRMLImporter::~vtkSRMLImporter()
 }
 
 //----------------------------------------------------------------------------
-void vtkSRMLImporter::SetSimulation(vtkSimulation * simulation)
-{
-	this->Simulation = simulation;
-	this->SetScenario(this->Simulation->GetSimulationManager()->GetScenario());
-}
-
-//----------------------------------------------------------------------------
-vtkSimulation * vtkSRMLImporter::GetSimulation()
-{
-	return this->Simulation;
-}
-
-//----------------------------------------------------------------------------
-void vtkSRMLImporter::SetScenario(vtkScenario * scenario)
-{
-	this->Scenario = scenario;
-	this->SetRenderWindow(scenario->GetRenderWindow());
-}
-
-//----------------------------------------------------------------------------
-vtkScenario * vtkSRMLImporter::GetScenario()
-{
-	return this->Scenario;
-}
-
-//----------------------------------------------------------------------------
-void vtkSRMLImporter::SetFileName(const char * filename)
-{
-	this->FileName = filename;
-}
-
-//----------------------------------------------------------------------------
-const char * vtkSRMLImporter::GetFileName()
-{
-	return this->FileName;
-}
-
-//----------------------------------------------------------------------------
-void vtkSRMLImporter::SetDataPath(const char * path)
-{
-	this->Path = path;
-}
-
-//----------------------------------------------------------------------------
-const char * vtkSRMLImporter::GetDataPath()
-{
-	return this->Path;
-}
-
-//----------------------------------------------------------------------------
 int vtkSRMLImporter::OpenSRMLFile(){
 
 	if (this->FileStream)
@@ -132,7 +84,7 @@ int vtkSRMLImporter::OpenSRMLFile(){
 
 	if(!this->Stream && !this->FileName)
 	{
-		vtkErrorMacro("File name not specified");
+		vtkErrorMacro("File name not specified.");
 		return 0;
 	}
 
@@ -289,6 +241,23 @@ void vtkSRMLImporter::ReadData()
 //----------------------------------------------------------------------------
 int vtkSRMLImporter::ImportBegin ()
 {
+	//Set simulation properties
+	if(this->Simulation)
+	{
+		if(!this->Scenario)
+		{
+			cout << "Scenario being set...\n";
+			this->SetScenario(this->Simulation->GetSimulationManager()->GetScenario());
+			this->SetRenderWindow(this->Scenario->GetRenderWindow());
+			this->Renderer = this->RenderWindow->GetRenderers()->GetFirstRenderer();
+		}
+	}
+	else
+	{
+		//Simulation must have a renderWindow and a renderer predefined
+		cout << "Simulation has not been properly defined" << endl;
+		return 0;
+	}
 	vtkDebugMacro(<< "Opening import file as binary");
 	// Open the input file.  If it fails, the error was already
 	// reported by OpenSRMLFile.
@@ -352,7 +321,7 @@ void vtkSRMLImporter::ImportTools()
 void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 {
 	tool->SetName(item->GetAttribute("Name"));
-	tool->SetType(item->GetAttribute("Type"));
+	tool->SetToolType(item->GetAttribute("Type"));
 
 	double array[3];
 	item->GetVectorAttribute("Position", 3, array);
@@ -425,21 +394,21 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	vtkXMLDataElement * bmm = item->LookupElementWithName("BMM");
 	vtkBioMechanicalModel * model;
 	const char * name = bmm->GetAttribute("Name");
-	if(!strcmp(bmm->GetAttribute("Name"), "vtkMSS"))
+	if(!strcmp(name, "vtkMSS"))
 	{
 		model = vtkMSSInterface::New();
 	}
-	else if (!strcmp(bmm->GetAttribute("Name"), "vtkPSS"))
+	else if (!strcmp(name, "vtkPSS"))
 	{
 		cout << "vtkParticleSpringSystem BioMech Model" << endl;
 		model = vtkPSSInterface::New();
 	}
-	else if (!strcmp(bmm->GetAttribute("Name"), "vtkFeMesh"))
+	else if (!strcmp(name, "vtkFeMesh"))
 	{
 		cout << "vtkFeMesh BioMech Model" << endl;
 		//model = vtkFeMeshInterface::New();
 	}
-	else if (!strcmp(bmm->GetAttribute("Name"), "vtkRDM"))
+	else if (!strcmp(name, "vtkRDM"))
 	{
 		cout << "Robust Deformation Model" << endl;
 		model = vtkRDMInterface::New();
@@ -518,9 +487,6 @@ void vtkSRMLImporter::SetBioMechanicalModelData(vtkBioMechanicalModel * model, v
 		double delta;
 		item->GetScalarAttribute("DeltaT", delta);
 		bmm->SetDeltaT(delta);
-		int value;
-		item->GetScalarAttribute("Steps", value);
-		bmm->SetSteps(value);
 	}
 }
 
@@ -578,8 +544,6 @@ void vtkSRMLImporter::SetCameraData(vtkCamera * camera, vtkXMLDataElement * item
 	int projection;
 	item->GetScalarAttribute("ParallelProjection", projection);
 	camera->SetParallelProjection(projection);
-
-	//camera->Print(cout);
 }
 
 //----------------------------------------------------------------------------
@@ -646,7 +610,7 @@ void vtkSRMLImporter::SetLightData(vtkLight * light, vtkXMLDataElement * item)
 //----------------------------------------------------------------------------
 void vtkSRMLImporter::ImportProperties (vtkRenderer * renderer)
 {
-	vtkDebugMacro("Importing Lights...");
+	vtkDebugMacro("Importing Properties...");
 	vtkXMLDataElement * environment = this->Element->LookupElementWithName("Environment");
 
 	if(this->Scenario || this->RenderWindow || renderer)
@@ -695,9 +659,9 @@ void vtkSRMLImporter::ImportHaptic()
 const char * vtkSRMLImporter::ExpandDataFileName(const char * fname)
 {
 	char * fullName;
-	fullName = new char[strlen(this->Path) + 1 + strlen(fname)];
+	fullName = new char[strlen(this->DataPath) + 1 + strlen(fname)];
 	fullName[0] = 0;
-	strcat(fullName, this->Path);
+	strcat(fullName, this->DataPath);
 	size_t len = strlen(fullName);
 	fullName[len] = '/';
 	fullName[len+1] = 0;

@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkDelaunay3D.h"
 
 
-//! Implementation of the generic Biomechanical Model interface for a mass-spring deformation system
+//! Interface to the abstract vtkBiomechanicalModel class for a particle-spring system
 
 class VTK_ESQUI_BMM_EXPORT vtkMSSInterface : public vtkBioMechanicalModel
 {
@@ -68,15 +68,15 @@ public:
 	virtual void Init();
 
 	//! Set the MSS Distance coefficient
-	void SetDistanceCoefficient(double value);
+	vtkSetMacro(DistanceCoefficient, double);
 	//! Set the MSS Damping coefficient
-	void SetDampingCoefficient(double value);//Friction
-	//! Set the MSS Mass value
-	void SetMass(double value);
-	//! Set the MSS time step
-	void SetDeltaT(double value);
-	//! Set the MSS number of steps
-	void SetSteps(int value);
+	vtkSetMacro(DampingCoefficient, double);//Friction
+	//! Set the Mass value
+	vtkSetMacro(Mass, double);
+	//! Set the time step
+	vtkSetMacro(DeltaT, double);
+	//! Set the number of steps
+	vtkSetMacro(Steps, int);
 
 protected:
   vtkMSSInterface();

@@ -51,17 +51,19 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkDelaunay3D.h"
 
 
-//! Implementation of the generic Biomechanical Model interface for a mass-spring deformation system
+//! Interface to the abstract vtkBiomechanicalModel class for a particle-spring system
 
 class VTK_ESQUI_BMM_EXPORT vtkPSSInterface : public vtkBioMechanicalModel
 {
 public:
 	vtkTypeRevisionMacro(vtkPSSInterface, vtkBioMechanicalModel);
+	//! Create a new PSS Interface
 	static vtkPSSInterface* New();
 	const char *GetClassName() {return "vtkPSSInterface";};
 	//! Print class object values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Initialize the Biomechanical Model

@@ -7,9 +7,17 @@
 Class \hyperlink{classvtkVSP}{vtkVSP}, wraps the IHP haptic device.  
 
 
+
+
 {\ttfamily \#include $<$vtkIHP.h$>$}
 
-Inherits \hyperlink{classvtkHaptic}{vtkHaptic}.Collaboration diagram for vtkIHP:\subsection*{Public Member Functions}
+
+
+Inherits \hyperlink{classvtkHaptic}{vtkHaptic}.
+
+
+
+Collaboration diagram for vtkIHP:\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkIHP_a00411adcf823417149c18bb208d31d4b}{
@@ -18,15 +26,15 @@ Inherits \hyperlink{classvtkHaptic}{vtkHaptic}.Collaboration diagram for vtkIHP:
 
 \item 
 \hypertarget{classvtkIHP_a807bb9b0218e7d62682ff1c443c14888}{
-const char $\ast$ {\bfseries GetClassName} ()}
+const char $\ast$ \hyperlink{classvtkIHP_a807bb9b0218e7d62682ff1c443c14888}{GetClassName} ()}
 \label{classvtkIHP_a807bb9b0218e7d62682ff1c443c14888}
 
-\item 
+\begin{DoxyCompactList}\small\item\em Return class name. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkIHP_a9f7937146d91110b7dfae3eb7712fcca}{
 void \hyperlink{classvtkIHP_a9f7937146d91110b7dfae3eb7712fcca}{PrintSelf} (ostream \&os, vtkIndent indent)}
 \label{classvtkIHP_a9f7937146d91110b7dfae3eb7712fcca}
 
-\begin{DoxyCompactList}\small\item\em Print class values. \item\end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Print object values. \item\end{DoxyCompactList}\item 
 virtual void \hyperlink{classvtkIHP_a0777ce95f933e80ccfb47f4ebadcf1ec}{Update} ()
 \begin{DoxyCompactList}\small\item\em Executes the control of the haptic device, reimplemented in all subclasses. \item\end{DoxyCompactList}\item 
 virtual int \hyperlink{classvtkIHP_a055cc6c8150236aa3899647e32c3a0da}{Init} ()
@@ -41,8 +49,18 @@ void \hyperlink{classvtkIHP_a34e27f626efe2aa7194b636e6b25a1f4}{UpdateDevice} ()}
 \label{classvtkIHP_a34e27f626efe2aa7194b636e6b25a1f4}
 
 \begin{DoxyCompactList}\small\item\em Update the state of the VSP system. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkIHP_a6d10b7cac5ea2ce217358928749653b5}{
+void \hyperlink{classvtkIHP_a6d10b7cac5ea2ce217358928749653b5}{SetInitialPitchAngle} (float angle)}
+\label{classvtkIHP_a6d10b7cac5ea2ce217358928749653b5}
+
+\begin{DoxyCompactList}\small\item\em Set the initial pitch angle. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkIHP_a9ad07d98209de013625500eb841a56d4}{
+float \hyperlink{classvtkIHP_a9ad07d98209de013625500eb841a56d4}{GetInitialPitchAngle} ()}
+\label{classvtkIHP_a9ad07d98209de013625500eb841a56d4}
+
+\begin{DoxyCompactList}\small\item\em Get the initial pitch angle. \item\end{DoxyCompactList}\item 
 float $\ast$ \hyperlink{classvtkIHP_aea98689cc76883453f1b0099609cdaac}{GetTrocarState} (int id)
-\begin{DoxyCompactList}\small\item\em Return the state of the trocar with indicated id. \item\end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Set the initial pitch angle. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkIHP_a40db49901c5293fe66c97c9442d13ae0}{
 float $\ast$ \hyperlink{classvtkIHP_a40db49901c5293fe66c97c9442d13ae0}{GetLeftTrocarState} ()}
 \label{classvtkIHP_a40db49901c5293fe66c97c9442d13ae0}
@@ -54,7 +72,7 @@ float $\ast$ \hyperlink{classvtkIHP_a4c11f6785733b96916b47a0b47fc2a81}{GetRightT
 
 \begin{DoxyCompactList}\small\item\em Return the state of the right trocar. \item\end{DoxyCompactList}\item 
 float $\ast$ \hyperlink{classvtkIHP_a51ffd1fb138d362a766df8de9e5ccbdb}{GetTrocarDirection} (int id)
-\begin{DoxyCompactList}\small\item\em $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$ Get Tool State $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$/// \item\end{DoxyCompactList}\item 
+\item 
 \hypertarget{classvtkIHP_ad0d4f0c1ac2a4579e12265b1c6c66613}{
 float $\ast$ \hyperlink{classvtkIHP_ad0d4f0c1ac2a4579e12265b1c6c66613}{GetLeftTrocarDirection} ()}
 \label{classvtkIHP_ad0d4f0c1ac2a4579e12265b1c6c66613}
@@ -141,7 +159,7 @@ float \hyperlink{classvtkIHP_ad8a083f4ff616190041b403f9db80fa2}{GetRightToolOpen
 
 \begin{DoxyCompactList}\small\item\em Return the Opening of the right tool. \item\end{DoxyCompactList}\item 
 int \hyperlink{classvtkIHP_a5679a7f0539274650ba046cbf5e0535a}{GetToolButtonState} (int id)
-\begin{DoxyCompactList}\small\item\em $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$ Get Tool Button/Pedals State $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$/// \item\end{DoxyCompactList}\item 
+\item 
 \hypertarget{classvtkIHP_ac2d6929beadef05098c58e074986225c}{
 int \hyperlink{classvtkIHP_ac2d6929beadef05098c58e074986225c}{GetLeftToolButtonState} ()}
 \label{classvtkIHP_ac2d6929beadef05098c58e074986225c}
@@ -186,7 +204,10 @@ int \hyperlink{classvtkIHP_abfbe46870599130ab33058234c794acb}{GetRightPedalState
 \label{classvtkIHP_abfbe46870599130ab33058234c794acb}
 
 \begin{DoxyCompactList}\small\item\em Return Left Pedal State. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkIHP_a541bcaa9e51b0a6a8b727ba8c7fbfc82}{ApplyForce} (int id)
+\hypertarget{classvtkIHP_a541bcaa9e51b0a6a8b727ba8c7fbfc82}{
+void \hyperlink{classvtkIHP_a541bcaa9e51b0a6a8b727ba8c7fbfc82}{ApplyForce} (int id)}
+\label{classvtkIHP_a541bcaa9e51b0a6a8b727ba8c7fbfc82}
+
 \begin{DoxyCompactList}\small\item\em Apply specified forces to the tools. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkIHP_a2e8f7a4172f259517554b3779b3b08b2}{
 void \hyperlink{classvtkIHP_a2e8f7a4172f259517554b3779b3b08b2}{FlushForces} ()}
@@ -248,31 +269,22 @@ void \hyperlink{classvtkIHP_ada52401a0aee8798419e646a5007564f}{SetRightToolOpeni
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkIHP_affd59f555c461c184edfd5e1072ebe79}{
-static \hyperlink{classvtkIHP}{vtkIHP} $\ast$ {\bfseries New} ()}
+static \hyperlink{classvtkIHP}{vtkIHP} $\ast$ \hyperlink{classvtkIHP_affd59f555c461c184edfd5e1072ebe79}{New} ()}
 \label{classvtkIHP_affd59f555c461c184edfd5e1072ebe79}
 
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Create new \hyperlink{classvtkIHP}{vtkIHP} object. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Class \hyperlink{classvtkVSP}{vtkVSP}, wraps the IHP haptic device. 
 
 \subsection{Member Function Documentation}
-\hypertarget{classvtkIHP_a541bcaa9e51b0a6a8b727ba8c7fbfc82}{
-\index{vtkIHP@{vtkIHP}!ApplyForce@{ApplyForce}}
-\index{ApplyForce@{ApplyForce}!vtkIHP@{vtkIHP}}
-\subsubsection[{ApplyForce}]{\setlength{\rightskip}{0pt plus 5cm}void vtkIHP::ApplyForce (int {\em id})}}
-\label{classvtkIHP_a541bcaa9e51b0a6a8b727ba8c7fbfc82}
-
-
-Apply specified forces to the tools. $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$ Set Tool Forces $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$/// \hypertarget{classvtkIHP_a5679a7f0539274650ba046cbf5e0535a}{
+\hypertarget{classvtkIHP_a5679a7f0539274650ba046cbf5e0535a}{
 \index{vtkIHP@{vtkIHP}!GetToolButtonState@{GetToolButtonState}}
 \index{GetToolButtonState@{GetToolButtonState}!vtkIHP@{vtkIHP}}
 \subsubsection[{GetToolButtonState}]{\setlength{\rightskip}{0pt plus 5cm}int vtkIHP::GetToolButtonState (int {\em id})}}
 \label{classvtkIHP_a5679a7f0539274650ba046cbf5e0535a}
-
-
-$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$ Get Tool Button/Pedals State $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$/// Return the tool main button state with the specified id 0 -\/$>$ button is released 1 -\/$>$ button is pressed \hypertarget{classvtkIHP_af7a915155ec7b4e77ea788080ec7bda9}{
+Return the tool main button state with the specified id 0 -\/$>$ button is released 1 -\/$>$ button is pressed \hypertarget{classvtkIHP_af7a915155ec7b4e77ea788080ec7bda9}{
 \index{vtkIHP@{vtkIHP}!GetToolLeftButtonState@{GetToolLeftButtonState}}
 \index{GetToolLeftButtonState@{GetToolLeftButtonState}!vtkIHP@{vtkIHP}}
 \subsubsection[{GetToolLeftButtonState}]{\setlength{\rightskip}{0pt plus 5cm}int vtkIHP::GetToolLeftButtonState (int {\em id})}}
@@ -287,16 +299,16 @@ Return the tool right button(pedal) state with the specified id 0 -\/$>$ button 
 \index{GetTrocarDirection@{GetTrocarDirection}!vtkIHP@{vtkIHP}}
 \subsubsection[{GetTrocarDirection}]{\setlength{\rightskip}{0pt plus 5cm}float $\ast$ vtkIHP::GetTrocarDirection (int {\em id})}}
 \label{classvtkIHP_a51ffd1fb138d362a766df8de9e5ccbdb}
-
-
-$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$ Get Tool State $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$/// Return the direction of the trocar with the specified id (x, y, z) Unit Vector Direction \hypertarget{classvtkIHP_aea98689cc76883453f1b0099609cdaac}{
+Return the direction of the trocar with the specified id (x, y, z) Unit Vector Direction \hypertarget{classvtkIHP_aea98689cc76883453f1b0099609cdaac}{
 \index{vtkIHP@{vtkIHP}!GetTrocarState@{GetTrocarState}}
 \index{GetTrocarState@{GetTrocarState}!vtkIHP@{vtkIHP}}
 \subsubsection[{GetTrocarState}]{\setlength{\rightskip}{0pt plus 5cm}float $\ast$ vtkIHP::GetTrocarState (int {\em id})}}
 \label{classvtkIHP_aea98689cc76883453f1b0099609cdaac}
 
 
-Return the state of the trocar with indicated id. $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$ Get Tool State $\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$/// \hypertarget{classvtkIHP_a055cc6c8150236aa3899647e32c3a0da}{
+Set the initial pitch angle. 
+
+Get the initial yaw angle Return the state of the trocar with indicated id \hypertarget{classvtkIHP_a055cc6c8150236aa3899647e32c3a0da}{
 \index{vtkIHP@{vtkIHP}!Init@{Init}}
 \index{Init@{Init}!vtkIHP@{vtkIHP}}
 \subsubsection[{Init}]{\setlength{\rightskip}{0pt plus 5cm}int vtkIHP::Init ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
@@ -304,6 +316,8 @@ Return the state of the trocar with indicated id. $\ast$$\ast$$\ast$$\ast$$\ast$
 
 
 Initialize the VSP system. 
+
+
 
 $<$ force in Newtons applied to a virtual instrument tip of unit length
 
@@ -313,7 +327,11 @@ $<$ force in Newtons applied to a virtual instrument tip of unit length
 
 $<$ force applied to rotate the instrument (clockwise Nm). 
 
-Implements \hyperlink{classvtkHaptic_a164a353869ace1e3b359da03ce873066}{vtkHaptic}.\hypertarget{classvtkIHP_adabfef75bc93fcf73418614a448943ad}{
+
+
+Implements \hyperlink{classvtkHaptic_a164a353869ace1e3b359da03ce873066}{vtkHaptic}.
+
+\hypertarget{classvtkIHP_adabfef75bc93fcf73418614a448943ad}{
 \index{vtkIHP@{vtkIHP}!SetToolOpeningForce@{SetToolOpeningForce}}
 \index{SetToolOpeningForce@{SetToolOpeningForce}!vtkIHP@{vtkIHP}}
 \subsubsection[{SetToolOpeningForce}]{\setlength{\rightskip}{0pt plus 5cm}void vtkIHP::SetToolOpeningForce (int {\em id}, \/  float {\em openingForce})}}
@@ -335,9 +353,13 @@ Set the tip(normal) force of the tool with the specified id (x, y, z) force comp
 \label{classvtkIHP_a0777ce95f933e80ccfb47f4ebadcf1ec}
 
 
-Executes the control of the haptic device, reimplemented in all subclasses. Abstract method that must be defined in the implementation class 
+Executes the control of the haptic device, reimplemented in all subclasses. 
+
+Abstract method that must be defined in the implementation class 
 
 Implements \hyperlink{classvtkHaptic_ae05171fc9104c679ebd3bad356104fdb}{vtkHaptic}.
+
+
 
 The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 

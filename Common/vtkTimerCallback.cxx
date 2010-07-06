@@ -83,19 +83,19 @@ void vtkTimerCallback::Execute(vtkObject *caller, unsigned long eid, void *callD
 }
 
 //--------------------------------------------------------------------------
-void vtkTimerCallback::SetFasterTimerId(int tid)
+void vtkTimerCallback::SetFasterTimerId(vtkIdType tid)
 {
 	this->FasterTimerId = tid;
 }
 
 //--------------------------------------------------------------------------
-void vtkTimerCallback::SetFastTimerId(int tid)
+void vtkTimerCallback::SetFastTimerId(vtkIdType tid)
 {
 	this->FastTimerId = tid;
 }
 
 //--------------------------------------------------------------------------
-void vtkTimerCallback::SetRenderTimerId(int tid)
+void vtkTimerCallback::SetRenderTimerId(vtkIdType tid)
 {
 	this->RenderTimerId = tid;
 }

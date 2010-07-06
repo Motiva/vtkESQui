@@ -57,56 +57,87 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkMath.h"
 
-//! Implementation of the mass-spring deformation model
+//! Implementation of a system spring
+/*!
+ * Every system particle is connected at least to 1 spring. One spring always connects two particles of the system.
+ * This class contains all the specific info for each spring: rest length, stiffness, damping, direction, etc...
+ */
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkSpring : public vtkObject {
 public:
 
-
+	//! Type Revision Macro
 	vtkTypeRevisionMacro(vtkSpring, vtkObject);
+	//! Create new spring object
 	static vtkSpring * New();
+	//! Print object info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	vtkSetMacro(Id, vtkIdType);						// Id
+	//! Set spring identifier
+	vtkSetMacro(Id, vtkIdType);
+	//! Get spring identifier
 	vtkGetMacro(Id, vtkIdType);
-	vtkSetMacro(SpringCoefficient, double);		// Spring coefficient
+	//! Set spring coefficient
+	vtkSetMacro(SpringCoefficient, double);
+	//! Get spring coefficient
 	vtkGetMacro(SpringCoefficient, double);
-	vtkSetMacro(DampingCoefficient, double);		// Damping coefficient
+	//! Set damping coefficient
+	vtkSetMacro(DampingCoefficient, double);
+	//! Get damping coefficient
 	vtkGetMacro(DampingCoefficient, double);
-	vtkSetMacro(DistanceCoefficient, double);		// Distance constraint coefficient
+	//! Set distance coefficient. Percentage
+	vtkSetMacro(DistanceCoefficient, double);
+	//! Get distance coefficient. Percentage
 	vtkGetMacro(DistanceCoefficient, double);
+	//! Set time step. (ms)
 	vtkSetMacro(DeltaT, double);					// dt for every step
+	//! Get time step. (ms)
 	vtkGetMacro(DeltaT, double);
-	vtkGetMacro(Distance, double);					// Distance between particles
-	vtkSetObjectMacro(Particles, vtkParticleCollection);	// Neighbor particles
+	//! Set rest length
+	vtkGetMacro(RestLength, double);					// Distance between particles
 
+	//! Get spring direction.
 	double * GetDirection();
 
+	//! Get spring direction.
 	void GetDirection(double Direction[3]);
 
+	//! Insert a new particle in the spring particle collection
 	void InsertNextParticle(vtkParticle * particle);
 
+	//! Set a particle at a specified id
 	void SetParticle(vtkIdType id, vtkParticle * particle);
 
+	//! Get particle with the specified id
 	vtkParticle * GetParticle(vtkIdType id);
 
+	//! Check whether the spring contains a particle
 	bool ContainsParticle(vtkParticle * particle);
 
+	//! Initialize the spring values
 	void Init();
 
 protected:
 	vtkSpring();
 	~vtkSpring();
 
+	//! Spring Identifier
 	vtkIdType Id;
+	//! Spring Coefficient, stiffness. k; F = -kx
 	double SpringCoefficient;
+	//! Damping Coefficient
 	double DampingCoefficient;
+	//! Distance Coefficient
 	double DistanceCoefficient;
+	//! Time step,
 	double DeltaT;
 
-	double Distance;
+	//! Spring rest length
+	double RestLength;
+	//! spring direction
 	double Direction[3];
 
+	//! Spring particles
 	vtkParticleCollection * Particles;
 
 private:

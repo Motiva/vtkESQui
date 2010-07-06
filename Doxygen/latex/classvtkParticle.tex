@@ -1,0 +1,255 @@
+\hypertarget{classvtkParticle}{
+\section{vtkParticle Class Reference}
+\label{classvtkParticle}\index{vtkParticle@{vtkParticle}}
+}
+
+
+Implementation of a system particle.  
+
+
+
+
+{\ttfamily \#include $<$vtkParticle.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkParticle_aea4bd59c524e54b6c0c6a9bd14287259}{
+\hyperlink{classvtkParticle_aea4bd59c524e54b6c0c6a9bd14287259}{vtkTypeRevisionMacro} (\hyperlink{classvtkParticle}{vtkParticle}, vtkObject)}
+\label{classvtkParticle_aea4bd59c524e54b6c0c6a9bd14287259}
+
+\begin{DoxyCompactList}\small\item\em Type revision macro. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a745d711722de78a74bdc4c31727328a9}{
+void \hyperlink{classvtkParticle_a745d711722de78a74bdc4c31727328a9}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkParticle_a745d711722de78a74bdc4c31727328a9}
+
+\begin{DoxyCompactList}\small\item\em Print particle info. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_ac856f1c127b7b5b594bc64625ca440ac}{
+virtual void \hyperlink{classvtkParticle_ac856f1c127b7b5b594bc64625ca440ac}{SetId} (vtkIdType)}
+\label{classvtkParticle_ac856f1c127b7b5b594bc64625ca440ac}
+
+\begin{DoxyCompactList}\small\item\em Set particle identifier. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a39a52bcc50831681115cd35c0398a9fd}{
+virtual vtkIdType \hyperlink{classvtkParticle_a39a52bcc50831681115cd35c0398a9fd}{GetId} ()}
+\label{classvtkParticle_a39a52bcc50831681115cd35c0398a9fd}
+
+\begin{DoxyCompactList}\small\item\em get particle identifier \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_ae8058c9315ea71613261c3acf6e3d1dc}{
+void \hyperlink{classvtkParticle_ae8058c9315ea71613261c3acf6e3d1dc}{SetMass} (double mass)}
+\label{classvtkParticle_ae8058c9315ea71613261c3acf6e3d1dc}
+
+\begin{DoxyCompactList}\small\item\em Set particle mass. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a1803d7bc6f095260b1222147e11af463}{
+virtual double \hyperlink{classvtkParticle_a1803d7bc6f095260b1222147e11af463}{GetMass} ()}
+\label{classvtkParticle_a1803d7bc6f095260b1222147e11af463}
+
+\begin{DoxyCompactList}\small\item\em Get particle mass. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a9b6e7986b22bc784e20882a1fb4ad4f5}{
+virtual double \hyperlink{classvtkParticle_a9b6e7986b22bc784e20882a1fb4ad4f5}{GetInverseMass} ()}
+\label{classvtkParticle_a9b6e7986b22bc784e20882a1fb4ad4f5}
+
+\begin{DoxyCompactList}\small\item\em Get particle inverse mass. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a5f0d8473d4682284d46f00d5b3398d95}{
+virtual void \hyperlink{classvtkParticle_a5f0d8473d4682284d46f00d5b3398d95}{SetFixed} (bool)}
+\label{classvtkParticle_a5f0d8473d4682284d46f00d5b3398d95}
+
+\begin{DoxyCompactList}\small\item\em Get is particle is fixed. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a0c3f99f12dcd22ed01ffdfbb1151c6ee}{
+virtual void \hyperlink{classvtkParticle_a0c3f99f12dcd22ed01ffdfbb1151c6ee}{SetContacted} (bool)}
+\label{classvtkParticle_a0c3f99f12dcd22ed01ffdfbb1151c6ee}
+
+\begin{DoxyCompactList}\small\item\em Set particle as contacted. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_ae38c91bdcf9130afee18190aa57d58e5}{
+virtual bool \hyperlink{classvtkParticle_ae38c91bdcf9130afee18190aa57d58e5}{GetContacted} ()}
+\label{classvtkParticle_ae38c91bdcf9130afee18190aa57d58e5}
+
+\begin{DoxyCompactList}\small\item\em Get if particle is contacted. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a5c578dfba85738c607b5e876f0fdefb8}{
+virtual void \hyperlink{classvtkParticle_a5c578dfba85738c607b5e876f0fdefb8}{SetPosition} (double, double, double)}
+\label{classvtkParticle_a5c578dfba85738c607b5e876f0fdefb8}
+
+\begin{DoxyCompactList}\small\item\em Set particle position. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a7dd8ded2eeb5f47a1035fb6401893fe3}{
+virtual void {\bfseries SetPosition} (double\mbox{[}3\mbox{]})}
+\label{classvtkParticle_a7dd8ded2eeb5f47a1035fb6401893fe3}
+
+\item 
+\hypertarget{classvtkParticle_a1ef3dcc52852dca8f7a52b301d3bbf8c}{
+virtual double $\ast$ \hyperlink{classvtkParticle_a1ef3dcc52852dca8f7a52b301d3bbf8c}{GetPosition} ()}
+\label{classvtkParticle_a1ef3dcc52852dca8f7a52b301d3bbf8c}
+
+\begin{DoxyCompactList}\small\item\em Get particle position. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a3d49f434012548c1191c5cb4a86d294a}{
+virtual void {\bfseries GetPosition} (double \&, double \&, double \&)}
+\label{classvtkParticle_a3d49f434012548c1191c5cb4a86d294a}
+
+\item 
+\hypertarget{classvtkParticle_a4702b1601ad5b9b2e12b48b2f1818ee9}{
+virtual void {\bfseries GetPosition} (double\mbox{[}3\mbox{]})}
+\label{classvtkParticle_a4702b1601ad5b9b2e12b48b2f1818ee9}
+
+\item 
+\hypertarget{classvtkParticle_aba6ee0d89bcf64fd2fec0c136078bf91}{
+void \hyperlink{classvtkParticle_aba6ee0d89bcf64fd2fec0c136078bf91}{AddPosition} (double x, double y, double z)}
+\label{classvtkParticle_aba6ee0d89bcf64fd2fec0c136078bf91}
+
+\begin{DoxyCompactList}\small\item\em Add offset to particle position. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_acceb3ac4dc2f632722548fe2cfcd76b6}{
+virtual void \hyperlink{classvtkParticle_acceb3ac4dc2f632722548fe2cfcd76b6}{SetVelocity} (double, double, double)}
+\label{classvtkParticle_acceb3ac4dc2f632722548fe2cfcd76b6}
+
+\begin{DoxyCompactList}\small\item\em Set particle velocity. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_acd67ce39caae78c07f0b7da99c761b1e}{
+virtual void {\bfseries SetVelocity} (double\mbox{[}3\mbox{]})}
+\label{classvtkParticle_acd67ce39caae78c07f0b7da99c761b1e}
+
+\item 
+\hypertarget{classvtkParticle_a024dc1b58c51af734c297686f0e523d6}{
+virtual double $\ast$ \hyperlink{classvtkParticle_a024dc1b58c51af734c297686f0e523d6}{GetVelocity} ()}
+\label{classvtkParticle_a024dc1b58c51af734c297686f0e523d6}
+
+\begin{DoxyCompactList}\small\item\em Get particle velocity. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a7b67128b401745fbf77304700d0185b3}{
+virtual void {\bfseries GetVelocity} (double \&, double \&, double \&)}
+\label{classvtkParticle_a7b67128b401745fbf77304700d0185b3}
+
+\item 
+\hypertarget{classvtkParticle_afef45610742ae3eb7c483f6346b5d8a9}{
+virtual void {\bfseries GetVelocity} (double\mbox{[}3\mbox{]})}
+\label{classvtkParticle_afef45610742ae3eb7c483f6346b5d8a9}
+
+\item 
+\hypertarget{classvtkParticle_a48a10576f6f73409d46b8bd070c108eb}{
+virtual void \hyperlink{classvtkParticle_a48a10576f6f73409d46b8bd070c108eb}{SetAcceleration} (double, double, double)}
+\label{classvtkParticle_a48a10576f6f73409d46b8bd070c108eb}
+
+\begin{DoxyCompactList}\small\item\em Set particle acceleration. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_aede2649a29a79be1543f1c549ee0d59d}{
+virtual void {\bfseries SetAcceleration} (double\mbox{[}3\mbox{]})}
+\label{classvtkParticle_aede2649a29a79be1543f1c549ee0d59d}
+
+\item 
+\hypertarget{classvtkParticle_a3440374514bd93e61d2271f2e7a38066}{
+virtual double $\ast$ \hyperlink{classvtkParticle_a3440374514bd93e61d2271f2e7a38066}{GetAcceleration} ()}
+\label{classvtkParticle_a3440374514bd93e61d2271f2e7a38066}
+
+\begin{DoxyCompactList}\small\item\em Get particle acceleration. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_ad4c80e4bf142a671d428296f085d1014}{
+virtual void {\bfseries GetAcceleration} (double \&, double \&, double \&)}
+\label{classvtkParticle_ad4c80e4bf142a671d428296f085d1014}
+
+\item 
+\hypertarget{classvtkParticle_abadfb1924dada58843b2a67d79081a22}{
+virtual void {\bfseries GetAcceleration} (double\mbox{[}3\mbox{]})}
+\label{classvtkParticle_abadfb1924dada58843b2a67d79081a22}
+
+\item 
+\hypertarget{classvtkParticle_a9b3d5b6ddfc1ee4c1da1e5df31b9bcbd}{
+virtual void \hyperlink{classvtkParticle_a9b3d5b6ddfc1ee4c1da1e5df31b9bcbd}{SetForce} (double, double, double)}
+\label{classvtkParticle_a9b3d5b6ddfc1ee4c1da1e5df31b9bcbd}
+
+\begin{DoxyCompactList}\small\item\em Set particle force. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_acbce4e87652c0e735d4c9d304e8ab0eb}{
+virtual void {\bfseries SetForce} (double\mbox{[}3\mbox{]})}
+\label{classvtkParticle_acbce4e87652c0e735d4c9d304e8ab0eb}
+
+\item 
+\hypertarget{classvtkParticle_aed0be870bbd4168123311368f0ca94e4}{
+virtual double $\ast$ \hyperlink{classvtkParticle_aed0be870bbd4168123311368f0ca94e4}{GetForce} ()}
+\label{classvtkParticle_aed0be870bbd4168123311368f0ca94e4}
+
+\begin{DoxyCompactList}\small\item\em Get particle force. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a3f4baada18d1c4b7453b03c8a5d5e90b}{
+virtual void {\bfseries GetForce} (double \&, double \&, double \&)}
+\label{classvtkParticle_a3f4baada18d1c4b7453b03c8a5d5e90b}
+
+\item 
+\hypertarget{classvtkParticle_a3b2022c4e1359ca46663011b9da3ec24}{
+virtual void {\bfseries GetForce} (double\mbox{[}3\mbox{]})}
+\label{classvtkParticle_a3b2022c4e1359ca46663011b9da3ec24}
+
+\item 
+\hypertarget{classvtkParticle_aca8c9b7ba2c703d7977bb8a3a416f7b4}{
+void \hyperlink{classvtkParticle_aca8c9b7ba2c703d7977bb8a3a416f7b4}{AddForce} (double x, double y, double z)}
+\label{classvtkParticle_aca8c9b7ba2c703d7977bb8a3a416f7b4}
+
+\begin{DoxyCompactList}\small\item\em Add offset to particle force. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkParticle_ae95885babf914d7cbc5f091313cd866b}{Update} ()
+\begin{DoxyCompactList}\small\item\em Update particle properties: position, velocity, accel... \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkParticle_a50bb98dfdb72e8347e6fd34837aa1aae}{
+static \hyperlink{classvtkParticle}{vtkParticle} $\ast$ \hyperlink{classvtkParticle_a50bb98dfdb72e8347e6fd34837aa1aae}{New} ()}
+\label{classvtkParticle_a50bb98dfdb72e8347e6fd34837aa1aae}
+
+\begin{DoxyCompactList}\small\item\em Create new particle. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkParticle_ad1270a67572301092dae9cf356f75db8}{
+vtkIdType \hyperlink{classvtkParticle_ad1270a67572301092dae9cf356f75db8}{Id}}
+\label{classvtkParticle_ad1270a67572301092dae9cf356f75db8}
+
+\begin{DoxyCompactList}\small\item\em Particle identifier. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a1960a7b95829f029a8a81ac5e9077a67}{
+double \hyperlink{classvtkParticle_a1960a7b95829f029a8a81ac5e9077a67}{Position} \mbox{[}3\mbox{]}}
+\label{classvtkParticle_a1960a7b95829f029a8a81ac5e9077a67}
+
+\begin{DoxyCompactList}\small\item\em 3D position \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_accfbbf5bae86baa4021eb3c2e6ae1ff3}{
+double \hyperlink{classvtkParticle_accfbbf5bae86baa4021eb3c2e6ae1ff3}{Velocity} \mbox{[}3\mbox{]}}
+\label{classvtkParticle_accfbbf5bae86baa4021eb3c2e6ae1ff3}
+
+\begin{DoxyCompactList}\small\item\em particle velocity. updated on every step \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a2c031655cfb160edbe68f3bd6b239711}{
+double \hyperlink{classvtkParticle_a2c031655cfb160edbe68f3bd6b239711}{Acceleration} \mbox{[}3\mbox{]}}
+\label{classvtkParticle_a2c031655cfb160edbe68f3bd6b239711}
+
+\begin{DoxyCompactList}\small\item\em particle acceleration. updated on every step \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a397523ba78fec6de30dab9094ffa7002}{
+double \hyperlink{classvtkParticle_a397523ba78fec6de30dab9094ffa7002}{Force} \mbox{[}3\mbox{]}}
+\label{classvtkParticle_a397523ba78fec6de30dab9094ffa7002}
+
+\begin{DoxyCompactList}\small\item\em particle force. f=m·a \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a26466619072cc09762ccd79f0d82ec1e}{
+double \hyperlink{classvtkParticle_a26466619072cc09762ccd79f0d82ec1e}{Mass}}
+\label{classvtkParticle_a26466619072cc09762ccd79f0d82ec1e}
+
+\begin{DoxyCompactList}\small\item\em Mass of the particle. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_aec2cae08f2e1b8bb070ece961b995173}{
+double \hyperlink{classvtkParticle_aec2cae08f2e1b8bb070ece961b995173}{InverseMass}}
+\label{classvtkParticle_aec2cae08f2e1b8bb070ece961b995173}
+
+\begin{DoxyCompactList}\small\item\em Inverse mass. optimizes calculation. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_a8dc00adfeb24d318664aa04249d2a693}{
+bool \hyperlink{classvtkParticle_a8dc00adfeb24d318664aa04249d2a693}{Fixed}}
+\label{classvtkParticle_a8dc00adfeb24d318664aa04249d2a693}
+
+\begin{DoxyCompactList}\small\item\em particle is fixed. f = 0; \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticle_ae89018f12b9eadedf5a1e7a55af0b922}{
+bool \hyperlink{classvtkParticle_ae89018f12b9eadedf5a1e7a55af0b922}{Contacted}}
+\label{classvtkParticle_ae89018f12b9eadedf5a1e7a55af0b922}
+
+\begin{DoxyCompactList}\small\item\em particle is contacted \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implementation of a system particle. Contains all the specific info for each system particle: position, velocity, acceleration, etc... 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkParticle_ae95885babf914d7cbc5f091313cd866b}{
+\index{vtkParticle@{vtkParticle}!Update@{Update}}
+\index{Update@{Update}!vtkParticle@{vtkParticle}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkParticle::Update ()}}
+\label{classvtkParticle_ae95885babf914d7cbc5f091313cd866b}
+
+
+Update particle properties: position, velocity, accel... 
+
+All the particle properties are updated on each step. The particle will be ignored if is set as fixed 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+BMM/vtkParticleSpringSystem/vtkParticle.h\item 
+BMM/vtkParticleSpringSystem/vtkParticle.cxx\end{DoxyCompactItemize}

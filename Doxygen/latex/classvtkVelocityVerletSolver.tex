@@ -1,0 +1,75 @@
+\hypertarget{classvtkVelocityVerletSolver}{
+\section{vtkVelocityVerletSolver Class Reference}
+\label{classvtkVelocityVerletSolver}\index{vtkVelocityVerletSolver@{vtkVelocityVerletSolver}}
+}
+
+
+Implementation of the velocity verlet solver.  
+
+
+
+
+{\ttfamily \#include $<$vtkVelocityVerletSolver.h$>$}
+
+
+
+Inherits \hyperlink{classvtkMotionEquationSolver}{vtkMotionEquationSolver}.
+
+
+
+Collaboration diagram for vtkVelocityVerletSolver:\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkVelocityVerletSolver_ac75094e4050d163be635f823e7abd596}{
+\hyperlink{classvtkVelocityVerletSolver_ac75094e4050d163be635f823e7abd596}{vtkTypeRevisionMacro} (\hyperlink{classvtkVelocityVerletSolver}{vtkVelocityVerletSolver}, \hyperlink{classvtkMotionEquationSolver}{vtkMotionEquationSolver})}
+\label{classvtkVelocityVerletSolver_ac75094e4050d163be635f823e7abd596}
+
+\begin{DoxyCompactList}\small\item\em Type Revision Macro. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVelocityVerletSolver_aaea94587e955e0df7ba0fcc705883f04}{
+void \hyperlink{classvtkVelocityVerletSolver_aaea94587e955e0df7ba0fcc705883f04}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkVelocityVerletSolver_aaea94587e955e0df7ba0fcc705883f04}
+
+\begin{DoxyCompactList}\small\item\em Print object values. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkVelocityVerletSolver_aceb81c517b082ed4b67aaf495d043553}{
+virtual void \hyperlink{classvtkVelocityVerletSolver_aceb81c517b082ed4b67aaf495d043553}{Init} ()}
+\label{classvtkVelocityVerletSolver_aceb81c517b082ed4b67aaf495d043553}
+
+\begin{DoxyCompactList}\small\item\em Initialize equation motion solver. \item\end{DoxyCompactList}\item 
+virtual void \hyperlink{classvtkVelocityVerletSolver_af9c28e67adeab24a3d24e73daa2e40dd}{ComputeNextStep} (\hyperlink{classvtkParticleCollection}{vtkParticleCollection} $\ast$particles, double dt)
+\begin{DoxyCompactList}\small\item\em Compute next step for every particle. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkVelocityVerletSolver_a72150978cba03439b19e4c0f22e43aab}{
+static \hyperlink{classvtkVelocityVerletSolver}{vtkVelocityVerletSolver} $\ast$ \hyperlink{classvtkVelocityVerletSolver_a72150978cba03439b19e4c0f22e43aab}{New} ()}
+\label{classvtkVelocityVerletSolver_a72150978cba03439b19e4c0f22e43aab}
+
+\begin{DoxyCompactList}\small\item\em Create a new verlet solver. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implementation of the velocity verlet solver. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkVelocityVerletSolver_af9c28e67adeab24a3d24e73daa2e40dd}{
+\index{vtkVelocityVerletSolver@{vtkVelocityVerletSolver}!ComputeNextStep@{ComputeNextStep}}
+\index{ComputeNextStep@{ComputeNextStep}!vtkVelocityVerletSolver@{vtkVelocityVerletSolver}}
+\subsubsection[{ComputeNextStep}]{\setlength{\rightskip}{0pt plus 5cm}void vtkVelocityVerletSolver::ComputeNextStep ({\bf vtkParticleCollection} $\ast$ {\em particles}, \/  double {\em dt})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkVelocityVerletSolver_af9c28e67adeab24a3d24e73daa2e40dd}
+
+
+Compute next step for every particle. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em particles}]collection of particles \item[{\em dt}]time step \end{DoxyParams}
+
+
+Implements \hyperlink{classvtkMotionEquationSolver_a1b355adf0c7ce01e51d91fd499f0c15b}{vtkMotionEquationSolver}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+BMM/vtkParticleSpringSystem/vtkVelocityVerletSolver.h\item 
+BMM/vtkParticleSpringSystem/vtkVelocityVerletSolver.cxx\end{DoxyCompactItemize}

@@ -65,12 +65,14 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkToolPincers: public vtkToolLaparoscopy
 {
 public:
 
+	//!Type revision macro
+	vtkTypeRevisionMacro(vtkToolPincers,vtkToolLaparoscopy);
+
 	//!Create new vtkToolPincers object
 	static vtkToolPincers *New();
 
 	//!Return class name
 	const char *GetClassName() { return "vtkToolGPincers"; }
-	vtkTypeRevisionMacro(vtkToolPincers,vtkToolLaparoscopy);
 
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);

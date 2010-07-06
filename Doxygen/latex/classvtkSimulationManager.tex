@@ -7,7 +7,13 @@
 Implementation of the simulation manager. Checks for collisions and executes updating methods of the whole scenario.  
 
 
-{\ttfamily \#include $<$vtkSimulationManager.h$>$}Collaboration diagram for vtkSimulationManager:\subsection*{Public Member Functions}
+
+
+{\ttfamily \#include $<$vtkSimulationManager.h$>$}
+
+
+
+Collaboration diagram for vtkSimulationManager:\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkSimulationManager_a94057736fabea1165abdf718d60de5e3}{
@@ -27,14 +33,14 @@ void \hyperlink{classvtkSimulationManager_a701a5b97305c54f3662d0c931a03b58a}{Ini
 \label{classvtkSimulationManager_a701a5b97305c54f3662d0c931a03b58a}
 
 \begin{DoxyCompactList}\small\item\em Initializes the simulation manager. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkSimulationManager_a44b0a480f8acf9ca9f5d38e93b387fd7}{SetScenario} (\hyperlink{classvtkScenario}{vtkScenario} $\ast$scenario)
+virtual void \hyperlink{classvtkSimulationManager_a823e52926781301387627efed3d2c592}{SetScenario} (\hyperlink{classvtkScenario}{vtkScenario} $\ast$)
 \begin{DoxyCompactList}\small\item\em Set the scenario items: organs, tools, etc... \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkSimulationManager_a7927a4e923f8c1b2039ea27f3684e34b}{
-\hyperlink{classvtkScenario}{vtkScenario} $\ast$ \hyperlink{classvtkSimulationManager_a7927a4e923f8c1b2039ea27f3684e34b}{GetScenario} ()}
-\label{classvtkSimulationManager_a7927a4e923f8c1b2039ea27f3684e34b}
+\hypertarget{classvtkSimulationManager_ad2fb3020218cf4745bfb2b37b0d42ee8}{
+virtual \hyperlink{classvtkScenario}{vtkScenario} $\ast$ \hyperlink{classvtkSimulationManager_ad2fb3020218cf4745bfb2b37b0d42ee8}{GetScenario} ()}
+\label{classvtkSimulationManager_ad2fb3020218cf4745bfb2b37b0d42ee8}
 
 \begin{DoxyCompactList}\small\item\em Return the scenario of the simulation. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkSimulationManager_ad7d4702f7cd3311710f3c0994ef92475}{SetCollisionDetectionLibrary} (const char $\ast$library)
+virtual void \hyperlink{classvtkSimulationManager_acea563e70de3bad3bb963c570be7ed3f}{SetLibraryName} (const char $\ast$)
 \begin{DoxyCompactList}\small\item\em Set the library used for collision detection. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkSimulationManager_a8bf0753310b43531e451897dd31b41b6}{
 \hyperlink{classvtkContactCollection}{vtkContactCollection} $\ast$ \hyperlink{classvtkSimulationManager_a8bf0753310b43531e451897dd31b41b6}{GetContacts} ()}
@@ -57,45 +63,48 @@ static \hyperlink{classvtkSimulationManager}{vtkSimulationManager} $\ast$ {\bfse
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{classvtkSimulationManager_a8260e8c2d7a75ecc9583c79f5c8bece7}{
-const char $\ast$ {\bfseries libraryName}}
-\label{classvtkSimulationManager_a8260e8c2d7a75ecc9583c79f5c8bece7}
+\hypertarget{classvtkSimulationManager_a10110ebaa8053f5ff70df73618d3d677}{
+const char $\ast$ \hyperlink{classvtkSimulationManager_a10110ebaa8053f5ff70df73618d3d677}{LibraryName}}
+\label{classvtkSimulationManager_a10110ebaa8053f5ff70df73618d3d677}
 
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Collision detection library name. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Implementation of the simulation manager. Checks for collisions and executes updating methods of the whole scenario. 
 
 \subsection{Member Function Documentation}
-\hypertarget{classvtkSimulationManager_ad7d4702f7cd3311710f3c0994ef92475}{
-\index{vtkSimulationManager@{vtkSimulationManager}!SetCollisionDetectionLibrary@{SetCollisionDetectionLibrary}}
-\index{SetCollisionDetectionLibrary@{SetCollisionDetectionLibrary}!vtkSimulationManager@{vtkSimulationManager}}
-\subsubsection[{SetCollisionDetectionLibrary}]{\setlength{\rightskip}{0pt plus 5cm}void vtkSimulationManager::SetCollisionDetectionLibrary (const char $\ast$ {\em library})}}
-\label{classvtkSimulationManager_ad7d4702f7cd3311710f3c0994ef92475}
+\hypertarget{classvtkSimulationManager_acea563e70de3bad3bb963c570be7ed3f}{
+\index{vtkSimulationManager@{vtkSimulationManager}!SetLibraryName@{SetLibraryName}}
+\index{SetLibraryName@{SetLibraryName}!vtkSimulationManager@{vtkSimulationManager}}
+\subsubsection[{SetLibraryName}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkSimulationManager::SetLibraryName (const char $\ast$)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkSimulationManager_acea563e70de3bad3bb963c570be7ed3f}
 
 
 Set the library used for collision detection. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em library}]name(string) of the collision detection library. \end{DoxyParams}
-\hypertarget{classvtkSimulationManager_a44b0a480f8acf9ca9f5d38e93b387fd7}{
+\hypertarget{classvtkSimulationManager_a823e52926781301387627efed3d2c592}{
 \index{vtkSimulationManager@{vtkSimulationManager}!SetScenario@{SetScenario}}
 \index{SetScenario@{SetScenario}!vtkSimulationManager@{vtkSimulationManager}}
-\subsubsection[{SetScenario}]{\setlength{\rightskip}{0pt plus 5cm}void vtkSimulationManager::SetScenario ({\bf vtkScenario} $\ast$ {\em scenario})}}
-\label{classvtkSimulationManager_a44b0a480f8acf9ca9f5d38e93b387fd7}
+\subsubsection[{SetScenario}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkSimulationManager::SetScenario ({\bf vtkScenario} $\ast$)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkSimulationManager_a823e52926781301387627efed3d2c592}
 
 
 Set the scenario items: organs, tools, etc... 
-\begin{DoxyParams}{Parameters}
-\item[{\em scenario}]class \hyperlink{classvtkScenario}{vtkScenario} contains the information of the scenario items: organs, tools, contacts, etc... \end{DoxyParams}
-\hypertarget{classvtkSimulationManager_a2d78cb22ac71b2e1e1f549c2df509a60}{
+
+Contains the information of the scenario items: organs, tools, contacts, etc... \hypertarget{classvtkSimulationManager_a2d78cb22ac71b2e1e1f549c2df509a60}{
 \index{vtkSimulationManager@{vtkSimulationManager}!Update@{Update}}
 \index{Update@{Update}!vtkSimulationManager@{vtkSimulationManager}}
 \subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkSimulationManager::Update ()}}
 \label{classvtkSimulationManager_a2d78cb22ac71b2e1e1f549c2df509a60}
 
 
-Perform a full update of the whole system. Checks if any collision has occurred and performs and update of the whole scenario 
+Perform a full update of the whole system. 
+
+Checks if any collision has occurred and performs and update of the whole scenario 
 
 The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 

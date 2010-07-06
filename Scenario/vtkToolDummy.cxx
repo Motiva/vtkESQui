@@ -60,8 +60,8 @@ vtkToolDummy::vtkToolDummy() {
 
 	// Tool Piece Types (id)
 	// 0 -> Stick
-	this->Pieces->GetPiece(0)->SetType(vtkPiece::Stick);
-	this->Pieces->GetPiece(0)->SetType(vtkPiece::Ball);
+	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Stick);
+	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Ball);
 }
 
 //----------------------------------------------------------------------------

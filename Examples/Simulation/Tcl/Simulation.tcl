@@ -47,7 +47,7 @@ proc CreateSimulation {} {
 	vtkScenario Scenario
 	Scenario SetRenderWindow renWin
 	
-	SimulationManager SetCollisionDetectionLibrary "vtkbioeng"
+	SimulationManager SetLibraryName "vtkbioeng"
 	SimulationManager SetScenario Scenario
 	SimulationManager Init
 

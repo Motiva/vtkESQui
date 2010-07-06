@@ -11,7 +11,7 @@ vtkSpring::vtkSpring()
 	this->DistanceCoefficient = 0.0;
 	this->DampingCoefficient = 0.0;
 	this->DeltaT = 0.0;
-	this->Distance = 0.0;
+	this->RestLength = 0.0;
 	this->Direction[0] = 0.0;
 	this->Direction[1] = 0.0;
 	this->Direction[2] = 0.0;
@@ -75,7 +75,7 @@ void vtkSpring::Init()
 	double * p0 = this->GetParticle(0)->GetPosition();
 	double * p1 = this->GetParticle(1)->GetPosition();
 	//Note vtkMath returns squared-distance
-	this->Distance = sqrt(vtkMath::Distance2BetweenPoints(p0, p1));
+	this->RestLength = sqrt(vtkMath::Distance2BetweenPoints(p0, p1));
 	vtkMath::Subtract(p0, p1, this->Direction);
 	vtkMath::Normalize(this->Direction);
 	//TODO: Update direction on every step
@@ -88,7 +88,7 @@ void vtkSpring::PrintSelf(ostream& os, vtkIndent indent)
 	os << indent << "Id: " << this->Id << "\n";
 	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << "\n";
 	os << indent << "DampingCoefficient: " << this->DampingCoefficient << "\n";
-	os << indent << "Distance: " << this->Distance << "\n";
+	os << indent << "Distance: " << this->RestLength << "\n";
 	os << indent << "Direction: (" << this->Direction[0] << ", "
 									<< this->Direction[1] << ", "
 									<< this->Direction[2] << ")\n\n";

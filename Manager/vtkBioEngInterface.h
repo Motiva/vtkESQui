@@ -55,26 +55,28 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkContact.h"
 #include "vtkContactCollection.h"
 #include "vtkPoints.h"
+#include "vtkCell.h"
 #include "vtkPointLocator.h"
 
-//! This class acts as an interface to the collision detection library
+//! Interface to the collision detection library
 
 class VTK_ESQUI_MANAGER_EXPORT vtkBioEngInterface: public vtkCollisionDetectionLibrary
 {
 
 public:
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkBioEngInterface, vtkCollisionDetectionLibrary);
+	//! Create new vtkbioeng interace
 	static vtkBioEngInterface *New();
+	//!Return class name
 	const char *GetClassName() {return "vtkBioEngInterface";};
 
-	// Inicializa la libreria, reservando el espacio de memoria necesario
 	//! Set up the collision detection library with the initial values,
 	/*!
 	* This method will vary depending on the collision detection library
 	*/
 	void Init();
 
-	// Detecta colisiones entre un organos y herramientas
 	//! Update the collsion detection library
 	/*!
 	* Executes the collision detection process between an tool and an organ

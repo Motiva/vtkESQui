@@ -49,20 +49,25 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 #include "vtkMotionEquationSolver.h"
 
-//! Implementation of the mass-spring deformation model
+//! Implementation of the velocity verlet solver.
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkVelocityVerletSolver : public vtkMotionEquationSolver {
 public:
-
-
+	//!Type Revision Macro
 	vtkTypeRevisionMacro(vtkVelocityVerletSolver, vtkMotionEquationSolver);
+	//! Create a new verlet solver
 	static vtkVelocityVerletSolver * New();
+	//! Print object values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	vtkSetMacro(NumberOfParticles, double);		// NumberOfParticles
-
+	//! Initialize equation motion solver
 	virtual void Init();
 
+	//! Compute next step for every particle
+	/*!
+	 * \param particles collection of particles
+	 * \param dt time step
+	 */
 	virtual void ComputeNextStep(vtkParticleCollection * particles, double dt);
 
 protected:
@@ -73,8 +78,7 @@ private:
 	vtkVelocityVerletSolver(const vtkVelocityVerletSolver&);            // Not implemented.
 	void operator=(const vtkVelocityVerletSolver&);           // Not implemented.
 
-	void Evaluate(vtkParticle * p, double * dX, double * dV, double deltaT);
-
+	//! Reset the solver
 	void Reset();
 };
 

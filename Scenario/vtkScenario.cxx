@@ -131,8 +131,8 @@ vtkOrganCollection * vtkScenario::GetOrganCollection()
 //Add Organs to the Scenario
 void vtkScenario::InsertNextOrgan(vtkOrgan* organ)
 {
-	organ->SetRenderWindow(this->RenderWindow);
 	organ->SetId(this->GetNumberOfOrgans());
+	organ->SetRenderWindow(this->RenderWindow);
 	organ->Init();
 	this->Organs->InsertNextOrgan(organ);
 }
@@ -192,8 +192,8 @@ vtkToolCollection * vtkScenario::GetToolCollection()
 //Add Tools to the Scenario
 void vtkScenario::InsertNextTool(vtkTool* tool)
 {
-	tool->SetRenderWindow(this->RenderWindow);
 	tool->SetId(this->GetNumberOfTools());
+	tool->SetRenderWindow(this->RenderWindow);
 	tool->Init();
 	this->Tools->InsertNextTool(tool);
 }

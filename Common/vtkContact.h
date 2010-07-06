@@ -51,10 +51,14 @@ POSSIBILITY OF SUCH DAMAGE.
 class VTK_ESQUI_COMMON_EXPORT vtkContact : public vtkObject {
 	
 public:
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkContact,vtkObject);
 
+	//! Create new contact that will be used as a data container
 	static vtkContact *New();
+	//! Print contact info
 	void PrintSelf(ostream& os, vtkIndent indent);
+	//! Return class name
 	const char *GetClassName() {return "vtkContact";};
 
 	//! Performs a full detailed copy of the contact
@@ -62,39 +66,37 @@ public:
 
 	//! Set the id of the tool
 	/*!
-	 * \param id Identifying key of the tool that has contacted the organ
 	 * \sa GetToolId()
 	 */
-	void SetToolId(int id) {ToolId = id;};
+	vtkSetMacro(ToolId, vtkIdType);
 
 	//! Get the index of the tool
 	/*!
 	 * \return Identifying key of the tool
 	 * \sa SetToolId(int id)
 	 */
-	int GetToolId() {return this->ToolId;};
+	vtkGetMacro(ToolId, vtkIdType);
 
 	//! Set the index of the organ
 	/*!
-	 * \param id Identifying key of the organ that has been contacted
 	 * \sa GetOrganId()
 	 */
-	void SetOrganId(int id) {OrganId = id;};
+	vtkSetMacro(OrganId, vtkIdType);
 
 	//! Get the index of the deformable organ
 	/*!
 	 * \return Identifying key of the organ
 	 * \sa SetOrganId(int id)
 	 */
-	int GetOrganId() {return this->OrganId;};
+	vtkGetMacro(OrganId, vtkIdType);
 	
 	//! Set the organ/tool mesh point where the collision has occured
 	/*!
 	 * \param position position of the pointId in the PointIds collection
-	 * \param value point id of the organ mesh
+	 * \param id point id of the organ mesh
 	 * \sa GetPointId()
 	 */
-	void SetPointId(int position, int id) {this->PointIds->InsertId(position, id);};
+	void InsertPointId(int position, int id) {this->PointIds->InsertId(position, id);};
 
 	//! Get the collisioned point identifier
 	/*!
@@ -117,7 +119,7 @@ public:
 	 * \param z z coordinate of the collision point
 	 * \sa GetVertexPosition()
 	 */
-	void SetPoint(int position, double x, double y, double z) {
+	void InsertPoint(int position, double x, double y, double z) {
 		this->Points->InsertPoint(position, x, y, z);
 	};
 
@@ -127,8 +129,8 @@ public:
 	 * \param point[] [x, y, z] coordinates vector of the collision point
 	 * \sa GetVertexPosition()
 	 */
-	void SetPoint(int position, double point[3]) {
-		this->SetPoint(position, point[0],point[1],point[2]);
+	void InsertPoint(int position, double point[3]) {
+		this->InsertPoint(position, point[0],point[1],point[2]);
 	};
 	//! Returns collisioned point position
 	/*!
@@ -149,7 +151,7 @@ public:
 	 * \param value organ cell id
 	 * \sa GetCellId()
 	 */
-	void SetCellId(int position, vtkIdType value) {this->CellIds->InsertId(position, value);}
+	void InsertCellId(int position, vtkIdType value) {this->CellIds->InsertId(position, value);}
 
 	//! Get the collisioned cell of the deformable model
 	/*!
@@ -164,19 +166,21 @@ public:
 	//! Get the collisioned tool cell identifier
 	int GetToolCellId() {return this->CellIds->GetId(1);};
 
-	//! Set the unit direction vector of the contact
-	void SetDirectionVector(double x, double y, double z) {
-		this->Direction[0] =x;
-		this->Direction[1] =y;
-		this->Direction[2] =z;
+	//! Set the direction vector of the contact
+	void SetDirectionVector(double x, double y, double z)
+	{
+		this->Direction[0] = x;
+		this->Direction[1] = y;
+		this->Direction[2] = z;
 	};
 
-	//! Set the unit direction vector of the contact
-	void SetDirectionVector(double vector[3]) {
-		this->SetDirectionVector(vector[0], vector[1], vector[2]);
+	//! Set the direction vector of the contact
+	void SetDirectionVector(double dir[3])
+	{
+		this->SetDirectionVector(dir[0], dir[1], dir[2]);
 	};
 
-	//! Returns the force unit vector of the contact
+	//! Returns the direction vector of the contact
 	double * GetDirectionVector() {return this->Direction;};
 
 	//! Set force feedback magnitude
@@ -186,10 +190,10 @@ public:
 	//double GetForceMagnitude() {return this->ForceMagnitude;};
 
 	//! Get if the organ has been grasped
-	bool IsGrasped() {return this->isGrasped;};
+	//bool IsGrasped() {return this->isGrasped;};
 
 	//! Set the organ as grasped
-	void SetAsGrasped(bool value) { isGrasped = value;};
+	//void SetAsGrasped(bool value) { isGrasped = value;};
 
 protected:
 	vtkContact();
@@ -217,7 +221,7 @@ private:
 	vtkIdList * PointIds;
 
 	// Id de la celda del vertice colisionado
-	//! clashed vertex cell Id
+	//! Clashed vertex cell Id
 	// CellIds[0]: Organ Cell Id
 	// CellIds[1]: Tool Cell Id
 	vtkIdList * CellIds;
@@ -226,8 +230,7 @@ private:
 	//! Direction Vector of the contact
 	double Direction[3];
 
-
-	//!Define the contact as grasped
+	//! Define the contact as grasped
 	bool isGrasped;
 
 	vtkContact (const vtkContact &);//NotImplemented

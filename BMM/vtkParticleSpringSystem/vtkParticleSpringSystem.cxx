@@ -37,7 +37,8 @@ vtkParticleSpringSystem::~vtkParticleSpringSystem()
 int vtkParticleSpringSystem::RequestData(
 		vtkInformation *vtkNotUsed(request),
 		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector) {
+		vtkInformationVector *outputVector)
+{
 
 	// Get the info objects
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
@@ -73,7 +74,6 @@ int vtkParticleSpringSystem::RequestData(
 
 	this->SystemProperties->SetInput(surface);
 	this->Volume = this->SystemProperties->GetVolume();
-	cout << this->SystemProperties->GetMaxCellArea() << endl;
 
 	surface->Delete();
 	return 1;
@@ -81,7 +81,6 @@ int vtkParticleSpringSystem::RequestData(
 
 void vtkParticleSpringSystem::Step()
 {
-	//cout << this->GetClassName() << "::Step()" << endl;
 	this->Solver->ComputeNextStep(this->Particles, this->DeltaT);
 }
 
@@ -244,7 +243,7 @@ void vtkParticleSpringSystem::ComputeForces()
 		vtkMath::Subtract(p0->GetVelocity(), spring->GetParticle(1)->GetVelocity(), v); // v = v[0]-v[1]
 		//cout << "v: " << v[0]<<", "<< v[1] << ", " << v[2] << endl;
 
-		double L = spring->GetDistance();
+		double L = spring->GetRestLength();
 		//cout << "L: "<< L << endl;
 
 		double dNorm = vtkMath::Norm(d);
@@ -252,16 +251,16 @@ void vtkParticleSpringSystem::ComputeForces()
 
 		double K = spring->GetSpringCoefficient();
 		double damping = spring->GetDampingCoefficient();
-		double tau = spring->GetDistanceCoefficient();
+		//double tau = spring->GetDistanceCoefficient();
 
 		double Ad = (dNorm-L);
-		/*double ratio = (100*Ad)/L;
+		//double ratio = (100*Ad)/L;
 		//TODO: Apply distance constraint
-		if(abs(ratio) > tau)
-		{
-			cout << "Ad: " << Ad << " " << ratio << endl;
-			Ad /=2;
-		}*/
+		//if(abs(ratio) > tau)
+		//{
+		//	cout << "Ad: " << Ad << " " << ratio << endl;
+		//	Ad /=2;
+		//}
 
 		// Measure Spring/Damping Force
 		double F[3];
@@ -321,7 +320,9 @@ void vtkParticleSpringSystem::ComputeContacts()
 			double * dir = this->ContactDirections->GetTuple3(i);
 
 			vtkParticle * p = this->Particles->GetParticle(id);
+			p->Print(cout);
 			p->AddPosition(dir[0], dir[1], dir[2]);
+			p->Print(cout);
 			p->SetContacted(1);
 		}
 

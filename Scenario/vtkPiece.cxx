@@ -47,38 +47,39 @@ vtkStandardNewMacro(vtkPiece);
 //--------------------------------------------------------------------------
 vtkPiece::vtkPiece()
 {
-	this->Name = "";
+	this->Renderer = NULL;
+	this->RenderWindow = NULL;
+	this->Name = NULL;
 	this->FileName = NULL;
-	this->Type = vtkPiece::Stick;
+	this->PieceType = vtkPiece::Stick;
 	this->Id = -1;
-	this->Reader = vtkPolyDataReader::New();
-	this->PolyData = vtkPolyData::New();
-	this->TransformFilter = vtkTransformPolyDataFilter::New();
-	this->Transform = vtkTransform::New();
-	this->Actor = vtkActor::New();
-	this->Mapper = vtkDataSetMapper::New();
+	this->Reader = NULL;
+	this->PolyData = NULL;
+	this->TransformFilter = NULL;
+	this->Transform = NULL;
+	this->Actor = NULL;
+	this->Mapper = NULL;
 
 	//Bounding Box Display
-	this->OBB = vtkOBBTree::New();
-	this->SimpleMesh = vtkPolyData::New();
-	this->SimpleMeshActor = vtkActor::New();
-	this->SimpleMeshMapper = vtkDataSetMapper::New();
+	this->OBB = NULL;
+	this->SimpleMesh = NULL;
+	this->SimpleMeshActor = NULL;
+	this->SimpleMeshMapper = NULL;
 }
 
 //--------------------------------------------------------------------------
 vtkPiece::~vtkPiece()
 {
-	this->TransformFilter->Delete();
-	this->Transform->Delete();
-	this->Actor->Delete();
-	this->Mapper->Delete();
-	this->PolyData->Delete();
-	this->Reader->Delete();
+	if(this->TransformFilter) this->TransformFilter->Delete();
+	if(this->Transform) this->Transform->Delete();
+	if(this->Actor) this->Actor->Delete();
+	if(this->Mapper) this->Mapper->Delete();
+	if(this->Reader) this->Reader->Delete();
 
-	this->OBB->Delete();
-	this->SimpleMesh->Delete();
-	this->SimpleMeshActor->Delete();
-	this->SimpleMeshMapper->Delete();
+	if(this->OBB) this->OBB->Delete();
+
+	if(this->SimpleMeshActor) this->SimpleMeshActor->Delete();
+	if(this->SimpleMeshMapper) this->SimpleMeshMapper->Delete();
 }
 
 //--------------------------------------------------------------------------
@@ -87,28 +88,46 @@ void vtkPiece::Init()
 	//Read polydata source file
 	if(this->FileName)
 	{
+		this->Reader = vtkPolyDataReader::New();
+		this->Reader = vtkPolyDataReader::New();
 		this->Reader->SetFileName(this->FileName);
-		this->Reader->SetOutput(this->PolyData);
 		this->Reader->Update();
+		this->PolyData = this->Reader->GetOutput();
 	}
 
-	if(this->Renderer)
+	if(this->RenderWindow)
 	{
+		this->Renderer = this->RenderWindow->GetRenderers()->GetFirstRenderer();
+
+		this->Transform = vtkTransform::New();
+		this->TransformFilter = vtkTransformPolyDataFilter::New();
 		this->TransformFilter->SetInput(this->PolyData);
 		this->TransformFilter->SetTransform(this->Transform);
 		this->TransformFilter->Update();
+		this->Mapper = vtkDataSetMapper::New();
 		this->Mapper->SetInput(this->TransformFilter->GetOutput());
+		this->Actor = vtkActor::New();
 		this->Actor->SetMapper(this->Mapper);
 
 		//Bounding Box Display
-		this->Update();
-		this->SimpleMeshMapper->SetInput(this->GetSimpleMesh());
+		this->OBB = vtkOBBTree::New();
+		this->OBB->SetDataSet(this->TransformFilter->GetOutput());
+		this->OBB->SetMaxLevel(8);
+		this->OBB->SetTolerance(0.0001);
+		this->OBB->BuildLocator();
+		//this->OBB->GenerateRepresentation(4,this->SimpleMesh);
+		this->SimpleMesh = this->TransformFilter->GetOutput();
+
+		this->SimpleMeshMapper = vtkDataSetMapper::New();
+		this->SimpleMeshMapper->SetInput(this->SimpleMesh);
+
+		this->SimpleMeshActor = vtkActor::New();
 		this->SimpleMeshActor->SetMapper(SimpleMeshMapper);
 		this->SimpleMeshActor->GetProperty()->SetColor(0.5, 0.8, 0.5);
 		this->SimpleMeshActor->GetProperty()->SetOpacity(0.1);
 
 		this->Renderer->AddActor(this->Actor);
-		//this->Renderer->AddActor(this->SimpleMeshActor);
+		this->Renderer->AddActor(this->SimpleMeshActor);
 	}
 
 }
@@ -116,38 +135,7 @@ void vtkPiece::Init()
 //--------------------------------------------------------------------------
 void vtkPiece::Update()
 {
-	this->OBB->SetDataSet(this->TransformFilter->GetOutput());
-	this->OBB->SetMaxLevel(8);
-	this->OBB->SetTolerance(0.0001);
-	this->OBB->BuildLocator();
-
-	this->OBB->GenerateRepresentation(4,this->SimpleMesh);
-	//this->SimpleMesh->DeepCopy(this->TransformFilter->GetOutput());
 }
-
-//--------------------------------------------------------------------------
-void vtkPiece::SetFileName(const char * name)
-{
-	this->FileName = name;
-}
-
-//--------------------------------------------------------------------------
-const char * vtkPiece::GetFileName()
-{
-	return this->FileName;
-}
-
-//--------------------------------------------------------------------------
-void vtkPiece::SetRenderWindow(vtkRenderWindow *window) {
-	this->RenderWindow = window;
-	this->Renderer= this->RenderWindow->GetRenderers()->GetFirstRenderer();
-}
-
-//--------------------------------------------------------------------------
-vtkRenderWindow* vtkPiece::GetRenderWindow() {
-	return this->RenderWindow;
-}
-
 //--------------------------------------------------------------------------
 vtkPolyData * vtkPiece::GetSimpleMesh()
 {
@@ -161,7 +149,7 @@ void vtkPiece::PrintSelf(ostream& os,vtkIndent indent) {
 
 	os << indent << "Name: " << this->Name << endl;
 	os << indent << "Id: " << this->Id << endl;
-	os << indent << "Type: " << this->Type << endl;
+	os << indent << "Type: " << this->PieceType << endl;
 	os << indent << "FileName: " << this->FileName << endl;
 	os << indent << "PolyData (#points): " << this->PolyData->GetNumberOfPoints() << endl;
 

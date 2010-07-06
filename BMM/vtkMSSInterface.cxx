@@ -91,7 +91,7 @@ int vtkMSSInterface::RequestData(
 		input->Update();
 	}
 
-	this->MSSMesh->SetContacts(this->ContactPointIds, this->Directions);
+	this->MSSMesh->SetContacts(this->ContactPointIds, this->ContactDirections);
 	this->MSSMesh->Update();
 
 	vtkPoints * points = this->MSSMesh->GetOutput()->GetPoints();
@@ -122,36 +122,6 @@ void vtkMSSInterface::Init()
 	this->MSSMesh->SetInput(del->GetOutput());
 
 	//this->Print(cout);
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetDistanceCoefficient(double value)
-{
-	this->DistanceCoefficient = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetDampingCoefficient(double value)
-{
-	this->DampingCoefficient = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetMass(double value)
-{
-	this->Mass = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetDeltaT(double value)
-{
-	this->DeltaT = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkMSSInterface::SetSteps(int value)
-{
-	this->Steps = value;
 }
 
 //--------------------------------------------------------------------------

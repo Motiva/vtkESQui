@@ -7,7 +7,11 @@
 Collection of Pieces.  
 
 
-{\ttfamily \#include $<$vtkPieceCollection.h$>$}\subsection*{Public Member Functions}
+
+
+{\ttfamily \#include $<$vtkPieceCollection.h$>$}
+
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkPieceCollection_a6325b41535ab86ad38c374cd0890bbec}{
@@ -59,14 +63,18 @@ Collection of Pieces.
 \label{classvtkPieceCollection_ae40adc69656f67b99b9e1fe07f94ad04}
 
 
-Return piece on the collection. Get the piece at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted. \hypertarget{classvtkPieceCollection_a4e0569b11db93fd143cd2200529f41b7}{
+Return piece on the collection. 
+
+Get the piece at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted. \hypertarget{classvtkPieceCollection_a4e0569b11db93fd143cd2200529f41b7}{
 \index{vtkPieceCollection@{vtkPieceCollection}!GetPiece@{GetPiece}}
 \index{GetPiece@{GetPiece}!vtkPieceCollection@{vtkPieceCollection}}
 \subsubsection[{GetPiece}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkPiece} $\ast$ vtkPieceCollection::GetPiece (vtkIdType {\em id})}}
 \label{classvtkPieceCollection_a4e0569b11db93fd143cd2200529f41b7}
 
 
-Return piece located the specified id. Get the piece in the list with the position id. NULL is returned when the collection is exhausted. 
+Return piece located the specified id. 
+
+Get the piece in the list with the position id. NULL is returned when the collection is exhausted. 
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]list index where the piece is stored \end{DoxyParams}
 \hypertarget{classvtkPieceCollection_a6f37b0535d1a952beaa969000f857f24}{
@@ -77,6 +85,8 @@ Return piece located the specified id. Get the piece in the list with the positi
 
 
 Insert piece at the end of the collection. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em Piece}]\hyperlink{classvtkPiece}{vtkPiece} object to be inserted \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -89,7 +99,9 @@ Insert piece at the end of the collection.
 \label{classvtkPieceCollection_a8bd89cd54bd00572fbffc2c403e35cef}
 
 
-Insert a piece into the collection. Piece will be added at the specified id 
+Insert a piece into the collection. 
+
+Piece will be added at the specified id 
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]index of the list where the piece will be added \item[{\em Piece}]\hyperlink{classvtkPiece}{vtkPiece} object to be inserted \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}

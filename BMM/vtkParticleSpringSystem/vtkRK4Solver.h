@@ -54,46 +54,65 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkMath.h"
 
-//! Implementation of the mass-spring deformation model
+//! Implementation of the Runge-Kutta solver.
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkRK4Solver : public vtkObject {
 public:
 
-
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkRK4Solver, vtkObject);
+	//! Create new Runge-Kutta Solver
 	static vtkRK4Solver * New();
+	//! Print object info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//! Set number of particles
 	vtkSetMacro(NumberOfParticles, double);		// NumberOfParticles
+	//! Set particle spring system
 	vtkSetObjectMacro(DeformationModel, vtkParticleSpringSystem);		// NumberOfParticles
 
 protected:
 	vtkRK4Solver();
 	~vtkRK4Solver();
 
+	//! Initialize solver
 	void Init();
-	//void ComputeNextStep(vtkDoubleArray * positions, vtkDoubleArray * velocities, double deltaT);
+
+	//! Comput next step of the motion equation solver
 	void ComputeNextStep(vtkParticleCollection * particles, double deltaT);
 
 private:
 	vtkRK4Solver(const vtkRK4Solver&);            // Not implemented.
 	void operator=(const vtkRK4Solver&);           // Not implemented.
 
+	//! Deformation model
 	vtkParticleSpringSystem * DeformationModel;
+
+	//! System number of particles
 	double NumberOfParticles;
 
+	//! derivative x
 	vtkDoubleArray * dx;
+	//! derivative v
 	vtkDoubleArray * dv;
 
+	//! 1st order derivative x
 	vtkDoubleArray * dx1;
+	//! 1st order derivative v
 	vtkDoubleArray * dv1;
+	//! 2nd order derivative x
 	vtkDoubleArray * dx2;
+	//! 2nd order derivative v
 	vtkDoubleArray * dv2;
+	//! 3rd order derivative x
 	vtkDoubleArray * dx3;
+	//! 3rd order derivative v
 	vtkDoubleArray * dv3;
 
+	//! Evaluate derivatives on each step
 	void Evaluate(vtkParticle * p, double * dX, double * dV, double deltaT);
 
+	//! Reset equation motion solver
 	void Reset();
 };
 

@@ -10,25 +10,28 @@
 class VTK_vtkRobustDeformationModel_EXPORT vtkRobustDeformationModel : public vtkRDM
 {
 public:
-  vtkTypeRevisionMacro(vtkRobustDeformationModel, vtkObject);
-  void PrintSelf(ostream& os, vtkIndent indent);
-  static vtkRobustDeformationModel* New();
+	//! Type revision macro
+	vtkTypeRevisionMacro(vtkRobustDeformationModel, vtkObject);
+	//! Create new robust deformation model
+	static vtkRobustDeformationModel* New();
+	//! Print object values
+	void PrintSelf(ostream& os, vtkIndent indent);
 
-  //! Set the external forces to apply on each point of the mesh according to ids input parameter
-  /*!
-   * The number of tuples (size=3) of the the forces should match the number of ids
-   * \param ids list of organ mesh point ids that has been contacted
-   * \param forces vector containing the force in each cartesian component x, y & z
-   */
-  void SetContacts(vtkIdList * ids, vtkDoubleArray * forces);
+	//! Set the external forces to apply on each point of the mesh according to ids input parameter
+	/*!
+	* The number of tuples (size=3) of the the forces should match the number of ids
+	* \param ids list of organ mesh point ids that has been contacted
+	* \param forces vector containing the force in each cartesian component x, y & z
+	*/
+	void SetContacts(vtkIdList * ids, vtkDoubleArray * forces);
 
 protected:
-  vtkRobustDeformationModel();
-  ~vtkRobustDeformationModel();
+	vtkRobustDeformationModel();
+	~vtkRobustDeformationModel();
 
 private:
-  vtkRobustDeformationModel(const vtkRobustDeformationModel&);  // Not implemented.
-  void operator=(const vtkRobustDeformationModel&);  // Not implemented.
+	vtkRobustDeformationModel(const vtkRobustDeformationModel&);  // Not implemented.
+	void operator=(const vtkRobustDeformationModel&);  // Not implemented.
 };
 
 #endif

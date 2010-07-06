@@ -53,7 +53,9 @@ class VTK_ESQUI_HAPTICS_EXPORT vtkVSP:public vtkHaptic
 
 public:
 
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkVSP, vtkObject);
+	//! Create new vtkVSP object
 	static vtkVSP *New();
 	const char *GetClassName() { return "vtkVSP"; }
 	//!Print class values

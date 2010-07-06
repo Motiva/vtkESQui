@@ -57,39 +57,44 @@ POSSIBILITY OF SUCH DAMAGE.
 
 //! Implementation class of pincers
 /*!
-vtkToolGPincers is the class that implements the pincers tool, inside the scene.
-Contains methods for position control of the tool in the scene and collision detection.
-Pincers are composed of 3 pieces: 1 stick and 2 graspers (vtkPiece)
-*/
+ * vtkToolGPincers is the class that implements the pincers tool, inside the scene.
+ * Contains methods for position control of the tool in the scene and collision detection.
+ * Pincers are composed of 3 pieces: 1 stick and 2 graspers (vtkPiece)
+ */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolDummy: public vtkToolLaparoscopy
 {
 public:
+
+	//! Type revision macro
+	vtkTypeRevisionMacro(vtkToolDummy,vtkToolLaparoscopy);
 
 	//!Create new vtkToolGPincers object
 	static vtkToolDummy *New();
 
 	//!Return class name
 	const char *GetClassName() { return "vtkToolGPincers"; }
-	vtkTypeRevisionMacro(vtkToolDummy,vtkToolLaparoscopy);
 
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//!Initialize the tool from VTK file
 	/*!
-	This function initializes the tool whose mesh is described on a VTK file
-	*/
+	 * This function initializes the tool whose mesh is described on a VTK file
+	 */
 	virtual void Init();
 
 	//!Update the tool
 	/*!
-	* This function update the tool values
-	*/
+	 * This function update the tool values
+	 */
 	virtual void Update();
 
 	//! Set Polydata object to the tool.
-	//! \param id identifier of the piece
+	/*!
+	 * \param id identifier of the piece
+	 * \param polyData basic polydata that defines the tool
+	 */
 	void SetPolyData(vtkIdType id, vtkPolyData* polyData);
 
 	//! Sets the pincers yaw angle

@@ -10,7 +10,7 @@ digraph G
   Node3 [label="vtkToolCollection",height=0.2,width=0.4,color="black",URL="$classvtkToolCollection.html",tooltip="Collection of tools."];
   Node4 -> Node2 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Organs"];
   Node4 [label="vtkOrganCollection",height=0.2,width=0.4,color="black",URL="$classvtkOrganCollection.html",tooltip="Collection of organs."];
-  Node5 -> Node1 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="collisionLibrary"];
+  Node5 -> Node1 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="CollisionDetectionLibrary"];
   Node5 [label="vtkCollisionDetectionLibrary",height=0.2,width=0.4,color="black",URL="$classvtkCollisionDetectionLibrary.html",tooltip="Generic interface of the Collision Detection Library."];
   Node6 -> Node5 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Contacts"];
   Node6 [label="vtkContactCollection",height=0.2,width=0.4,color="black",URL="$classvtkContactCollection.html",tooltip="Collection of contact information."];

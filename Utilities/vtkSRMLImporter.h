@@ -76,34 +76,35 @@ POSSIBILITY OF SUCH DAMAGE.
 	#include "vtkLSW.h"
 #endif
 
+//! Import an SRML scenario file into vtkESQui platform
+
 class VTK_ESQUI_UTILITIES_EXPORT vtkSRMLImporter: public vtkImporter
 {
 public:
 
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkSRMLImporter,vtkImporter);
-	// Instancia un nuevo objeto
 	//!Create new vtkSRMLImporter object
 	static vtkSRMLImporter *New();
-
-	//Devuelve el nombre de la clase
 	//!Return class name
 	const char *GetClassName() { return "vtkSRMLImporter"; }
-
-	// Imprime el valor de los atributos
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	// Get/Set the name of the input file.
-	void SetFileName(const char * filename);
-	const char * GetFileName();
+	//! Set the name of the input file.
+	vtkSetStringMacro(FileName);
+	//! Get the name of the input file.
+	vtkGetStringMacro(FileName);
 
-	// Get/Set the data path.
-	void SetDataPath(const char * path);
-	const char * GetDataPath();
+	//! Set the data path.
+	vtkSetStringMacro(DataPath);
+	//! Get the data path.
+	vtkGetStringMacro(DataPath);
 
-	// Get/Set the Simulation
-	void SetSimulation(vtkSimulation * simulation);
-	vtkSimulation * GetSimulation();
+	//! Set the Simulation
+	vtkSetObjectMacro(Simulation, vtkSimulation);
+	//! Get the Simulation
+	vtkGetObjectMacro(Simulation, vtkSimulation);
 
 protected:	
 
@@ -111,9 +112,10 @@ protected:
 	~vtkSRMLImporter();
 
 	// Description:
-	// Get/Set the Scenario
-	void SetScenario(vtkScenario * scenario);
-	vtkScenario * GetScenario();
+	//! Set the simulation scenario
+	vtkSetObjectMacro(Scenario, vtkScenario);
+	//! Get the simulation scenario
+	vtkGetObjectMacro(Scenario, vtkScenario);
 
 	//! Starts the Import process
 	virtual int ImportBegin ();
@@ -142,9 +144,9 @@ protected:
 	//!Basic XMLElement used in XML Parsing
 	vtkXMLDataElement * Element;
 	//!Input SRML Filename
-	const char * FileName;
+	char * FileName;
 	//!Path of the data files
-	const char * Path;
+	char * DataPath;
 	//!XML data stream
 	istream * Stream;
 	//!Read error flag
@@ -228,6 +230,7 @@ private:
 	 */
 	void SetBioMechanicalModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item);
 
+	//! Generate full path of filename
 	const char * ExpandDataFileName(const char * fname);
 
 #ifndef VTKESQUI_USE_NO_HAPTICS

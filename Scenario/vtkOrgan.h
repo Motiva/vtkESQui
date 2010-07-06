@@ -70,9 +70,11 @@ POSSIBILITY OF SUCH DAMAGE.
 class VTK_ESQUI_SCENARIO_EXPORT vtkOrgan: public vtkScenarioItem
 {
 public:
-
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkOrgan, vtkScenarioItem);
+	//! Create new organ
 	static vtkOrgan * New();
+	//! Return class name
 	const char *GetClassName() {return "vtkOrgan";}
 
 	virtual void PrintSelf(ostream &os, vtkIndent indent);
@@ -98,7 +100,7 @@ public:
 
 	//!Set the Biomechanical Model of the organ
 	/*!
-	* \param biomechanical model of the organ
+	* \param model biomechanical model of the organ
 	*/
 	void SetBioMechanicalModel(vtkBioMechanicalModel * model);
 
@@ -110,57 +112,57 @@ public:
 	*/
 	vtkBioMechanicalModel * GetBioMechanicalModel();
 
-	//!Set organ name
-	/*!
-	* \param name string containing organ's name
-	* \sa GetName()
-	*/
-	void SetName(const char * name) {this->Name = name;};
-
-	//!Return the organ name
-	/*!
-	* \sa SetName(const char * name)
-	*/
-	const char * GetName() {return this->Name;};
-
-	//!Set organ identifier
-	/*!
-	* \param id identifying tag of the organ
-	* \sa GetId()
-	*/
-	void SetId(vtkIdType id) {this->Id = id;};
-
-	//!Return the organ identifier
-	/*!
-	* \sa SetId(vtkIdType id)
-	*/
-	vtkIdType GetId() {return this->Id;};
-
 	//!Set initial values filename
 	/*!
-	* \param name path of file that contains organ initialization data
 	* \sa GetFileName()
 	*/
-	void SetFileName(const char* name);
+	vtkSetStringMacro(FileName);
 
 	//!Return initial values filename
 	/*!
 	* \sa SetFileName(const char* name);
 	*/
-	const char * GetFileName();
+	vtkGetStringMacro(FileName);
 
 	//!Set texture filename
 	/*!
-	* \param name path of file that contains organ initialization data
 	* \sa GetTextureFileName()
 	*/
-	void SetTextureFileName(const char* name);
+	vtkSetStringMacro(TextureFileName);
 
 	//!Return texture filename
 	/*!
 	* \sa SetTextureFileName(const char* name);
 	*/
-	const char * GetTextureFileName();
+	vtkGetStringMacro(TextureFileName);
+
+	//!Set force factor.
+	/*!
+	* Used for estimating haptic force process
+	* \sa GetForceFactor()
+	*/
+	vtkSetMacro(ForceFactor, double);
+
+	//!GetfForce factor.
+	/*!
+	* \sa SetForceFactor(double value)
+	*/
+	vtkGetMacro(ForceFactor, double);
+
+	//!Set organ as hooked
+	/*!
+	* \sa GetHooked()
+	*/
+	vtkSetMacro(Hooked, bool);
+
+	//!Return if the organ is hooked
+	/*!
+	* \sa SetHooked(bool)
+	*/
+	vtkGetMacro(Hooked, bool);
+
+	//!Set On/Off organ as hooked
+	vtkBooleanMacro(Hooked, bool);
 
 	//!Initialize mesh data
 	/*!
@@ -173,107 +175,50 @@ public:
 	/*!
 	* where the direction must be 0, 1, or 2 according to x, y, and z direction, and the orientation must have a value of +1 or -1
 	*/
+
+	//FIXME: gravity
 	void SetGravityInfo(vtkIdType direction, vtkIdType orientation)
 	{
 		this->GravityDirection = direction;
 		this->GravityOrientation = orientation;
 	}
 
-	//!Set maximum cutting distance
-	void SetMaxCutDistance( const double distance )  { this->MaxCuttingDistance = distance; }
+	//------- Rendering purposes ----------//
 
-	//!Return if the organ could be clipped
+	//!Set the actor of the organ
 	/*!
-	* \sa SetCanBeClippedOn()
-	* \sa SetCanBeClippedOff()
+	* \sa GetActor()
 	*/
-	vtkIdType GetCanBeClipped() const { return CanBeClipped; }
+	vtkSetObjectMacro(Actor, vtkActor);
 
-	//!Disable organ clipping
+	//!Return the actor that displays the organ
 	/*!
-	* \sa SetCanBeClippedOn()
+	* \sa SetActor(vtkActor *)
 	*/
-	void SetCanBeClippedOff() {CanBeClipped = 0;}
-	//!Enable organ clipping
+	vtkGetObjectMacro(Actor, vtkActor);
+
+	//!Set the mapper of the actor
 	/*!
-	* \sa SetCanBeClippedOff()
+	* \sa GetMapper()
 	*/
-	void SetCanBeClippedOn() {CanBeClipped = 1;}
+	vtkSetObjectMacro(Mapper, vtkDataSetMapper);
 
-	//!Return whether the organ contains fluids or not
+	//!Return the data set mapper
 	/*!
-	* \sa SetContainsFluidOff()
-	* \sa SetContainsFluidOn()
+	* \sa SetMapper(vtkDataSetMapper *)
 	*/
-	vtkIdType ContainsFluid() const { return containsFluid; }
+	vtkGetObjectMacro(Mapper, vtkDataSetMapper);
 
-	//!Disable fluid property
+	//! Set display simple mesh
+	//vtkSetMacro(DisplaySimpleMesh, bool);
+	//! Enable/Disable simple mesh display
+	//vtkBooleanMacro(DisplaySimpleMesh, bool);
+
+	//!function that returns simplified mesh
 	/*!
-	* \sa SetContainsFluidOn()
-	*/
-	void SetContainsFluidOff() {containsFluid = 0;}
-
-	//!Enable fluid property
-	/*!
-	* \sa SetContainsFluidOff()
-	*/
-	void SetContainsFluidOn()	{containsFluid = 1;}
-
-	//!Set force factor.
-	/*!
-	* Used for estimating haptic force process
-	* \sa GetForceFactor()
-	*/
-	void SetForceFactor(float value){forceFactor = value;}
-
-	//!GetfForce factor.
-	/*!
-	* \sa SetForceFactor(float value)
-	*/
-	float GetForceFactor() const{ return forceFactor; }
-
-	//!Return if the organ is hooked
-	/*!
-	* \sa SetHookedOn()
-	* \sa SetHookedOff()
-	*/
-	vtkIdType IsHooked(){ return this->Hooked;};
-
-	//!Set organ as hooked
-	/*!
-	* \sa SetHookedOff()
-	*/
-	void SetHookedOn() {this->Hooked = 1;}
-
-	//!Set organ as not hooked
-	/*!
-	* \sa SetHookedOn()
-	*/
-	void SetHookedOff() {this->Hooked = 0;}
-
-	//!Set number of required biomechanical model process iterations.
-	/*!
-	* This parameter will define the realism of the deformation
-	* \param iterations number of iterations
-	* \sa GetNumberOfIterations()
-	*/
-	void SetNumberOfIterations(vtkIdType iterations) {this->numberOfIterations = iterations;};
-
-	//!Return number of required biomechanical model process iterations.
-	/*!
-	* This parameter will define the realism of the deformation
-	* \sa SetNumberOfIterations(vtkIdType iterations)
-	*/
-	vtkIdType GetNumberOfIterations(){ return this->numberOfIterations;};
-
-	//!Return the number of mesh elements
-	vtkIdType GetNumberOfElements()  { return this->NumberOfElements; }
-
-	//!Return a list containing the moved elements on last iteration.
-	vtkPoints * GetContactPoints();
-
-	//!Return whether the organ geometry has been changed
-	vtkIdType IsDeformed()  { return this->Deformed; }
+	 * This method returns a simplified mesh for collision detection purposes
+	 */
+	vtkGetObjectMacro(SimpleMesh, vtkPolyData);
 
 	//------- Biomechanical model interface methods -------//
 
@@ -286,7 +231,7 @@ public:
 
 	//!Add several contacts to the list
 	/*!
-	* \param contact list of vtkContact objects
+	* \param contacts List of vtkContact objects
 	* \sa InsertNextContact( vtkContact* contact )
 	*/
 	void InsertContacts( vtkContactCollection* contacts )  { this->Contacts->DeepCopy(contacts); };
@@ -296,6 +241,9 @@ public:
 	* Remove all contacts from the list. Memory is not freed
 	*/
 	void RemoveContacts() {this->Contacts->RemoveContacts();};
+
+	//!Return a list containing the moved elements on last iteration.
+	vtkPoints * GetContactPoints();
 
 	//!Get organ contacts
 	vtkContactCollection * GetContacts() {return this->Contacts;};
@@ -319,53 +267,14 @@ public:
 	void Cut(vtkIdList *ids);
 	//ETX
 
-	//!Set the render window for graphical purposes
-	/*!
-	* \param Renderer render window
-	* \sa GetRenderWindow()
-	*/
-	void SetRenderWindow(vtkRenderWindow *Renderer);
-
-	//!Return the render window of the organ
-	/*!
-	* \sa SetRenderWindow(vtkRenderWindow *Renderer)
-	*/
-	vtkRenderWindow* GetRenderWindow();
-
-	//!Set the actor of the organ
-	/*!
-	* \param Actor vtkActor object
-	* \sa GetActor()
-	*/
-	void SetActor(vtkActor *Actor);
-
-	//!Return the actor that displays the organ
-	/*!
-	* \sa SetActor(vtkActor *Actor)
-	*/
-	vtkActor* GetActor();
-
-	//!Set the mapper of the actor
-	/*!
-	* \param dataset mapper
-	* \sa GetMapper()
-	*/
-	void SetMapper(vtkDataSetMapper *Mapper);
-
-	//!Return the data set mapper
-	/*!
-	* \sa SetMapper(vtkDataSetMapper *Mapper)
-	*/
-	vtkDataSetMapper* GetMapper();
-
 	//*****   p r o t e c t e d   m e m b e r s
 protected:
 
 	//!Configuration filename
-	const char * FileName;
+	char * FileName;
 
 	//!Configuration filename
-	const char * TextureFileName;
+	char * TextureFileName;
 
 	//!Texture
 	vtkTexture * Texture;
@@ -382,40 +291,18 @@ protected:
 	//!Collection of organ contact points
 	vtkContactCollection * Contacts;
 
-	//!Number Of Elements/Nodes of the organ
-	vtkIdType NumberOfElements;
-
-	//!Number of iterations required to obtain a realistic deformation
-	vtkIdType numberOfIterations;
-
 	//!Gravity Direction (0/1/2 for x/y/z)
 	vtkIdType GravityDirection;
 	//!Gravity Orientation (+/- 1)
 	vtkIdType GravityOrientation;
 
-	//!Object has been deformed on last iteration
-	vtkIdType Deformed;
-
-	//Maximum cutting distance
-	double MaxCuttingDistance;
-
-	//!For report building purposes
-	vtkIdType CanBeClipped;   
-	vtkIdType containsFluid;
-
 	//!Force estimation
-	double forceFactor;     
+	double ForceFactor;     
 
 	//!Organ is hooked
 	vtkIdType Hooked;
 
 	//**** Graphical Purposes objects ****//
-
-	//!Render Window of the organ
-	vtkRenderWindow *RenderWindow;
-	//!Renderer of the organ
-	vtkRenderer * Renderer;
-
 	//!Actor of the organ
 	vtkActor * Actor;
 
@@ -428,15 +315,16 @@ protected:
 	//!Transform function of the organ
 	vtkTransform * Transform;
 
+	//!Simplified Mesh for collision detection purposes
+	vtkPolyData * SimpleMesh;
+
 	//!Bounding Box Mapper
 	vtkDataSetMapper * SimpleMeshMapper;
 
 	//!Bounding Box Actor
 	vtkActor * SimpleMeshActor;
 
-	//! Default Constructor
 	vtkOrgan();
-	//! Destructor
 	~vtkOrgan();
 
 private:

@@ -51,36 +51,12 @@ vtkSimulationInteractorStyle::vtkSimulationInteractorStyle()
 {
 	this->Scenario = NULL;
 	this->Mode = 0;
-	this->ActiveTool = 0;
+	this->ActiveToolId = 0;
 }
 
 //--------------------------------------------------------------------------
 vtkSimulationInteractorStyle::~vtkSimulationInteractorStyle()
 {
-}
-
-//--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::SetScenario(vtkScenario * scenario)
-{
-	this->Scenario = scenario;
-}
-
-//--------------------------------------------------------------------------
-vtkScenario * vtkSimulationInteractorStyle::GetScenario()
-{
-	return this->Scenario;
-}
-
-//--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::SetActiveTool(int id)
-{
-	this->ActiveTool = id;
-}
-
-//--------------------------------------------------------------------------
-int vtkSimulationInteractorStyle::GetActiveTool()
-{
-	return this->ActiveTool;
 }
 
 //--------------------------------------------------------------------------
@@ -90,7 +66,7 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 	vtkRenderWindowInteractor *rwi = this->Interactor;
 	std::string key = rwi->GetKeySym();
 
-	vtkTool * t = this->Scenario->GetTool(this->ActiveTool);
+	vtkTool * t = this->Scenario->GetTool(this->ActiveToolId);
 
 	//TODO: Make this method generic for any tool
 	vtkToolPincers * tool = vtkToolPincers::SafeDownCast(t);
@@ -134,11 +110,11 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 
 		if(key.compare("i") == 0)
 		{
-			this->ActiveTool = 0;
+			this->ActiveToolId = 0;
 		}
 		if(key.compare("d") == 0)
 		{
-			this->ActiveTool = 1;
+			this->ActiveToolId = 1;
 		}
 		if(key.compare("a") == 0)
 		{

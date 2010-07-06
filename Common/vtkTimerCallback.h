@@ -48,25 +48,36 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 
+//! Implementation of a standard timer
 class VTK_ESQUI_COMMON_EXPORT vtkTimerCallback : public vtkCommand {
 public:
 
+	//! Create new timer callback
 	static vtkTimerCallback *New(){return new vtkTimerCallback;};
+	//! Print timer info
 	void PrintSelf(ostream& os, vtkIndent indent);
+	//! Return class name
 	const char *GetClassName() {return "vtkTimerCallback";};
 
-	// Description:
+	//! Execution of the timer
+	/*!
+	 * Satisfy the superclass API for callbacks.
+	 */
+	//Description:
 	// Satisfy the superclass API for callbacks. Recall that the caller is
 	// the instance invoking the event; eid is the event id (see
 	// vtkCallbackCommand.h); and calldata is information sent when the callback
 	// was invoked (e.g., progress value in the vtkCallbackCommand::ProgressEvent).
 	virtual void Execute(vtkObject *caller, unsigned long eid, void *callData);
 
-	void SetFasterTimerId(int tid);
+	//!Set timer identifier
+	void SetFasterTimerId(vtkIdType tid);
 
-	void SetFastTimerId(int tid);
+	//!Set timer identifier
+	void SetFastTimerId(vtkIdType tid);
 
-	void SetRenderTimerId(int tid);
+	//!Set render timer identifier
+	void SetRenderTimerId(vtkIdType tid);
 
 protected:
 	vtkTimerCallback();
@@ -79,9 +90,9 @@ private:
 
 	vtkRenderWindowInteractor * Interactor;
 
-	int FasterTimerId;
-	int FastTimerId;
-	int RenderTimerId;
+	vtkIdType FasterTimerId;
+	vtkIdType FastTimerId;
+	vtkIdType RenderTimerId;
 };
 
 #endif

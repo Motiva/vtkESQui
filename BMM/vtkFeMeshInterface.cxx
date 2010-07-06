@@ -121,7 +121,7 @@ void vtkFeMeshInterface::Update()
 //	this->femMesh->SetBoundaryConditions(this->boundCells, this->dofs);
 
 	//Set external forces to the FEM Model
-	this->FeMesh->SetContacts(this->ContactCelltIds, this->Forces);
+	this->FeMesh->SetContacts(this->ContactCellIds, this->Forces);
 
 	//Update the original mesh with the resulted deformation
 	this->FeMesh->Update();

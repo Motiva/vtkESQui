@@ -59,98 +59,95 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkHaptic.h"
 #endif
 
-
+//! Implementation of the simulation process.
+/*!
+ * Periodically executes the simulation and haptic manager and updates the whole scenario.
+ */
 class VTK_ESQUI_MANAGER_EXPORT vtkSimulation: public vtkObject
 {
 public:
-
-	// Instancia un nuevo objeto
-	//!Create new vtkSimulation object
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkSimulation, vtkObject);
+	//! Create new vtkSimulation object
 	static vtkSimulation *New();
 
-	//Devuelve el nombre de la clase
-	//!Return class name
+	//! Return class name
 	const char *GetClassName() { return "vtkSimulation"; }
 
-	// Imprime el valor de los atributos
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//! Initializes the simulation (Haptic, Manager, etc...)
 	void Init();
 
-	//!Starts the simulation
+	//! Starts the simulation
 	void Run();
-
-	//! Set the collision detection manager
-	/*!
-	* \param manager collision detection manager
-	* \sa GetCollisionManager
-	*/
-	void SetSimulationManager(vtkSimulationManager *manager);
-
-	//! Get the collision detection manager
-	/*!
-	* \sa SetCollisionManager(vtkCollisionManager *manager)
-	*/
-	vtkSimulationManager* GetSimulationManager();
-
-	//!Set simulation render window interactor
-	/*!
-	* \sa GetRenderWindowInteractor()
-	*/
-	void SetRenderWindowInteractor(vtkRenderWindowInteractor *iren);
-
-	//!Get simulation render window interactor
-	/*!
-	* \sa SetRenderWindowInteractor(vtkRenderWindowInteractor *iren)
-	*/
-	vtkRenderWindowInteractor * GetRenderWindowInteractor();
-
-	//Set/Get timer refresh rates
-	//!Set haptic device timer refresh rate (ms)
-	void SetHapticTimerRate(double rate);
-
-	//!Set simulation refresh rate (ms)
-	void SetSimulationTimerRate(double rate);
-
-	//!Set render refresh rate (ms)
-	void SetRenderTimerRate(double rate);
-
-	//!Get haptic device timer refresh rate (ms)
-	double GetHapticTimerRate();
-
-	//!Get simulation refresh rate (ms)
-	double GetSimulationTimerRate();
-
-	//!Get render refresh rate (ms)
-	double GetRenderTimerRate();
-
-	//Get timer identifiers for event handling
-	//!Get haptic device timer identifier
-	int GetHapticTimerId();
-
-	//!Get simulation timer identifier
-	int GetSimulationTimerId();
-
-	//!Get render timer identifier
-	int GetRenderTimerId();
-
-	//! Set/Get the use of haptic in the simulation
-	void SetUseHaptic(bool value){this->UseHaptic = value;};
-	bool GetUseHaptic(){return this->UseHaptic;};
-
-	//!Enable the use of haptic
-	void UseHapticOn(){this->SetUseHaptic(true);};
-	//!Disable the use of haptic
-	void UseHapticOff(){this->SetUseHaptic(false);};
 
 	//!Update the simulation Manager. The whole Scenario is updated
 	void UpdateManager();
 
 	//!Update the haptic state and obtains the value of the force feedback for the haptic device
 	void UpdateHaptic();
+
+	//! Set the collision detection manager
+	/*!
+	* \sa GetCollisionManager
+	*/
+	vtkSetObjectMacro(SimulationManager, vtkSimulationManager);
+
+	//! Get the collision detection manager
+	/*!
+	* \sa SetCollisionManager(vtkCollisionManager *manager)
+	*/
+	vtkGetObjectMacro(SimulationManager, vtkSimulationManager);
+
+	//! Set simulation render window interactor
+	/*!
+	* \sa GetInteractor()
+	*/
+	vtkSetObjectMacro(Interactor, vtkRenderWindowInteractor);
+
+	//!Get simulation render window interactor
+	/*!
+	* \sa SetInteractor(vtkRenderWindowInteractor *iren)
+	*/
+	vtkGetObjectMacro(Interactor, vtkRenderWindowInteractor);
+
+	//!Set haptic device timer refresh rate (ms)
+	vtkSetMacro(HapticTimerRate, double);
+
+	//!Set simulation refresh rate (ms)
+	vtkSetMacro(SimulationTimerRate, double);
+
+	//!Set render refresh rate (ms)
+	vtkSetMacro(RenderTimerRate, double);
+
+	//!Get haptic device timer refresh rate (ms)
+	vtkGetMacro(HapticTimerRate, double);
+
+	//!Get simulation refresh rate (ms)
+	vtkGetMacro(SimulationTimerRate, double);
+
+	//!Get render refresh rate (ms)
+	vtkGetMacro(RenderTimerRate, double);
+
+	//Get timer identifiers for event handling
+	//!Get haptic device timer identifier
+	vtkGetMacro(HapticTimerId, vtkIdType);
+
+	//!Get simulation timer identifier
+	vtkGetMacro(SimulationTimerId, vtkIdType);
+
+	//!Get render timer identifier
+	vtkGetMacro(RenderTimerId, vtkIdType);
+
+	//! Set the use of haptic in the simulation
+	vtkSetMacro(UseHaptic, bool);
+	//! Get the use of haptic in the simulation
+	vtkGetMacro(UseHaptic, bool);
+
+	//!Enable the use of haptic
+	vtkBooleanMacro(UseHaptic, bool);
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	//BTX
@@ -178,6 +175,9 @@ protected:
 	//! Enable/disable haptic device usage
 	bool UseHaptic;
 
+	//! Gravitational force
+	bool Gravity;
+
 private:
 
 	vtkSimulation (const vtkSimulation &); //Not Implemented
@@ -186,11 +186,11 @@ private:
 	//!Simulation callback command. Acts as a multirate timer
 	vtkCallbackCommand * Callback;
 
-	int HapticTimerId;
+	vtkIdType HapticTimerId;
 	double HapticTimerRate;
-	int SimulationTimerId;
+	vtkIdType SimulationTimerId;
 	double SimulationTimerRate;
-	int RenderTimerId;
+	vtkIdType RenderTimerId;
 	double RenderTimerRate;
 
 };

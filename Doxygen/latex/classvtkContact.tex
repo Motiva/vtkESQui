@@ -7,7 +7,11 @@
 This class acts as data container storing all the useful information of an organ-\/tool collision.  
 
 
-{\ttfamily \#include $<$vtkContact.h$>$}\subsection*{Public Member Functions}
+
+
+{\ttfamily \#include $<$vtkContact.h$>$}
+
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkContact_ae57bab296a089fb62a3fb1951e49076e}{
@@ -30,15 +34,15 @@ void \hyperlink{classvtkContact_acff6607cd121ba61bdc2a92615cfb133}{DeepCopy} (\h
 \label{classvtkContact_acff6607cd121ba61bdc2a92615cfb133}
 
 \begin{DoxyCompactList}\small\item\em Performs a full detailed copy of the contact. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkContact_a449bcc29dbf1e58dcd342d949a9754cb}{SetToolId} (int id)
+virtual void \hyperlink{classvtkContact_aaa007969b63fb9627a8d07a0c5af5f44}{SetToolId} (vtkIdType)
 \begin{DoxyCompactList}\small\item\em Set the id of the tool. \item\end{DoxyCompactList}\item 
-int \hyperlink{classvtkContact_a82d16317dbf303590a6d2834810b222c}{GetToolId} ()
+virtual vtkIdType \hyperlink{classvtkContact_a6da6c11b7dde677ffe8305216d07b397}{GetToolId} ()
 \begin{DoxyCompactList}\small\item\em Get the index of the tool. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkContact_aeb38ed699e47ceb31df529db0ea8458f}{SetOrganId} (int id)
+virtual void \hyperlink{classvtkContact_afae2207fe8a86b5d8855042f1dbd345c}{SetOrganId} (vtkIdType)
 \begin{DoxyCompactList}\small\item\em Set the index of the organ. \item\end{DoxyCompactList}\item 
-int \hyperlink{classvtkContact_a44064eb7f79795b0c685deb2ecca7ecc}{GetOrganId} ()
+virtual vtkIdType \hyperlink{classvtkContact_a28dba7ad9b5ffb3bbefc4ec035ed738c}{GetOrganId} ()
 \begin{DoxyCompactList}\small\item\em Get the index of the deformable organ. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkContact_ac0b98ed46f961f3b2c2357905bf069f6}{SetPointId} (int position, int id)
+void \hyperlink{classvtkContact_adf2fd8546c9ca9f06e25f319bb6f82ac}{InsertPointId} (int position, int id)
 \begin{DoxyCompactList}\small\item\em Set the organ/tool mesh point where the collision has occured. \item\end{DoxyCompactList}\item 
 int \hyperlink{classvtkContact_a4b404cb999cbe287f2ea6c386e34d0fd}{GetPointId} (int position)
 \begin{DoxyCompactList}\small\item\em Get the collisioned point identifier. \item\end{DoxyCompactList}\item 
@@ -52,9 +56,9 @@ int \hyperlink{classvtkContact_a687823eb62aa7a002e4b6aa5eb29c525}{GetToolPointId
 \label{classvtkContact_a687823eb62aa7a002e4b6aa5eb29c525}
 
 \begin{DoxyCompactList}\small\item\em Get the collisioned tool point identifier. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkContact_adbd7a32c9ded4eef1c0f52e3aa222a30}{SetPoint} (int position, double x, double y, double z)
+void \hyperlink{classvtkContact_a16a56cca72694b4dc56872321e6f31e8}{InsertPoint} (int position, double x, double y, double z)
 \begin{DoxyCompactList}\small\item\em Set the organ mesh point position of the collision. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkContact_a182b4b0d7769a3fde4a8236c4b462b85}{SetPoint} (int position, double point\mbox{[}3\mbox{]})
+void \hyperlink{classvtkContact_a7efd643d147764c928443a0950804b38}{InsertPoint} (int position, double point\mbox{[}3\mbox{]})
 \begin{DoxyCompactList}\small\item\em Set the collisioned point position. \item\end{DoxyCompactList}\item 
 double $\ast$ \hyperlink{classvtkContact_a03931eb9be6db9e78e5228d7bc37996f}{GetPoint} (int position)
 \begin{DoxyCompactList}\small\item\em Returns collisioned point position. \item\end{DoxyCompactList}\item 
@@ -68,7 +72,7 @@ double $\ast$ \hyperlink{classvtkContact_a7a6259deea9301cfb78b2d4b4e8814da}{GetT
 \label{classvtkContact_a7a6259deea9301cfb78b2d4b4e8814da}
 
 \begin{DoxyCompactList}\small\item\em Get the collisioned tool point coordinates. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkContact_a3ebc1a4dedf313b3f02f17a412cee88c}{SetCellId} (int position, vtkIdType value)
+void \hyperlink{classvtkContact_a58075df90c9c5fb7fa5972de36898d9a}{InsertCellId} (int position, vtkIdType value)
 \begin{DoxyCompactList}\small\item\em Set the collisioned cell of the deformable model. \item\end{DoxyCompactList}\item 
 int \hyperlink{classvtkContact_a825566e780e4fca5dc766b3c7c259366}{GetCellId} (int position)
 \begin{DoxyCompactList}\small\item\em Get the collisioned cell of the deformable model. \item\end{DoxyCompactList}\item 
@@ -82,41 +86,21 @@ int \hyperlink{classvtkContact_af4fbfa2af472f77618c55a5bc9f7df0a}{GetToolCellId}
 \label{classvtkContact_af4fbfa2af472f77618c55a5bc9f7df0a}
 
 \begin{DoxyCompactList}\small\item\em Get the collisioned tool cell identifier. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkContact_a061c000c3694de5c2a55cfa9ed301bc8}{
-void \hyperlink{classvtkContact_a061c000c3694de5c2a55cfa9ed301bc8}{SetForceVector} (double x, double y, double z)}
-\label{classvtkContact_a061c000c3694de5c2a55cfa9ed301bc8}
+\hypertarget{classvtkContact_a38bd3bc66db426733a50d2cf2bb756ea}{
+void \hyperlink{classvtkContact_a38bd3bc66db426733a50d2cf2bb756ea}{SetDirectionVector} (double x, double y, double z)}
+\label{classvtkContact_a38bd3bc66db426733a50d2cf2bb756ea}
 
-\begin{DoxyCompactList}\small\item\em Set the force feedback unit vector to be applied in the tool. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkContact_aa0fa9dd11572fd44b76f8d2f9250336b}{
-void \hyperlink{classvtkContact_aa0fa9dd11572fd44b76f8d2f9250336b}{SetForceVector} (double vector\mbox{[}3\mbox{]})}
-\label{classvtkContact_aa0fa9dd11572fd44b76f8d2f9250336b}
+\begin{DoxyCompactList}\small\item\em Set the direction vector of the contact. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkContact_a7c3432d881ec3820581f2c5de5236bb0}{
+void \hyperlink{classvtkContact_a7c3432d881ec3820581f2c5de5236bb0}{SetDirectionVector} (double dir\mbox{[}3\mbox{]})}
+\label{classvtkContact_a7c3432d881ec3820581f2c5de5236bb0}
 
-\begin{DoxyCompactList}\small\item\em Set the force unit vector of the contact. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkContact_ab3e4b9619877447f38069e84fda0d96c}{
-double $\ast$ \hyperlink{classvtkContact_ab3e4b9619877447f38069e84fda0d96c}{GetForceVector} ()}
-\label{classvtkContact_ab3e4b9619877447f38069e84fda0d96c}
+\begin{DoxyCompactList}\small\item\em Set the direction vector of the contact. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkContact_ab9da97d6f2fdaa969bbb923c917419d2}{
+double $\ast$ \hyperlink{classvtkContact_ab9da97d6f2fdaa969bbb923c917419d2}{GetDirectionVector} ()}
+\label{classvtkContact_ab9da97d6f2fdaa969bbb923c917419d2}
 
-\begin{DoxyCompactList}\small\item\em Returns the force unit vector of the contact. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkContact_ae105b6024258661574919dd48733a9ab}{
-void \hyperlink{classvtkContact_ae105b6024258661574919dd48733a9ab}{SetForceMagnitude} (double value)}
-\label{classvtkContact_ae105b6024258661574919dd48733a9ab}
-
-\begin{DoxyCompactList}\small\item\em Set force feedback magnitude. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkContact_a3e5446478db7f31e74534e7533995e6d}{
-double \hyperlink{classvtkContact_a3e5446478db7f31e74534e7533995e6d}{GetForceMagnitude} ()}
-\label{classvtkContact_a3e5446478db7f31e74534e7533995e6d}
-
-\begin{DoxyCompactList}\small\item\em Get force feedback magnitude. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkContact_a00447c91dbc8fe27cb812e32b74fa20e}{
-bool \hyperlink{classvtkContact_a00447c91dbc8fe27cb812e32b74fa20e}{IsGrasped} ()}
-\label{classvtkContact_a00447c91dbc8fe27cb812e32b74fa20e}
-
-\begin{DoxyCompactList}\small\item\em Get if the organ has been grasped. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkContact_a4851a43c5e44f14b05824f6ffc1ee38a}{
-void \hyperlink{classvtkContact_a4851a43c5e44f14b05824f6ffc1ee38a}{SetAsGrasped} (bool value)}
-\label{classvtkContact_a4851a43c5e44f14b05824f6ffc1ee38a}
-
-\begin{DoxyCompactList}\small\item\em Set the organ as grasped. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Returns the direction vector of the contact. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -125,10 +109,27 @@ static \hyperlink{classvtkContact}{vtkContact} $\ast$ {\bfseries New} ()}
 \label{classvtkContact_aa745684ad927626b1b16126fb339a799}
 
 \end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classvtkContact_a1cceca85a524ff06fd3a985e680a91f1}{vtkContact} ()
+\begin{DoxyCompactList}\small\item\em Set force feedback magnitude. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 This class acts as data container storing all the useful information of an organ-\/tool collision. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classvtkContact_a1cceca85a524ff06fd3a985e680a91f1}{
+\index{vtkContact@{vtkContact}!vtkContact@{vtkContact}}
+\index{vtkContact@{vtkContact}!vtkContact@{vtkContact}}
+\subsubsection[{vtkContact}]{\setlength{\rightskip}{0pt plus 5cm}vtkContact::vtkContact ()\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classvtkContact_a1cceca85a524ff06fd3a985e680a91f1}
+
+
+Set force feedback magnitude. 
+
+Get force feedback magnitude Get if the organ has been grasped Set the organ as grasped 
 
 \subsection{Member Function Documentation}
 \hypertarget{classvtkContact_a825566e780e4fca5dc766b3c7c259366}{
@@ -139,6 +140,8 @@ This class acts as data container storing all the useful information of an organ
 
 
 Get the collisioned cell of the deformable model. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em position}]position of the cell on the CellIds collection \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -147,18 +150,20 @@ cell id of the organ mesh
 \begin{DoxySeeAlso}{See also}
 SetCellId(int value) 
 \end{DoxySeeAlso}
-\hypertarget{classvtkContact_a44064eb7f79795b0c685deb2ecca7ecc}{
+\hypertarget{classvtkContact_a28dba7ad9b5ffb3bbefc4ec035ed738c}{
 \index{vtkContact@{vtkContact}!GetOrganId@{GetOrganId}}
 \index{GetOrganId@{GetOrganId}!vtkContact@{vtkContact}}
-\subsubsection[{GetOrganId}]{\setlength{\rightskip}{0pt plus 5cm}int vtkContact::GetOrganId ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classvtkContact_a44064eb7f79795b0c685deb2ecca7ecc}
+\subsubsection[{GetOrganId}]{\setlength{\rightskip}{0pt plus 5cm}virtual vtkIdType vtkContact::GetOrganId ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkContact_a28dba7ad9b5ffb3bbefc4ec035ed738c}
 
 
-Get the index of the deformable organ. \begin{DoxyReturn}{Returns}
+Get the index of the deformable organ. 
+
+\begin{DoxyReturn}{Returns}
 Identifying key of the organ 
 \end{DoxyReturn}
 \begin{DoxySeeAlso}{See also}
-\hyperlink{classvtkContact_aeb38ed699e47ceb31df529db0ea8458f}{SetOrganId(int id)} 
+SetOrganId(int id) 
 \end{DoxySeeAlso}
 \hypertarget{classvtkContact_a03931eb9be6db9e78e5228d7bc37996f}{
 \index{vtkContact@{vtkContact}!GetPoint@{GetPoint}}
@@ -167,7 +172,9 @@ Identifying key of the organ
 \label{classvtkContact_a03931eb9be6db9e78e5228d7bc37996f}
 
 
-Returns collisioned point position. \begin{DoxyReturn}{Returns}
+Returns collisioned point position. 
+
+\begin{DoxyReturn}{Returns}
 pointer to position \mbox{[}x, y, z\mbox{]} coordinates vector of the collision point 
 \end{DoxyReturn}
 \begin{DoxySeeAlso}{See also}
@@ -183,104 +190,120 @@ SetVertexPosition(double x, double y, double z)
 
 
 Get the collisioned point identifier. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em position}]position of the pointId on the PointIds collection \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 point id of the organ mesh 
 \end{DoxyReturn}
 \begin{DoxySeeAlso}{See also}
-\hyperlink{classvtkContact_ac0b98ed46f961f3b2c2357905bf069f6}{SetPointId(int position, int id)} 
+SetPointId(int position, int id) 
 \end{DoxySeeAlso}
-\hypertarget{classvtkContact_a82d16317dbf303590a6d2834810b222c}{
+\hypertarget{classvtkContact_a6da6c11b7dde677ffe8305216d07b397}{
 \index{vtkContact@{vtkContact}!GetToolId@{GetToolId}}
 \index{GetToolId@{GetToolId}!vtkContact@{vtkContact}}
-\subsubsection[{GetToolId}]{\setlength{\rightskip}{0pt plus 5cm}int vtkContact::GetToolId ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classvtkContact_a82d16317dbf303590a6d2834810b222c}
+\subsubsection[{GetToolId}]{\setlength{\rightskip}{0pt plus 5cm}virtual vtkIdType vtkContact::GetToolId ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkContact_a6da6c11b7dde677ffe8305216d07b397}
 
 
-Get the index of the tool. \begin{DoxyReturn}{Returns}
+Get the index of the tool. 
+
+\begin{DoxyReturn}{Returns}
 Identifying key of the tool 
 \end{DoxyReturn}
 \begin{DoxySeeAlso}{See also}
-\hyperlink{classvtkContact_a449bcc29dbf1e58dcd342d949a9754cb}{SetToolId(int id)} 
+SetToolId(int id) 
 \end{DoxySeeAlso}
-\hypertarget{classvtkContact_a3ebc1a4dedf313b3f02f17a412cee88c}{
-\index{vtkContact@{vtkContact}!SetCellId@{SetCellId}}
-\index{SetCellId@{SetCellId}!vtkContact@{vtkContact}}
-\subsubsection[{SetCellId}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::SetCellId (int {\em position}, \/  vtkIdType {\em value})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classvtkContact_a3ebc1a4dedf313b3f02f17a412cee88c}
+\hypertarget{classvtkContact_a58075df90c9c5fb7fa5972de36898d9a}{
+\index{vtkContact@{vtkContact}!InsertCellId@{InsertCellId}}
+\index{InsertCellId@{InsertCellId}!vtkContact@{vtkContact}}
+\subsubsection[{InsertCellId}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::InsertCellId (int {\em position}, \/  vtkIdType {\em value})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkContact_a58075df90c9c5fb7fa5972de36898d9a}
 
 
 Set the collisioned cell of the deformable model. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em position}]position of the cell on the CellIds collection \item[{\em value}]organ cell id \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkContact_a825566e780e4fca5dc766b3c7c259366}{GetCellId()} 
 \end{DoxySeeAlso}
-\hypertarget{classvtkContact_aeb38ed699e47ceb31df529db0ea8458f}{
-\index{vtkContact@{vtkContact}!SetOrganId@{SetOrganId}}
-\index{SetOrganId@{SetOrganId}!vtkContact@{vtkContact}}
-\subsubsection[{SetOrganId}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::SetOrganId (int {\em id})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classvtkContact_aeb38ed699e47ceb31df529db0ea8458f}
-
-
-Set the index of the organ. 
-\begin{DoxyParams}{Parameters}
-\item[{\em id}]Identifying key of the organ that has been contacted \end{DoxyParams}
-\begin{DoxySeeAlso}{See also}
-\hyperlink{classvtkContact_a44064eb7f79795b0c685deb2ecca7ecc}{GetOrganId()} 
-\end{DoxySeeAlso}
-\hypertarget{classvtkContact_a182b4b0d7769a3fde4a8236c4b462b85}{
-\index{vtkContact@{vtkContact}!SetPoint@{SetPoint}}
-\index{SetPoint@{SetPoint}!vtkContact@{vtkContact}}
-\subsubsection[{SetPoint}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::SetPoint (int {\em position}, \/  double {\em point}\mbox{[}3\mbox{]})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classvtkContact_a182b4b0d7769a3fde4a8236c4b462b85}
+\hypertarget{classvtkContact_a7efd643d147764c928443a0950804b38}{
+\index{vtkContact@{vtkContact}!InsertPoint@{InsertPoint}}
+\index{InsertPoint@{InsertPoint}!vtkContact@{vtkContact}}
+\subsubsection[{InsertPoint}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::InsertPoint (int {\em position}, \/  double {\em point}\mbox{[}3\mbox{]})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkContact_a7efd643d147764c928443a0950804b38}
 
 
 Set the collisioned point position. 
+
+
 \begin{DoxyParams}{Parameters}
-\item[{\em position}]position of the point on the Points collection \item[{\em position}]\mbox{[}x, y, z\mbox{]} coordinates vector of the collision point \end{DoxyParams}
+\item[{\em position}]position of the point on the Points collection \item[{\em point\mbox{[}$\,$\mbox{]}}]\mbox{[}x, y, z\mbox{]} coordinates vector of the collision point \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
 GetVertexPosition() 
 \end{DoxySeeAlso}
-\hypertarget{classvtkContact_adbd7a32c9ded4eef1c0f52e3aa222a30}{
-\index{vtkContact@{vtkContact}!SetPoint@{SetPoint}}
-\index{SetPoint@{SetPoint}!vtkContact@{vtkContact}}
-\subsubsection[{SetPoint}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::SetPoint (int {\em position}, \/  double {\em x}, \/  double {\em y}, \/  double {\em z})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classvtkContact_adbd7a32c9ded4eef1c0f52e3aa222a30}
+\hypertarget{classvtkContact_a16a56cca72694b4dc56872321e6f31e8}{
+\index{vtkContact@{vtkContact}!InsertPoint@{InsertPoint}}
+\index{InsertPoint@{InsertPoint}!vtkContact@{vtkContact}}
+\subsubsection[{InsertPoint}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::InsertPoint (int {\em position}, \/  double {\em x}, \/  double {\em y}, \/  double {\em z})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkContact_a16a56cca72694b4dc56872321e6f31e8}
 
 
 Set the organ mesh point position of the collision. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em position}]position of the point on the Points collection \item[{\em x}]x coordinate of the collision point \item[{\em y}]y coordinate of the collision point \item[{\em z}]z coordinate of the collision point \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
 GetVertexPosition() 
 \end{DoxySeeAlso}
-\hypertarget{classvtkContact_ac0b98ed46f961f3b2c2357905bf069f6}{
-\index{vtkContact@{vtkContact}!SetPointId@{SetPointId}}
-\index{SetPointId@{SetPointId}!vtkContact@{vtkContact}}
-\subsubsection[{SetPointId}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::SetPointId (int {\em position}, \/  int {\em id})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classvtkContact_ac0b98ed46f961f3b2c2357905bf069f6}
+\hypertarget{classvtkContact_adf2fd8546c9ca9f06e25f319bb6f82ac}{
+\index{vtkContact@{vtkContact}!InsertPointId@{InsertPointId}}
+\index{InsertPointId@{InsertPointId}!vtkContact@{vtkContact}}
+\subsubsection[{InsertPointId}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::InsertPointId (int {\em position}, \/  int {\em id})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classvtkContact_adf2fd8546c9ca9f06e25f319bb6f82ac}
 
 
 Set the organ/tool mesh point where the collision has occured. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em position}]position of the pointId in the PointIds collection \item[{\em value}]point id of the organ mesh \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkContact_a4b404cb999cbe287f2ea6c386e34d0fd}{GetPointId()} 
 \end{DoxySeeAlso}
-\hypertarget{classvtkContact_a449bcc29dbf1e58dcd342d949a9754cb}{
+\hypertarget{classvtkContact_afae2207fe8a86b5d8855042f1dbd345c}{
+\index{vtkContact@{vtkContact}!SetOrganId@{SetOrganId}}
+\index{SetOrganId@{SetOrganId}!vtkContact@{vtkContact}}
+\subsubsection[{SetOrganId}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkContact::SetOrganId (vtkIdType)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkContact_afae2207fe8a86b5d8855042f1dbd345c}
+
+
+Set the index of the organ. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]Identifying key of the organ that has been contacted \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkContact_a28dba7ad9b5ffb3bbefc4ec035ed738c}{GetOrganId()} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkContact_aaa007969b63fb9627a8d07a0c5af5f44}{
 \index{vtkContact@{vtkContact}!SetToolId@{SetToolId}}
 \index{SetToolId@{SetToolId}!vtkContact@{vtkContact}}
-\subsubsection[{SetToolId}]{\setlength{\rightskip}{0pt plus 5cm}void vtkContact::SetToolId (int {\em id})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classvtkContact_a449bcc29dbf1e58dcd342d949a9754cb}
+\subsubsection[{SetToolId}]{\setlength{\rightskip}{0pt plus 5cm}virtual void vtkContact::SetToolId (vtkIdType)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classvtkContact_aaa007969b63fb9627a8d07a0c5af5f44}
 
 
 Set the id of the tool. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]Identifying key of the tool that has contacted the organ \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\hyperlink{classvtkContact_a82d16317dbf303590a6d2834810b222c}{GetToolId()} 
+\hyperlink{classvtkContact_a6da6c11b7dde677ffe8305216d07b397}{GetToolId()} 
 \end{DoxySeeAlso}
 
 

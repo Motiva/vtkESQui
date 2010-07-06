@@ -113,7 +113,7 @@ private:
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "/home/jorge/Workspace/data/vtkESQuiData/Scenario/Meshes/cube.vtp";
+	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/cube.vtp";
 
 	if (argc > 1)
 	{
@@ -203,7 +203,7 @@ int main(int argc, char * argv[])
 	double bounds[6];
 	mesh->GetBounds(bounds);
 
-	double p[3] = {bounds[0], bounds[3], bounds[5]};
+	//double p[3] = {bounds[0], bounds[3], bounds[5]};
 
 	locator->SetDataSet(mesh);
 

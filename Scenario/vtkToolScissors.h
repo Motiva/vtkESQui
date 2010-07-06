@@ -51,15 +51,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 //! Implementation class of scissors
 /*!
-	vtkToolScissors is the class that implements the scissors tool, inside the scene.
-	Contains methods for position control of the tool in the scene and collision detection.
-	Scissors are composed of 3 pieces: 1 stick and 2 blades (vtkPiece)
-	Inherits vtkToolLaparascopy
+* vtkToolScissors is the class that implements the scissors tool, inside the scene.
+* Contains methods for position control of the tool in the scene and collision detection.
+* Scissors are composed of 3 pieces: 1 stick and 2 blades (vtkPiece)
+* Inherits vtkToolLaparascopy
 */
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolScissors : public vtkToolLaparoscopy
 {
 
 public:
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkToolScissors,vtkToolLaparoscopy);
 	//! Create new vtkToolScissors object
 	static vtkToolScissors *New();
@@ -70,18 +71,19 @@ public:
 
 	//!Initialize the tool from VTK file
 	/*!
-	 * This function initializes the tool whose mesh is described on a VTK file
+	* This function initializes the tool whose mesh is described on a VTK file
 	*/
 	virtual void Init();
 
 	//!Update the tool
 	/*!
-	 * This function update the tool values
-	 */
+	* This function update the tool values
+	*/
 	virtual void Update();
 
 	//!Set Blade polydata filename
 	/*!
+	* \param id identifier of the blade (left = 0, right= 1);
 	* \param path path of the file that contains the blade polydata
 	*/
 	void SetBladeFileName(vtkIdType id, const char * path);
@@ -94,18 +96,18 @@ public:
 
 	//!Return the Blade polydata file name
 	/*!
-	 * \param id identifier of the blade piece
-	 * \return path of the file that contains the blade piece polydata
-	 */
+	* \param id identifier of the blade piece
+	* \return path of the file that contains the blade piece polydata
+	*/
 	const char * GetBladeFileName(vtkIdType id);
 
 	//!Return the stick polydata file name
 	/*!
-	 * \param id identifier of the stick piece
-	 * \return path of the file that contains the stick piece polydata
-	 */
+	* \param id identifier of the stick piece
+	* \return path of the file that contains the stick piece polydata
+	*/
 	const char * GetStickFileName(vtkIdType id);
-	
+
 	//!Return whether the Blade is closed or not
 	bool IsClosed(){return (this->Opening < 0.0f);}
 
@@ -121,14 +123,14 @@ private:
 
 	//!Return the stick piece
 	/*!
-	 * Return the vtkPiece object of the stick
-	 */
+	* Return the vtkPiece object of the stick
+	*/
 	vtkPiece * GetStick(){return this->GetPiece(0);};
 
 	//!Return the Blade piece
 	/*!
-	 * Return the vtkPiece object of the Blade at the specified id
-	 */
+	* Return the vtkPiece object of the Blade at the specified id
+	*/
 	vtkPiece * GetBlade(vtkIdType id){return this->GetPiece(id);};
 };
 

@@ -49,9 +49,12 @@ vtkContact::vtkContact() {
 	this->ToolId = this->OrganId = -1;
 	this->isGrasped=false;
 	this->PointIds = vtkIdList::New();
+	this->PointIds->SetNumberOfIds(2);
 	this->CellIds = vtkIdList::New();
+	this->CellIds->SetNumberOfIds(2);
 	this->Points = vtkPoints::New();
 	this->Points->SetDataTypeToDouble();
+	this->Points->SetNumberOfPoints(2);
 }
 
 //--------------------------------------------------------------------------
@@ -85,4 +88,5 @@ void vtkContact::PrintSelf(ostream&os, vtkIndent indent)
 		os << indent << "Point[" << i <<"] Position: " << point[0] << ", " << point[1] << ", " << point[2] << endl;
 	}
 	os << indent << "isGrasped: " << this->isGrasped << endl;
+	os << indent << "Direction: " << this->Direction[0] << ", " << this->Direction[1] << ", " << this->Direction[2] << endl;
 }

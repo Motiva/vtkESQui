@@ -51,12 +51,12 @@ vtkBioMechanicalModel::vtkBioMechanicalModel()
 
 	this->ContactPoints = vtkPoints::New();
 	this->ContactPointIds = vtkIdList::New();
-	this->ContactCelltIds = vtkIdList::New();
+	this->ContactCellIds = vtkIdList::New();
 
-	this->Directions = vtkDoubleArray::New();
-	this->Directions->SetNumberOfComponents(3);
+	this->ContactDirections = vtkDoubleArray::New();
+	this->ContactDirections->SetNumberOfComponents(3);
 
-	this->Name = "";
+	this->Name = NULL;
 
 }
 //--------------------------------------------------------------------------
@@ -66,8 +66,8 @@ vtkBioMechanicalModel::~vtkBioMechanicalModel()
 
 	this->ContactPoints->Delete();
 	this->ContactPointIds->Delete();
-	this->ContactCelltIds->Delete();
-	this->Directions->Delete();
+	this->ContactCellIds->Delete();
+	this->ContactDirections->Delete();
 }
 
 //--------------------------------------------------------------------------
@@ -83,8 +83,6 @@ int vtkBioMechanicalModel::RequestData(
     //vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
     std::cout << "vtkBioMechanicalModel::RequestData" << endl;
 
-    //output->DeepCopy(input);
-
     return 1;
 }
 
@@ -98,20 +96,8 @@ void vtkBioMechanicalModel::Clear()
 {
 	this->ContactPoints->Reset();
 	this->ContactPointIds->Reset();
-	this->ContactCelltIds->Reset();
-	this->Directions->Reset();
-}
-
-//--------------------------------------------------------------------------
-void vtkBioMechanicalModel::SetName(const char * name)
-{
-	this->Name = name;
-}
-
-//--------------------------------------------------------------------------
-const char * vtkBioMechanicalModel::GetName()
-{
-	return this->Name;
+	this->ContactCellIds->Reset();
+	this->ContactDirections->Reset();
 }
 
 //--------------------------------------------------------------------------
@@ -121,9 +107,9 @@ void vtkBioMechanicalModel::InsertNextContact(vtkContact* contact)
 	double * point = contact->GetOrganPoint();
 	this->ContactPoints->InsertNextPoint(point[0],point[1],point[2]);
 	this->ContactPointIds->InsertNextId(contact->GetOrganPointId());
-	this->ContactCelltIds->InsertNextId(contact->GetOrganCellId());
+	this->ContactCellIds->InsertNextId(contact->GetOrganCellId());
 
-	this->Directions->InsertNextTuple(contact->GetDirectionVector());
+	this->ContactDirections->InsertNextTuple(contact->GetDirectionVector());
 
 	this->Modified();
 }
@@ -140,7 +126,6 @@ void vtkBioMechanicalModel::InsertContacts(vtkContactCollection * collection)
 		this->InsertNextContact(c);
 		c = collection->GetNextContact();
 	}
-	cout << "Inserted Contacts: " << collection->GetNumberOfItems() << endl;
 }
 
 //--------------------------------------------------------------------------
@@ -164,6 +149,6 @@ vtkCell * vtkBioMechanicalModel::GetMeshCell(vtkIdType id)
 //--------------------------------------------------------------------------
 void vtkBioMechanicalModel::PrintSelf(ostream& os, vtkIndent indent)
 {
-	 os << indent <<  "Name: " << this->Name << endl;
-	 this->Superclass::PrintSelf(os, indent);
+	this->Superclass::PrintSelf(os, indent);
+	os << indent <<  "Name: " << this->Name << endl;
 }

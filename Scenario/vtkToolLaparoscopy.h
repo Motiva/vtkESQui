@@ -64,9 +64,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 //! Class vtkToolLaparoscopy, abstract the use of a surgical laparoscopic tool
 /*!
-vtkToolLaparoscopy abstracts the use of a surgical tool during the simulation exercise.
-This provide an easy use of surgical tools collections.
-*/
+ * vtkToolLaparoscopy abstracts the use of a surgical tool during the simulation exercise.
+ * This provide an easy use of surgical tools collections.
+ */
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolLaparoscopy: public vtkTool {
 
 public:
@@ -94,7 +94,7 @@ public:
 	/*!
 	* This method updates the tool physical values, scale, position, etc...
 	*/
-	virtual void Update();
+	//virtual void Update() = 0;
 
 	//!Assign the haptic force as vector
 	/*!
@@ -145,6 +145,7 @@ public:
 	*/
 	float GetZFeedbackForce() {return this->ForceFeedback[2];}
 
+	//! Return tool contact force
 	double * GetContactForceValue();
 
 	// **** Geometrical Functions **** //
@@ -158,7 +159,7 @@ public:
 	/*!
 	Set the tool depth position. The modification is made by transforming the tool's
 	mesh (vtkPolyData).
-	\param Position Z axis value (local coordinate system)
+	\param step Z axis value (local coordinate system)
 	*/
 	virtual void AddDepth(double step);
 

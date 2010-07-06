@@ -64,7 +64,7 @@ void func ( vtkObject* caller, long unsigned int eventId, void* clientData, void
 		else if (tid == sim->GetRenderTimerId())
 		{
 			//cout << "Render\n";
-			vtkRenderWindowInteractor * Interactor = sim->GetRenderWindowInteractor();
+			vtkRenderWindowInteractor * Interactor = sim->GetInteractor();
 			if (Interactor &&
 					Interactor->GetRenderWindow() &&
 					Interactor->GetRenderWindow()->GetRenderers())
@@ -172,81 +172,6 @@ void vtkSimulation::Init() {
 void vtkSimulation::Run()
 {
 	this->Interactor->Start();
-}
-
-//----------------------------------------------------------------------------
-void vtkSimulation::SetSimulationManager(vtkSimulationManager *manager) {
-	this->SimulationManager = manager;
-}
-
-//----------------------------------------------------------------------------
-vtkSimulationManager* vtkSimulation::GetSimulationManager() {
-	return this->SimulationManager;
-}
-
-//----------------------------------------------------------------------------
-void vtkSimulation::SetRenderWindowInteractor(vtkRenderWindowInteractor * iren) {
-	this->Interactor = iren;
-}
-
-//----------------------------------------------------------------------------
-vtkRenderWindowInteractor * vtkSimulation::GetRenderWindowInteractor()
-{
-	return this->Interactor;
-}
-
-//----------------------------------------------------------------------------
-void vtkSimulation::SetHapticTimerRate(double rate)
-{
-	this->HapticTimerRate = rate;
-}
-
-//----------------------------------------------------------------------------
-void vtkSimulation::SetSimulationTimerRate(double rate)
-{
-	this->SimulationTimerRate = rate;
-}
-
-//----------------------------------------------------------------------------
-void vtkSimulation::SetRenderTimerRate(double rate)
-{
-	this->RenderTimerRate = rate;
-}
-
-//----------------------------------------------------------------------------
-double vtkSimulation::GetHapticTimerRate()
-{
-	return this->HapticTimerRate;
-}
-
-//----------------------------------------------------------------------------
-double vtkSimulation::GetSimulationTimerRate()
-{
-	return this->SimulationTimerRate;
-}
-
-//----------------------------------------------------------------------------
-double vtkSimulation::GetRenderTimerRate()
-{
-	return this->RenderTimerRate;
-}
-
-//----------------------------------------------------------------------------
-int vtkSimulation::GetHapticTimerId()
-{
-	return this->HapticTimerId;
-}
-
-//----------------------------------------------------------------------------
-int vtkSimulation::GetSimulationTimerId()
-{
-	return this->SimulationTimerId;
-}
-
-//----------------------------------------------------------------------------
-int vtkSimulation::GetRenderTimerId()
-{
-	return this->RenderTimerId;
 }
 
 //----------------------------------------------------------------------------

@@ -57,12 +57,14 @@ class VTK_ESQUI_HAPTICS_EXPORT vtkLSW:public vtkHaptic
 {
 
 public:
-
+	ç
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkLSW, vtkHaptic);
-
+	//! Create new vtkLSW object
 	static vtkLSW *New();
+	//! Return class name
 	const char *GetClassName() { return "vtkLSW"; }
-	//vtkTypeRevisionMacro(vtkLSW,vtkTool);
+	//! Print object info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//! Set up the LSW

@@ -1,0 +1,118 @@
+\hypertarget{classvtkParticleCollection}{
+\section{vtkParticleCollection Class Reference}
+\label{classvtkParticleCollection}\index{vtkParticleCollection@{vtkParticleCollection}}
+}
+
+
+Collection of Particles.  
+
+
+
+
+{\ttfamily \#include $<$vtkParticleCollection.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkParticleCollection_a0575be0d8d27590daadf83cdd6c38258}{
+\hyperlink{classvtkParticleCollection_a0575be0d8d27590daadf83cdd6c38258}{vtkTypeRevisionMacro} (\hyperlink{classvtkParticleCollection}{vtkParticleCollection}, vtkCollection)}
+\label{classvtkParticleCollection_a0575be0d8d27590daadf83cdd6c38258}
+
+\begin{DoxyCompactList}\small\item\em Type Revision Macro. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticleCollection_a97fa38a36863745844ee70a0939894c4}{
+virtual void \hyperlink{classvtkParticleCollection_a97fa38a36863745844ee70a0939894c4}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkParticleCollection_a97fa38a36863745844ee70a0939894c4}
+
+\begin{DoxyCompactList}\small\item\em Print Class Values. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkParticleCollection_a72a443ca560badd2a938c7f1943bb7bd}{InsertNextParticle} (\hyperlink{classvtkParticle}{vtkParticle} $\ast$particle)
+\begin{DoxyCompactList}\small\item\em Insert an Particle to the collection. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkParticleCollection_ace44cc49f9e3d14367d0c1bea12d13b3}{SetParticle} (vtkIdType id, \hyperlink{classvtkParticle}{vtkParticle} $\ast$particle)
+\begin{DoxyCompactList}\small\item\em Insert an Particle at the specified index. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkParticle}{vtkParticle} $\ast$ \hyperlink{classvtkParticleCollection_a5adda32ee7259d736e1b194a00a8aba6}{GetParticle} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Return an Particle in specified position of the list. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkParticle}{vtkParticle} $\ast$ \hyperlink{classvtkParticleCollection_a9b9371fd750799c67b777509e80e82d3}{GetNextParticle} ()
+\begin{DoxyCompactList}\small\item\em Return the next Particleism on the list. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticleCollection_abc788d6d4e2803bd93a6c57fbfcb9545}{
+bool \hyperlink{classvtkParticleCollection_abc788d6d4e2803bd93a6c57fbfcb9545}{ContainsParticle} (\hyperlink{classvtkParticle}{vtkParticle} $\ast$particle)}
+\label{classvtkParticleCollection_abc788d6d4e2803bd93a6c57fbfcb9545}
+
+\begin{DoxyCompactList}\small\item\em Return whether the collection contains a particle or not. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkParticleCollection_a5f41b890d08137c6238f1777648939e8}{
+int \hyperlink{classvtkParticleCollection_a5f41b890d08137c6238f1777648939e8}{GetNumberOfParticles} ()}
+\label{classvtkParticleCollection_a5f41b890d08137c6238f1777648939e8}
+
+\begin{DoxyCompactList}\small\item\em Return the number of particles in the collection. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkParticleCollection_aecd9f1bccaf94788693e2472c1b42c79}{
+static \hyperlink{classvtkParticleCollection}{vtkParticleCollection} $\ast$ \hyperlink{classvtkParticleCollection_aecd9f1bccaf94788693e2472c1b42c79}{New} ()}
+\label{classvtkParticleCollection_aecd9f1bccaf94788693e2472c1b42c79}
+
+\begin{DoxyCompactList}\small\item\em Create new object. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Collection of Particles. \hyperlink{classvtkParticleCollection}{vtkParticleCollection} represents and provides methods to manipulate a list of Particles (i.e., \hyperlink{classvtkParticle}{vtkParticle} and subclasses). The list is unsorted and duplicate entries are not prevented. \begin{DoxySeeAlso}{See also}
+vtkCollection, \hyperlink{classvtkParticle}{vtkParticle} 
+\end{DoxySeeAlso}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkParticleCollection_a9b9371fd750799c67b777509e80e82d3}{
+\index{vtkParticleCollection@{vtkParticleCollection}!GetNextParticle@{GetNextParticle}}
+\index{GetNextParticle@{GetNextParticle}!vtkParticleCollection@{vtkParticleCollection}}
+\subsubsection[{GetNextParticle}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkParticle} $\ast$ vtkParticleCollection::GetNextParticle ()}}
+\label{classvtkParticleCollection_a9b9371fd750799c67b777509e80e82d3}
+
+
+Return the next Particleism on the list. 
+
+Get the Particle at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted. \hypertarget{classvtkParticleCollection_a5adda32ee7259d736e1b194a00a8aba6}{
+\index{vtkParticleCollection@{vtkParticleCollection}!GetParticle@{GetParticle}}
+\index{GetParticle@{GetParticle}!vtkParticleCollection@{vtkParticleCollection}}
+\subsubsection[{GetParticle}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkParticle} $\ast$ vtkParticleCollection::GetParticle (vtkIdType {\em id})}}
+\label{classvtkParticleCollection_a5adda32ee7259d736e1b194a00a8aba6}
+
+
+Return an Particle in specified position of the list. 
+
+Get the Particle in the list with the position id. NULL is returned when the collection is exhausted. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]index of the Particle to be returned \end{DoxyParams}
+\hypertarget{classvtkParticleCollection_a72a443ca560badd2a938c7f1943bb7bd}{
+\index{vtkParticleCollection@{vtkParticleCollection}!InsertNextParticle@{InsertNextParticle}}
+\index{InsertNextParticle@{InsertNextParticle}!vtkParticleCollection@{vtkParticleCollection}}
+\subsubsection[{InsertNextParticle}]{\setlength{\rightskip}{0pt plus 5cm}void vtkParticleCollection::InsertNextParticle ({\bf vtkParticle} $\ast$ {\em particle})}}
+\label{classvtkParticleCollection_a72a443ca560badd2a938c7f1943bb7bd}
+
+
+Insert an Particle to the collection. 
+
+The Particle will be inserted at the end of the list 
+\begin{DoxyParams}{Parameters}
+\item[{\em particle}]\hyperlink{classvtkParticle}{vtkParticle} object to be inserted \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+InsertParticle(vtkIdType id, vtkParticle $\ast$Particle) 
+\end{DoxySeeAlso}
+\hypertarget{classvtkParticleCollection_ace44cc49f9e3d14367d0c1bea12d13b3}{
+\index{vtkParticleCollection@{vtkParticleCollection}!SetParticle@{SetParticle}}
+\index{SetParticle@{SetParticle}!vtkParticleCollection@{vtkParticleCollection}}
+\subsubsection[{SetParticle}]{\setlength{\rightskip}{0pt plus 5cm}void vtkParticleCollection::SetParticle (vtkIdType {\em id}, \/  {\bf vtkParticle} $\ast$ {\em particle})}}
+\label{classvtkParticleCollection_ace44cc49f9e3d14367d0c1bea12d13b3}
+
+
+Insert an Particle at the specified index. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]index of the list where the Particle will be inserted \item[{\em particle}]\hyperlink{classvtkParticle}{vtkParticle} object to be inserted \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkParticleCollection_a72a443ca560badd2a938c7f1943bb7bd}{InsertNextParticle(vtkParticle $\ast$Particle)} 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+BMM/vtkParticleSpringSystem/vtkParticleCollection.h\item 
+BMM/vtkParticleSpringSystem/vtkParticleCollection.cxx\end{DoxyCompactItemize}

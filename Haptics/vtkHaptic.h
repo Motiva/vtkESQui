@@ -52,8 +52,12 @@ POSSIBILITY OF SUCH DAMAGE.
 class VTK_ESQUI_HAPTICS_EXPORT vtkHaptic: public vtkObject {
 
 public:
+
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkHaptic,vtkObject);
+	//! Return class name
 	const char *GetClassName() {return "vtkHaptics";}
+	//! Print object info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//! Set up the haptic device

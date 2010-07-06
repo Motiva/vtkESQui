@@ -46,27 +46,37 @@ vtkStandardNewMacro(vtkSimulationManager);
 
 //--------------------------------------------------------------------------
 vtkSimulationManager::vtkSimulationManager(){
-	this->collisionLibrary=0;
+	this->CollisionDetectionLibrary=0;
 	this->Scenario = 0;
 }
 
 //--------------------------------------------------------------------------
 vtkSimulationManager::~vtkSimulationManager(){
-	if (collisionLibrary!=0)
-		this->collisionLibrary->Delete();
+	if (CollisionDetectionLibrary!=0)
+		this->CollisionDetectionLibrary->Delete();
 }
 
 //--------------------------------------------------------------------------
 void vtkSimulationManager::Init()
 {
+	if (!strcmp(this->LibraryName, "vtkbioeng"))
+	{
+		this->CollisionDetectionLibrary = vtkBioEngInterface::New();
+		this->CollisionDetectionLibrary->Init();
+	}
+	else
+	{
+		//In case vtkbioeng is not selected new libraries will be added here
+	}
+
 	//Scenario & collision detection library must be defined previously
-	if(this->Scenario && this->collisionLibrary)
+	if(this->Scenario && this->CollisionDetectionLibrary)
 	{
 		vtkToolCollection * tools = this->Scenario->GetToolCollection();
 		vtkOrganCollection * organs = this->Scenario->GetOrganCollection();
 
-		this->collisionLibrary->SetTools(tools);
-		this->collisionLibrary->SetOrgans(organs);
+		this->CollisionDetectionLibrary->SetTools(tools);
+		this->CollisionDetectionLibrary->SetOrgans(organs);
 	}
 }
 
@@ -75,13 +85,13 @@ void vtkSimulationManager::Update()
 {
 
 	//Check if any collision between tools & organs has occurred
-	this->collisionLibrary->Update();
+	this->CollisionDetectionLibrary->Update();
 
 	//Update organs & tools after collision detection has been performed
 	vtkContactCollection * contacts;
 	vtkContact * contact;
 
-	contacts = this->collisionLibrary->GetContacts();
+	contacts = this->CollisionDetectionLibrary->GetContacts();
 	contacts->InitTraversal();
 
 	contact = contacts->GetNextContact();
@@ -102,42 +112,7 @@ void vtkSimulationManager::Update()
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationManager::SetScenario(vtkScenario * scenario)
-{
-	this->Scenario = scenario;
-}
-
-//--------------------------------------------------------------------------
-vtkScenario * vtkSimulationManager::GetScenario()
-{
-	return this->Scenario;
-}
-
-//--------------------------------------------------------------------------
-void vtkSimulationManager::SetCollisionDetectionLibrary (const char *library)
-{
-	if (library)
-	{
-		this->libraryName = library;
-		if (!strcmp(this->libraryName, "vtkbioeng"))
-		{
-			this->collisionLibrary = vtkBioEngInterface::New();
-			this->collisionLibrary->Init();
-		}
-		else
-		{
-			//In case vtkbioeng is not selected new libraries will be added here
-		}
-	}
-	else
-	{
-		this->libraryName = NULL;
-	}
-
-}
-
-//--------------------------------------------------------------------------
 vtkContactCollection * vtkSimulationManager::GetContacts() {
-	return this->collisionLibrary->GetContacts();
+	return this->CollisionDetectionLibrary->GetContacts();
 }
 

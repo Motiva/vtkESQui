@@ -54,10 +54,13 @@ class VTK_ESQUI_HAPTICS_EXPORT vtkIHP:public vtkHaptic
 
 public:
 
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkIHP, vtkHaptic);
+	//! Create new vtkIHP object
 	static vtkIHP *New();
+	//! Return class name
 	const char *GetClassName() { return "vtkIHP"; }
-	//!Print class values
+	//!Print object values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	virtual void Update();

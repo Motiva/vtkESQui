@@ -60,10 +60,10 @@ vtkToolLaparoscopy::~vtkToolLaparoscopy() {
 }
 
 //--------------------------------------------------------------------------
-void vtkToolLaparoscopy::Update()
-{
-	Superclass::Update();
-}
+//void vtkToolLaparoscopy::Update()
+//{
+//	Superclass::Update();
+//}
 
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::ApplyInitialTransform()

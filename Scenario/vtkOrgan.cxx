@@ -47,44 +47,35 @@ vtkStandardNewMacro(vtkOrgan);
 //----------------------------------------------------------------------------
 vtkOrgan::vtkOrgan()
 {
-	this->Id = -1;
-	this->Bmm = NULL;
-	this->RenderWindow = NULL;
 	this->Input = NULL;
+	this->Bmm = NULL;
 
-	this->FileName = "";
-	this->TextureFileName = "";
-
-	this->Reader = vtkXMLPolyDataReader::New();
+	//I/O Objects
+	this->FileName = NULL;
+	this->TextureFileName = NULL;
+	this->Reader = NULL;
 
 	//Graphical Objects
-	this->TransformFilter = vtkTransformPolyDataFilter::New();
-	this->Transform = vtkTransform::New();
-	this->Actor = vtkActor::New();
-	this->Mapper = vtkDataSetMapper::New();
+	this->RenderWindow = NULL;
+	this->TransformFilter = NULL;
+	this->Transform = NULL;
+	this->Actor = NULL;
+	this->Mapper = NULL;
+	this->Texture = NULL;
 
-	this->Texture = vtkTexture::New();
-
-	//Empty, undeformed mesh
-	this->NumberOfElements = 0;
-	this->Deformed = 0;
+	//Simple Mesh (collision detection mesh)
+	this->SimpleMesh = NULL;
+	this->SimpleMeshActor = NULL;
+	this->SimpleMeshMapper = NULL;
 
 	//Default gravity in -z - direction
 	this->GravityDirection = 2;
 	this->GravityOrientation = -1;
 
-	//Incision data
-	this->MaxCuttingDistance = 0.0;
-	this->CanBeClipped = 0;
 	this->Hooked = 0;
 
 	//Initialize organ contact list
 	this->Contacts = vtkContactCollection::New();
-
-	//Simple Mesh (collision detection mesh)
-	this->SimpleMeshActor = vtkActor::New();
-	this->SimpleMeshMapper = vtkDataSetMapper::New();
-	//this->OBB = vtkOBBTree::New();
 
 }
 
@@ -99,6 +90,7 @@ vtkOrgan::~vtkOrgan()
 	this->Contacts->Delete();
 	this->Bmm->Delete();
 
+	//this->SimpleMesh->Delete();
 	this->SimpleMeshActor->Delete();
 	this->SimpleMeshMapper->Delete();
 
@@ -112,6 +104,7 @@ void vtkOrgan::Init()
 	{
 		if(!this->Input)
 		{
+			this->Reader = vtkXMLPolyDataReader::New();
 			this->Reader->SetFileName(this->FileName);
 			this->Reader->Update();
 			this->Input = this->Reader->GetOutput();
@@ -119,6 +112,10 @@ void vtkOrgan::Init()
 
 		if(this->RenderWindow)
 		{
+			this->Renderer= this->RenderWindow->GetRenderers()->GetFirstRenderer();
+
+			this->Transform = vtkTransform::New();
+			this->TransformFilter = vtkTransformPolyDataFilter::New();
 			this->TransformFilter->SetInput(this->Input);
 			this->TransformFilter->SetTransform(this->Transform);
 
@@ -144,9 +141,9 @@ void vtkOrgan::Init()
 			this->Bmm->Init();
 
 			vtkPolyData * output = this->Bmm->GetOutput();
-			cout << "Bmm->GetOutput: " << output->GetNumberOfPoints() << endl;
+			//cout << "Bmm->GetOutput: " << output->GetNumberOfPoints() << endl;
 
-			if(!strcmp(this->TextureFileName, ""))
+			if(this->TextureFileName && !strcmp(this->TextureFileName, ""))
 			{
 				//No TextureFile has been defined
 				this->Mapper->SetInput(output);
@@ -162,26 +159,36 @@ void vtkOrgan::Init()
 				xform->SetInputConnection(map->GetOutputPort());
 				xform->SetScale(1, 1, 1);
 
+				this->Mapper = vtkDataSetMapper::New();
 				this->Mapper->SetInputConnection(xform->GetOutputPort());
 
 				vtkJPEGReader * jpegReader = vtkJPEGReader::New();
 				jpegReader->SetFileName(this->TextureFileName);
 				jpegReader->Update();
 
+				this->Texture = vtkTexture::New();
 				this->Texture->SetInputConnection(jpegReader->GetOutputPort());
 				this->Texture->InterpolateOn();
 
+				this->Actor = vtkActor::New();
 				this->Actor->SetTexture(this->Texture);
 			}
 
 			this->Actor->SetMapper(this->Mapper);
 			this->Actor->GetProperty()->SetColor(0.8,0.5,0.5);
-			this->Renderer->AddActor(this->Actor);
 
+			this->SimpleMesh = this->TransformFilter->GetOutput();
+
+			this->SimpleMeshMapper = vtkDataSetMapper::New();
 			this->SimpleMeshMapper->SetInput(this->SimpleMesh);
+
+			this->SimpleMeshActor = vtkActor::New();
 			this->SimpleMeshActor->SetMapper(this->SimpleMeshMapper);
 			this->SimpleMeshActor->GetProperty()->SetColor(0.8,0.5,0.5);
 			this->SimpleMeshActor->GetProperty()->SetOpacity(0.2);
+
+			this->Renderer->AddActor(this->Actor);
+			this->Renderer->AddActor(this->SimpleMeshActor);
 		}
 
 		this->Update();
@@ -208,8 +215,6 @@ void vtkOrgan::Update()
 	this->Bmm->Modified();
 	this->Bmm->Update();
 
-	this->UpdateSimpleMesh();
-
 	//Remove Contacts
 	this->RemoveContacts();
 
@@ -218,15 +223,7 @@ void vtkOrgan::Update()
 //--------------------------------------------------------------------------
 void vtkOrgan::UpdateSimpleMesh()
 {
-	vtkPoints * points = this->GetOutput()->GetPoints();
-	vtkPolyData * pd = vtkPolyData::New();
-	pd->SetPoints(points);
-	pd->Update();
-	vtkDelaunay2D * del = vtkDelaunay2D::New();
-	del->SetInput(pd);
-	del->Update();
-	this->SimpleMesh->DeepCopy(del->GetOutput());
-	pd->Delete();
+	//TODO: Remove this obsolete method
 }
 
 //--------------------------------------------------------------------------
@@ -252,30 +249,6 @@ vtkBioMechanicalModel * vtkOrgan::GetBioMechanicalModel()
 }
 
 //--------------------------------------------------------------------------
-void vtkOrgan::SetFileName(const char * name)
-{
-	this->FileName = name;
-}
-
-//--------------------------------------------------------------------------
-const char * vtkOrgan::GetFileName()
-{
-	return this->FileName;
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::SetTextureFileName(const char * name)
-{
-	this->TextureFileName = name;
-}
-
-//--------------------------------------------------------------------------
-const char * vtkOrgan::GetTextureFileName()
-{
-	return this->TextureFileName;
-}
-
-//--------------------------------------------------------------------------
 vtkPoints * vtkOrgan::GetContactPoints()
 {
 	return this->Bmm->GetContactPoints();
@@ -294,48 +267,13 @@ void vtkOrgan::Cut(vtkIdList * ids)
 }
 
 //--------------------------------------------------------------------------
-void vtkOrgan::SetRenderWindow(vtkRenderWindow *Renderer) {
-	this->RenderWindow = Renderer;
-	this->Renderer= RenderWindow->GetRenderers()->GetFirstRenderer();
-}
-
-//--------------------------------------------------------------------------
-vtkRenderWindow* vtkOrgan::GetRenderWindow() {
-	return this->RenderWindow;
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::SetActor(vtkActor *Actor)
-{
-	this->Actor = Actor;
-}
-
-//--------------------------------------------------------------------------
-vtkActor* vtkOrgan::GetActor()
-{
-	return this->Actor;
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::SetMapper(vtkDataSetMapper *Mapper)
-{
-	this->Mapper = Mapper;
-}
-
-//--------------------------------------------------------------------------
-vtkDataSetMapper* vtkOrgan::GetMapper()
-{
-	return this->Mapper;
-}
-
-//--------------------------------------------------------------------------
 void vtkOrgan::PrintSelf(ostream& os,vtkIndent indent) {
+
 	this->Superclass::PrintSelf(os,indent);
 
 	os << indent << "FileName: " << this->FileName << "\n";
 	os << indent << "TextureFileName: " << this->TextureFileName << "\n";
 	os << indent << "BMM: " << this->Bmm->GetClassName() << "\n";
-
 
 }
 

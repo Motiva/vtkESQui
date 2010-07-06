@@ -77,13 +77,13 @@ int TestSimulation(int argc, char * argv[])
 
 	/**********  Simulation Setup  ********/
 	vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	SimulationManager->SetCollisionDetectionLibrary("vtkbioeng");
+	SimulationManager->SetLibraryName("vtkbioeng");
 	SimulationManager->SetScenario(Scenario);
 	SimulationManager->Init();
 
 	vtkSimulation * Simulation = vtkSimulation::New();
 	Simulation->SetSimulationManager(SimulationManager);
-	Simulation->SetRenderWindowInteractor(iren);
+	Simulation->SetInteractor(iren);
 	Simulation->Init();
 
 	Simulation->Run();

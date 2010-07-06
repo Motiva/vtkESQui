@@ -105,7 +105,7 @@ public:
 
 	//!Return the organ at the specified position
 	/*!
-	* \param index index of the organ to be returned
+	* \param id index of the organ to be returned
 	* \return vtkOrgan object
 	*/
 	vtkOrgan * GetOrgan(vtkIdType id);

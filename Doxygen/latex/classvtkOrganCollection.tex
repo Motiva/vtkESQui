@@ -7,7 +7,11 @@
 Collection of organs.  
 
 
-{\ttfamily \#include $<$vtkOrganCollection.h$>$}\subsection*{Public Member Functions}
+
+
+{\ttfamily \#include $<$vtkOrganCollection.h$>$}
+
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkOrganCollection_a54e95f6cf19cfe045483cf5b0d665958}{
@@ -52,14 +56,18 @@ vtkCollection, \hyperlink{classvtkOrgan}{vtkOrgan}
 \label{classvtkOrganCollection_a6c938a8313d037d6f3298b535c09381d}
 
 
-Return the next organism on the list. Get the organ at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted. \hypertarget{classvtkOrganCollection_aa5257cc112516992a222c4cdf4e72003}{
+Return the next organism on the list. 
+
+Get the organ at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted. \hypertarget{classvtkOrganCollection_aa5257cc112516992a222c4cdf4e72003}{
 \index{vtkOrganCollection@{vtkOrganCollection}!GetOrgan@{GetOrgan}}
 \index{GetOrgan@{GetOrgan}!vtkOrganCollection@{vtkOrganCollection}}
 \subsubsection[{GetOrgan}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkOrgan} $\ast$ vtkOrganCollection::GetOrgan (vtkIdType {\em id})}}
 \label{classvtkOrganCollection_aa5257cc112516992a222c4cdf4e72003}
 
 
-Return an organ in specified position of the list. Get the organ in the list with the position id. NULL is returned when the collection is exhausted. 
+Return an organ in specified position of the list. 
+
+Get the organ in the list with the position id. NULL is returned when the collection is exhausted. 
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]index of the organ to be returned \end{DoxyParams}
 \hypertarget{classvtkOrganCollection_abf0d197e67a3d97b38b35a149585a361}{
@@ -69,7 +77,9 @@ Return an organ in specified position of the list. Get the organ in the list wit
 \label{classvtkOrganCollection_abf0d197e67a3d97b38b35a149585a361}
 
 
-Insert an organ to the collection. The organ will be inserted at the end of the list 
+Insert an organ to the collection. 
+
+The organ will be inserted at the end of the list 
 \begin{DoxyParams}{Parameters}
 \item[{\em organ}]\hyperlink{classvtkOrgan}{vtkOrgan} object to be inserted \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -83,6 +93,8 @@ Insert an organ to the collection. The organ will be inserted at the end of the 
 
 
 Insert an organ at the specified index. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]index of the list where the organ will be inserted \item[{\em organ}]\hyperlink{classvtkOrgan}{vtkOrgan} object to be inserted \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}

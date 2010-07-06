@@ -23,14 +23,14 @@ void {\bfseries PrintSelf} (ostream \&os, vtkIndent indent)}
 \label{classvtkCollisionDetectionFilter_ab71ccf77152396e086bd057fe8c4d5c1}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_ab120291d445f948e4dc20e5ec3cbefb8}{
-{\bfseries vtkSetClampMacro} (CollisionMode, int, VTK\_\-ALL\_\-CONTACTS, VTK\_\-HALF\_\-CONTACTS)}
-\label{classvtkCollisionDetectionFilter_ab120291d445f948e4dc20e5ec3cbefb8}
+\hypertarget{classvtkCollisionDetectionFilter_af310f9312cd84f971a8a7a77f1f2d1eb}{
+virtual void {\bfseries SetCollisionMode} (int)}
+\label{classvtkCollisionDetectionFilter_af310f9312cd84f971a8a7a77f1f2d1eb}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_afc1e5be95eb70457c46df8f24b8ab224}{
-{\bfseries vtkGetMacro} (CollisionMode, int)}
-\label{classvtkCollisionDetectionFilter_afc1e5be95eb70457c46df8f24b8ab224}
+\hypertarget{classvtkCollisionDetectionFilter_ab3604902b690000f51e2bf77a2d0fa44}{
+virtual int {\bfseries GetCollisionMode} ()}
+\label{classvtkCollisionDetectionFilter_ab3604902b690000f51e2bf77a2d0fa44}
 
 \item 
 \hypertarget{classvtkCollisionDetectionFilter_ad19501102466ba8e82932bfa0d348e4d}{
@@ -103,39 +103,44 @@ vtkMatrix4x4 $\ast$ {\bfseries GetMatrix} (int i)}
 \label{classvtkCollisionDetectionFilter_a6e3ad354f7e55926f717e24b7550d1b9}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_ad673f8bfb4d74bba8c1e649a308f4c86}{
-{\bfseries vtkSetMacro} (BoxTolerance, float)}
-\label{classvtkCollisionDetectionFilter_ad673f8bfb4d74bba8c1e649a308f4c86}
+\hypertarget{classvtkCollisionDetectionFilter_a6709d98b25126f3bca90cc209b8d9427}{
+virtual void {\bfseries SetBoxTolerance} (float)}
+\label{classvtkCollisionDetectionFilter_a6709d98b25126f3bca90cc209b8d9427}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_a22a52b695edb303c2e5d2dea22a616f5}{
-{\bfseries vtkGetMacro} (BoxTolerance, float)}
-\label{classvtkCollisionDetectionFilter_a22a52b695edb303c2e5d2dea22a616f5}
+\hypertarget{classvtkCollisionDetectionFilter_a00511000298b60e80a8c840d8a69f4c1}{
+virtual float {\bfseries GetBoxTolerance} ()}
+\label{classvtkCollisionDetectionFilter_a00511000298b60e80a8c840d8a69f4c1}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_afdf47cecebe26b1436561d94c9a5fc11}{
-{\bfseries vtkSetMacro} (CellTolerance, double)}
-\label{classvtkCollisionDetectionFilter_afdf47cecebe26b1436561d94c9a5fc11}
+\hypertarget{classvtkCollisionDetectionFilter_ac511550b9dbb4a43851c8a1e87c11aa6}{
+virtual void {\bfseries SetCellTolerance} (double)}
+\label{classvtkCollisionDetectionFilter_ac511550b9dbb4a43851c8a1e87c11aa6}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_a6f21a9c5cbd52e40241a54f6fdd45fff}{
-{\bfseries vtkGetMacro} (CellTolerance, double)}
-\label{classvtkCollisionDetectionFilter_a6f21a9c5cbd52e40241a54f6fdd45fff}
+\hypertarget{classvtkCollisionDetectionFilter_a81eae1be2e50845d2a3a4cedd19d8d17}{
+virtual double {\bfseries GetCellTolerance} ()}
+\label{classvtkCollisionDetectionFilter_a81eae1be2e50845d2a3a4cedd19d8d17}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_aea2bae8abb0467931ccf6986be3c2bb8}{
-{\bfseries vtkSetMacro} (GenerateScalars, int)}
-\label{classvtkCollisionDetectionFilter_aea2bae8abb0467931ccf6986be3c2bb8}
+\hypertarget{classvtkCollisionDetectionFilter_ada2437de564344b4e44ab55ab374d7e4}{
+virtual void {\bfseries SetGenerateScalars} (int)}
+\label{classvtkCollisionDetectionFilter_ada2437de564344b4e44ab55ab374d7e4}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_a1edfb6c5e688c633c75e74d5dc9d603c}{
-{\bfseries vtkGetMacro} (GenerateScalars, int)}
-\label{classvtkCollisionDetectionFilter_a1edfb6c5e688c633c75e74d5dc9d603c}
+\hypertarget{classvtkCollisionDetectionFilter_a6a2a53d5760dd52a61761888e706c1dc}{
+virtual int {\bfseries GetGenerateScalars} ()}
+\label{classvtkCollisionDetectionFilter_a6a2a53d5760dd52a61761888e706c1dc}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_a745f0ee4bef8439ee66022f7e1331002}{
-{\bfseries vtkBooleanMacro} (GenerateScalars, int)}
-\label{classvtkCollisionDetectionFilter_a745f0ee4bef8439ee66022f7e1331002}
+\hypertarget{classvtkCollisionDetectionFilter_a12af8eb518b2b14033bf814192676531}{
+virtual void {\bfseries GenerateScalarsOn} ()}
+\label{classvtkCollisionDetectionFilter_a12af8eb518b2b14033bf814192676531}
+
+\item 
+\hypertarget{classvtkCollisionDetectionFilter_aa2ea37fcea72b0cae9fde2e71d23145c}{
+virtual void {\bfseries GenerateScalarsOff} ()}
+\label{classvtkCollisionDetectionFilter_aa2ea37fcea72b0cae9fde2e71d23145c}
 
 \item 
 \hypertarget{classvtkCollisionDetectionFilter_a909c0634a5922f3cc89128759d10f583}{
@@ -143,29 +148,29 @@ int {\bfseries GetNumberOfContacts} ()}
 \label{classvtkCollisionDetectionFilter_a909c0634a5922f3cc89128759d10f583}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_a9508339604c8842739e3a958f09f60f7}{
-{\bfseries vtkGetMacro} (NumberOfBoxTests, int)}
-\label{classvtkCollisionDetectionFilter_a9508339604c8842739e3a958f09f60f7}
+\hypertarget{classvtkCollisionDetectionFilter_a1a8e811be18a92ea844c8a880c4f23c9}{
+virtual int {\bfseries GetNumberOfBoxTests} ()}
+\label{classvtkCollisionDetectionFilter_a1a8e811be18a92ea844c8a880c4f23c9}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_a2fed3ab49fe8fff33d29ca474394501e}{
-{\bfseries vtkSetMacro} (NumberOfCellsPerBucket, int)}
-\label{classvtkCollisionDetectionFilter_a2fed3ab49fe8fff33d29ca474394501e}
+\hypertarget{classvtkCollisionDetectionFilter_aba14e6a67067b97777ace50431376745}{
+virtual void {\bfseries SetNumberOfCellsPerBucket} (int)}
+\label{classvtkCollisionDetectionFilter_aba14e6a67067b97777ace50431376745}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_a435ab5049a3356a5ad190e244d701b00}{
-{\bfseries vtkGetMacro} (NumberOfCellsPerBucket, int)}
-\label{classvtkCollisionDetectionFilter_a435ab5049a3356a5ad190e244d701b00}
+\hypertarget{classvtkCollisionDetectionFilter_a900110c0dfaed5d31fb82eedd4976e22}{
+virtual int {\bfseries GetNumberOfCellsPerBucket} ()}
+\label{classvtkCollisionDetectionFilter_a900110c0dfaed5d31fb82eedd4976e22}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_ab6b6c78957162d62067fb90bac184491}{
-{\bfseries vtkSetClampMacro} (Opacity, float, 0.0, 1.0)}
-\label{classvtkCollisionDetectionFilter_ab6b6c78957162d62067fb90bac184491}
+\hypertarget{classvtkCollisionDetectionFilter_a8eda10c7bb5dd096311b0b7cb71c6d7a}{
+virtual void {\bfseries SetOpacity} (float)}
+\label{classvtkCollisionDetectionFilter_a8eda10c7bb5dd096311b0b7cb71c6d7a}
 
 \item 
-\hypertarget{classvtkCollisionDetectionFilter_a2c2a8b177113a5b02b14a250f6bff4dd}{
-{\bfseries vtkGetMacro} (Opacity, float)}
-\label{classvtkCollisionDetectionFilter_a2c2a8b177113a5b02b14a250f6bff4dd}
+\hypertarget{classvtkCollisionDetectionFilter_aad6974110a3b0f42fc4fae0578e777d1}{
+virtual float {\bfseries GetOpacity} ()}
+\label{classvtkCollisionDetectionFilter_aad6974110a3b0f42fc4fae0578e777d1}
 
 \item 
 \hypertarget{classvtkCollisionDetectionFilter_a002a7e0830197e208f5c8773622a3d24}{

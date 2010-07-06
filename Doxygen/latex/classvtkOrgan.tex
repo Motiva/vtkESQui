@@ -7,9 +7,17 @@
 Implementation class for organ definition.  
 
 
+
+
 {\ttfamily \#include $<$vtkOrgan.h$>$}
 
-Inherits \hyperlink{classvtkScenarioItem}{vtkScenarioItem}.Collaboration diagram for vtkOrgan:\subsection*{Public Member Functions}
+
+
+Inherits \hyperlink{classvtkScenarioItem}{vtkScenarioItem}.
+
+
+
+Collaboration diagram for vtkOrgan:\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkOrgan_aaaf057c35a17a65fa1c95f8cfb6d86f2}{
@@ -27,7 +35,7 @@ virtual void \hyperlink{classvtkOrgan_ad4f07f094056b7161bcdf4edec7f82d2}{PrintSe
 \label{classvtkOrgan_ad4f07f094056b7161bcdf4edec7f82d2}
 
 \begin{DoxyCompactList}\small\item\em Print class values. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkOrgan_abfe750f8e4ec9bbd0b9f182894bf2c97}{SetInput} (vtkUnstructuredGrid $\ast$data)
+void \hyperlink{classvtkOrgan_a63ce9adb7313bce4dc8aa547ba6736fc}{SetInput} (vtkPolyData $\ast$data)
 \begin{DoxyCompactList}\small\item\em Set input mesh dataset. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkOrgan_a267da8ba8d4cfcef50b70dc5b9d19ae9}{
 void \hyperlink{classvtkOrgan_a267da8ba8d4cfcef50b70dc5b9d19ae9}{Update} ()}
@@ -39,11 +47,11 @@ void \hyperlink{classvtkOrgan_a943994fbb1b4f8a8e72f647f631cdd81}{UpdateSimpleMes
 \label{classvtkOrgan_a943994fbb1b4f8a8e72f647f631cdd81}
 
 \begin{DoxyCompactList}\small\item\em Regenerate simplified mesh after changes due to transformations/deformations. \item\end{DoxyCompactList}\item 
-vtkUnstructuredGrid $\ast$ \hyperlink{classvtkOrgan_af8cbaa36f1dbf97b5314dfe128aaf444}{GetOutput} ()
-\begin{DoxyCompactList}\small\item\em Return output data as an vtkUnstructuredGrid object. \item\end{DoxyCompactList}\item 
-void \hyperlink{classvtkOrgan_ad163fb8b19cb52cf99eb350512945510}{SetBioMechanicalModel} (\hyperlink{classvtkBioMechanicalModel}{vtkBioMechanicalModel} $\ast$model)
+vtkPolyData $\ast$ \hyperlink{classvtkOrgan_a12141c47bba12d71e1b7d3c02d398f89}{GetOutput} ()
+\begin{DoxyCompactList}\small\item\em Return output data as an vtkPolyData object. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkOrgan_ad163fb8b19cb52cf99eb350512945510}{SetBioMechanicalModel} (vtkBioMechanicalModel $\ast$model)
 \begin{DoxyCompactList}\small\item\em Set the Biomechanical Model of the organ. \item\end{DoxyCompactList}\item 
-\hyperlink{classvtkBioMechanicalModel}{vtkBioMechanicalModel} $\ast$ \hyperlink{classvtkOrgan_a557162900b7880dac34acca512bcebd0}{GetBioMechanicalModel} ()
+vtkBioMechanicalModel $\ast$ \hyperlink{classvtkOrgan_a557162900b7880dac34acca512bcebd0}{GetBioMechanicalModel} ()
 \begin{DoxyCompactList}\small\item\em Get the Biomechanical Model of the organ. \item\end{DoxyCompactList}\item 
 void \hyperlink{classvtkOrgan_a55ca17e15fea6a6c1672f8b271546e6b}{SetName} (const char $\ast$name)
 \begin{DoxyCompactList}\small\item\em Set organ name. \item\end{DoxyCompactList}\item 
@@ -190,18 +198,18 @@ vtkTexture $\ast$ \hyperlink{classvtkOrgan_a77f4c261f73869b78984aff6f5597275}{Te
 \label{classvtkOrgan_a77f4c261f73869b78984aff6f5597275}
 
 \begin{DoxyCompactList}\small\item\em Texture. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkOrgan_a836e81a6d9c895711ffafc1de711d6d7}{
-vtkUnstructuredGrid $\ast$ \hyperlink{classvtkOrgan_a836e81a6d9c895711ffafc1de711d6d7}{Input}}
-\label{classvtkOrgan_a836e81a6d9c895711ffafc1de711d6d7}
+\hypertarget{classvtkOrgan_aae878db5d8184027daa106b00b9f4e18}{
+vtkPolyData $\ast$ \hyperlink{classvtkOrgan_aae878db5d8184027daa106b00b9f4e18}{Input}}
+\label{classvtkOrgan_aae878db5d8184027daa106b00b9f4e18}
 
 \begin{DoxyCompactList}\small\item\em Input Unstructured Grid. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkOrgan_a33ff99e7696564f2e80d7497ae70b991}{
-vtkUnstructuredGridReader $\ast$ \hyperlink{classvtkOrgan_a33ff99e7696564f2e80d7497ae70b991}{Reader}}
-\label{classvtkOrgan_a33ff99e7696564f2e80d7497ae70b991}
+\hypertarget{classvtkOrgan_ae9fcd44b733e1a685e7c900216b4f40f}{
+vtkXMLPolyDataReader $\ast$ \hyperlink{classvtkOrgan_ae9fcd44b733e1a685e7c900216b4f40f}{Reader}}
+\label{classvtkOrgan_ae9fcd44b733e1a685e7c900216b4f40f}
 
 \begin{DoxyCompactList}\small\item\em Unstructured grid reader. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkOrgan_addaff1a7cdd0ab90c4a5de3ae53def26}{
-\hyperlink{classvtkBioMechanicalModel}{vtkBioMechanicalModel} $\ast$ \hyperlink{classvtkOrgan_addaff1a7cdd0ab90c4a5de3ae53def26}{Bmm}}
+vtkBioMechanicalModel $\ast$ \hyperlink{classvtkOrgan_addaff1a7cdd0ab90c4a5de3ae53def26}{Bmm}}
 \label{classvtkOrgan_addaff1a7cdd0ab90c4a5de3ae53def26}
 
 \begin{DoxyCompactList}\small\item\em BioMechamical Model of the organ. \item\end{DoxyCompactList}\item 
@@ -280,9 +288,9 @@ vtkDataSetMapper $\ast$ \hyperlink{classvtkOrgan_a3bcab5f9352bb68a51d87ad45ab497
 \label{classvtkOrgan_a3bcab5f9352bb68a51d87ad45ab49745}
 
 \begin{DoxyCompactList}\small\item\em Dataset mapper of the actor. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkOrgan_afc74cfa11894a2ac88f8b79545ce0a5d}{
-vtkTransformFilter $\ast$ \hyperlink{classvtkOrgan_afc74cfa11894a2ac88f8b79545ce0a5d}{TransformFilter}}
-\label{classvtkOrgan_afc74cfa11894a2ac88f8b79545ce0a5d}
+\hypertarget{classvtkOrgan_a037f7ebec60977d740b505fd5173533c}{
+vtkTransformPolyDataFilter $\ast$ \hyperlink{classvtkOrgan_a037f7ebec60977d740b505fd5173533c}{TransformFilter}}
+\label{classvtkOrgan_a037f7ebec60977d740b505fd5173533c}
 
 \begin{DoxyCompactList}\small\item\em Transform filter of the organ. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkOrgan_aaea6ee1089523e2d8b8bf40b5db1ea6a}{
@@ -290,16 +298,6 @@ vtkTransform $\ast$ \hyperlink{classvtkOrgan_aaea6ee1089523e2d8b8bf40b5db1ea6a}{
 \label{classvtkOrgan_aaea6ee1089523e2d8b8bf40b5db1ea6a}
 
 \begin{DoxyCompactList}\small\item\em Transform function of the organ. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkOrgan_afbed98f1599b0eef86df3cf9163d319c}{
-\hyperlink{classvtkPointPlotter}{vtkPointPlotter} $\ast$ \hyperlink{classvtkOrgan_afbed98f1599b0eef86df3cf9163d319c}{PointPlotter}}
-\label{classvtkOrgan_afbed98f1599b0eef86df3cf9163d319c}
-
-\begin{DoxyCompactList}\small\item\em Point Plotter. Only in Test Mode. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkOrgan_ad8533a0f9af0a0dc5bee86e19e6ee2d8}{
-vtkOBBTree $\ast$ \hyperlink{classvtkOrgan_ad8533a0f9af0a0dc5bee86e19e6ee2d8}{OBB}}
-\label{classvtkOrgan_ad8533a0f9af0a0dc5bee86e19e6ee2d8}
-
-\begin{DoxyCompactList}\small\item\em OBBTree. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkOrgan_a7e81f7828374ebd3d4799defdaaed87a}{
 vtkDataSetMapper $\ast$ \hyperlink{classvtkOrgan_a7e81f7828374ebd3d4799defdaaed87a}{SimpleMeshMapper}}
 \label{classvtkOrgan_a7e81f7828374ebd3d4799defdaaed87a}
@@ -323,7 +321,9 @@ Implementation class for organ definition.
 \label{classvtkOrgan_a180c5871366dca3c20ec81235ad0f618}
 
 
-Return whether the organ contains fluids or not. \begin{DoxySeeAlso}{See also}
+Return whether the organ contains fluids or not. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a387870655644666d7e337071ebca3708}{SetContainsFluidOff()} 
 
 \hyperlink{classvtkOrgan_a776239497bc5ca06cdea73d5dd572000}{SetContainsFluidOn()} 
@@ -335,17 +335,21 @@ Return whether the organ contains fluids or not. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_af12bcf578df2448068251a80b08822c1}
 
 
-Return the actor that displays the organ. \begin{DoxySeeAlso}{See also}
+Return the actor that displays the organ. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a7368fa68add5a80b7b80989df1894233}{SetActor(vtkActor $\ast$Actor)} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a557162900b7880dac34acca512bcebd0}{
 \index{vtkOrgan@{vtkOrgan}!GetBioMechanicalModel@{GetBioMechanicalModel}}
 \index{GetBioMechanicalModel@{GetBioMechanicalModel}!vtkOrgan@{vtkOrgan}}
-\subsubsection[{GetBioMechanicalModel}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkBioMechanicalModel} $\ast$ vtkOrgan::GetBioMechanicalModel ()}}
+\subsubsection[{GetBioMechanicalModel}]{\setlength{\rightskip}{0pt plus 5cm}vtkBioMechanicalModel $\ast$ vtkOrgan::GetBioMechanicalModel ()}}
 \label{classvtkOrgan_a557162900b7880dac34acca512bcebd0}
 
 
-Get the Biomechanical Model of the organ. \begin{DoxyReturn}{Returns}
+Get the Biomechanical Model of the organ. 
+
+\begin{DoxyReturn}{Returns}
 biomechanical model of the organ 
 \end{DoxyReturn}
 \begin{DoxySeeAlso}{See also}
@@ -358,7 +362,9 @@ SetBioMechModel(vtkBioMechanicalModel $\ast$ model)
 \label{classvtkOrgan_a3a20226df6f6df2a83b2ee0be190c452}
 
 
-Return if the organ could be clipped. \begin{DoxySeeAlso}{See also}
+Return if the organ could be clipped. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a65da602da9636309dcfa094b537a9fef}{SetCanBeClippedOn()} 
 
 \hyperlink{classvtkOrgan_a6faee69d6495879b5f545bf1446dd304}{SetCanBeClippedOff()} 
@@ -371,6 +377,8 @@ Return if the organ could be clipped. \begin{DoxySeeAlso}{See also}
 
 
 Return a specific cell of the organ mesh. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]identifying key of the mesh cell \end{DoxyParams}
 \hypertarget{classvtkOrgan_a83331bddcf2a07b54a5df5e6e23b130f}{
@@ -380,7 +388,9 @@ Return a specific cell of the organ mesh.
 \label{classvtkOrgan_a83331bddcf2a07b54a5df5e6e23b130f}
 
 
-Return initial values filename. \begin{DoxySeeAlso}{See also}
+Return initial values filename. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a9fad20fc19aadd62505ed6a39e482d23}{SetFileName(const char$\ast$ name)}; 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a81b39e0f98712affccd17071791f6ad7}{
@@ -390,7 +400,9 @@ Return initial values filename. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_a81b39e0f98712affccd17071791f6ad7}
 
 
-GetfForce factor. \begin{DoxySeeAlso}{See also}
+GetfForce factor. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_ae98b19d50a8f351e79e881b579215953}{SetForceFactor(float value)} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a8e45f79da9c4e7029492ced2f55c25ed}{
@@ -400,19 +412,25 @@ GetfForce factor. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_a8e45f79da9c4e7029492ced2f55c25ed}
 
 
-Return the organ identifier. \begin{DoxySeeAlso}{See also}
+Return the organ identifier. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a0aab831b4e0a9d33ba961a0907b73e80}{SetId(vtkIdType id)} 
 \end{DoxySeeAlso}
 
 
-Reimplemented from \hyperlink{classvtkScenarioItem_a9884061bd42ee058291d95a67ddcac20}{vtkScenarioItem}.\hypertarget{classvtkOrgan_af638d5ed23ec53237ec15089ef5cbadc}{
+Reimplemented from \hyperlink{classvtkScenarioItem_a9884061bd42ee058291d95a67ddcac20}{vtkScenarioItem}.
+
+\hypertarget{classvtkOrgan_af638d5ed23ec53237ec15089ef5cbadc}{
 \index{vtkOrgan@{vtkOrgan}!GetMapper@{GetMapper}}
 \index{GetMapper@{GetMapper}!vtkOrgan@{vtkOrgan}}
 \subsubsection[{GetMapper}]{\setlength{\rightskip}{0pt plus 5cm}vtkDataSetMapper $\ast$ vtkOrgan::GetMapper ()}}
 \label{classvtkOrgan_af638d5ed23ec53237ec15089ef5cbadc}
 
 
-Return the data set mapper. \begin{DoxySeeAlso}{See also}
+Return the data set mapper. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_aefdce585f74966627c2b5c9d01be8fe3}{SetMapper(vtkDataSetMapper $\ast$Mapper)} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a8421389b02b00b42b0899b75d00633b4}{
@@ -422,30 +440,38 @@ Return the data set mapper. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_a8421389b02b00b42b0899b75d00633b4}
 
 
-Return the organ name. \begin{DoxySeeAlso}{See also}
+Return the organ name. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a55ca17e15fea6a6c1672f8b271546e6b}{SetName(const char $\ast$ name)} 
 \end{DoxySeeAlso}
 
 
-Reimplemented from \hyperlink{classvtkScenarioItem_a41ebb204b2879d9dd14a392c1cb3c2fe}{vtkScenarioItem}.\hypertarget{classvtkOrgan_a99aeadb34310d5ad8b7d8616ea8482ef}{
+Reimplemented from \hyperlink{classvtkScenarioItem_a41ebb204b2879d9dd14a392c1cb3c2fe}{vtkScenarioItem}.
+
+\hypertarget{classvtkOrgan_a99aeadb34310d5ad8b7d8616ea8482ef}{
 \index{vtkOrgan@{vtkOrgan}!GetNumberOfIterations@{GetNumberOfIterations}}
 \index{GetNumberOfIterations@{GetNumberOfIterations}!vtkOrgan@{vtkOrgan}}
 \subsubsection[{GetNumberOfIterations}]{\setlength{\rightskip}{0pt plus 5cm}vtkIdType vtkOrgan::GetNumberOfIterations ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
 \label{classvtkOrgan_a99aeadb34310d5ad8b7d8616ea8482ef}
 
 
-Return number of required biomechanical model process iterations. This parameter will define the realism of the deformation \begin{DoxySeeAlso}{See also}
+Return number of required biomechanical model process iterations. 
+
+This parameter will define the realism of the deformation \begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a97ed046b7c9b8c3cc87939db46e4ec01}{SetNumberOfIterations(vtkIdType iterations)} 
 \end{DoxySeeAlso}
-\hypertarget{classvtkOrgan_af8cbaa36f1dbf97b5314dfe128aaf444}{
+\hypertarget{classvtkOrgan_a12141c47bba12d71e1b7d3c02d398f89}{
 \index{vtkOrgan@{vtkOrgan}!GetOutput@{GetOutput}}
 \index{GetOutput@{GetOutput}!vtkOrgan@{vtkOrgan}}
-\subsubsection[{GetOutput}]{\setlength{\rightskip}{0pt plus 5cm}vtkUnstructuredGrid $\ast$ vtkOrgan::GetOutput ()}}
-\label{classvtkOrgan_af8cbaa36f1dbf97b5314dfe128aaf444}
+\subsubsection[{GetOutput}]{\setlength{\rightskip}{0pt plus 5cm}vtkPolyData $\ast$ vtkOrgan::GetOutput ()}}
+\label{classvtkOrgan_a12141c47bba12d71e1b7d3c02d398f89}
 
 
-Return output data as an vtkUnstructuredGrid object. \begin{DoxySeeAlso}{See also}
-\hyperlink{classvtkOrgan_abfe750f8e4ec9bbd0b9f182894bf2c97}{SetInput(vtkUnstructuredGrid $\ast$data)} 
+Return output data as an vtkPolyData object. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkOrgan_a63ce9adb7313bce4dc8aa547ba6736fc}{SetInput(vtkPolyData $\ast$data)} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_ae670e2727313073a9659a2795ce64c98}{
 \index{vtkOrgan@{vtkOrgan}!GetRenderWindow@{GetRenderWindow}}
@@ -454,19 +480,25 @@ Return output data as an vtkUnstructuredGrid object. \begin{DoxySeeAlso}{See als
 \label{classvtkOrgan_ae670e2727313073a9659a2795ce64c98}
 
 
-Return the render window of the organ. \begin{DoxySeeAlso}{See also}
+Return the render window of the organ. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a2b6a862da0f1ca6cd192138cdd00b04b}{SetRenderWindow(vtkRenderWindow $\ast$Renderer)} 
 \end{DoxySeeAlso}
 
 
-Reimplemented from \hyperlink{classvtkScenarioItem_a9d7908b11d2a477827342c05bb505e66}{vtkScenarioItem}.\hypertarget{classvtkOrgan_aaec0735181654c6500d0767eed30b94d}{
+Reimplemented from \hyperlink{classvtkScenarioItem_a9d7908b11d2a477827342c05bb505e66}{vtkScenarioItem}.
+
+\hypertarget{classvtkOrgan_aaec0735181654c6500d0767eed30b94d}{
 \index{vtkOrgan@{vtkOrgan}!GetTextureFileName@{GetTextureFileName}}
 \index{GetTextureFileName@{GetTextureFileName}!vtkOrgan@{vtkOrgan}}
 \subsubsection[{GetTextureFileName}]{\setlength{\rightskip}{0pt plus 5cm}const char $\ast$ vtkOrgan::GetTextureFileName ()}}
 \label{classvtkOrgan_aaec0735181654c6500d0767eed30b94d}
 
 
-Return texture filename. \begin{DoxySeeAlso}{See also}
+Return texture filename. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_af19a32e071ae5f9c9848b2ad7088d0c1}{SetTextureFileName(const char$\ast$ name)}; 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a48aa20d7255903b3f7ac5cd2a4adec8c}{
@@ -476,9 +508,13 @@ Return texture filename. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_a48aa20d7255903b3f7ac5cd2a4adec8c}
 
 
-Initialize mesh data. The following parameters should be set before calling this function: Biomechanical Model 
+Initialize mesh data. 
 
-Implements \hyperlink{classvtkScenarioItem_a87f01894de62f23433aa2eb3f995c216}{vtkScenarioItem}.\hypertarget{classvtkOrgan_aa61c5704ac5458ee9e5bfa6aed6014ce}{
+The following parameters should be set before calling this function: Biomechanical Model 
+
+Implements \hyperlink{classvtkScenarioItem_a87f01894de62f23433aa2eb3f995c216}{vtkScenarioItem}.
+
+\hypertarget{classvtkOrgan_aa61c5704ac5458ee9e5bfa6aed6014ce}{
 \index{vtkOrgan@{vtkOrgan}!InsertContacts@{InsertContacts}}
 \index{InsertContacts@{InsertContacts}!vtkOrgan@{vtkOrgan}}
 \subsubsection[{InsertContacts}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::InsertContacts ({\bf vtkContactCollection} $\ast$ {\em contacts})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
@@ -486,6 +522,8 @@ Implements \hyperlink{classvtkScenarioItem_a87f01894de62f23433aa2eb3f995c216}{vt
 
 
 Add several contacts to the list. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em contact}]list of \hyperlink{classvtkContact}{vtkContact} objects \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -499,6 +537,8 @@ Add several contacts to the list.
 
 
 Add a contact to the list. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em contact}]\hyperlink{classvtkContact}{vtkContact} object with the information of the contact( toolId, organId, point, cell... etc) \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -511,7 +551,9 @@ Add a contact to the list.
 \label{classvtkOrgan_ad61305759deba9189e2a648c9d083fac}
 
 
-Return if the organ is hooked. \begin{DoxySeeAlso}{See also}
+Return if the organ is hooked. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a78a3cdaeb7e6b23de0880dcb1c407cfe}{SetHookedOn()} 
 
 \hyperlink{classvtkOrgan_ad2ac78a6020fba61ff49edad8a3f6a22}{SetHookedOff()} 
@@ -523,7 +565,9 @@ Return if the organ is hooked. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_abd019445a21886d765aec818b90add63}
 
 
-Remove all contacts. Remove all contacts from the list. Memory is not freed \hypertarget{classvtkOrgan_a7368fa68add5a80b7b80989df1894233}{
+Remove all contacts. 
+
+Remove all contacts from the list. Memory is not freed \hypertarget{classvtkOrgan_a7368fa68add5a80b7b80989df1894233}{
 \index{vtkOrgan@{vtkOrgan}!SetActor@{SetActor}}
 \index{SetActor@{SetActor}!vtkOrgan@{vtkOrgan}}
 \subsubsection[{SetActor}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::SetActor (vtkActor $\ast$ {\em Actor})}}
@@ -531,6 +575,8 @@ Remove all contacts. Remove all contacts from the list. Memory is not freed \hyp
 
 
 Set the actor of the organ. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em Actor}]vtkActor object \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -539,11 +585,13 @@ Set the actor of the organ.
 \hypertarget{classvtkOrgan_ad163fb8b19cb52cf99eb350512945510}{
 \index{vtkOrgan@{vtkOrgan}!SetBioMechanicalModel@{SetBioMechanicalModel}}
 \index{SetBioMechanicalModel@{SetBioMechanicalModel}!vtkOrgan@{vtkOrgan}}
-\subsubsection[{SetBioMechanicalModel}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::SetBioMechanicalModel ({\bf vtkBioMechanicalModel} $\ast$ {\em model})}}
+\subsubsection[{SetBioMechanicalModel}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::SetBioMechanicalModel (vtkBioMechanicalModel $\ast$ {\em model})}}
 \label{classvtkOrgan_ad163fb8b19cb52cf99eb350512945510}
 
 
 Set the Biomechanical Model of the organ. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em biomechanical}]model of the organ \end{DoxyParams}
 \hypertarget{classvtkOrgan_a6faee69d6495879b5f545bf1446dd304}{
@@ -553,7 +601,9 @@ Set the Biomechanical Model of the organ.
 \label{classvtkOrgan_a6faee69d6495879b5f545bf1446dd304}
 
 
-Disable organ clipping. \begin{DoxySeeAlso}{See also}
+Disable organ clipping. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a65da602da9636309dcfa094b537a9fef}{SetCanBeClippedOn()} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a65da602da9636309dcfa094b537a9fef}{
@@ -563,7 +613,9 @@ Disable organ clipping. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_a65da602da9636309dcfa094b537a9fef}
 
 
-Enable organ clipping. \begin{DoxySeeAlso}{See also}
+Enable organ clipping. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a6faee69d6495879b5f545bf1446dd304}{SetCanBeClippedOff()} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a387870655644666d7e337071ebca3708}{
@@ -573,7 +625,9 @@ Enable organ clipping. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_a387870655644666d7e337071ebca3708}
 
 
-Disable fluid property. \begin{DoxySeeAlso}{See also}
+Disable fluid property. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a776239497bc5ca06cdea73d5dd572000}{SetContainsFluidOn()} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a776239497bc5ca06cdea73d5dd572000}{
@@ -583,7 +637,9 @@ Disable fluid property. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_a776239497bc5ca06cdea73d5dd572000}
 
 
-Enable fluid property. \begin{DoxySeeAlso}{See also}
+Enable fluid property. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a387870655644666d7e337071ebca3708}{SetContainsFluidOff()} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a9fad20fc19aadd62505ed6a39e482d23}{
@@ -594,6 +650,8 @@ Enable fluid property. \begin{DoxySeeAlso}{See also}
 
 
 Set initial values filename. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em name}]path of file that contains organ initialization data \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -606,7 +664,9 @@ Set initial values filename.
 \label{classvtkOrgan_ae98b19d50a8f351e79e881b579215953}
 
 
-Set force factor. Used for estimating haptic force process \begin{DoxySeeAlso}{See also}
+Set force factor. 
+
+Used for estimating haptic force process \begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a81b39e0f98712affccd17071791f6ad7}{GetForceFactor()} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_ae3f6ea53f0d615fae5f9e2796e4075a2}{
@@ -616,14 +676,18 @@ Set force factor. Used for estimating haptic force process \begin{DoxySeeAlso}{S
 \label{classvtkOrgan_ae3f6ea53f0d615fae5f9e2796e4075a2}
 
 
-Set gravity parameters,. where the direction must be 0, 1, or 2 according to x, y, and z direction, and the orientation must have a value of +1 or -\/1 \hypertarget{classvtkOrgan_ad2ac78a6020fba61ff49edad8a3f6a22}{
+Set gravity parameters,. 
+
+where the direction must be 0, 1, or 2 according to x, y, and z direction, and the orientation must have a value of +1 or -\/1 \hypertarget{classvtkOrgan_ad2ac78a6020fba61ff49edad8a3f6a22}{
 \index{vtkOrgan@{vtkOrgan}!SetHookedOff@{SetHookedOff}}
 \index{SetHookedOff@{SetHookedOff}!vtkOrgan@{vtkOrgan}}
 \subsubsection[{SetHookedOff}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::SetHookedOff ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
 \label{classvtkOrgan_ad2ac78a6020fba61ff49edad8a3f6a22}
 
 
-Set organ as not hooked. \begin{DoxySeeAlso}{See also}
+Set organ as not hooked. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_a78a3cdaeb7e6b23de0880dcb1c407cfe}{SetHookedOn()} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a78a3cdaeb7e6b23de0880dcb1c407cfe}{
@@ -633,7 +697,9 @@ Set organ as not hooked. \begin{DoxySeeAlso}{See also}
 \label{classvtkOrgan_a78a3cdaeb7e6b23de0880dcb1c407cfe}
 
 
-Set organ as hooked. \begin{DoxySeeAlso}{See also}
+Set organ as hooked. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkOrgan_ad2ac78a6020fba61ff49edad8a3f6a22}{SetHookedOff()} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_a0aab831b4e0a9d33ba961a0907b73e80}{
@@ -644,6 +710,8 @@ Set organ as hooked. \begin{DoxySeeAlso}{See also}
 
 
 Set organ identifier. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]identifying tag of the organ \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -651,18 +719,22 @@ Set organ identifier.
 \end{DoxySeeAlso}
 
 
-Reimplemented from \hyperlink{classvtkScenarioItem_afd99a6db7187837d0129e9898478ec60}{vtkScenarioItem}.\hypertarget{classvtkOrgan_abfe750f8e4ec9bbd0b9f182894bf2c97}{
+Reimplemented from \hyperlink{classvtkScenarioItem_afd99a6db7187837d0129e9898478ec60}{vtkScenarioItem}.
+
+\hypertarget{classvtkOrgan_a63ce9adb7313bce4dc8aa547ba6736fc}{
 \index{vtkOrgan@{vtkOrgan}!SetInput@{SetInput}}
 \index{SetInput@{SetInput}!vtkOrgan@{vtkOrgan}}
-\subsubsection[{SetInput}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::SetInput (vtkUnstructuredGrid $\ast$ {\em data})}}
-\label{classvtkOrgan_abfe750f8e4ec9bbd0b9f182894bf2c97}
+\subsubsection[{SetInput}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::SetInput (vtkPolyData $\ast$ {\em data})}}
+\label{classvtkOrgan_a63ce9adb7313bce4dc8aa547ba6736fc}
 
 
 Set input mesh dataset. 
+
+
 \begin{DoxyParams}{Parameters}
-\item[{\em data}]vtkUnstructuredGrid object containing mesh data (points, cells...) \end{DoxyParams}
+\item[{\em data}]vtkPolyData object containing mesh data (points, cells...) \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\hyperlink{classvtkOrgan_af8cbaa36f1dbf97b5314dfe128aaf444}{GetOutput()} 
+\hyperlink{classvtkOrgan_a12141c47bba12d71e1b7d3c02d398f89}{GetOutput()} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkOrgan_aefdce585f74966627c2b5c9d01be8fe3}{
 \index{vtkOrgan@{vtkOrgan}!SetMapper@{SetMapper}}
@@ -672,6 +744,8 @@ Set input mesh dataset.
 
 
 Set the mapper of the actor. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em dataset}]mapper \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -685,6 +759,8 @@ Set the mapper of the actor.
 
 
 Set organ name. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em name}]string containing organ's name \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -692,14 +768,18 @@ Set organ name.
 \end{DoxySeeAlso}
 
 
-Reimplemented from \hyperlink{classvtkScenarioItem_a199f87511e99386bb9f271d91c2d0caf}{vtkScenarioItem}.\hypertarget{classvtkOrgan_a97ed046b7c9b8c3cc87939db46e4ec01}{
+Reimplemented from \hyperlink{classvtkScenarioItem_a199f87511e99386bb9f271d91c2d0caf}{vtkScenarioItem}.
+
+\hypertarget{classvtkOrgan_a97ed046b7c9b8c3cc87939db46e4ec01}{
 \index{vtkOrgan@{vtkOrgan}!SetNumberOfIterations@{SetNumberOfIterations}}
 \index{SetNumberOfIterations@{SetNumberOfIterations}!vtkOrgan@{vtkOrgan}}
 \subsubsection[{SetNumberOfIterations}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::SetNumberOfIterations (vtkIdType {\em iterations})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
 \label{classvtkOrgan_a97ed046b7c9b8c3cc87939db46e4ec01}
 
 
-Set number of required biomechanical model process iterations. This parameter will define the realism of the deformation 
+Set number of required biomechanical model process iterations. 
+
+This parameter will define the realism of the deformation 
 \begin{DoxyParams}{Parameters}
 \item[{\em iterations}]number of iterations \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -713,6 +793,8 @@ Set number of required biomechanical model process iterations. This parameter wi
 
 
 Set the render window for graphical purposes. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em Renderer}]render window \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -720,7 +802,9 @@ Set the render window for graphical purposes.
 \end{DoxySeeAlso}
 
 
-Reimplemented from \hyperlink{classvtkScenarioItem_a3ce404404d36c342b947f29fa02b6170}{vtkScenarioItem}.\hypertarget{classvtkOrgan_af19a32e071ae5f9c9848b2ad7088d0c1}{
+Reimplemented from \hyperlink{classvtkScenarioItem_a3ce404404d36c342b947f29fa02b6170}{vtkScenarioItem}.
+
+\hypertarget{classvtkOrgan_af19a32e071ae5f9c9848b2ad7088d0c1}{
 \index{vtkOrgan@{vtkOrgan}!SetTextureFileName@{SetTextureFileName}}
 \index{SetTextureFileName@{SetTextureFileName}!vtkOrgan@{vtkOrgan}}
 \subsubsection[{SetTextureFileName}]{\setlength{\rightskip}{0pt plus 5cm}void vtkOrgan::SetTextureFileName (const char $\ast$ {\em name})}}
@@ -728,6 +812,8 @@ Reimplemented from \hyperlink{classvtkScenarioItem_a3ce404404d36c342b947f29fa02b
 
 
 Set texture filename. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em name}]path of file that contains organ initialization data \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}

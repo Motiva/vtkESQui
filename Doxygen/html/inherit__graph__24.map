@@ -1,0 +1,9 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classvtkScenarioItem.html" title="Class vtkScenarioItem, abstract the use of a surgical item." alt="" coords="7,31,124,62"/>
+<area shape="rect" id="node3" href="$classvtkOrgan.html" title="Implementation class for organ definition." alt="" coords="175,5,249,35"/>
+<area shape="rect" id="node5" href="$classvtkTool.html" title="Class vtkTool, abstract the use of a surgical tool." alt="" coords="179,58,245,89"/>
+<area shape="rect" id="node7" href="$classvtkToolLaparoscopy.html" title="Class vtkToolLaparoscopy, abstract the use of a surgical laparoscopic tool." alt="" coords="300,58,444,89"/>
+<area shape="rect" id="node9" href="$classvtkToolDummy.html" title="Implementation class of pincers." alt="" coords="497,5,609,35"/>
+<area shape="rect" id="node11" href="$classvtkToolPincers.html" title="Implementation class of pincers." alt="" coords="497,58,609,89"/>
+<area shape="rect" id="node13" href="$classvtkToolScissors.html" title="Implementation class of scissors." alt="" coords="495,111,612,142"/>
+</map>

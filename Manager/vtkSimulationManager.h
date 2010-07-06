@@ -54,13 +54,20 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiManagerWin32Header.h"
 #include "vtkBioEngInterface.h"
 
-//! Implementation of the simulation manager. Checks for collisions and executes updating methods of the whole scenario
+//! Implementation of the simulation manager.
+/*!
+ * Checks for collisions and executes updating methods of the whole scenario
+ */
 class VTK_ESQUI_MANAGER_EXPORT vtkSimulationManager: public vtkObject
 {
 
 public:
+
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkSimulationManager, vtkObject);
+	//! New simulation object
 	static vtkSimulationManager *New();
+	//! Return class name
 	const char *GetClassName() {return "vtkCollisionManager";};
 
 	//! Perform a full update of the whole system.
@@ -74,18 +81,15 @@ public:
 
 	//! Set the scenario items: organs, tools, etc...
 	/*!
-	* \param scenario class vtkScenario contains the information of the scenario items: organs, tools, contacts, etc...
+	* Contains the information of the scenario items: organs, tools, contacts, etc...
 	*/
-	void SetScenario(vtkScenario * scenario);
+	vtkSetObjectMacro(Scenario, vtkScenario);
 
 	//!Return the scenario of the simulation
-	vtkScenario * GetScenario();
+	vtkGetObjectMacro(Scenario, vtkScenario);
 
 	//! Set the library used for collision detection
-	/*!
-	* \param library name(string) of the collision detection library.
-	*/
-	void SetCollisionDetectionLibrary (const char *library);
+	vtkSetStringMacro(LibraryName);
 
 	//! Return of the collection of contact points between organs and tools
 	vtkContactCollection * GetContacts();
@@ -95,8 +99,8 @@ public:
 
 protected:
 	//BTX
-	//Collision detection library name
-	const char* libraryName;
+	//! Collision detection library name
+	const char * LibraryName;
 	//ETX
 
 	vtkSimulationManager();
@@ -110,7 +114,7 @@ private:
 	vtkScenario * Scenario;
 
 	//!collision detection library
-	vtkCollisionDetectionLibrary* collisionLibrary;
+	vtkCollisionDetectionLibrary* CollisionDetectionLibrary;
 
 };
 #endif 

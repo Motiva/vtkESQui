@@ -7,7 +7,11 @@
 This class defines an standard \hyperlink{classvtkTool}{vtkTool} piece.  
 
 
-{\ttfamily \#include $<$vtkPiece.h$>$}\subsection*{Public Types}
+
+
+{\ttfamily \#include $<$vtkPiece.h$>$}
+
+\subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
 enum \hyperlink{classvtkPiece_a50da923e79e96537b7676a68947aa858}{vtkPieceType} \{ {\bfseries Blade} =  0, 
@@ -96,14 +100,16 @@ This class defines an standard \hyperlink{classvtkTool}{vtkTool} piece.
 \label{classvtkPiece_a6ee22f47f41cc14bdf48f692bc16f1f5}
 
 
-Get piece actor. The piece actor will be used for displaying purposes \hypertarget{classvtkPiece_a1a91d9507576694b80da93c1ce7c3861}{
+Get piece actor. 
+
+The piece actor will be used for displaying purposes \hypertarget{classvtkPiece_a1a91d9507576694b80da93c1ce7c3861}{
 \index{vtkPiece@{vtkPiece}!GetFileName@{GetFileName}}
 \index{GetFileName@{GetFileName}!vtkPiece@{vtkPiece}}
 \subsubsection[{GetFileName}]{\setlength{\rightskip}{0pt plus 5cm}const char $\ast$ vtkPiece::GetFileName ()}}
 \label{classvtkPiece_a1a91d9507576694b80da93c1ce7c3861}
 
 
-Get filename path. Get FileName Path.
+Get filename path. 
 
 \hyperlink{classvtkPiece_a6bd1ffdbd75747966f41c7dfee8f8b4d}{SetFileName(const char $\ast$ name)} \hypertarget{classvtkPiece_a2c1faf03ee84364ed939a330d58ab2a6}{
 \index{vtkPiece@{vtkPiece}!GetId@{GetId}}
@@ -112,7 +118,9 @@ Get filename path. Get FileName Path.
 \label{classvtkPiece_a2c1faf03ee84364ed939a330d58ab2a6}
 
 
-Get piece identifier. \begin{DoxySeeAlso}{See also}
+Get piece identifier. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkPiece_a077a58755fe796f485c25e3ecda1e994}{SetId(vtkIdType id)} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkPiece_aca0100088140d579b1391f7ad5a557ec}{
@@ -122,14 +130,18 @@ Get piece identifier. \begin{DoxySeeAlso}{See also}
 \label{classvtkPiece_aca0100088140d579b1391f7ad5a557ec}
 
 
-Get dataSet mapper. Dataset mapper of the piece actor \hypertarget{classvtkPiece_aaaf5a6463ed77fff3a6ece4612db0e13}{
+Get dataSet mapper. 
+
+Dataset mapper of the piece actor \hypertarget{classvtkPiece_aaaf5a6463ed77fff3a6ece4612db0e13}{
 \index{vtkPiece@{vtkPiece}!GetName@{GetName}}
 \index{GetName@{GetName}!vtkPiece@{vtkPiece}}
 \subsubsection[{GetName}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ vtkPiece::GetName ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
 \label{classvtkPiece_aaaf5a6463ed77fff3a6ece4612db0e13}
 
 
-Get piece name. \begin{DoxySeeAlso}{See also}
+Get piece name. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkPiece_ad7a95670a66a62e24e7685a6b8f6dafe}{SetName(const char $\ast$ name)} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkPiece_a991a9f7eb675432b0a42da9094fbaed0}{
@@ -139,35 +151,45 @@ Get piece name. \begin{DoxySeeAlso}{See also}
 \label{classvtkPiece_a991a9f7eb675432b0a42da9094fbaed0}
 
 
-Get piece polydata. Piece Polydata contains all the info required for displaying \hypertarget{classvtkPiece_a996426a2608412e8180fe12bff9ae5d7}{
+Get piece polydata. 
+
+Piece Polydata contains all the info required for displaying \hypertarget{classvtkPiece_a996426a2608412e8180fe12bff9ae5d7}{
 \index{vtkPiece@{vtkPiece}!GetRenderWindow@{GetRenderWindow}}
 \index{GetRenderWindow@{GetRenderWindow}!vtkPiece@{vtkPiece}}
 \subsubsection[{GetRenderWindow}]{\setlength{\rightskip}{0pt plus 5cm}vtkRenderWindow $\ast$ vtkPiece::GetRenderWindow ()}}
 \label{classvtkPiece_a996426a2608412e8180fe12bff9ae5d7}
 
 
-Get the render window of the tool. Return the render window of the tool \hypertarget{classvtkPiece_a44bb3b9c2be3bac663b22c31f98daa09}{
+Get the render window of the tool. 
+
+Return the render window of the tool \hypertarget{classvtkPiece_a44bb3b9c2be3bac663b22c31f98daa09}{
 \index{vtkPiece@{vtkPiece}!GetSimpleMesh@{GetSimpleMesh}}
 \index{GetSimpleMesh@{GetSimpleMesh}!vtkPiece@{vtkPiece}}
 \subsubsection[{GetSimpleMesh}]{\setlength{\rightskip}{0pt plus 5cm}vtkPolyData $\ast$ vtkPiece::GetSimpleMesh ()}}
 \label{classvtkPiece_a44bb3b9c2be3bac663b22c31f98daa09}
 
 
-Get piece bounding box. Bounding box of the piece for collision detection optimization \hypertarget{classvtkPiece_a5f0889b30ed3245f0e0797a94709c583}{
+Get piece bounding box. 
+
+Bounding box of the piece for collision detection optimization \hypertarget{classvtkPiece_a5f0889b30ed3245f0e0797a94709c583}{
 \index{vtkPiece@{vtkPiece}!GetTransform@{GetTransform}}
 \index{GetTransform@{GetTransform}!vtkPiece@{vtkPiece}}
 \subsubsection[{GetTransform}]{\setlength{\rightskip}{0pt plus 5cm}vtkTransform$\ast$ vtkPiece::GetTransform ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
 \label{classvtkPiece_a5f0889b30ed3245f0e0797a94709c583}
 
 
-Get transform function. Transform function for displaying purposes \hypertarget{classvtkPiece_a337c7aa8f4c6a65cee2f436eedc29038}{
+Get transform function. 
+
+Transform function for displaying purposes \hypertarget{classvtkPiece_a337c7aa8f4c6a65cee2f436eedc29038}{
 \index{vtkPiece@{vtkPiece}!GetType@{GetType}}
 \index{GetType@{GetType}!vtkPiece@{vtkPiece}}
 \subsubsection[{GetType}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkPiece::vtkPieceType} vtkPiece::GetType ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
 \label{classvtkPiece_a337c7aa8f4c6a65cee2f436eedc29038}
 
 
-Get piece type. \begin{DoxySeeAlso}{See also}
+Get piece type. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkPiece_a19bed21306aacd30f7890ff6d364d025}{SetType(vtkPiece::vtkPieceType type)} 
 \end{DoxySeeAlso}
 \hypertarget{classvtkPiece_abe0c1a250c1bcae71f5513153d1bb395}{
@@ -177,14 +199,16 @@ Get piece type. \begin{DoxySeeAlso}{See also}
 \label{classvtkPiece_abe0c1a250c1bcae71f5513153d1bb395}
 
 
-Initialize Piece object. This method will apply the initial conditions set on the piece At least set the filename path before calling this method \hypertarget{classvtkPiece_a6bd1ffdbd75747966f41c7dfee8f8b4d}{
+Initialize Piece object. 
+
+This method will apply the initial conditions set on the piece At least set the filename path before calling this method \hypertarget{classvtkPiece_a6bd1ffdbd75747966f41c7dfee8f8b4d}{
 \index{vtkPiece@{vtkPiece}!SetFileName@{SetFileName}}
 \index{SetFileName@{SetFileName}!vtkPiece@{vtkPiece}}
 \subsubsection[{SetFileName}]{\setlength{\rightskip}{0pt plus 5cm}void vtkPiece::SetFileName (const char $\ast$ {\em name})}}
 \label{classvtkPiece_a6bd1ffdbd75747966f41c7dfee8f8b4d}
 
 
-Set filename path. Set FileName Path.
+Set filename path. 
 
 Overwrites previously assigned polydata. 
 \begin{DoxyParams}{Parameters}
@@ -200,6 +224,8 @@ Overwrites previously assigned polydata.
 
 
 Set piece identifier. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em id}]identifying key of the piece \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -213,6 +239,8 @@ Set piece identifier.
 
 
 Set piece name. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em name}]name of the piece \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -225,14 +253,18 @@ Set piece name.
 \label{classvtkPiece_a0efb6741a7e3251558b940a92bed9267}
 
 
-Set piece polydata. Piece Polydata contains all the info required for displaying the piece \hypertarget{classvtkPiece_ad34b59d8e6996866b71bb4abb6c46fdb}{
+Set piece polydata. 
+
+Piece Polydata contains all the info required for displaying the piece \hypertarget{classvtkPiece_ad34b59d8e6996866b71bb4abb6c46fdb}{
 \index{vtkPiece@{vtkPiece}!SetRenderWindow@{SetRenderWindow}}
 \index{SetRenderWindow@{SetRenderWindow}!vtkPiece@{vtkPiece}}
 \subsubsection[{SetRenderWindow}]{\setlength{\rightskip}{0pt plus 5cm}void vtkPiece::SetRenderWindow (vtkRenderWindow $\ast$ {\em window})}}
 \label{classvtkPiece_ad34b59d8e6996866b71bb4abb6c46fdb}
 
 
-Set the render window of the tool. Assign the render window for the tool 
+Set the render window of the tool. 
+
+Assign the render window for the tool 
 \begin{DoxyParams}{Parameters}
 \item[{\em window}]Render Window where tool will be displayed \end{DoxyParams}
 \hypertarget{classvtkPiece_a19bed21306aacd30f7890ff6d364d025}{
@@ -243,6 +275,8 @@ Set the render window of the tool. Assign the render window for the tool
 
 
 Set piece type. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em type}]vtkPieceType enum that specifies the piece type. \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
@@ -251,11 +285,13 @@ Set piece type.
 \hypertarget{classvtkPiece_ac27cfcc5591305b572274c7f1d422fe8}{
 \index{vtkPiece@{vtkPiece}!Update@{Update}}
 \index{Update@{Update}!vtkPiece@{vtkPiece}}
-\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkPiece::Update (void)}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkPiece::Update ()}}
 \label{classvtkPiece_ac27cfcc5591305b572274c7f1d422fe8}
 
 
-Update Piece object. This method will update the piece At least set the filename path before calling this method 
+Update Piece object. 
+
+This method will update the piece At least set the filename path before calling this method 
 
 The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 

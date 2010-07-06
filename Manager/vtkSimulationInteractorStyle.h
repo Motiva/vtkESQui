@@ -53,22 +53,34 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTool.h"
 #include "vtkToolPincers.h"
 
+//! Implementation of the simulation interactor
+/*!
+ * Defines a keyboard layout for simulation control
+ */
 class VTK_ESQUI_MANAGER_EXPORT vtkSimulationInteractorStyle : public vtkInteractorStyleTrackballCamera {
 
 public:
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkSimulationInteractorStyle,vtkInteractorStyleTrackballCamera);
 
+	//! Create new vtkSimulationInteractorStyle object
 	static vtkSimulationInteractorStyle *New();
 
+	//! Return class name
 	const char *GetClassName() {return "vtkSimulationInteractorStyle";};
 
+	//! Handle onKeyPress event
 	virtual void OnKeyPress();
 
-	void SetScenario(vtkScenario * scenario);
-	vtkScenario * GetScenario();
+	//! Set Interactor Scenario
+	vtkSetObjectMacro(Scenario, vtkScenario);
+	//! Get Interactor Scenario
+	vtkGetObjectMacro(Scenario, vtkScenario);
 
-	void SetActiveTool(int id);
-	int GetActiveTool();
+	//! Set currently active tool id
+	vtkSetMacro(ActiveToolId, vtkIdType);
+	//! Get currently active tool id
+	vtkGetMacro(ActiveToolId, vtkIdType);
 
 
 protected:
@@ -78,7 +90,7 @@ private:
 
 	bool Mode;
 
-	int ActiveTool;
+	vtkIdType ActiveToolId;
 
 	vtkScenario * Scenario;
 

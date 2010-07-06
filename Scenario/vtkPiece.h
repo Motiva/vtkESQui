@@ -61,6 +61,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 
 //!This class defines an standard vtkTool piece
+//TODO: Migrate this class to vtkScenarioItem. vtkTool must not inherit vtkScenarioItem
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkPiece:public vtkObject
 {
@@ -77,137 +78,127 @@ public:
 	};
 	//ETX
 
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkPiece, vtkObject);
+	//! Crete new tool piece
 	static vtkPiece *New();
+	//! Return clas name
 	const char *GetClassName() {return "vtkPiece";};
 
 	//!Initialize Piece object
 	/*!
-	* This method will apply the initial conditions set on the piece
-	* At least set the filename path before calling this method
-	*/
+	 * This method will apply the initial conditions set on the piece
+	 * At least set the filename path before calling this method
+	 */
 	void Init();
 
 	//!Update Piece object
 	/*!
-	* This method will update the piece
-	* At least set the filename path before calling this method
-	*/
+	 * This method will update the piece
+	 * At least set the filename path before calling this method
+	 */
 	void Update();
 
 	//BTX
 	//!Set piece type
 	/*!
-	* \param type vtkPieceType enum that specifies the piece type.
-	* \sa GetType()
-	*/
-	void SetType(vtkPiece::vtkPieceType type){this->Type = type;};
+	 * \sa GetType()
+	 */
+	vtkSetMacro(PieceType, vtkPiece::vtkPieceType);
 
 	//!Get piece type
 	/*!
-	* \sa SetType(vtkPiece::vtkPieceType type)
-	*/
-	vtkPiece::vtkPieceType GetType(){return this->Type;};
+	 * \sa SetType(vtkPiece::vtkPieceType)
+	 */
+	vtkGetMacro(PieceType, vtkPiece::vtkPieceType);
 	//ETX
 
 	//!Set piece name
 	/*!
-	* \param name name of the piece
-	* \sa GetName()
-	*/
-	void SetName(const char * name){this->Name = name;};
+	 * \sa GetName()
+	 */
+	vtkSetStringMacro(Name);
 
 	//!Get piece name
 	/*!
-	* \sa SetName(const char * name)
-	*/
-	const char * GetName(){return this->Name;};
+	 * \sa SetName(const char *)
+	 */
+	vtkGetStringMacro(Name);
 
 	//!Set filename path
 	/*!
-	* Overwrites previously assigned polydata.
-	* \param name initialization file path
-	* \sa GetFileName()
-	*/
-	void SetFileName(const char * name);
+	 * Overwrites previously assigned polydata.
+	 * \sa GetFileName()
+	 */
+	vtkSetStringMacro(FileName);
 
 	//!Get filename path
 	/*!
-	* SetFileName(const char * name)
-	*/
-	const char * GetFileName();
+	 * SetFileName(const char *)
+	 */
+	vtkGetStringMacro(FileName);
 
 	//!Set piece identifier
 	/*!
-	* \param id identifying key of the piece
-	* \sa GetId()
-	*/
-	void SetId(vtkIdType id){this->Id = id;};
+	 * \sa GetId()
+	 */
+	vtkSetMacro(Id, vtkIdType);
 
 	//!Get piece identifier
 	/*!
-	* \sa SetId(vtkIdType id)
-	*/
-	vtkIdType GetId(){return this->Id;};
+	 * \sa SetId(vtkIdType)
+	 */
+	vtkGetMacro(Id, vtkIdType);
 
 	//!Set piece polydata.
 	/*!
-	* Piece Polydata contains all the info required for displaying the piece
-	*/
+	 * Piece Polydata contains all the info required for displaying the piece
+	 */
 	void SetPolyData(vtkPolyData * polyData){this->PolyData->DeepCopy(polyData);};
 
 	//!Get piece polydata
 	/*!
-	* Piece Polydata contains all the info required for displaying
-	*/
+	 * Piece Polydata contains all the info required for displaying
+	 */
 	vtkPolyData * GetPolyData(){return this->PolyData;};
 
 	// **** Graphical Purposes Methods **** //
 
-	// Set, Get Render Window
-	/*
-		Asigna o devuelve la vtkRenderWindow de la escena
-	 */
 	//! Set the render window of the tool
 	/*!
-	Assign the render window for the tool
-	\param window Render Window where tool will be displayed
-	*/
-	void SetRenderWindow(vtkRenderWindow *window);
+	 * Assign the render window for the tool
+	 */
+	vtkSetObjectMacro(RenderWindow, vtkRenderWindow);
 
 	//! Get the render window of the tool
 	/*!
-	Return the render window of the tool
-	*/
-	//Asigna o devuelve la vtkRenderWindow de la escena
-	vtkRenderWindow *GetRenderWindow();
+	 * Return the render window of the tool
+	 */
+	vtkGetObjectMacro(RenderWindow, vtkRenderWindow);
 
 	//!Get piece bounding box
 	/*!
-	* Bounding box of the piece for collision detection optimization
-	*/
+	 * Bounding box of the piece for collision detection optimization
+	 */
 	vtkPolyData * GetSimpleMesh();
 
 	//!Get transform function
 	/*!
-	* Transform function for displaying purposes
-	*/
-	vtkTransform * GetTransform(){return this->Transform;};
+	 * Transform function for displaying purposes
+	 */
+	vtkGetObjectMacro(Transform, vtkTransform);
 
 	//!Get dataSet mapper
 	/*!
-	* Dataset mapper of the piece actor
-	*/
-	vtkDataSetMapper * GetMapper(){return this->Mapper;};
-
-	//Set piece actor
-	//void SetActor(vtkActor * actor){this->Actor = actor;};
+	 * Dataset mapper of the piece actor
+	 */
+	vtkGetObjectMacro(Mapper, vtkDataSetMapper);
 
 	//!Get piece actor
 	/*!
-	* The piece actor will be used for displaying purposes
-	*/
-	vtkActor * GetActor(){return this->Actor;};
+	 * The piece actor will be used for displaying purposes
+	 */
+	vtkGetObjectMacro(Actor, vtkActor);
 
 	//!Return bounding box actor
 	vtkActor * GetSimpleMeshActor(){return this->SimpleMeshActor;};
@@ -229,13 +220,13 @@ private:
 	vtkIdType Id;
 
 	//!Piece type
-	vtkPieceType Type;
+	vtkPieceType PieceType;
 
 	//Piece name
-	const char * Name;
+	char * Name;
 
 	//!File path to polydata VTK file
-	const char * FileName;
+	char * FileName;
 
 	//!Polydata reader
 	vtkPolyDataReader * Reader;

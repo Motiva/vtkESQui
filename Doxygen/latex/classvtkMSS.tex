@@ -7,7 +7,11 @@
 This class inherits vtkMassSpring class contained in the mss\_\-vtk package.  
 
 
-{\ttfamily \#include $<$vtkMSS.h$>$}\subsection*{Public Member Functions}
+
+
+{\ttfamily \#include $<$vtkMSS.h$>$}
+
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkMSS_a6b4921cd1f1f91d784a780a5b0b3d8a3}{
@@ -20,7 +24,7 @@ void {\bfseries PrintSelf} (ostream \&os, vtkIndent indent)}
 \label{classvtkMSS_ada7a068fef7b98254a77d7fc94125fc3}
 
 \item 
-void \hyperlink{classvtkMSS_a56525f271d9f074c26a64e11b1516a76}{SetExternalForces} (vtkIdList $\ast$ids, vtkDoubleArray $\ast$forces)
+void \hyperlink{classvtkMSS_ae0e9fb2f2ecb8c118a6e20a21212362e}{SetContacts} (vtkIdList $\ast$ids, vtkDoubleArray $\ast$forces)
 \begin{DoxyCompactList}\small\item\em Set the external forces to apply on each point of the mesh according to ids input parameter. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -36,14 +40,16 @@ static \hyperlink{classvtkMSS}{vtkMSS} $\ast$ {\bfseries New} ()}
 This class inherits vtkMassSpring class contained in the mss\_\-vtk package. 
 
 \subsection{Member Function Documentation}
-\hypertarget{classvtkMSS_a56525f271d9f074c26a64e11b1516a76}{
-\index{vtkMSS@{vtkMSS}!SetExternalForces@{SetExternalForces}}
-\index{SetExternalForces@{SetExternalForces}!vtkMSS@{vtkMSS}}
-\subsubsection[{SetExternalForces}]{\setlength{\rightskip}{0pt plus 5cm}void vtkMSS::SetExternalForces (vtkIdList $\ast$ {\em ids}, \/  vtkDoubleArray $\ast$ {\em forces})}}
-\label{classvtkMSS_a56525f271d9f074c26a64e11b1516a76}
+\hypertarget{classvtkMSS_ae0e9fb2f2ecb8c118a6e20a21212362e}{
+\index{vtkMSS@{vtkMSS}!SetContacts@{SetContacts}}
+\index{SetContacts@{SetContacts}!vtkMSS@{vtkMSS}}
+\subsubsection[{SetContacts}]{\setlength{\rightskip}{0pt plus 5cm}void vtkMSS::SetContacts (vtkIdList $\ast$ {\em ids}, \/  vtkDoubleArray $\ast$ {\em forces})}}
+\label{classvtkMSS_ae0e9fb2f2ecb8c118a6e20a21212362e}
 
 
-Set the external forces to apply on each point of the mesh according to ids input parameter. The number of tuples (size=3) of the the forces should match the number of ids 
+Set the external forces to apply on each point of the mesh according to ids input parameter. 
+
+The number of tuples (size=3) of the the forces should match the number of ids 
 \begin{DoxyParams}{Parameters}
 \item[{\em ids}]list of organ mesh point ids that has been contacted \item[{\em forces}]vector containing the force in each cartesian component x, y \& z \end{DoxyParams}
 

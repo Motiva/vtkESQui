@@ -1,0 +1,113 @@
+\hypertarget{classvtkSpringCollection}{
+\section{vtkSpringCollection Class Reference}
+\label{classvtkSpringCollection}\index{vtkSpringCollection@{vtkSpringCollection}}
+}
+
+
+Collection of Springs.  
+
+
+
+
+{\ttfamily \#include $<$vtkSpringCollection.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSpringCollection_a18851eaafe4832dd0d88a5986b515721}{
+\hyperlink{classvtkSpringCollection_a18851eaafe4832dd0d88a5986b515721}{vtkTypeRevisionMacro} (\hyperlink{classvtkSpringCollection}{vtkSpringCollection}, vtkCollection)}
+\label{classvtkSpringCollection_a18851eaafe4832dd0d88a5986b515721}
+
+\begin{DoxyCompactList}\small\item\em Type Revision Macro. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSpringCollection_ab049018e5e2df11cc5faeed8361d96ec}{
+virtual void \hyperlink{classvtkSpringCollection_ab049018e5e2df11cc5faeed8361d96ec}{PrintSelf} (ostream \&os, vtkIndent indent)}
+\label{classvtkSpringCollection_ab049018e5e2df11cc5faeed8361d96ec}
+
+\begin{DoxyCompactList}\small\item\em Print Class Values. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkSpringCollection_a5f4f41081d180270bff00fddf137a64f}{InsertNextSpring} (\hyperlink{classvtkSpring}{vtkSpring} $\ast$Spring)
+\begin{DoxyCompactList}\small\item\em Insert an Spring to the collection. \item\end{DoxyCompactList}\item 
+void \hyperlink{classvtkSpringCollection_a664f87423429e1acde67f37f835ce13c}{InsertSpring} (vtkIdType id, \hyperlink{classvtkSpring}{vtkSpring} $\ast$Spring)
+\begin{DoxyCompactList}\small\item\em Insert an Spring at the specified index. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkSpring}{vtkSpring} $\ast$ \hyperlink{classvtkSpringCollection_a511c3de7caa9127f6c8c580847f80658}{GetSpring} (vtkIdType id)
+\begin{DoxyCompactList}\small\item\em Return an Spring in specified position of the list. \item\end{DoxyCompactList}\item 
+\hyperlink{classvtkSpring}{vtkSpring} $\ast$ \hyperlink{classvtkSpringCollection_ad62eec63dc1e519ca28f9d2dc96818af}{GetNextSpring} ()
+\begin{DoxyCompactList}\small\item\em Return the next Spring on the list. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSpringCollection_af650a1ef75a036f2988ea59b92abc734}{
+bool \hyperlink{classvtkSpringCollection_af650a1ef75a036f2988ea59b92abc734}{ContainsSpring} (\hyperlink{classvtkSpring}{vtkSpring} $\ast$Spring)}
+\label{classvtkSpringCollection_af650a1ef75a036f2988ea59b92abc734}
+
+\begin{DoxyCompactList}\small\item\em Return whether the collection contains a Spring or not. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classvtkSpringCollection_aefcf75a6c39d1d7009b459a9d5dcbc1c}{
+static \hyperlink{classvtkSpringCollection}{vtkSpringCollection} $\ast$ \hyperlink{classvtkSpringCollection_aefcf75a6c39d1d7009b459a9d5dcbc1c}{New} ()}
+\label{classvtkSpringCollection_aefcf75a6c39d1d7009b459a9d5dcbc1c}
+
+\begin{DoxyCompactList}\small\item\em Create new object. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Collection of Springs. \hyperlink{classvtkSpringCollection}{vtkSpringCollection} represents and provides methods to manipulate a list of Springs (i.e., \hyperlink{classvtkSpring}{vtkSpring} and subclasses). The list is unsorted and duplicate entries are not prevented. \begin{DoxySeeAlso}{See also}
+vtkCollection, \hyperlink{classvtkSpring}{vtkSpring} 
+\end{DoxySeeAlso}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classvtkSpringCollection_ad62eec63dc1e519ca28f9d2dc96818af}{
+\index{vtkSpringCollection@{vtkSpringCollection}!GetNextSpring@{GetNextSpring}}
+\index{GetNextSpring@{GetNextSpring}!vtkSpringCollection@{vtkSpringCollection}}
+\subsubsection[{GetNextSpring}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkSpring} $\ast$ vtkSpringCollection::GetNextSpring ()}}
+\label{classvtkSpringCollection_ad62eec63dc1e519ca28f9d2dc96818af}
+
+
+Return the next Spring on the list. 
+
+Get the Spring at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted. \hypertarget{classvtkSpringCollection_a511c3de7caa9127f6c8c580847f80658}{
+\index{vtkSpringCollection@{vtkSpringCollection}!GetSpring@{GetSpring}}
+\index{GetSpring@{GetSpring}!vtkSpringCollection@{vtkSpringCollection}}
+\subsubsection[{GetSpring}]{\setlength{\rightskip}{0pt plus 5cm}{\bf vtkSpring} $\ast$ vtkSpringCollection::GetSpring (vtkIdType {\em id})}}
+\label{classvtkSpringCollection_a511c3de7caa9127f6c8c580847f80658}
+
+
+Return an Spring in specified position of the list. 
+
+Get the Spring in the list with the position id. NULL is returned when the collection is exhausted. 
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]index of the Spring to be returned \end{DoxyParams}
+\hypertarget{classvtkSpringCollection_a5f4f41081d180270bff00fddf137a64f}{
+\index{vtkSpringCollection@{vtkSpringCollection}!InsertNextSpring@{InsertNextSpring}}
+\index{InsertNextSpring@{InsertNextSpring}!vtkSpringCollection@{vtkSpringCollection}}
+\subsubsection[{InsertNextSpring}]{\setlength{\rightskip}{0pt plus 5cm}void vtkSpringCollection::InsertNextSpring ({\bf vtkSpring} $\ast$ {\em Spring})}}
+\label{classvtkSpringCollection_a5f4f41081d180270bff00fddf137a64f}
+
+
+Insert an Spring to the collection. 
+
+The Spring will be inserted at the end of the list 
+\begin{DoxyParams}{Parameters}
+\item[{\em Spring}]\hyperlink{classvtkSpring}{vtkSpring} object to be inserted \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkSpringCollection_a664f87423429e1acde67f37f835ce13c}{InsertSpring(vtkIdType id, vtkSpring $\ast$Spring)} 
+\end{DoxySeeAlso}
+\hypertarget{classvtkSpringCollection_a664f87423429e1acde67f37f835ce13c}{
+\index{vtkSpringCollection@{vtkSpringCollection}!InsertSpring@{InsertSpring}}
+\index{InsertSpring@{InsertSpring}!vtkSpringCollection@{vtkSpringCollection}}
+\subsubsection[{InsertSpring}]{\setlength{\rightskip}{0pt plus 5cm}void vtkSpringCollection::InsertSpring (vtkIdType {\em id}, \/  {\bf vtkSpring} $\ast$ {\em Spring})}}
+\label{classvtkSpringCollection_a664f87423429e1acde67f37f835ce13c}
+
+
+Insert an Spring at the specified index. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em id}]index of the list where the Spring will be inserted \item[{\em Spring}]\hyperlink{classvtkSpring}{vtkSpring} object to be inserted \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classvtkSpringCollection_a5f4f41081d180270bff00fddf137a64f}{InsertNextSpring(vtkSpring $\ast$Spring)} 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+BMM/vtkParticleSpringSystem/vtkSpringCollection.h\item 
+BMM/vtkParticleSpringSystem/vtkSpringCollection.cxx\end{DoxyCompactItemize}

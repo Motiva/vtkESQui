@@ -7,11 +7,21 @@
 Class \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy}, abstract the use of a surgical laparoscopic tool.  
 
 
+
+
 {\ttfamily \#include $<$vtkToolLaparoscopy.h$>$}
+
+
 
 Inherits \hyperlink{classvtkTool}{vtkTool}.
 
-Inherited by \hyperlink{classvtkToolDummy}{vtkToolDummy}, \hyperlink{classvtkToolPincers}{vtkToolPincers}, and \hyperlink{classvtkToolScissors}{vtkToolScissors}.Collaboration diagram for vtkToolLaparoscopy:\subsection*{Public Member Functions}
+
+
+Inherited by \hyperlink{classvtkToolDummy}{vtkToolDummy}, \hyperlink{classvtkToolPincers}{vtkToolPincers}, and \hyperlink{classvtkToolScissors}{vtkToolScissors}.
+
+
+
+Collaboration diagram for vtkToolLaparoscopy:\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{classvtkToolLaparoscopy_a972d62685a18d4f960f75859745ef84b}{
@@ -129,7 +139,9 @@ Class \hyperlink{classvtkToolLaparoscopy}{vtkToolLaparoscopy}, abstract the use 
 \label{classvtkToolLaparoscopy_ac83d3abfa96db6faff943e22dac2ffe3}
 
 
-Add a distance to the current tool depth. Set the tool depth position. The modification is made by transforming the tool's mesh (vtkPolyData). 
+Add a distance to the current tool depth. 
+
+Set the tool depth position. The modification is made by transforming the tool's mesh (vtkPolyData). 
 \begin{DoxyParams}{Parameters}
 \item[{\em Position}]Z axis value (local coordinate system) \end{DoxyParams}
 \hypertarget{classvtkToolLaparoscopy_abc10b86fce49b9260bb3d43e6a3a0166}{
@@ -139,7 +151,9 @@ Add a distance to the current tool depth. Set the tool depth position. The modif
 \label{classvtkToolLaparoscopy_abc10b86fce49b9260bb3d43e6a3a0166}
 
 
-Return the haptic force in float vector. \begin{DoxySeeAlso}{See also}
+Return the haptic force in float vector. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkToolLaparoscopy_a9bbfa040ca224472e6c669a3c27d9977}{SetForceFeedback}(float Force\mbox{[}\mbox{]}) 
 
 \hyperlink{classvtkToolLaparoscopy_aa716d470104640646068eaa160a7adf2}{SetForceFeedback(float x, float y, float z)} 
@@ -151,7 +165,9 @@ Return the haptic force in float vector. \begin{DoxySeeAlso}{See also}
 \label{classvtkToolLaparoscopy_aa891d5e424ce8c57a49b0631dfdfaa93}
 
 
-Return the x component of the haptic force. \begin{DoxySeeAlso}{See also}
+Return the x component of the haptic force. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkToolLaparoscopy_a9bbfa040ca224472e6c669a3c27d9977}{SetForceFeedback}(float Force\mbox{[}\mbox{]}) 
 
 \hyperlink{classvtkToolLaparoscopy_aa716d470104640646068eaa160a7adf2}{SetForceFeedback(float x, float y, float z)} 
@@ -163,7 +179,9 @@ Return the x component of the haptic force. \begin{DoxySeeAlso}{See also}
 \label{classvtkToolLaparoscopy_a44acfb672a0526b9628372c19249c41c}
 
 
-Return the y component of the haptic force. \begin{DoxySeeAlso}{See also}
+Return the y component of the haptic force. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkToolLaparoscopy_a9bbfa040ca224472e6c669a3c27d9977}{SetForceFeedback}(float Force\mbox{[}\mbox{]}) 
 
 \hyperlink{classvtkToolLaparoscopy_aa716d470104640646068eaa160a7adf2}{SetForceFeedback(float x, float y, float z)} 
@@ -175,7 +193,9 @@ Return the y component of the haptic force. \begin{DoxySeeAlso}{See also}
 \label{classvtkToolLaparoscopy_a2743b59822a1b2b2d8c04f45dca44e32}
 
 
-Return the z component of the haptic force. \begin{DoxySeeAlso}{See also}
+Return the z component of the haptic force. 
+
+\begin{DoxySeeAlso}{See also}
 \hyperlink{classvtkToolLaparoscopy_a9bbfa040ca224472e6c669a3c27d9977}{SetForceFeedback}(float Force\mbox{[}\mbox{]}) 
 
 \hyperlink{classvtkToolLaparoscopy_aa716d470104640646068eaa160a7adf2}{SetForceFeedback(float x, float y, float z)} 
@@ -187,44 +207,68 @@ Return the z component of the haptic force. \begin{DoxySeeAlso}{See also}
 \label{classvtkToolLaparoscopy_ace75ea21a3ddb27547976ddea0ebb60e}
 
 
-Abstract initialization function. This method initializes the tool physical values, scale, position, etc... 
+Abstract initialization function. 
+
+This method initializes the tool physical values, scale, position, etc... 
 
 Implements \hyperlink{classvtkTool_a6b9e7743cde1b61b252abef17248a913}{vtkTool}.
 
-Implemented in \hyperlink{classvtkToolDummy_aaf4c69a9c0fc3432e678ca9fffc913dc}{vtkToolDummy}, \hyperlink{classvtkToolPincers_ae4918610073324c94dddd8da234742a9}{vtkToolPincers}, and \hyperlink{classvtkToolScissors_a5fc5884ce0fd1723ecf86888bdbba7a6}{vtkToolScissors}.\hypertarget{classvtkToolLaparoscopy_a6894dddee203102828358697e8214974}{
+
+
+Implemented in \hyperlink{classvtkToolDummy_aaf4c69a9c0fc3432e678ca9fffc913dc}{vtkToolDummy}, \hyperlink{classvtkToolPincers_ae4918610073324c94dddd8da234742a9}{vtkToolPincers}, and \hyperlink{classvtkToolScissors_a5fc5884ce0fd1723ecf86888bdbba7a6}{vtkToolScissors}.
+
+\hypertarget{classvtkToolLaparoscopy_a6894dddee203102828358697e8214974}{
 \index{vtkToolLaparoscopy@{vtkToolLaparoscopy}!RotateX@{RotateX}}
 \index{RotateX@{RotateX}!vtkToolLaparoscopy@{vtkToolLaparoscopy}}
 \subsubsection[{RotateX}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolLaparoscopy::RotateX (double {\em angle})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
 \label{classvtkToolLaparoscopy_a6894dddee203102828358697e8214974}
 
 
-Rotate the tool in degrees from current orientation about the X axis using the right hand rule. Standard laparoscopic tool X-\/axis rotation. Mobile pieces are processed in implementation classes (\hyperlink{classvtkToolPincers}{vtkToolPincers}, \hyperlink{classvtkToolScissors}{vtkToolScissors}, etc...) 
+Rotate the tool in degrees from current orientation about the X axis using the right hand rule. 
+
+Standard laparoscopic tool X-\/axis rotation. Mobile pieces are processed in implementation classes (\hyperlink{classvtkToolPincers}{vtkToolPincers}, \hyperlink{classvtkToolScissors}{vtkToolScissors}, etc...) 
 
 Reimplemented from \hyperlink{classvtkTool_a34b408444b681853b5dabbda6b971223}{vtkTool}.
 
-Reimplemented in \hyperlink{classvtkToolPincers_ac6b80a0c7a43ae67cfafbe29772b41d0}{vtkToolPincers}.\hypertarget{classvtkToolLaparoscopy_ae0245eaa9aa765a675da5135c4af422a}{
+
+
+Reimplemented in \hyperlink{classvtkToolPincers_ac6b80a0c7a43ae67cfafbe29772b41d0}{vtkToolPincers}.
+
+\hypertarget{classvtkToolLaparoscopy_ae0245eaa9aa765a675da5135c4af422a}{
 \index{vtkToolLaparoscopy@{vtkToolLaparoscopy}!RotateY@{RotateY}}
 \index{RotateY@{RotateY}!vtkToolLaparoscopy@{vtkToolLaparoscopy}}
 \subsubsection[{RotateY}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolLaparoscopy::RotateY (double {\em angle})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
 \label{classvtkToolLaparoscopy_ae0245eaa9aa765a675da5135c4af422a}
 
 
-Rotate the tool in degrees from current orientation about the Y axis using the right hand rule. Standard laparoscopic tool Y-\/axis rotation. Mobile pieces are processed in implementation classes (\hyperlink{classvtkToolPincers}{vtkToolPincers}, \hyperlink{classvtkToolScissors}{vtkToolScissors}, etc...) 
+Rotate the tool in degrees from current orientation about the Y axis using the right hand rule. 
+
+Standard laparoscopic tool Y-\/axis rotation. Mobile pieces are processed in implementation classes (\hyperlink{classvtkToolPincers}{vtkToolPincers}, \hyperlink{classvtkToolScissors}{vtkToolScissors}, etc...) 
 
 Reimplemented from \hyperlink{classvtkTool_ad37e6208805e0fddd07dfc783a70fceb}{vtkTool}.
 
-Reimplemented in \hyperlink{classvtkToolPincers_aa2a15405aa65c96dd971e3c06d98d197}{vtkToolPincers}.\hypertarget{classvtkToolLaparoscopy_a3849ce4caa8283696433cb1ac0466bc5}{
+
+
+Reimplemented in \hyperlink{classvtkToolPincers_aa2a15405aa65c96dd971e3c06d98d197}{vtkToolPincers}.
+
+\hypertarget{classvtkToolLaparoscopy_a3849ce4caa8283696433cb1ac0466bc5}{
 \index{vtkToolLaparoscopy@{vtkToolLaparoscopy}!RotateZ@{RotateZ}}
 \index{RotateZ@{RotateZ}!vtkToolLaparoscopy@{vtkToolLaparoscopy}}
 \subsubsection[{RotateZ}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolLaparoscopy::RotateZ (double {\em angle})\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
 \label{classvtkToolLaparoscopy_a3849ce4caa8283696433cb1ac0466bc5}
 
 
-Rotate the tool in degrees from current orientation about the Y axis using the right hand rule. Standard laparoscopic tool Z-\/axis rotation. Mobile pieces are processed in implementation classes (\hyperlink{classvtkToolPincers}{vtkToolPincers}, \hyperlink{classvtkToolScissors}{vtkToolScissors}, etc...) 
+Rotate the tool in degrees from current orientation about the Y axis using the right hand rule. 
+
+Standard laparoscopic tool Z-\/axis rotation. Mobile pieces are processed in implementation classes (\hyperlink{classvtkToolPincers}{vtkToolPincers}, \hyperlink{classvtkToolScissors}{vtkToolScissors}, etc...) 
 
 Reimplemented from \hyperlink{classvtkTool_a80c0ca1937ce97c98d70364cac281ff2}{vtkTool}.
 
-Reimplemented in \hyperlink{classvtkToolPincers_ad7a4a9f0e3291b88eb4e30986784539a}{vtkToolPincers}.\hypertarget{classvtkToolLaparoscopy_aa716d470104640646068eaa160a7adf2}{
+
+
+Reimplemented in \hyperlink{classvtkToolPincers_ad7a4a9f0e3291b88eb4e30986784539a}{vtkToolPincers}.
+
+\hypertarget{classvtkToolLaparoscopy_aa716d470104640646068eaa160a7adf2}{
 \index{vtkToolLaparoscopy@{vtkToolLaparoscopy}!SetForceFeedback@{SetForceFeedback}}
 \index{SetForceFeedback@{SetForceFeedback}!vtkToolLaparoscopy@{vtkToolLaparoscopy}}
 \subsubsection[{SetForceFeedback}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolLaparoscopy::SetForceFeedback (float {\em x}, \/  float {\em y}, \/  float {\em z})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
@@ -232,6 +276,8 @@ Reimplemented in \hyperlink{classvtkToolPincers_ad7a4a9f0e3291b88eb4e30986784539
 
 
 Assign the haptic force components individually. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em x}]x component of the force \item[{\em y}]y component of the force \item[{\em z}]z component of the force \end{DoxyParams}
 \hypertarget{classvtkToolLaparoscopy_a9bbfa040ca224472e6c669a3c27d9977}{
@@ -242,20 +288,28 @@ Assign the haptic force components individually.
 
 
 Assign the haptic force as vector. 
+
+
 \begin{DoxyParams}{Parameters}
 \item[{\em Force}]force vector of components \end{DoxyParams}
 \hypertarget{classvtkToolLaparoscopy_a4445a0cfabd77b50a06929b04cb71f9e}{
 \index{vtkToolLaparoscopy@{vtkToolLaparoscopy}!Update@{Update}}
 \index{Update@{Update}!vtkToolLaparoscopy@{vtkToolLaparoscopy}}
-\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolLaparoscopy::Update (void)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void vtkToolLaparoscopy::Update ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
 \label{classvtkToolLaparoscopy_a4445a0cfabd77b50a06929b04cb71f9e}
 
 
-Abstract update function. This method updates the tool physical values, scale, position, etc... 
+Abstract update function. 
+
+This method updates the tool physical values, scale, position, etc... 
 
 Reimplemented from \hyperlink{classvtkTool_a0f1b6e049d7ff5420f4f4604434a9da7}{vtkTool}.
 
+
+
 Reimplemented in \hyperlink{classvtkToolDummy_a19cda726ffda0a3955e519d7b42e4882}{vtkToolDummy}, \hyperlink{classvtkToolPincers_a57986aee2bcfa04472410cd7bf5c7929}{vtkToolPincers}, and \hyperlink{classvtkToolScissors_afe574b6b9e809f746308a157b6525c4b}{vtkToolScissors}.
+
+
 
 The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 

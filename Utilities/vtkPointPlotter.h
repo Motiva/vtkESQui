@@ -60,28 +60,40 @@ POSSIBILITY OF SUCH DAMAGE.
 class VTK_ESQUI_UTILITIES_EXPORT vtkPointPlotter : public vtkObject {
 
 public:
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkPointPlotter,vtkObject);
 
+	//!Create a new point plotter
 	static vtkPointPlotter *New();
 
+	//! Return class name
 	const char *GetClassName() {return "vtkPointPlotter";};
 
+	//! Initialize plotter
 	void Init();
 
+	//! Update the plotter with new points
 	void Update();
 
+	//! Restore plotter to initial settings
 	void Reset();
 
+	//! Set point radius
 	void SetRadius(double radius = 0.025){this->Radius = radius;};
 
+	//! Set point/sphere resolutiom
 	void SetResolution(int resolution = 12){this->Resolution = resolution;};
 
+	//! Set Renderer in which points will be displayed
 	void SetRenderer(vtkRenderer * renderer){this->Renderer = renderer;};
 
+	//! Return actor
 	vtkActor * GetActor(){return this->Actor;};
 
+	//! Return generated polydata
 	vtkPolyData * GetPolyData(){return this->PolyData;};
 
+	//! Insert a new point in the polydata
 	void InsertPoint(double x, double y, double z, unsigned char r, unsigned char g, unsigned char b);
 
 protected:
@@ -89,19 +101,29 @@ protected:
 	~vtkPointPlotter();
 private:
 
+	//! Container of points
 	vtkPoints * Points;
+	//! Scalars. Color of points
 	vtkUnsignedCharArray * Scalars;
 
+	//! Generated polydata for displaying purpoese
 	vtkPolyData * PolyData;
+	//! Representation Glyphs
 	vtkGlyph3D * Glyphs;
+	//! Points shape
 	vtkSphereSource * Spheres;
 
+	//! Polydata Actor
 	vtkActor * Actor;
+	//! Polydata mapper
 	vtkPolyDataMapper * Mapper;
 
+	//! Renderer
 	vtkRenderer * Renderer;
 
+	//! Point/sphere radius
 	double Radius;
+	//! Sphere resolution
 	vtkIdType Resolution;
 
 	vtkPointPlotter (const vtkPointPlotter &);//NotImplemented

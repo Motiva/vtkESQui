@@ -125,10 +125,6 @@ int main(int argc, char * argv[])
 	/**********  Load Deformable Model  ********/
 	vtkOrgan * organ = vtkOrgan::New();
 	organ->SetFileName(ExpandDataFileName("Scenario/Organs/liverTetra.vtk"));
-	organ->SetCanBeClippedOn();
-	organ->SetContainsFluidOn();
-	organ->SetHookedOff();
-
 	organ->SetPosition(0, 0,-5);
 	organ->SetOrigin(0, 0,-5);
 
@@ -190,7 +186,7 @@ int main(int argc, char * argv[])
 
 	/**********  Simulation Setup  ********/
 	vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	SimulationManager->SetCollisionDetectionLibrary("vtkbioeng");
+	SimulationManager->SetLibraryName("vtkbioeng");
 	SimulationManager->SetScenario(Scenario);
 	SimulationManager->Init();
 

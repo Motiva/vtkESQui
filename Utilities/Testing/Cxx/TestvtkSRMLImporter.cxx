@@ -79,7 +79,7 @@ int TestvtkSRMLImporter(int argc, char * argv[])
 	Scenario->SetRenderWindow(renWin);
 
 	Manager->SetScenario(Scenario);
-	Manager->SetCollisionDetectionLibrary("vtkbioeng");
+	Manager->SetLibraryName("vtkbioeng");
 	Manager->Init();
 
 	Simulation->SetSimulationManager(Manager);

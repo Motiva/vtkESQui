@@ -62,9 +62,9 @@ vtkToolPincers::vtkToolPincers() {
 	// 0 -> Stick
 	// 1 -> Grasper 1
 	// 2 -> Grasper 2
-	this->Pieces->GetPiece(0)->SetType(vtkPiece::Stick);
-	this->Pieces->GetPiece(1)->SetType(vtkPiece::Grasper);
-	this->Pieces->GetPiece(2)->SetType(vtkPiece::Grasper);
+	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Stick);
+	this->Pieces->GetPiece(1)->SetPieceType(vtkPiece::Grasper);
+	this->Pieces->GetPiece(2)->SetPieceType(vtkPiece::Grasper);
 	
 }
 

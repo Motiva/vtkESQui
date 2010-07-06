@@ -69,14 +69,6 @@ bool vtkSpringCollection::ContainsSpring(vtkSpring * spring) {
 	for(vtkIdType i = 0; i < this->GetNumberOfItems(); i++)
 	{
 		vtkSpring * local = this->GetSpring(i);
-		/*if(local &&
-				(((local->GetParticle(0)->GetId() == Spring->GetParticle(0)->GetId()) &&
-				(local->GetParticle(1)->GetId() == Spring->GetParticle(1)->GetId())) ||
-				((local->GetParticle(1)->GetId() == Spring->GetParticle(0)->GetId()) &&
-				(local->GetParticle(0)->GetId() == Spring->GetParticle(1)->GetId()))))
-		{
-			return 1;
-		}*/
 		if(local->ContainsParticle(spring->GetParticle(0)) &&
 				local->ContainsParticle(spring->GetParticle(1)))
 		{

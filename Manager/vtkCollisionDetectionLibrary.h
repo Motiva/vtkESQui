@@ -62,6 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
 class VTK_ESQUI_MANAGER_EXPORT vtkCollisionDetectionLibrary: public vtkObject
 {
 public:
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkCollisionDetectionLibrary, vtkObject);
 	vtkCollisionDetectionLibrary();
 	~vtkCollisionDetectionLibrary();
@@ -80,12 +81,12 @@ public:
 	//ETX
 
 	//! Specify the organs to be checked in the collision detection process
-	void SetOrgans(vtkOrganCollection * organs){this->Organs = organs;};
+	vtkSetObjectMacro(Organs, vtkOrganCollection);
 	//! Specify the tools to be checked in the collision detection process
-	void SetTools(vtkToolCollection * tools){this->Tools = tools;};
+	vtkSetObjectMacro(Tools, vtkToolCollection);
 
 	//! Return the contacts obtained after collision detection has been performed
-	vtkContactCollection * GetContacts(){ return this->Contacts;};
+	vtkGetObjectMacro(Contacts, vtkContactCollection);
 	//! Get total number of contacts detected
 	vtkIdType GetNumberOfContacts(){return this->Contacts->GetNumberOfItems();}
 

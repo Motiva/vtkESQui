@@ -62,9 +62,9 @@ vtkToolScissors::vtkToolScissors(){
 	// 0 -> Stick
 	// 1 -> Blade 1
 	// 2 -> Blade 2
-	this->Pieces->GetPiece(0)->SetType(vtkPiece::Stick);
-	this->Pieces->GetPiece(1)->SetType(vtkPiece::Blade);
-	this->Pieces->GetPiece(2)->SetType(vtkPiece::Blade);
+	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Stick);
+	this->Pieces->GetPiece(1)->SetPieceType(vtkPiece::Blade);
+	this->Pieces->GetPiece(2)->SetPieceType(vtkPiece::Blade);
 }
 
 //--------------------------------------------------------------------------

@@ -54,35 +54,42 @@ POSSIBILITY OF SUCH DAMAGE.
 //#endif
 
 //! Collection of tools 
+/*!
+ * Acts as container for tools. Used in the scenario tool management.
+ */
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolCollection : public vtkCollection
 {
 public:
-	static vtkToolCollection *New() {return new vtkToolCollection;}
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkToolCollection,vtkCollection);
+	//! Create a new colection for tool storage
+	static vtkToolCollection *New() {return new vtkToolCollection;}
+	//! Return class name
 	const char *GetClassName() {return "vtkToolCollection";}
+	//! Printa object values
 	virtual void PrintSelf(ostream& os, vtkIndent indent);
 
 	//!Insert tool into the collection at the specified id
 	/*!
-	* \param tool vtkTool object to be inserted
-	*/
+	 * \param id identifier key of tool
+	 * \param tool vtkTool object to be inserted
+	 */
 	void InsertTool(vtkIdType id, vtkTool * tool);
 	//!Insert tool at the last position of the collection
 	/*!
-	* \param id identifier key of the tool
-	* \param tool vtkTool object to be inserted
-	*/
+	 * \param tool vtkTool object to be inserted
+	 */
 	void InsertNextTool(vtkTool * tool);
 	//!Return tool at the specified id
 	/*!
-	* \param id identifier key of the tool
-	*/
+	 * \param id identifier key of the tool
+	 */
 	vtkTool * GetTool(vtkIdType id);
 	//!Return the next tool
 	/*!
-	* Return the tool located at the pointer position + 1
-	* \sa GetTool(vtkIdType id)
-	*/
+	 * Return the tool located at the pointer position + 1
+	 * \sa GetTool(vtkIdType id)
+	 */
 	vtkTool * GetNextTool();
 
 protected:

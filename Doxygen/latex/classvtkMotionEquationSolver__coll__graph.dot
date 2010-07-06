@@ -1,0 +1,14 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="vtkMotionEquationSolver",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="DeformationModel"];
+  Node2 [label="vtkParticleSpringSystem",height=0.2,width=0.4,color="black",URL="$classvtkParticleSpringSystem.html",tooltip="Implementation of the particle-spring deformation model."];
+  Node3 -> Node2 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Springs"];
+  Node3 [label="vtkSpringCollection",height=0.2,width=0.4,color="black",URL="$classvtkSpringCollection.html",tooltip="Collection of Springs."];
+  Node1 -> Node2 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Solver"];
+  Node4 -> Node2 [dir=back,color="darkorchid3",fontsize="10",style="dashed",label="Particles"];
+  Node4 [label="vtkParticleCollection",height=0.2,width=0.4,color="black",URL="$classvtkParticleCollection.html",tooltip="Collection of Particles."];
+}

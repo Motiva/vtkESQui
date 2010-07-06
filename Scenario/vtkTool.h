@@ -94,9 +94,10 @@ public:
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-
+	//! Set FileName for each piece
 	void SetFileName(vtkIdType id, const char * filename);
 
+	//! Get FileName for each piece
 	const char * GetFileName(vtkIdType id);
 
 	// **** Physical Parameters **** //
@@ -114,9 +115,9 @@ public:
 	vtkIdType GetNumberOfPieces();
 
 	//!Set tool type
-	void SetType(const char *  type) {this->Type = type;}
+	vtkSetStringMacro(ToolType);
 	//!Return tool type
-	const char * GetType(){return this->Type;}
+	vtkGetStringMacro(ToolType);
 
 	//!Abstract initialization function
 	/*!
@@ -136,6 +137,12 @@ public:
 	*/
 	virtual void UpdateSimpleMesh();
 
+	//!function that returns simplified mesh
+	/*!
+	 * This method returns a simplified mesh for collision detection purposes
+	 */
+	vtkGetObjectMacro(SimpleMesh, vtkPolyData);
+
 	//! Applies the initial transformation to the tool loaded from vtk files
 	/*!
 	Applies the initial transformation, placing the tool in its position in the scene.
@@ -143,19 +150,6 @@ public:
 	virtual void ApplyInitialTransform();
 
 	// **** Graphical Purposes Methods **** //
-	//! Set the render window of the tool
-	/*!
-	Assign the render window for the tool
-	\param window Render Window where tool will be displayed
-	*/
-	void SetRenderWindow(vtkRenderWindow *window);
-
-	//! Get the render window of the tool
-	/*!
-	Return the render window of the tool
-	*/
-	vtkRenderWindow *GetRenderWindow();
-
 	//! Return the actors collection of the tool
 	/*!
 	Return a pointer to the object who stores all tool's actors
@@ -166,7 +160,7 @@ public:
 	/*!
 	* \param id Identifier of the piece
 	*/
-	vtkActor * GetActor(vtkIdType Id);
+	vtkActor * GetActor(vtkIdType id);
 
 	//!Get tool piece transform function with the specified id
 	/*!
@@ -196,14 +190,13 @@ public:
 
 	// **** Haptic Management Methods **** //
 
-	//! Set/Get the use of haptic in the simulation
-	void SetUseHaptic(int value){this->UseHaptic = value;};
-	int GetUseHaptic(){return this->UseHaptic;};
+	//! Set the use of haptic device
+	vtkSetMacro(UseHaptic, bool);
+	//! Get the use of haptic device
+	vtkGetMacro(UseHaptic, bool);
 
-	//!Enable the use of haptic
-	void UseHapticOn(){this->SetUseHaptic(1);};
-	//!Disable the use of haptic
-	void UseHapticOff(){this->SetUseHaptic(0);};
+	//!Enable/Disable haptic device use
+	vtkBooleanMacro(UseHaptic, bool);
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	//BTX
@@ -225,8 +218,10 @@ protected:
 	vtkTool();
 	~vtkTool();
 
-	const char * Type;
+	//! Tool Type
+	char * ToolType;
 
+	//! Enable haptic device control
 	int UseHaptic;
 
 	//!Collection of tool pieces
@@ -243,6 +238,12 @@ protected:
 	//!Collection of contact point information
 	vtkContactCollection *Contacts;
 
+	//! Appended Polydata
+	vtkAppendPolyData *AppendFilter;
+
+	//!Simplified Mesh for collision detection purposes
+	vtkPolyData * SimpleMesh;
+
 	// **** Geometrical Functions **** //
 	//! Implements the translation of the tool (Local coordinate system)
 	/*!
@@ -257,7 +258,6 @@ protected:
 	/*!
 	The X parameter contains the relative movement in the horizontal axes
 	\param x x orientation angle
-	\param y y orientation angle
 	*/
 	void RotateX(double x);
 
@@ -272,7 +272,7 @@ protected:
 	/*!
 	This function rotate the tool on its own axis the value of an angle given
 	by the "Rotation" variable the rotation is produced acting on the actors who compose the tool.
-	\param Rotation rotation angle (radians)
+	\param rotation rotation angle (radians)
 	*/
 	void RotateZ(double rotation);
 

@@ -202,15 +202,15 @@ int vtkFeMeshInterfaceTest(int ac, char* av[])
 	//Get organ bounding box point that has been contacted
 	vtkIdType cellId = 15;
 	double * point = InputGrid->GetCell(cellId)->GetPoints()->GetPoint(0);
-	Contact->SetCellId(cellId);
+	Contact->InsertCellId(cellId);
 
 	//We will find the organ closest point to the bounding box
 	vtkPointLocator * locator = vtkPointLocator::New();
 	locator->SetDataSet(OutputGrid);
 	vtkIdType pointId = locator->FindClosestPoint(point);
-	Contact->SetPointId(pointId);
+	Contact->InsertPointId(pointId);
 	double * p =OutputGrid->GetPoints()->GetPoint(pointId);
-	Contact->SetPoint(p);
+	Contact->InsertPoint(p);
 
 	double vector[3];
 	vector[0]=0;

@@ -66,7 +66,7 @@ public:
 	//!Insert an Particle to the collection
 	/*!
 	* The Particle will be inserted at the end of the list
-	* \param Particle vtkParticle object to be inserted
+	* \param particle vtkParticle object to be inserted
 	* \sa InsertParticle(vtkIdType id, vtkParticle *Particle)
 	*/
 	void InsertNextParticle(vtkParticle *particle);
@@ -74,7 +74,7 @@ public:
 	//!Insert an Particle at the specified index
 	/*!
 	* \param id index of the list where the Particle will be inserted
-	* \param Particle vtkParticle object to be inserted
+	* \param particle vtkParticle object to be inserted
 	* \sa InsertNextParticle(vtkParticle *Particle)
 	*/
 	void SetParticle(vtkIdType id, vtkParticle *particle);

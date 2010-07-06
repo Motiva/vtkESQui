@@ -59,7 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkContact.h"
 #include "vtkContactCollection.h"
 
-//! Implementation of the generic Biomechanical Model interface for a Finite Element Model based deformation system
+//! Interface to the abstract vtkBiomechanicalModel class for a FEM based system
 
 class VTK_ESQUI_BMM_EXPORT vtkFeMeshInterface : public vtkBioMechanicalModel
 {

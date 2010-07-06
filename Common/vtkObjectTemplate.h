@@ -47,12 +47,18 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObject.h"
 #include "vtkObjectFactory.h"
 
+//! Template a generic vtk object
+
 class VTK_ESQUI_COMMON_EXPORT vtkObjectTemplate : public vtkObject {
 public:
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkObjectTemplate,vtkObject);
 
+	//! Create new object
 	static vtkObjectTemplate *New();
+	//! Print object info
 	void PrintSelf(ostream& os, vtkIndent indent);
+	//! Return class name
 	const char *GetClassName() {return "vtkObjectTemplate";};
 
 protected:

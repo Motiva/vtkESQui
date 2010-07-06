@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classvtkScenario.html" title="Implementation of the simulation scenario. All the elements in the scenario (organs..." alt="" coords="329,105,423,135"/>
+<area shape="rect" id="node10" href="$classvtkSimulationManager.html" title="Implementation of the simulation manager." alt="" coords="220,203,375,234"/>
+<area shape="rect" id="node4" href="$classvtkToolCollection.html" title="Collection of tools." alt="" coords="333,6,459,37"/>
+<area shape="rect" id="node13" href="$classvtkCollisionDetectionLibrary.html" title="Generic interface of the Collision Detection Library." alt="" coords="84,105,271,135"/>
+<area shape="rect" id="node6" href="$classvtkOrganCollection.html" title="Collection of organs." alt="" coords="173,6,309,37"/>
+<area shape="rect" id="node8" href="$classvtkSimulation.html" title="Implementation of the simulation process." alt="" coords="233,302,335,333"/>
+<area shape="rect" id="node15" href="$classvtkContactCollection.html" title="Implementation of a collection of contacts." alt="" coords="5,6,149,37"/>
+<area shape="rect" id="node19" href="$classvtkHaptic.html" title="Generic Haptic Class." alt="" coords="121,203,196,234"/>
+</map>

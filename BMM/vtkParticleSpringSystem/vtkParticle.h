@@ -55,84 +55,92 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkMath.h"
 
-//! Implementation of the mass-spring deformation model
+//! Implementation of a system particle
+/*!
+ * Contains all the specific info for each system particle: position, velocity, acceleration, etc...
+ *
+ */
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkParticle : public vtkObject {
 public:
 
-
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkParticle, vtkObject);
+	//! Create new particle
 	static vtkParticle * New();
+	//! Print particle info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//! Set particle identifier
 	vtkSetMacro(Id, vtkIdType);						// Id
+	//! get particle identifier
 	vtkGetMacro(Id, vtkIdType);
-	vtkSetMacro(DeltaT, double);					// dt for every step
-	//vtkSetMacro(Mass, double);
+	//! Set particle mass
+	void SetMass(double mass);
+	//! Get particle mass
 	vtkGetMacro(Mass, double);						// Mass of the particle
+	//! Get particle inverse mass
 	vtkGetMacro(InverseMass, double);
-	vtkSetMacro(DistanceCoefficient, double);		// Distance constraint coefficient
-	vtkSetMacro(DampingCoefficient, double);		// Damping coefficient
+	//! Get is particle is fixed
 	vtkSetMacro(Fixed, bool);						// Fix particle
+	//! Set particle as contacted
 	vtkSetMacro(Contacted, bool);					// Contacted particle
+	//! Get if particle is contacted
 	vtkGetMacro(Contacted, bool);
 
-	void SetMass(double mass);
-
-	void SetPosition(double x, double y, double z);
-
-	void SetPosition(double * position);
-
+	//! Set particle position
+	vtkSetVector3Macro(Position, double);
+	//! Get particle position
+	vtkGetVector3Macro(Position, double);
+	//! Add offset to particle position
 	void AddPosition(double x, double y, double z);
 
-	double * GetPosition();
+	//! Set particle velocity
+	vtkSetVector3Macro(Velocity, double);
+	//! Get particle velocity
+	vtkGetVector3Macro(Velocity, double);
 
-	void GetPosition(double position[3]);
+	//! Set particle acceleration
+	vtkSetVector3Macro(Acceleration, double);
+	//! Get particle acceleration
+	vtkGetVector3Macro(Acceleration, double);
 
-	void SetVelocity(double x, double y, double z);
-
-	void SetVelocity(double * Velocity);
-
-	double * GetVelocity();
-
-	void GetVelocity(double Velocity[3]);
-
-	void SetAcceleration(double x, double y, double z);
-
-	void SetAcceleration(double * Acceleration);
-
-	double * GetAcceleration();
-
-	void GetAcceleration(double Acceleration[3]);
-
-	void Update();
-
-	void SetForce(double x, double y, double z);
-
-	void SetForce(double * Force);
-
+	//! Set particle force
+	vtkSetVector3Macro(Force, double);
+	//! Get particle force
+	vtkGetVector3Macro(Force, double);
+	//! Add offset to particle force
 	void AddForce(double x, double y, double z);
 
-	double * GetForce();
+	//! Update particle properties: position, velocity, accel...
+	/*!
+	 * All the particle properties are updated on each step. The particle will be ignored if is set as fixed
+	 */
+	void Update();
 
-	void GetForce(double Force[3]);
 
 protected:
 	vtkParticle();
 	~vtkParticle();
 
+	//! Particle identifier
 	vtkIdType Id;
+	//! 3D position
 	double Position[3];
+	//! particle velocity. updated on every step
 	double Velocity[3];
+	//! particle acceleration. updated on every step
 	double Acceleration[3];
+	//! particle force. f=m·a
 	double Force[3];
 
-	double DeltaT;
-	double DistanceCoefficient;
-	double DampingCoefficient;
+	//! Mass of the particle
 	double Mass;
+	//! Inverse mass. optimizes calculation
 	double InverseMass;
+	//! particle is fixed. f = 0;
 	bool Fixed;
+	//! particle is contacted
 	bool Contacted;
 
 private:

@@ -50,9 +50,13 @@ POSSIBILITY OF SUCH DAMAGE.
 class VTK_ESQUI_SCENARIO_EXPORT vtkPieceCollection : public vtkCollection
 {
 public:
+	//!Type revision macro
 	vtkTypeRevisionMacro(vtkPieceCollection,vtkCollection);
+	//! Create new piece storage collection
 	static vtkPieceCollection *New() {return new vtkPieceCollection;}
+	//! Return classname
 	const char *GetClassName() {return "vtkPieceCollection";}
+	//! Print collection values
 	virtual void PrintSelf(ostream& os, vtkIndent indent);
 
 	//!Insert a piece into the collection

@@ -52,7 +52,6 @@ vtkRDMInterface::vtkRDMInterface()
 	this->DampingCoefficient = 0;
 	this->Mass = 0;
 	this->DeltaT = 0;
-	this->Steps = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -92,7 +91,7 @@ int vtkRDMInterface::RequestData(
     }
 
     this->RDMMesh->SetInput(input);
-    this->RDMMesh->SetContacts(this->ContactPointIds, this->Directions);
+    this->RDMMesh->SetContacts(this->ContactPointIds, this->ContactDirections);
 
     this->RDMMesh->Update();
 
@@ -111,56 +110,10 @@ void vtkRDMInterface::Init()
 	this->RDMMesh->SetDamping(this->DampingCoefficient);//Friction
 	this->RDMMesh->SetSurfaceForceCoefficient(this->SurfaceCoefficient);
 	this->RDMMesh->SetVolumeForceCoefficient(this->VolumeCoefficient);
-	//this->RDMMesh->SetMass(this->Mass);
-	//this->RDMMesh->SetDeltaT(this->DeltaT);
-	//this->RDMMesh->SetSteps(this->Steps);
-
 	this->RDMMesh->SetInput(vtkUnstructuredGrid::SafeDownCast(this->GetInput()));
 	this->RDMMesh->Init();
 
 	this->Print(cout);
-}
-
-//--------------------------------------------------------------------------
-void vtkRDMInterface::SetDistanceCoefficient(double value)
-{
-	this->DistanceCoefficient = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkRDMInterface::SetDampingCoefficient(double value)
-{
-	this->DampingCoefficient = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkRDMInterface::SetSurfaceCoefficient(double value)
-{
-	 this->SurfaceCoefficient = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkRDMInterface::SetVolumeCoefficient(double value)
-{
-	this->VolumeCoefficient = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkRDMInterface::SetMass(double value)
-{
-	this->Mass = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkRDMInterface::SetDeltaT(double value)
-{
-	this->DeltaT = value;
-}
-
-//--------------------------------------------------------------------------
-void vtkRDMInterface::SetSteps(int value)
-{
-	this->Steps = value;
 }
 
 //--------------------------------------------------------------------------
@@ -172,5 +125,4 @@ void vtkRDMInterface::PrintSelf(ostream& os, vtkIndent indent)
   os << indent <<  "DampingCoefficient: " << this->DampingCoefficient << endl;
   os << indent <<  "Mass: " << this->Mass << endl;
   os << indent <<  "DeltaT: " << this->DeltaT << endl;
-  os << indent <<  "Steps: " << this->Steps << endl;
 }

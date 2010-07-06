@@ -76,6 +76,12 @@ public:
 	//! Print class object values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//!Set BioMechanical model name
+	vtkSetStringMacro(Name);
+
+	//!Get BioMechanical model name
+	vtkGetStringMacro(Name);
+
 	//! Update function
 	virtual int RequestData(vtkInformation* request,
 	                          vtkInformationVector** inputVector,
@@ -86,12 +92,6 @@ public:
 	
 	//!Cleans algorithm from previous executions
 	virtual void Clear();
-
-	//!Set BioMechanical model name
-	void SetName(const char * name);
-
-	//!Get BioMechanical model name
-	const char * GetName();
 
 	//!Insert a contact into the biomechanical model
 	virtual void InsertNextContact(vtkContact * contact) ;
@@ -108,8 +108,12 @@ public:
 	//!Return the organ mesh cell specified with the id
 	virtual vtkCell * GetMeshCell(vtkIdType id);
 
+protected:
+	vtkBioMechanicalModel();
+	~vtkBioMechanicalModel();
+
 	//!Model Name
-	const char * Name;
+	char * Name;
 
 	//!3D Surface Input
 	vtkPolyData * Mesh;
@@ -121,14 +125,10 @@ public:
 	vtkIdList * ContactPointIds;
 
 	//!Contacted cell ids
-	vtkIdList * ContactCelltIds;
+	vtkIdList * ContactCellIds;
 
 	//!Contact direction of each contact points
-	vtkDoubleArray * Directions;
-
-protected:
-	vtkBioMechanicalModel();
-	~vtkBioMechanicalModel();
+	vtkDoubleArray * ContactDirections;
 
 private:
 	vtkBioMechanicalModel(const vtkBioMechanicalModel &); //NotImplemented

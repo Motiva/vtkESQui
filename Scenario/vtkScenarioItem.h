@@ -64,13 +64,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 //! Class vtkScenarioItem, abstract the use of a surgical item
 /*!
-vtkScenarioItem abstracts the use of a surgical item during the simulation exercise.
-This provide an easy use of surgical items collections.
-*/
+ *vtkScenarioItem abstracts the use of a surgical item during the simulation exercise.
+ *This provide an easy use of surgical items collections.
+ */
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioItem: public vtkObject {
 
 public:
-
 
 	//BTX
 	//!Enumeration of piece types
@@ -84,168 +83,146 @@ public:
 
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkScenarioItem,vtkObject);
-
 	//!Return the class name
 	const char *GetClassName() {return "vtkScenarioItem";}
-
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//!Abstract initialization function
 	/*!
-	* This method initializes the item physical values, scale, position, etc...
-	*/
+	 * This method initializes the item physical values, scale, position, etc...
+	 */
 	virtual void Init() = 0;
 
 	//!Abstract update function
 	/*!
-	* This method updates the item physical values, scale, position, etc...
-	*/
-	virtual void Update();
+	 * This method updates the item physical values, scale, position, etc...
+	 */
+	virtual void Update() = 0;
 
 	//!Abstract simple mesh update function
 	/*!
-	* This method updates the simplified mesh item physical values, scale, position, etc...
-	*/
+	 * This method updates the simplified mesh item physical values, scale, position, etc...
+	 */
 	virtual void UpdateSimpleMesh() = 0;
 
 	//! Assign the identifying key of the item
 	/*!
-	\param id identifying key of the item
-	\sa GetId()
-	*/
-	void SetId(vtkIdType id);
+	 *\sa GetId()
+	 */
+	vtkSetMacro(Id, vtkIdType);
 
 	//! Returns the identifying key of the item
 	/*!
-	\sa SetId(vtkIdType Id)
-	*/
-	vtkIdType GetId();
+	 *\sa SetId(vtkIdType Id)
+	 */
+	vtkGetMacro(Id, vtkIdType);
 
 	//BTX
 	//! Assign the identifying key of the item
 	/*!
-	\param id identifying key of the item
-	\sa GetId()
-	*/
-	void SetType(vtkScenarioItem::vtkScenarioItemType type);
+	 *\sa GetId()
+	 */
+	vtkSetMacro(Type, vtkScenarioItem::vtkScenarioItemType);
 
 	//! Returns the identifying key of the item
 	/*!
-	\sa SetId(vtkIdType Id)
-	*/
-	vtkScenarioItem::vtkScenarioItemType GetType();
+	 *\sa SetId(vtkIdType Id)
+	 */
+	vtkGetMacro(Type, vtkScenarioItem::vtkScenarioItemType);
 	//ETX
 
 	//! Assign item name
 	/*!
-	\param name name of the item
-	\sa GetName()
-	*/
-	void SetName(const char * name);
+	 *\sa GetName()
+	 */
+	vtkSetStringMacro(Name);
 
 	//!Return item scale
 	/*!
-	\sa SetName(const char * name)
-	*/
-	const char * GetName();
+	 *\sa SetName(const char * name)
+	 */
+	vtkGetStringMacro(Name);
 
 	//! Assign item scale
 	/*!
-	*\param value scale factor
-	*\sa GetScale()
-	*/
-	void SetScale(double value);
+	 *\sa GetScale()
+	 */
+	vtkSetMacro(Scale, double);
 
 	//!Return item scale
 	/*!
-	*\sa SetScale(double scale)
-	*/
-	double GetScale();
+	 *\sa SetScale(double)
+	 */
+	vtkGetMacro(Scale, double);
 
 	// **** Graphical Purposes Methods **** //
 	//! Set the render window of the item
 	/*!
-	Assign the render window for the item
-	\param window Render Window where item will be displayed
-	*/
-	void SetRenderWindow(vtkRenderWindow *window);
+	 * Assign the render window for the item
+	 */
+	vtkSetObjectMacro(RenderWindow, vtkRenderWindow);
 
 	//! Get the render window of the item
 	/*!
-	Return the render window of the item
-	*/
-	vtkRenderWindow *GetRenderWindow();
+	 *Return the render window of the item
+	 */
+	vtkGetObjectMacro(RenderWindow, vtkRenderWindow);
 
-	//! Set the object origin Point. Reference point where the rotation calculus are made
-	void SetOrigin(double x, double y, double z);
-	//! Set the object origin Point. Reference point where the rotation calculus are made
-	void SetOrigin(double origin[3]);
-	//! Get the object origin Point. Reference point where the rotation calculus are made
-	double * GetOrigin();
-	//! Get the object origin Point. Reference point where the rotation calculus are made
-	void GetOrigin(double origin[3]);
+	//! Set the object origin Point.
+	/*!
+	 * Reference point where the rotation calculus are made
+	 */
+	vtkSetVector3Macro(Origin, double);
+	//! Get the object origin Point.
+	/*!
+	 * Reference point where the rotation calculus are made
+	 */
+	vtkGetVector3Macro(Origin, double);
 
-	//! Set object orientation angles. (yaw, pitch, roll) (WXYZ)
-	void SetOrientation(double yaw, double pitch, double roll);
-	//! Set object orientation angles. (yaw, pitch, roll) (WXYZ)
-	void SetOrientation(double orientation[3]);
+	//! Set object orientation angles.
+	/*!
+	 * (yaw, pitch, roll) (WXYZ)
+	 */
+	vtkSetVector3Macro(Orientation, double);
 	//! Get object orientation angles. (yaw, pitch, roll) (WXYZ)
-	double * GetOrientation();
-	//! Get object orientation angles. (yaw, pitch, roll) (WXYZ)
-	void GetOrientation(double orientation[3]);
+	/*!
+	 * (yaw, pitch, roll) (WXYZ)
+	 */
+	vtkGetVector3Macro(Orientation, double);
 
 	//!Set the Object position (WXYZ)
-	void SetPosition(double x, double y, double z);
-	//!Set the Object position (WXYZ)
-	void SetPosition(double position[3]);
+	vtkSetVector3Macro(Position, double);
 	//!Get the Object position (WXYZ)
-	double * GetPosition();
-	//!Get the Object position (WXYZ)
-	void GetPosition(double position[3]);
+	vtkGetVector3Macro(Position, double);
 
 	//! Get the object direction unit vector (WXYZ)
-	double * GetDirection();
-	//! Get the object direction unit vector (WXYZ)
-	void GetDirection(double direction[3]);
-
-	//! Enable simple mesh display
-	/*!
-	\sa DisplaySimpleMeshOff()
-	*/
-	void DisplaySimpleMeshOn(){this->DisplaySimpleMesh = 1;};
-
-	//! Enable simple mesh display
-	/*!
-	\sa DisplaySimpleMeshOff()
-	*/
-	void DisplaySimpleMeshOff(){this->DisplaySimpleMesh = 0;};
-
-	//!function that returns simplified mesh
-	/*!
-	* This method returns a simplified mesh for collision detection purposes
-	*/
-	vtkPolyData * GetSimpleMesh(){return this->SimpleMesh;};
+	vtkGetVector3Macro(Direction, double);
 
 protected:
 
 	vtkScenarioItem();
 	~vtkScenarioItem();
 
+	//! Item identifier
 	vtkIdType Id;
+	//! Item Type (Tool, Organ, etc...)
 	vtkScenarioItemType Type;
-	const char * Name;
+	//! Item Name
+	char * Name;
 
 	//**** Graphical Purposes objects ****//
+	//! Origin point for transforms
 	double Origin[3];
+	//! Initial position
 	double Position[3];
+	//! Object orientation: Yaw, Pitch, Roll angles
 	double Orientation[3];
+	//! Unit direction vector
 	double Direction[3];
 
 	//! Scale factor (size)
-	double ScaleFactor;
-
-	vtkIdType DisplaySimpleMesh;
+	double Scale;
 
 	//!Render Window of the item
 	vtkRenderWindow *RenderWindow;
@@ -253,9 +230,7 @@ protected:
 	//!Renderer of the item
 	vtkRenderer * Renderer;
 
-	//!Simplified Mesh for collision detection purposes
-	vtkPolyData * SimpleMesh;
-
+	//! Update item direction vector
 	void UpdateDirection();
 private:
 	vtkScenarioItem (const vtkScenarioItem &);

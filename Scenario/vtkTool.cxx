@@ -46,8 +46,11 @@ vtkCxxRevisionMacro(vtkTool, "$Revision: 0.1 $");
 //--------------------------------------------------------------------------
 vtkTool::vtkTool() {
 	this->Id = -1;
-	this->Type="";
+	this->ToolType = NULL;
 	this->UseHaptic = 0;
+
+	this->SimpleMesh = NULL;
+	this->AppendFilter = NULL;
 
 	this->Actors = vtkActorCollection::New();
 	this->Transforms = vtkTransformCollection::New();
@@ -77,27 +80,28 @@ vtkTool::~vtkTool() {
 //--------------------------------------------------------------------------
 void vtkTool::Update()
 {
-	Superclass::Update();
+	this->UpdateDirection();
 
 	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
 	{
 		this->GetPiece(id)->Update();
 	}
+
 	this->UpdateSimpleMesh();
 }
 
 //--------------------------------------------------------------------------
 void vtkTool::UpdateSimpleMesh()
 {
-	vtkAppendPolyData * appendFilter = vtkAppendPolyData::New();
+	if(!this->AppendFilter) this->AppendFilter = vtkAppendPolyData::New();
+	this->AppendFilter->RemoveAllInputs();
 	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
 	{
-		appendFilter->AddInput(this->GetPiece(id)->GetSimpleMesh());
+		this->AppendFilter->AddInput(this->GetPiece(id)->GetSimpleMesh());
 	}
-	appendFilter->Update();
+	this->AppendFilter->Update();
 
-	this->SimpleMesh->DeepCopy(appendFilter->GetOutput());
-	appendFilter->Delete();
+	this->SimpleMesh = this->AppendFilter->GetOutput();
 }
 
 //--------------------------------------------------------------------------
@@ -123,16 +127,6 @@ vtkIdType vtkTool::GetNumberOfPieces() {
 	return this->Pieces->GetNumberOfPieces();
 };
 
-//--------------------------------------------------------------------------
-void vtkTool::SetRenderWindow(vtkRenderWindow *window) {
-	this->RenderWindow = window;
-	this->Renderer= RenderWindow->GetRenderers()->GetFirstRenderer();
-}
-
-//--------------------------------------------------------------------------
-vtkRenderWindow* vtkTool::GetRenderWindow() {
-	return this->RenderWindow;
-}
 
 //--------------------------------------------------------------------------
 void vtkTool::ApplyInitialTransform()
@@ -225,7 +219,7 @@ void vtkTool::PrintSelf(ostream& os,vtkIndent indent) {
 
 	this->Superclass::PrintSelf(os, indent);
 
-	os << indent << "Type: " << this->Type << "\n";
+	os << indent << "Type: " << this->ToolType << "\n";
 	os << indent << "Number of Pieces: " << this->GetNumberOfPieces() << "\n";
 	os << indent << "UseHaptic: " << this->UseHaptic << "\n";
 

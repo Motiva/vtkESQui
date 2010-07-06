@@ -2,6 +2,8 @@
 \section{vtkSRMLImporter Class Reference}
 \label{classvtkSRMLImporter}\index{vtkSRMLImporter@{vtkSRMLImporter}}
 }
+
+
 Collaboration diagram for vtkSRMLImporter:\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -20,26 +22,36 @@ void \hyperlink{classvtkSRMLImporter_a62d3aa1a2a9441077b1d3569f9f69e03}{PrintSel
 \label{classvtkSRMLImporter_a62d3aa1a2a9441077b1d3569f9f69e03}
 
 \begin{DoxyCompactList}\small\item\em Print the attributes value. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkSRMLImporter_aab5e7b3ce67f1c7de8d7c7558416d879}{
-void {\bfseries SetFileName} (char $\ast$filename)}
-\label{classvtkSRMLImporter_aab5e7b3ce67f1c7de8d7c7558416d879}
+\hypertarget{classvtkSRMLImporter_a299db4483a9fc1a8c6a2f2e425e890ae}{
+void \hyperlink{classvtkSRMLImporter_a299db4483a9fc1a8c6a2f2e425e890ae}{SetFileName} (const char $\ast$filename)}
+\label{classvtkSRMLImporter_a299db4483a9fc1a8c6a2f2e425e890ae}
 
-\item 
-\hypertarget{classvtkSRMLImporter_ade5dc137bb6978aae3d0597e33290c70}{
-char $\ast$ {\bfseries GetFileName} ()}
-\label{classvtkSRMLImporter_ade5dc137bb6978aae3d0597e33290c70}
+\begin{DoxyCompactList}\small\item\em Set the name of the input file. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a8ff4832be5cd522ec081de29895386b5}{
+const char $\ast$ \hyperlink{classvtkSRMLImporter_a8ff4832be5cd522ec081de29895386b5}{GetFileName} ()}
+\label{classvtkSRMLImporter_a8ff4832be5cd522ec081de29895386b5}
 
-\item 
+\begin{DoxyCompactList}\small\item\em Get the name of the input file. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a15e7305b3b61c1b8c911d4d0732c126e}{
+void \hyperlink{classvtkSRMLImporter_a15e7305b3b61c1b8c911d4d0732c126e}{SetDataPath} (const char $\ast$path)}
+\label{classvtkSRMLImporter_a15e7305b3b61c1b8c911d4d0732c126e}
+
+\begin{DoxyCompactList}\small\item\em Set the data path. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a46e36fafdd171ef650f8e837ed2e9c2f}{
+const char $\ast$ \hyperlink{classvtkSRMLImporter_a46e36fafdd171ef650f8e837ed2e9c2f}{GetDataPath} ()}
+\label{classvtkSRMLImporter_a46e36fafdd171ef650f8e837ed2e9c2f}
+
+\begin{DoxyCompactList}\small\item\em Get the data path. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkSRMLImporter_af48e96fae89287bed52774aa94155f1b}{
-void {\bfseries SetSimulation} (\hyperlink{classvtkSimulation}{vtkSimulation} $\ast$simulation)}
+void \hyperlink{classvtkSRMLImporter_af48e96fae89287bed52774aa94155f1b}{SetSimulation} (\hyperlink{classvtkSimulation}{vtkSimulation} $\ast$simulation)}
 \label{classvtkSRMLImporter_af48e96fae89287bed52774aa94155f1b}
 
-\item 
+\begin{DoxyCompactList}\small\item\em Get/Set the Simulation. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkSRMLImporter_a98df8b0a01a661642e2a83d77fbf293c}{
-\hyperlink{classvtkSimulation}{vtkSimulation} $\ast$ {\bfseries GetSimulation} ()}
+\hyperlink{classvtkSimulation}{vtkSimulation} $\ast$ \hyperlink{classvtkSRMLImporter_a98df8b0a01a661642e2a83d77fbf293c}{GetSimulation} ()}
 \label{classvtkSRMLImporter_a98df8b0a01a661642e2a83d77fbf293c}
 
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get the Simulation. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -124,11 +136,16 @@ vtkXMLDataElement $\ast$ \hyperlink{classvtkSRMLImporter_ab2947908aa3b3c13cf939a
 \label{classvtkSRMLImporter_ab2947908aa3b3c13cf939a7f7234ec47}
 
 \begin{DoxyCompactList}\small\item\em Basic XMLElement used in XML Parsing. \item\end{DoxyCompactList}\item 
-\hypertarget{classvtkSRMLImporter_a3fe69d9dfa445f116dc48f677263deb3}{
-char $\ast$ \hyperlink{classvtkSRMLImporter_a3fe69d9dfa445f116dc48f677263deb3}{FileName}}
-\label{classvtkSRMLImporter_a3fe69d9dfa445f116dc48f677263deb3}
+\hypertarget{classvtkSRMLImporter_a40b0867e1ae9d16073214298d93bce57}{
+const char $\ast$ \hyperlink{classvtkSRMLImporter_a40b0867e1ae9d16073214298d93bce57}{FileName}}
+\label{classvtkSRMLImporter_a40b0867e1ae9d16073214298d93bce57}
 
 \begin{DoxyCompactList}\small\item\em Input SRML Filename. \item\end{DoxyCompactList}\item 
+\hypertarget{classvtkSRMLImporter_a25c57ab8924a893573228217c2e98886}{
+const char $\ast$ \hyperlink{classvtkSRMLImporter_a25c57ab8924a893573228217c2e98886}{Path}}
+\label{classvtkSRMLImporter_a25c57ab8924a893573228217c2e98886}
+
+\begin{DoxyCompactList}\small\item\em Path of the data files. \item\end{DoxyCompactList}\item 
 \hypertarget{classvtkSRMLImporter_a02805ba7383ee6f553ca38c8bf3d9a9c}{
 istream $\ast$ \hyperlink{classvtkSRMLImporter_a02805ba7383ee6f553ca38c8bf3d9a9c}{Stream}}
 \label{classvtkSRMLImporter_a02805ba7383ee6f553ca38c8bf3d9a9c}
