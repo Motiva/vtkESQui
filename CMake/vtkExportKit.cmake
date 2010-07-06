@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-MACRO(VTK_EXPORT_KIT2 kit ukit dest_dir sources)
+ACRO(VTK_EXPORT_KIT2 kit ukit dest_dir sources)
   SET(VTK_EXPORT_KIT ${kit})
   SET(VTK_EXPORT_UKIT ${ukit})
   SET(VTK_EXPORT_KIT_DOLLAR "$")
@@ -61,6 +61,6 @@ MACRO(VTK_EXPORT_KIT2 kit ukit dest_dir sources)
 ENDMACRO(VTK_EXPORT_KIT2)
 
 #-----------------------------------------------------------------------------
-MACRO(VTK_EXPORT_KIT kit ukit sources)
+ACRO(VTK_EXPORT_KIT kit ukit sources)
   VTK_EXPORT_KIT2(${kit} ${ukit} ${VTK_BINARY_DIR}/Utilities "${sources}")
 ENDMACRO(VTK_EXPORT_KIT)

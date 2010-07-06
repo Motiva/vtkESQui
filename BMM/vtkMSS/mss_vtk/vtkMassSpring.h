@@ -4,7 +4,7 @@ Filename: vtkMassSpring.h
 
 Description:
 
-Mass Spring System. Using Runge Kutta 4 to solve this ODE:
+ass Spring System. Using Runge Kutta 4 to solve this ODE:
 mass*acceleration + damping*speed + spring coefficient*displacement
 = external force
 
