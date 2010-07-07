@@ -1,8 +1,4 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
-if(COMMAND cmake_policy)
-   cmake_policy(SET CMP0003 NEW)
-endif(COMMAND cmake_policy)
-
 
 # Set the project/library name here.  Classes should be declared as
 # "class VTK_BIOENG_EXPORT vtkFoo"
@@ -41,11 +37,11 @@ INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
 
 # Setup output paths.
-#SET (LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
-#     "Single output directory for building all libraries.")
-#SET (EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
-#     "Single output directory for building all executables.")
-#MARK_AS_ADVANCED(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
+SET (LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
+     "Single output directory for building all libraries.")
+SET (EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
+     "Single output directory for building all executables.")
+MARK_AS_ADVANCED(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
 
 # Find and load VTK settings.
 FIND_PACKAGE(VTK REQUIRED)
@@ -137,6 +133,19 @@ IF(VTK_FOUND)
     ENDIF(CMAKE_CONFIGURATION_TYPES)
     
   ENDIF(VTK_WRAP_TCL)
+
+  # Create Python wrappers if VTK is wrapped in Python.
+  IF(VTK_WRAP_PYTHON)
+    INCLUDE(${VTK_CMAKE_DIR}/vtkWrapPython.cmake)
+    VTK_WRAP_PYTHON3(${PROJECT_NAME}Python vtkBioengPYTHON_SRCS "${vtkBioeng_SRCS}")
+    ADD_LIBRARY(${PROJECT_NAME}PythonD ${vtkBioengPYTHON_SRCS})
+    ADD_LIBRARY(${PROJECT_NAME}Python MODULE ${PROJECT_NAME}PythonInit.cxx)
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME}PythonD ${PROJECT_NAME})
+    FOREACH(c ${vtkBioeng_LIBS})
+      TARGET_LINK_LIBRARIES(${PROJECT_NAME}PythonD ${c}PythonD)
+    ENDFOREACH(c)
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME}Python ${PROJECT_NAME}PythonD)
+  ENDIF(VTK_WRAP_PYTHON)
 
   SUBDIRS(Testing)
   SUBDIRS(Utilities)

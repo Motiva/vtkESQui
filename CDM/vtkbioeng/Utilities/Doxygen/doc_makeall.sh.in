@@ -46,7 +46,7 @@ export PATH_TO_VTK_DOX_SCRIPTS="@VTK_SOURCE_DIR@/Utilities/Doxygen"
 # SOURCE_DIR:
 # Source directory. The top directory of the source files.
 # Example:
-#   SOURCE_DIR=@VTKIVRD_SOURCE_DIR@
+#   SOURCE_DIR=@VTKMY_SOURCE_DIR@
 #
 export SOURCE_DIR="@VTKBIOENG_SOURCE_DIR@"
 
@@ -67,7 +67,7 @@ export REL_PATH_TO_TOP=.
 # the corresponding line.
 # DOXTEMP might be used to simplify the syntax.
 # Example:
-#   DOXTEMP=DOXTEMP=@VTKIVRD_BINARY_DIR@/Utilities/Doxygen
+#   DOXTEMP=DOXTEMP=@VTKMY_BINARY_DIR@/Utilities/Doxygen
 #   INTERMEDIATE_DOX_DIR=$DOXTEMP/dox
 #
 export DOXTEMP="@VTKBIOENG_BINARY_DIR@/Utilities/Doxygen"

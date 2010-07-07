@@ -3,7 +3,7 @@
   Program:   Visualization Toolkit
   Module:    vtkCollisionDetectionFilter.cxx
   Language:  C++
-  RCS:   $Id: vtkCollisionDetectionFilter.cxx,v 1.1 2006/11/20 14:58:42 glawlor Exp $
+  RCS:   $Id: vtkCollisionDetectionFilter.cxx,v 1.3 2009/09/07 12:36:04 glawlor Exp $
 
   Copyright (c) 2003-2004 Goodwin Lawlor
   All rights reserved.
@@ -41,7 +41,7 @@
 #include "vtkSmartPointer.h"
 #include "vtkCellArray.h"
 
-vtkCxxRevisionMacro(vtkCollisionDetectionFilter, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkCollisionDetectionFilter, "$Revision: 1.3 $");
 vtkStandardNewMacro(vtkCollisionDetectionFilter);
 
 // Constructs with initial 0 values.
@@ -61,7 +61,7 @@ vtkCollisionDetectionFilter::vtkCollisionDetectionFilter()
   this->NumberOfBoxTests = 0;
   this->BoxTolerance = 0.0;
   this->CellTolerance = 0.0;
-  this->NumberOfCellsPerBucket = 2;
+  this->NumberOfCellsPerNode = 2;
   this->tree0 = vtkOBBTree::New();
   this->tree1 = vtkOBBTree::New();
   this->GenerateScalars = 0;
@@ -496,12 +496,12 @@ int vtkCollisionDetectionFilter::RequestData(
   // rebuild the obb trees... they do their own mtime checking with input data
   tree0->SetDataSet(input[0]);
   tree0->AutomaticOn();
-  tree0->SetNumberOfCellsPerNode(this->NumberOfCellsPerBucket);
+  tree0->SetNumberOfCellsPerNode(this->NumberOfCellsPerNode);
   tree0->BuildLocator();
 
   tree1->SetDataSet(input[1]);
   tree1->AutomaticOn();
-  tree1->SetNumberOfCellsPerNode(this->NumberOfCellsPerBucket);
+  tree1->SetNumberOfCellsPerNode(this->NumberOfCellsPerNode);
   tree1->BuildLocator();
     
   // Set the Box Tolerance
@@ -677,7 +677,7 @@ int vtkCollisionDetectionFilter::IntersectPolygonWithPolygon(int npts, double *p
             for (int jj=0; jj < npts2; jj++)
               {
               if (vtkLine::Intersection(pts+3*ii,pts+3*((ii+1)%npts),
-              pts2+3*jj,pts2+3*((jj+1)%npts2),u,v) > 0)
+              pts2+3*jj,pts2+3*((jj+1)%npts2),u,v) == 2)
                 {
                 //cout << "Found an overlapping one!!!" << endl;
                 for (int k=0;k<3;k++)
@@ -780,6 +780,6 @@ void vtkCollisionDetectionFilter::PrintSelf(ostream& os, vtkIndent indent)
   
   os << indent << "Box Tolerance: " << this->BoxTolerance << "\n";
   os << indent << "Cell Tolerance: " << this->CellTolerance << "\n";
-  os << indent << "Number of cells per bucket: " << this->NumberOfCellsPerBucket << "\n";
+  os << indent << "Number of cells per Node: " << this->NumberOfCellsPerNode << "\n";
 
 }

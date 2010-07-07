@@ -72,9 +72,9 @@ vtkBioEngInterface::~vtkBioEngInterface()
 void vtkBioEngInterface::Init()
 {
 	//Initial setup of the collision detection parameters
-	this->DetectionFilter->SetBoxTolerance (0.0);
-	this->DetectionFilter->SetCellTolerance (0.0);
-	this->DetectionFilter->SetNumberOfCellsPerBucket(2);
+	this->DetectionFilter->SetBoxTolerance(0.0);
+	this->DetectionFilter->SetCellTolerance(0.0);
+	this->DetectionFilter->SetNumberOfCellsPerNode(2);
 	this->DetectionFilter->SetCollisionModeToFirstContact();
 	//this->DetectionFilter->SetCollisionModeToHalfContacts();
 	//this->DetectionFilter->SetCollisionModeToAllContacts();

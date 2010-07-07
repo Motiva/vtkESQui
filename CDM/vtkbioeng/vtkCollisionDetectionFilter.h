@@ -3,7 +3,7 @@
   Program:   Visualization Toolkit
   Module:    vtkCollisionDetectionFilter.h
   Language:  C++
-  RCS:   $Id: vtkCollisionDetectionFilter.h,v 1.1 2006/11/20 15:19:43 glawlor Exp $
+  RCS:   $Id: vtkCollisionDetectionFilter.h,v 1.2 2009/09/07 12:36:04 glawlor Exp $
 
   Copyright (c) 2003 and onwards, Goodwin Lawlor
   All rights reserved.
@@ -155,8 +155,8 @@ public:
     
   //Description:
   // Set and Get the number of cells in each OBB. Default is 2
-  vtkSetMacro(NumberOfCellsPerBucket, int);
-  vtkGetMacro(NumberOfCellsPerBucket, int);
+  vtkSetMacro(NumberOfCellsPerNode, int);
+  vtkGetMacro(NumberOfCellsPerNode, int);
   
   //Description:
   // Set and Get the opacity of the polydata output when a collision takes place.
@@ -183,7 +183,7 @@ protected:
   
   int NumberOfBoxTests;
   
-  int NumberOfCellsPerBucket;
+  int NumberOfCellsPerNode;
   
   int GenerateScalars;
   

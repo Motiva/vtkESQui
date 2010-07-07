@@ -12,7 +12,6 @@ wishing to create their own VTK classes locally.
 
 #if defined(_MSC_VER) && defined(vtkBioeng_SHARED)
 # pragma warning ( disable : 4275 )
-# pragma warning ( disable : 4996 )
 #endif
 
 #if defined(_WIN32) && defined(vtkBioeng_SHARED)
