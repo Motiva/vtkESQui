@@ -1,0 +1,9 @@
+# Debug folder
+Debug/
+
+# Eclipse files
+.cproject
+.project
+
+#Logs
+*.log
