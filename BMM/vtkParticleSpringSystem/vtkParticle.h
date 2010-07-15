@@ -87,6 +87,8 @@ public:
 	vtkSetMacro(Contacted, bool);					// Contacted particle
 	//! Get if particle is contacted
 	vtkGetMacro(Contacted, bool);
+	//! Enable/Disable contacted particle
+	vtkBooleanMacro(Contacted, bool);
 
 	//! Set particle position
 	vtkSetVector3Macro(Position, double);

@@ -100,11 +100,11 @@ public:
 	 */
 	virtual void Update() = 0;
 
-	//!Abstract simple mesh update function
+	//! Returns item transformed polydata
 	/*!
-	 * This method updates the simplified mesh item physical values, scale, position, etc...
+	 * This method returns the transformed polydata for collision detection purposes
 	 */
-	virtual void UpdateSimpleMesh() = 0;
+	virtual vtkPolyData * GetOutput() = 0;
 
 	//! Assign the identifying key of the item
 	/*!

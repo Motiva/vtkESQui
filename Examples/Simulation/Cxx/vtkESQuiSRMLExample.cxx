@@ -52,18 +52,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkSimulationManager.h"
 #include "vtkSimulationInteractorStyle.h"
 #include "vtkSimulation.h"
-#include "vtkToolCollection.h"
-#include "vtkOrganCollection.h"
-#include "vtkPolyDataReader.h"
-#include "vtkPolyDataMapper.h"
-#include "vtkDataSetMapper.h"
-#include "vtkJPEGReader.h"
-#include "vtkImageData.h"
-#include "vtkTexture.h"
-#include "vtkLight.h"
-#include "vtkLightCollection.h"
-#include "vtkToolPincers.h"
-#include "vtkCubeSource.h"
 
 #include "vtkSRMLImporter.h"
 
@@ -139,7 +127,6 @@ int main(int argc, char * argv[])
 
 	Simulation->Run();
 
-	//TODO: Create Interactor for keyboard control
 	//
 	// Free up any objects we created. All instances in VTK are deleted by
 	// using the Delete() method.

@@ -64,9 +64,9 @@ vtkOrgan::vtkOrgan()
 	this->Texture = NULL;
 
 	//Simple Mesh (collision detection mesh)
-	this->SimpleMesh = NULL;
-	this->SimpleMeshActor = NULL;
-	this->SimpleMeshMapper = NULL;
+	//this->SimpleMesh = NULL;
+	//this->SimpleMeshActor = NULL;
+	//this->SimpleMeshMapper = NULL;
 
 	//Default gravity in -z - direction
 	this->GravityDirection = 2;
@@ -91,8 +91,8 @@ vtkOrgan::~vtkOrgan()
 	this->Bmm->Delete();
 
 	//this->SimpleMesh->Delete();
-	this->SimpleMeshActor->Delete();
-	this->SimpleMeshMapper->Delete();
+	//this->SimpleMeshActor->Delete();
+	//this->SimpleMeshMapper->Delete();
 
 	this->Texture->Delete();
 }
@@ -143,6 +143,9 @@ void vtkOrgan::Init()
 			vtkPolyData * output = this->Bmm->GetOutput();
 			//cout << "Bmm->GetOutput: " << output->GetNumberOfPoints() << endl;
 
+			//FIXME: Remove this line
+			this->TextureFileName = NULL;
+
 			if(this->TextureFileName && !strcmp(this->TextureFileName, ""))
 			{
 				//No TextureFile has been defined
@@ -175,20 +178,9 @@ void vtkOrgan::Init()
 			}
 
 			this->Actor->SetMapper(this->Mapper);
-			this->Actor->GetProperty()->SetColor(0.8,0.5,0.5);
-
-			this->SimpleMesh = this->TransformFilter->GetOutput();
-
-			this->SimpleMeshMapper = vtkDataSetMapper::New();
-			this->SimpleMeshMapper->SetInput(this->SimpleMesh);
-
-			this->SimpleMeshActor = vtkActor::New();
-			this->SimpleMeshActor->SetMapper(this->SimpleMeshMapper);
-			this->SimpleMeshActor->GetProperty()->SetColor(0.8,0.5,0.5);
-			this->SimpleMeshActor->GetProperty()->SetOpacity(0.2);
+			this->Actor->GetProperty()->SetOpacity(0.5);
 
 			this->Renderer->AddActor(this->Actor);
-			this->Renderer->AddActor(this->SimpleMeshActor);
 		}
 
 		this->Update();
@@ -218,12 +210,6 @@ void vtkOrgan::Update()
 	//Remove Contacts
 	this->RemoveContacts();
 
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::UpdateSimpleMesh()
-{
-	//TODO: Remove this obsolete method
 }
 
 //--------------------------------------------------------------------------

@@ -55,6 +55,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkContact.h"
 #include "vtkContactCollection.h"
 #include "vtkPoints.h"
+#include "vtkGenericCell.h"
+#include "vtkTriangle.h"
 #include "vtkCell.h"
 #include "vtkPointLocator.h"
 
@@ -82,6 +84,8 @@ public:
 	* Executes the collision detection process between an tool and an organ
 	*/
 	void Update();
+
+	virtual vtkPolyData * GetContactSurface();
 
 protected:
 

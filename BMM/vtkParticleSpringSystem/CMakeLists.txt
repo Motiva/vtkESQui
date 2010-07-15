@@ -29,6 +29,7 @@ SET_SOURCE_FILES_PROPERTIES(
 
 SET_SOURCE_FILES_PROPERTIES(
     vtkVelocityVerletSolver.cxx
+    vtkRK4Solver.cxx
 	PROPERTIES
 	WRAP_EXCLUDE 1
 	)

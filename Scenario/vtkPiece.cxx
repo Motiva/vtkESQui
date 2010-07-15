@@ -60,11 +60,6 @@ vtkPiece::vtkPiece()
 	this->Actor = NULL;
 	this->Mapper = NULL;
 
-	//Bounding Box Display
-	this->OBB = NULL;
-	this->SimpleMesh = NULL;
-	this->SimpleMeshActor = NULL;
-	this->SimpleMeshMapper = NULL;
 }
 
 //--------------------------------------------------------------------------
@@ -76,10 +71,6 @@ vtkPiece::~vtkPiece()
 	if(this->Mapper) this->Mapper->Delete();
 	if(this->Reader) this->Reader->Delete();
 
-	if(this->OBB) this->OBB->Delete();
-
-	if(this->SimpleMeshActor) this->SimpleMeshActor->Delete();
-	if(this->SimpleMeshMapper) this->SimpleMeshMapper->Delete();
 }
 
 //--------------------------------------------------------------------------
@@ -109,25 +100,7 @@ void vtkPiece::Init()
 		this->Actor = vtkActor::New();
 		this->Actor->SetMapper(this->Mapper);
 
-		//Bounding Box Display
-		this->OBB = vtkOBBTree::New();
-		this->OBB->SetDataSet(this->TransformFilter->GetOutput());
-		this->OBB->SetMaxLevel(8);
-		this->OBB->SetTolerance(0.0001);
-		this->OBB->BuildLocator();
-		//this->OBB->GenerateRepresentation(4,this->SimpleMesh);
-		this->SimpleMesh = this->TransformFilter->GetOutput();
-
-		this->SimpleMeshMapper = vtkDataSetMapper::New();
-		this->SimpleMeshMapper->SetInput(this->SimpleMesh);
-
-		this->SimpleMeshActor = vtkActor::New();
-		this->SimpleMeshActor->SetMapper(SimpleMeshMapper);
-		this->SimpleMeshActor->GetProperty()->SetColor(0.5, 0.8, 0.5);
-		this->SimpleMeshActor->GetProperty()->SetOpacity(0.1);
-
 		this->Renderer->AddActor(this->Actor);
-		this->Renderer->AddActor(this->SimpleMeshActor);
 	}
 
 }
@@ -137,9 +110,9 @@ void vtkPiece::Update()
 {
 }
 //--------------------------------------------------------------------------
-vtkPolyData * vtkPiece::GetSimpleMesh()
+vtkPolyData * vtkPiece::GetOutput()
 {
-	return this->SimpleMesh;
+	return this->TransformFilter->GetOutput();
 }
 
 //--------------------------------------------------------------------------

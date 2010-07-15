@@ -64,7 +64,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 //BTX
 class vtkMotionEquationSolver;
-class vtkVelocityVerletSolver;
 //ETX
 
 //! Implementation of the particle-spring deformation model
@@ -178,7 +177,7 @@ protected:
 	//! List of contact identifiers
 	vtkIdList* ContactIds;
 	//! List of contact directions
-	vtkDoubleArray* ContactDirections;
+	vtkDoubleArray* ContactDisplacements;
 
 private:
 	vtkParticleSpringSystem(const vtkParticleSpringSystem&);            // Not implemented.

@@ -45,18 +45,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkParticleSpringSystemWin32Header.h"
 
 #include "vtkObjectFactory.h"
-#include "vtkIdList.h"
-#include "vtkDoubleArray.h"
-#include "vtkParticleCollection.h"
-#include "vtkParticle.h"
-
-#include "vtkParticleSpringSystem.h"
-
-#include "vtkMath.h"
+#include "vtkMotionEquationSolver.h"
 
 //! Implementation of the Runge-Kutta solver.
 
-class VTK_vtkParticleSpringSystem_EXPORT vtkRK4Solver : public vtkObject {
+class VTK_vtkParticleSpringSystem_EXPORT vtkRK4Solver : public vtkMotionEquationSolver {
 public:
 
 	//! Type revision macro
@@ -108,9 +101,13 @@ private:
 	vtkDoubleArray * dx3;
 	//! 3rd order derivative v
 	vtkDoubleArray * dv3;
+	//! 3rd order derivative x
+	vtkDoubleArray * dx4;
+	//! 3rd order derivative v
+	vtkDoubleArray * dv4;
 
 	//! Evaluate derivatives on each step
-	void Evaluate(vtkParticle * p, double * dX, double * dV, double deltaT);
+	void Evaluate(vtkParticleCollection * particles, vtkDoubleArray * dX, vtkDoubleArray * dV, double deltaT);
 
 	//! Reset equation motion solver
 	void Reset();

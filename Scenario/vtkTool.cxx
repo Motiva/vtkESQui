@@ -49,7 +49,6 @@ vtkTool::vtkTool() {
 	this->ToolType = NULL;
 	this->UseHaptic = 0;
 
-	this->SimpleMesh = NULL;
 	this->AppendFilter = NULL;
 
 	this->Actors = vtkActorCollection::New();
@@ -82,26 +81,22 @@ void vtkTool::Update()
 {
 	this->UpdateDirection();
 
+	if(!this->AppendFilter) this->AppendFilter = vtkAppendPolyData::New();
+	this->AppendFilter->RemoveAllInputs();
+
 	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
 	{
 		this->GetPiece(id)->Update();
+		this->AppendFilter->AddInput(this->GetPiece(id)->GetOutput());
 	}
 
-	this->UpdateSimpleMesh();
+	this->AppendFilter->Update();
 }
 
 //--------------------------------------------------------------------------
-void vtkTool::UpdateSimpleMesh()
+vtkPolyData * vtkTool::GetOutput()
 {
-	if(!this->AppendFilter) this->AppendFilter = vtkAppendPolyData::New();
-	this->AppendFilter->RemoveAllInputs();
-	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
-	{
-		this->AppendFilter->AddInput(this->GetPiece(id)->GetSimpleMesh());
-	}
-	this->AppendFilter->Update();
-
-	this->SimpleMesh = this->AppendFilter->GetOutput();
+	return this->AppendFilter->GetOutput();
 }
 
 //--------------------------------------------------------------------------

@@ -89,10 +89,7 @@ public:
 	//!Update the object
 	void Update();
 
-	//!Regenerate simplified mesh after changes due to transformations/deformations
-	void UpdateSimpleMesh();
-
-	//!Return output data as an vtkPolyData object
+	//!Return output data as a vtkPolyData object
 	/*!
 	* \sa SetInput(vtkPolyData *data)
 	*/
@@ -176,7 +173,7 @@ public:
 	* where the direction must be 0, 1, or 2 according to x, y, and z direction, and the orientation must have a value of +1 or -1
 	*/
 
-	//FIXME: gravity
+	//FIXME: gravity from vtkSimulation
 	void SetGravityInfo(vtkIdType direction, vtkIdType orientation)
 	{
 		this->GravityDirection = direction;
@@ -209,16 +206,11 @@ public:
 	*/
 	vtkGetObjectMacro(Mapper, vtkDataSetMapper);
 
-	//! Set display simple mesh
-	//vtkSetMacro(DisplaySimpleMesh, bool);
-	//! Enable/Disable simple mesh display
-	//vtkBooleanMacro(DisplaySimpleMesh, bool);
-
-	//!function that returns simplified mesh
+	//!Function that returns simplified mesh
 	/*!
 	 * This method returns a simplified mesh for collision detection purposes
 	 */
-	vtkGetObjectMacro(SimpleMesh, vtkPolyData);
+	//vtkGetObjectMacro(SimpleMesh, vtkPolyData);
 
 	//------- Biomechanical model interface methods -------//
 
@@ -314,15 +306,6 @@ protected:
 
 	//!Transform function of the organ
 	vtkTransform * Transform;
-
-	//!Simplified Mesh for collision detection purposes
-	vtkPolyData * SimpleMesh;
-
-	//!Bounding Box Mapper
-	vtkDataSetMapper * SimpleMeshMapper;
-
-	//!Bounding Box Actor
-	vtkActor * SimpleMeshActor;
 
 	vtkOrgan();
 	~vtkOrgan();

@@ -78,6 +78,12 @@ void vtkSimulationManager::Init()
 		this->CollisionDetectionLibrary->SetTools(tools);
 		this->CollisionDetectionLibrary->SetOrgans(organs);
 	}
+
+	/*vtkPolyDataMapper * surfaceMapper = vtkPolyDataMapper::New();
+	surfaceMapper->SetInput(this->CollisionDetectionLibrary->GetContactSurface());
+	vtkActor * surfaceActor = vtkActor::New();
+	surfaceActor->SetMapper(surfaceMapper);
+	this->Scenario->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->AddActor(surfaceActor);*/
 }
 
 //--------------------------------------------------------------------------

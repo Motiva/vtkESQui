@@ -10,15 +10,7 @@
 #include "vtkIdList.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
-
-#include "vtkSphereSource.h"
-#include "vtkPlaneSource.h"
-#include "vtkGlyph3D.h"
-#include "vtkDelaunay3D.h"
-#include "vtkContourFilter.h"
-#include "vtkOutlineFilter.h"
-#include "vtkCellDataToPointData.h"
-#include "vtkEdgePoints.h"
+#include "vtkCamera.h"
 
 #include "vtkPolyData.h"
 #include "vtkPolyDataWriter.h"
@@ -27,6 +19,7 @@
 #include "vtkTimerLog.h"
 #include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
+#include "vtkPointPlotter.h"
 
 #include "vtkCommand.h"
 
@@ -63,7 +56,7 @@ public:
 				this->BMM->Update();
 				timer->StopTimer();
 
-				std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
+				//std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
 
 			}
 			else if (tid == this->RenderTimerId)
@@ -113,7 +106,7 @@ private:
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/cube.vtp";
+	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/sphere12_12_1.vtp";
 
 	if (argc > 1)
 	{
@@ -143,15 +136,60 @@ int main(int argc, char * argv[])
 
 	vtkParticleSpringSystem* ParticleSpringSystem = vtkParticleSpringSystem::New();
 	ParticleSpringSystem->SetInput(mesh);
-	ParticleSpringSystem->SetSpringCoefficient(100);
-	ParticleSpringSystem->SetDistanceCoefficient(10);
-	ParticleSpringSystem->SetDampingCoefficient(2.0);//Friction
+	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
+	ParticleSpringSystem->SetSpringCoefficient(200);
+	ParticleSpringSystem->SetDistanceCoefficient(20);
+	ParticleSpringSystem->SetDampingCoefficient(1.5);//Friction
 	ParticleSpringSystem->SetMass(0.1);
 	ParticleSpringSystem->SetDeltaT(0.001);
 	ParticleSpringSystem->SetRigidityFactor(1);
 	ParticleSpringSystem->Init();
 
 	vtkRenderer * renderer = vtkRenderer::New();
+
+	//Point plotter
+	vtkPointPlotter * plotter = vtkPointPlotter::New();
+	plotter->SetRadius(0.025);
+	plotter->SetResolution(16);
+	plotter->SetRenderer(renderer);
+	plotter->Init();
+
+	//Locate contact points
+	vtkPointLocator * locator = vtkPointLocator::New();
+	double bounds[6];
+	mesh->GetBounds(bounds);
+
+	double p[3] = {bounds[1], bounds[3], bounds[5]};
+
+	locator->SetDataSet(mesh);
+
+	vtkIdList * list = vtkIdList::New();
+	vtkDoubleArray * directions = vtkDoubleArray::New();
+	directions->SetNumberOfComponents(3);
+
+	//list->InsertNextId(0);
+	locator->FindClosestNPoints(3, p, list);
+
+	//Set Contact
+	double dir[3];
+	dir[0] = 0;//-0.1;
+	dir[1] = -0.2;
+	dir[2] = 0;//0.05;
+
+	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
+	{
+		double * mp = mesh->GetPoint(list->GetId(i));
+
+		plotter->InsertPoint(mp[0], mp[1], mp[2], 0, 128, 64);
+		directions->InsertNextTuple(dir);
+	}
+
+	plotter->Update();
+
+	//Set a fictional force
+	ParticleSpringSystem->SetContacts(list, directions);
+	ParticleSpringSystem->Print(cout);
+
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
 	renWin->SetSize(500,500);
 	renWin->AddRenderer(renderer);
@@ -176,7 +214,7 @@ int main(int argc, char * argv[])
 	vtkActor * actor2 = vtkActor::New();
 	actor2->SetMapper(mapper2);
 	actor2->GetProperty()->SetColor(1,0,0);
-	//actor2->GetProperty()->SetRepresentationToWireframe();
+	actor2->GetProperty()->SetRepresentationToWireframe();
 	actor2->GetProperty()->SetOpacity(1.0);
 
 
@@ -185,7 +223,7 @@ int main(int argc, char * argv[])
 	renderer->SetBackground(1,1,1);
 
 	renderer->ResetCamera();
-
+	renderer->GetActiveCamera()->Azimuth(90);
 	iren->Initialize();
 
 	renWin->Render();
@@ -197,36 +235,6 @@ int main(int argc, char * argv[])
 	int tid;
 
 	cb->SetBMM(ParticleSpringSystem);
-
-	//Locate contact points
-	vtkPointLocator * locator = vtkPointLocator::New();
-	double bounds[6];
-	mesh->GetBounds(bounds);
-
-	//double p[3] = {bounds[0], bounds[3], bounds[5]};
-
-	locator->SetDataSet(mesh);
-
-	vtkIdList * list = vtkIdList::New();
-	vtkDoubleArray * directions = vtkDoubleArray::New();
-	directions->SetNumberOfComponents(3);
-
-	list->InsertNextId(6);
-	//locator->FindClosestNPoints(1, p, list);
-
-	//Set Contact
-	double dir[3];
-	dir[0] = 0.0;
-	dir[1] = 0.05;
-	dir[2] = 0.1;
-
-	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
-	{
-		directions->InsertNextTuple(dir);
-	}
-
-	//Set a fictional force
-	ParticleSpringSystem->SetContacts(list, directions);
 
 	//Create a faster timer for BMM update
 	tid = iren->CreateRepeatingTimer(10);

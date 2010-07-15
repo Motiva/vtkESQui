@@ -7,6 +7,7 @@ SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
+    PolyDataConnectivity
     STLtoUnstructuredGrid
     Cube
 )

@@ -4,6 +4,7 @@
 
 #include "vtkMotionEquationSolver.h"
 #include "vtkVelocityVerletSolver.h"
+#include "vtkRK4Solver.h"
 
 vtkCxxRevisionMacro(vtkParticleSpringSystem, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkParticleSpringSystem);
@@ -21,7 +22,7 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->SystemProperties = NULL;
 	this->SolverType = vtkParticleSpringSystem::VelocityVerlet;
 	this->ContactIds = NULL;
-	this->ContactDirections = NULL;
+	this->ContactDisplacements = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -162,6 +163,10 @@ void vtkParticleSpringSystem::Init()
 	{
 	case VelocityVerlet:
 		this->Solver = vtkVelocityVerletSolver::New();
+		cout << "Velocity verlet solver selected\n";
+	case RungeKutta4:
+		this->Solver = vtkRK4Solver::New();
+		cout << "Runge-Kutta45 solver selected\n";
 	default:
 		break;
 	}
@@ -176,8 +181,8 @@ void vtkParticleSpringSystem::Init()
 
 	//Initialize contact objects
 	this->ContactIds = vtkIdList::New();
-	this->ContactDirections = vtkDoubleArray::New();
-	this->ContactDirections->SetNumberOfComponents(3);
+	this->ContactDisplacements = vtkDoubleArray::New();
+	this->ContactDisplacements->SetNumberOfComponents(3);
 
 	//Raise update event
 	this->Modified();
@@ -188,11 +193,11 @@ void vtkParticleSpringSystem::Init()
 //----------------------------------------------------------------------------
 void vtkParticleSpringSystem::ComputeForces()
 {
-	//cout << "###-------------- Compute Forces -------------###" << endl;
+	double drag[3];
+
 	for(int i=0; i<this->Particles->GetNumberOfItems(); i++)
 	{
 		vtkParticle * particle = this->Particles->GetParticle(i);
-
 		//Reset Forces
 		particle->SetForce(0, 0, 0);
 
@@ -205,27 +210,15 @@ void vtkParticleSpringSystem::ComputeForces()
 
 		//TODO: Add Viscous drag force
 		//Viscous Drag
-		double drag[3];
 		particle->GetVelocity(drag);
 		vtkMath::Normalize(drag);
-
-		//Retrieve springs containing this particle
-		/*vtkIdType * links = this->Links->GetCells(i);
-		for(int j = 0; j < this->Links->GetNcells(i); j++)
-		{
-			//Retrieve pointer component -> spring Id
-			vtkIdType springId =*links;
-
-			//Spring containing particle
-			vtkSpring * spring = this->Springs->GetSpring(springId);
-			//spring->Print(cout);
-
-
-			//Increment link pointer
-			links = links+1;
-		}*/
-
 	}
+
+	double d[3];
+	double v[3];
+	double F[3];
+	double Fs[3];
+	double Fd[3];
 
 	//Process springs
 	for(int i=0; i<this->Springs->GetNumberOfItems(); i++)
@@ -233,39 +226,15 @@ void vtkParticleSpringSystem::ComputeForces()
 		vtkSpring * spring = this->Springs->GetSpring(i);
 		vtkParticle * p0 = spring->GetParticle(0);
 		vtkParticle * p1 = spring->GetParticle(1);
-		//cout << "spring[" << i << "]: " << p0->GetId() << "-" << p1->GetId() << endl;
-
-		double d[3];
 		vtkMath::Subtract(p0->GetPosition(), p1->GetPosition(), d); // d = p[0]-p[1]
-		//cout << "d: " << d[0]<<", "<< d[1] << ", " << d[2] << endl;
-
-		double v[3];
 		vtkMath::Subtract(p0->GetVelocity(), spring->GetParticle(1)->GetVelocity(), v); // v = v[0]-v[1]
-		//cout << "v: " << v[0]<<", "<< v[1] << ", " << v[2] << endl;
-
 		double L = spring->GetRestLength();
-		//cout << "L: "<< L << endl;
-
 		double dNorm = vtkMath::Norm(d);
-		//cout << "dNorm: "<< dNorm << endl;
-
 		double K = spring->GetSpringCoefficient();
 		double damping = spring->GetDampingCoefficient();
-		//double tau = spring->GetDistanceCoefficient();
-
 		double Ad = (dNorm-L);
-		//double ratio = (100*Ad)/L;
-		//TODO: Apply distance constraint
-		//if(abs(ratio) > tau)
-		//{
-		//	cout << "Ad: " << Ad << " " << ratio << endl;
-		//	Ad /=2;
-		//}
 
 		// Measure Spring/Damping Force
-		double F[3];
-		double Fs[3];
-		double Fd[3];
 		for(int j=0; j<3; j++)
 		{
 			double dD = (d[j]/dNorm);
@@ -277,9 +246,7 @@ void vtkParticleSpringSystem::ComputeForces()
 			//Add forces
 			F[j] = Fs[j] + Fd[j];
 		}
-
 		//TODO: Implement Internal Pressure Force
-
 		//Sum up all forces
 		p0->AddForce(F[0], F[1], F[2]);
 		p1->AddForce(-F[0], -F[1], -F[2]);
@@ -304,31 +271,69 @@ void vtkParticleSpringSystem::ComputeForces()
 void vtkParticleSpringSystem::SetContacts(vtkIdList * ids, vtkDoubleArray * directions)
 {
 	this->ContactIds->DeepCopy(ids);
-	this->ContactDirections->DeepCopy(directions);
+	this->ContactDisplacements->DeepCopy(directions);
 	this->Modified();
 }
 
 //----------------------------------------------------------------------------
 void vtkParticleSpringSystem::ComputeContacts()
 {
-	if(this->ContactIds && this->ContactDirections)
+	double position[3];
+	double distance[3];
+
+	if(this->ContactIds && this->ContactDisplacements)
 	{
 		for (vtkIdType i = 0; i < this->ContactIds->GetNumberOfIds(); i++)
 		{
 			//
 			vtkIdType id = this->ContactIds->GetId(i);
-			double * dir = this->ContactDirections->GetTuple3(i);
+			double * d = this->ContactDisplacements->GetTuple3(i);
 
 			vtkParticle * p = this->Particles->GetParticle(id);
+
+			//Distance Coefficient constraint
+			//Save original position
+			p->GetPosition(position);
 			p->Print(cout);
-			p->AddPosition(dir[0], dir[1], dir[2]);
-			p->Print(cout);
+			//Add contact displacement
+			p->AddPosition(d[0], d[1], d[2]);
+
+			//Retrieve springs containing this particle
+			vtkIdType * links = this->Links->GetCells(i);
+			for(int j = 0; j < this->Links->GetNcells(i); j++)
+			{
+				//Retrieve pointer component -> spring Id
+				vtkIdType springId = *links;
+
+				//Springs containing particle
+				vtkSpring * spring = this->Springs->GetSpring(springId);
+				vtkParticle * p0 = spring->GetParticle(0);
+				vtkParticle * p1 = spring->GetParticle(1);
+				//spring->Print(cout);
+
+				vtkMath::Subtract(p0->GetPosition(), p1->GetPosition(), distance); // distance = p[0]-p[1]
+				double dNorm = vtkMath::Norm(distance);
+				double L = spring->GetRestLength();
+				double ratio = 100*((dNorm-L)/L);
+				while(ratio > spring->GetDistanceCoefficient())
+				{
+					cout << "ratio: "<< ratio <<" > "<< spring->GetDistanceCoefficient() <<" distance coeff...\n";
+					p->AddPosition(-d[0]/10, -d[1]/10, -d[2]/10);
+					p->Print(cout);
+					vtkMath::Subtract(p0->GetPosition(), p1->GetPosition(), distance); // distance = p[0]-p[1]
+					dNorm = vtkMath::Norm(distance);
+					L = spring->GetRestLength();
+					ratio = 100*((dNorm-L)/L);
+				}
+				//Increment link pointer
+				links += 1;
+			}
 			p->SetContacted(1);
 		}
 
 		//Reset contact state
 		this->ContactIds->Reset();
-		this->ContactDirections->Reset();
+		this->ContactDisplacements->Reset();
 	}
 }
 

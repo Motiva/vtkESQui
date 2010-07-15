@@ -78,7 +78,6 @@ void vtkSpring::Init()
 	this->RestLength = sqrt(vtkMath::Distance2BetweenPoints(p0, p1));
 	vtkMath::Subtract(p0, p1, this->Direction);
 	vtkMath::Normalize(this->Direction);
-	//TODO: Update direction on every step
 }
 
 //----------------------------------------------------------------------------

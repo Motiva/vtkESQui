@@ -19,6 +19,8 @@ vtkRK4Solver::vtkRK4Solver()
 	this->dv2  = vtkDoubleArray::New();
 	this->dx3  = vtkDoubleArray::New();
 	this->dv3  = vtkDoubleArray::New();
+	this->dx4  = vtkDoubleArray::New();
+	this->dv4  = vtkDoubleArray::New();
 }
 
 //----------------------------------------------------------------------------
@@ -42,6 +44,8 @@ void vtkRK4Solver::Init()
 	this->dv2->DeepCopy(this->dv);
 	this->dx3->DeepCopy(this->dx);
 	this->dv3->DeepCopy(this->dv);
+	this->dx4->DeepCopy(this->dx);
+	this->dv4->DeepCopy(this->dv);
 }
 
 //----------------------------------------------------------------------------
@@ -58,41 +62,69 @@ void vtkRK4Solver::Reset()
 //----------------------------------------------------------------------------
 void vtkRK4Solver::ComputeNextStep(vtkParticleCollection * particles, double deltaT)
 {
-	this->Reset();
+	//TODO: Generalize method to vtkRK4Solver::Evaluate + params
+	double dt05 = 0.5*deltaT;
+	double dt1_6 = deltaT/6;
 
-	/*double deltaT_05 = 0.5*deltaT;
+	this->Evaluate(particles, this->dx1, this->dv1, dt05);
+	this->Evaluate(particles, this->dx2, this->dv2, dt05);
+	this->Evaluate(particles, this->dx3, this->dv3, deltaT);
+	//Add up
+	this->DeformationModel->ComputeForces();
 	for(int id=0; id<particles->GetNumberOfItems(); id++)
 	{
 		vtkParticle * part = particles->GetParticle(id);
+		double * vel = part->GetVelocity();
+		double * pos = part->GetPosition();
+		double * acc = part->GetAcceleration();
 
-		this->Evaluate(particle, this->dX->GetTuple3(id), this->dV->GetTuple3(id), deltaT_05);
-		this->Evaluate(particle, this->dX1->GetTuple3(id), this->dV1->GetTuple3(id), deltaT_05);
-		this->Evaluate(particle, this->dX2->GetTuple3(id), this->dV2->GetTuple3(id), deltaT_05);
-		this->Evaluate(particle, this->dX3->GetTuple3(id), this->dV3->GetTuple3(id), deltaT);
+		this->dv4->SetTuple(id, acc);
+		this->dx4->SetTuple(id, vel);
 
-	}*/
+		// Runge Kutta coefficients
+		// x(n+1) = xn + (dt/6)*(a+2b+2c+d)
+		double * ax = this->dx1->GetTuple(id);
+		double * bx = this->dx2->GetTuple(id);
+		double * cx = this->dx3->GetTuple(id);
+		double * dx = this->dx4->GetTuple(id);
+		double * av = this->dv1->GetTuple(id);
+		double * bv = this->dv2->GetTuple(id);
+		double * cv = this->dv3->GetTuple(id);
+		double * dv = this->dv4->GetTuple(id);
+
+		pos[0] += dt1_6 * (ax[0] + 2*bx[0] + 2*cx[0] + dx[0]);
+		pos[1] += dt1_6 * (ax[1] + 2*bx[1] + 2*cx[1] + dx[1]);
+		pos[2] += dt1_6 * (ax[2] + 2*bx[2] + 2*cx[2] + dx[2]);
+
+		vel[0] += dt1_6 * (av[0] + 2*bv[0] + 2*cv[0] + dv[0]);
+		vel[1] += dt1_6 * (av[1] + 2*bv[1] + 2*cv[1] + dv[1]);
+		vel[2] += dt1_6 * (av[2] + 2*bv[2] + 2*cv[2] + dv[2]);
+	}
 }
 
 //----------------------------------------------------------------------------
-void vtkRK4Solver::Evaluate(vtkParticle * p, double * dX, double * dV, double deltaT)
+void vtkRK4Solver::Evaluate(vtkParticleCollection * particles, vtkDoubleArray * dX, vtkDoubleArray * dV, double deltaT)
 {
 	//Compute Deformation Model Forces
 	this->DeformationModel->ComputeForces();
-	double pos[3];
-	double vel[3];
-	p->GetPosition(pos);
-	p->GetVelocity(vel);
-	for(int j=0;j<2;j++)
+	for(int id=0; id<particles->GetNumberOfItems(); id++)
 	{
-		pos[j] += dX[j]*deltaT;
-		vel[j] += dV[j]*deltaT;
+		vtkParticle * part = particles->GetParticle(id);
+		double * vel = part->GetVelocity();
+		double * pos = part->GetPosition();
+		double * acc = part->GetAcceleration();
+
+		dV->SetTuple(id, acc);
+		dX->SetTuple(id, vel);
+
+		pos[0] += deltaT*vel[0];
+		pos[1] += deltaT*vel[1];
+		pos[2] += deltaT*vel[2];
+
+		vel[0] += deltaT*acc[0];
+		vel[1] += deltaT*acc[1];
+		vel[2] += deltaT*acc[2];
 	}
-	dX[0] = vel[0];
-	dX[1] = vel[1];
-	dX[2] = vel[2];
-	dV[0] = vel[0];
-	dV[1] = vel[1];
-	dV[2] = vel[2];
 }
 
 //----------------------------------------------------------------------------

@@ -32,7 +32,7 @@ void vtkVelocityVerletSolver::Reset()
 void vtkVelocityVerletSolver::ComputeNextStep(vtkParticleCollection * particles, double dt)
 {
 
-	double dt0_5 = 0.5*dt;
+	double dt05 = 0.5*dt;
 
 	for(int id=0; id<particles->GetNumberOfItems(); id++)
 	{
@@ -41,9 +41,9 @@ void vtkVelocityVerletSolver::ComputeNextStep(vtkParticleCollection * particles,
 		double * pos = part->GetPosition();
 		double * dvi = this->dv->GetTuple(id);
 
-		vel[0] += dt0_5 * dvi[0];
-		vel[1] += dt0_5 * dvi[1];
-		vel[2] += dt0_5 * dvi[2];
+		vel[0] += dt05 * dvi[0];
+		vel[1] += dt05 * dvi[1];
+		vel[2] += dt05 * dvi[2];
 
 		//this->v1_2->SetTuple(id, vel);
 
@@ -61,9 +61,9 @@ void vtkVelocityVerletSolver::ComputeNextStep(vtkParticleCollection * particles,
 		double * vel = part->GetVelocity();
 		//double * dvi = this->dv->GetTuple(id);
 		double * dvi = part->GetAcceleration();
-		vel[0] += dt0_5 * dvi[0];
-		vel[1] += dt0_5 * dvi[1];
-		vel[2] += dt0_5 * dvi[2];
+		vel[0] += dt05 * dvi[0];
+		vel[1] += dt05 * dvi[1];
+		vel[2] += dt05 * dvi[2];
 		this->dv->SetTuple(id, dvi);
 	}
 

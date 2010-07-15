@@ -176,11 +176,11 @@ public:
 	 */
 	vtkGetObjectMacro(RenderWindow, vtkRenderWindow);
 
-	//!Get piece bounding box
+	//!Get piece polydata output
 	/*!
-	 * Bounding box of the piece for collision detection optimization
+	 * Get transformed polydata for collision detection purposes
 	 */
-	vtkPolyData * GetSimpleMesh();
+	vtkPolyData * GetOutput();
 
 	//!Get transform function
 	/*!
@@ -199,9 +199,6 @@ public:
 	 * The piece actor will be used for displaying purposes
 	 */
 	vtkGetObjectMacro(Actor, vtkActor);
-
-	//!Return bounding box actor
-	vtkActor * GetSimpleMeshActor(){return this->SimpleMeshActor;};
 
 	//!Print class values
 	void PrintSelf(ostream& os,vtkIndent indent);
@@ -251,19 +248,6 @@ private:
 
 	//!Tool piece actor
 	vtkActor * Actor;
-
-	//Bounding Box displaying purposes
-	//!OBBTree
-	vtkOBBTree * OBB;
-
-	//!Simple Mesh
-	vtkPolyData * SimpleMesh;
-
-	//!Bounding Box Mapper
-	vtkDataSetMapper * SimpleMeshMapper;
-
-	//!Bounding Box Actor
-	vtkActor * SimpleMeshActor;
 
 };
 #endif

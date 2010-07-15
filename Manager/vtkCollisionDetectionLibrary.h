@@ -80,6 +80,7 @@ public:
 	virtual void Init() = 0;
 	//ETX
 
+	virtual vtkPolyData * GetContactSurface() = 0;
 	//! Specify the organs to be checked in the collision detection process
 	vtkSetObjectMacro(Organs, vtkOrganCollection);
 	//! Specify the tools to be checked in the collision detection process

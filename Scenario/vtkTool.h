@@ -130,18 +130,11 @@ public:
 	* This method updates the tool physical values, scale, position, etc...
 	*/
 	virtual void Update();
-
-	//!Abstract initialization function
+	//!function that returns transformed polydata
 	/*!
-	* This method updates the simplified mesh physical values, scale, position, etc...
+	* This method returns the transformed polydata for collision detection purposes
 	*/
-	virtual void UpdateSimpleMesh();
-
-	//!function that returns simplified mesh
-	/*!
-	 * This method returns a simplified mesh for collision detection purposes
-	 */
-	vtkGetObjectMacro(SimpleMesh, vtkPolyData);
+	virtual vtkPolyData * GetOutput();
 
 	//! Applies the initial transformation to the tool loaded from vtk files
 	/*!
@@ -240,9 +233,6 @@ protected:
 
 	//! Appended Polydata
 	vtkAppendPolyData *AppendFilter;
-
-	//!Simplified Mesh for collision detection purposes
-	vtkPolyData * SimpleMesh;
 
 	// **** Geometrical Functions **** //
 	//! Implements the translation of the tool (Local coordinate system)
