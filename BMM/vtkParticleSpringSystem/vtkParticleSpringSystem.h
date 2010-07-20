@@ -120,6 +120,13 @@ public:
 	//! Set motion equation solver type.
 	vtkSetMacro(SolverType, MotionEquationSolverType);		// Motion equation solver type
 
+	//! Set particle status
+	/*!
+	 * 0: Free
+	 * 1: Fixed
+	 */
+	void SetParticleStatus(vtkIdType id, bool status);
+
 	//! Set particle-spring system contacts
 	/*!
 	 * \param ids List of particle ids
@@ -182,6 +189,9 @@ protected:
 private:
 	vtkParticleSpringSystem(const vtkParticleSpringSystem&);            // Not implemented.
 	void operator=(const vtkParticleSpringSystem&);           // Not implemented.
+
+	//! Create a new spring between two particles
+	void CreateSpring(vtkParticle * p0, vtkParticle * p1);
 
 	//! Compute inserted contacts
 	void ComputeContacts();

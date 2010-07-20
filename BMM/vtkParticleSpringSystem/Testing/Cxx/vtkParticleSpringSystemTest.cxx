@@ -138,11 +138,11 @@ int main(int argc, char * argv[])
 	ParticleSpringSystem->SetInput(mesh);
 	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
 	ParticleSpringSystem->SetSpringCoefficient(200);
-	ParticleSpringSystem->SetDistanceCoefficient(20);
+	ParticleSpringSystem->SetDistanceCoefficient(10);
 	ParticleSpringSystem->SetDampingCoefficient(1.5);//Friction
 	ParticleSpringSystem->SetMass(0.1);
 	ParticleSpringSystem->SetDeltaT(0.001);
-	ParticleSpringSystem->SetRigidityFactor(1);
+	ParticleSpringSystem->SetRigidityFactor(2);
 	ParticleSpringSystem->Init();
 
 	vtkRenderer * renderer = vtkRenderer::New();
@@ -215,7 +215,6 @@ int main(int argc, char * argv[])
 	actor2->SetMapper(mapper2);
 	actor2->GetProperty()->SetColor(1,0,0);
 	actor2->GetProperty()->SetRepresentationToWireframe();
-	actor2->GetProperty()->SetOpacity(1.0);
 
 
 	//renderer->AddActor(actor);

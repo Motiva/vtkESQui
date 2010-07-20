@@ -91,7 +91,7 @@ int vtkRDMInterface::RequestData(
     }
 
     this->RDMMesh->SetInput(input);
-    this->RDMMesh->SetContacts(this->ContactPointIds, this->ContactDirections);
+    this->RDMMesh->SetContacts(this->ContactPointIds, this->ContactDisplacements);
 
     this->RDMMesh->Update();
 

@@ -18,6 +18,7 @@ SET(vtkParticleSpringSystem_SRCS
   vtkSpring.cxx
   vtkSpringCollection.cxx
   vtkMotionEquationSolver.cxx
+  vtkEulerSolver.cxx
   vtkRK4Solver.cxx
   vtkVelocityVerletSolver.cxx
 )

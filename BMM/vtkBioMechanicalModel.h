@@ -128,7 +128,7 @@ protected:
 	vtkIdList * ContactCellIds;
 
 	//!Contact direction of each contact points
-	vtkDoubleArray * ContactDirections;
+	vtkDoubleArray * ContactDisplacements;
 
 private:
 	vtkBioMechanicalModel(const vtkBioMechanicalModel &); //NotImplemented

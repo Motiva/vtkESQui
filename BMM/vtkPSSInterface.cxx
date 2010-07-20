@@ -78,7 +78,7 @@ int vtkPSSInterface::RequestData(
 	//vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 	this->ParticleSpringSystem->SetInput(this->GetInput());
-	this->ParticleSpringSystem->SetContacts(this->ContactPointIds, this->ContactDirections);
+	this->ParticleSpringSystem->SetContacts(this->ContactPointIds, this->ContactDisplacements);
 	this->ParticleSpringSystem->Update();
 
 	this->GetOutput()->ShallowCopy(this->ParticleSpringSystem->GetOutput());

@@ -91,7 +91,7 @@ int vtkMSSInterface::RequestData(
 		input->Update();
 	}
 
-	this->MSSMesh->SetContacts(this->ContactPointIds, this->ContactDirections);
+	this->MSSMesh->SetContacts(this->ContactPointIds, this->ContactDisplacements);
 	this->MSSMesh->Update();
 
 	vtkPoints * points = this->MSSMesh->GetOutput()->GetPoints();

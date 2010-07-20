@@ -53,8 +53,8 @@ vtkBioMechanicalModel::vtkBioMechanicalModel()
 	this->ContactPointIds = vtkIdList::New();
 	this->ContactCellIds = vtkIdList::New();
 
-	this->ContactDirections = vtkDoubleArray::New();
-	this->ContactDirections->SetNumberOfComponents(3);
+	this->ContactDisplacements = vtkDoubleArray::New();
+	this->ContactDisplacements->SetNumberOfComponents(3);
 
 	this->Name = NULL;
 
@@ -67,7 +67,7 @@ vtkBioMechanicalModel::~vtkBioMechanicalModel()
 	this->ContactPoints->Delete();
 	this->ContactPointIds->Delete();
 	this->ContactCellIds->Delete();
-	this->ContactDirections->Delete();
+	this->ContactDisplacements->Delete();
 }
 
 //--------------------------------------------------------------------------
@@ -97,7 +97,7 @@ void vtkBioMechanicalModel::Clear()
 	this->ContactPoints->Reset();
 	this->ContactPointIds->Reset();
 	this->ContactCellIds->Reset();
-	this->ContactDirections->Reset();
+	this->ContactDisplacements->Reset();
 }
 
 //--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ void vtkBioMechanicalModel::InsertNextContact(vtkContact* contact)
 	this->ContactPointIds->InsertNextId(contact->GetOrganPointId());
 	this->ContactCellIds->InsertNextId(contact->GetOrganCellId());
 
-	this->ContactDirections->InsertNextTuple(contact->GetDirectionVector());
+	this->ContactDisplacements->InsertNextTuple(contact->GetDirectionVector());
 
 	this->Modified();
 }

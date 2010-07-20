@@ -81,8 +81,10 @@ public:
 	vtkGetMacro(Mass, double);						// Mass of the particle
 	//! Get particle inverse mass
 	vtkGetMacro(InverseMass, double);
-	//! Get is particle is fixed
+	//! Set is particle status as fixed
 	vtkSetMacro(Fixed, bool);						// Fix particle
+	//! Set is particle status as fixed
+	vtkGetMacro(Fixed, bool);
 	//! Set particle as contacted
 	vtkSetMacro(Contacted, bool);					// Contacted particle
 	//! Get if particle is contacted
