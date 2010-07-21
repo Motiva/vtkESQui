@@ -100,8 +100,6 @@ using namespace LSWExampleNS;
 void LSWExampleNS::UpdateHaptic(vtkLSW * Haptic)
 {
 
-	float * state;
-	float * direction;
 	float yaw;
 	float pitch;
 	float depth;

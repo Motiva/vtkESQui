@@ -42,6 +42,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLSW.h"
 #include "vtkObjectFactory.h"
 
+#include "vtkMath.h"
+
+#include "vtkLSWTool.h"
+
 vtkCxxRevisionMacro(vtkLSW, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkLSW);
 

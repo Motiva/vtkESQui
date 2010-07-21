@@ -41,11 +41,11 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #ifndef _vtkVSP_h
 #define _vtkVSP_h
+
 #include "vtkESQuiHapticsWin32Header.h"
 #include "vtkHaptic.h"
 
-class XiControlPanelState;
-class XiCathState;
+#include "XiCathInterface.h"
 
 //! Class vtkVSP, wraps the VSP haptic device
 class VTK_ESQUI_HAPTICS_EXPORT vtkVSP:public vtkHaptic

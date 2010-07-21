@@ -41,12 +41,14 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #ifndef _vtkEsquiHaptics_h
 #define _vtkEsquiHaptics_h
-#include "vtkESQuiHapticsWin32Header.h"
 
+#include "vtkESQuiHapticsWin32Header.h"
 #include "vtkHaptic.h"
-#include "vtkLSWTool.h"
-#include "vtkMath.h"
-#include <stdio.h>
+
+class vtkLSWTool;
+//BTX
+class ImmSurgicalWorkstation;
+//ETX
 
 static const unsigned VTK_CORRECT_LSW = 1;
 static const unsigned VTK_DETECT_FAILURE_LSW = 0;
@@ -57,7 +59,6 @@ class VTK_ESQUI_HAPTICS_EXPORT vtkLSW:public vtkHaptic
 {
 
 public:
-	ç
 	//! Type revision macro
 	vtkTypeRevisionMacro(vtkLSW, vtkHaptic);
 	//! Create new vtkLSW object

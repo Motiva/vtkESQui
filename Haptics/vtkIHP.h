@@ -43,12 +43,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define _vtkVSP_h
 #include "vtkESQuiHapticsWin32Header.h"
 
-#include "vtkObjectFactory.h"
-#include "vtkMath.h"
 #include "vtkHaptic.h"
 #include "XiTrocarInterface.h"
-#include <stdio.h>
-//! Class vtkVSP, wraps the IHP haptic device
+
+//! Class vtkIHP, wraps the IHP haptic device
 class VTK_ESQUI_HAPTICS_EXPORT vtkIHP:public vtkHaptic
 {
 

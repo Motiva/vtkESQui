@@ -44,6 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkObject.h"
 #include "vtkESQuiHapticsWin32Header.h"
+
 #include "ImmSurgicalWorkstation.h"
 
 #define vtk_WITHOUTCONTACT 1   		// sin contacto
@@ -92,7 +93,7 @@ typedef struct {
 	double StickRotate, RingRotate;		// Valor en radianes del giro de la herramienta entera
 									// y de la rosca
 	//! Tool aperture
-	Aperture;					// Valor de la apertura de la pinza normalizado entre [0,1]
+	bool Aperture;					// Valor de la apertura de la pinza normalizado entre [0,1]
 								// 0->Pinza cerrada		1->Pinza abierta
 	//! Imm class
 	ImmCoord3 Force, Position;

@@ -42,7 +42,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkVSP.h"
 
 #include "vtkObjectFactory.h"
-#include "XiCathInterface.h"
 
 vtkCxxRevisionMacro(vtkVSP, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkVSP);
@@ -162,7 +161,7 @@ float vtkVSP::GetRightJoystickXPosition(){
 //Control panel buttons state
 
 //--------------------------------------------------------------------------
-int GetButtonsState(){
+int vtkVSP::GetButtonsState(){
 	return this->DevicePanel.buttons;
 }
 

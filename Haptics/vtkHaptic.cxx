@@ -40,9 +40,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkHaptic.h"
-#include <iostream>
 
-using namespace std;
+#include "vtkObjectFactory.h"
 
 vtkCxxRevisionMacro(vtkHaptic, "$Revision: 0.1 $");
 
@@ -83,8 +82,8 @@ int vtkHaptic::GetNumberOfTools()
 //--------------------------------------------------------------------------
 void vtkHaptic::PrintSelf(ostream& os,vtkIndent indent) {
 
-this->Superclass::PrintSelf(os, indent);
+	this->Superclass::PrintSelf(os, indent);
 
-os << indent << "Name: " << this->Name << endl;
+	os << indent << "Name: " << this->Name << std::endl;
 
 }

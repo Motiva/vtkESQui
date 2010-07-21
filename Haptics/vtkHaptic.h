@@ -42,10 +42,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkHaptics
 #define __vtkHaptics
 
-#include "vtkObject.h"
 #include "vtkESQuiHapticsWin32Header.h"
-
-
+#include "vtkObject.h"
 
 //! Generic Haptic Class
 

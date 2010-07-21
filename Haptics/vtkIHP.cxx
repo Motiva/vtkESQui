@@ -41,6 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkIHP.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkMath.h"
+
 vtkCxxRevisionMacro(vtkIHP, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkIHP);
 
