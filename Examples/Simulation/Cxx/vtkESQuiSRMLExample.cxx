@@ -59,8 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
 namespace EsquiExampleNS{
 	//All these objects must be defined globally, in order to access them on timer callback
 	//Note: Global variables may have its first letter on uppercase
-	const char * ExpandDataFileName(const char * fname);
-	//const char * path ="C:/Workspace/data/vtkESQuiData";
+	const char * ExpandDataFileName(const char * pname, const char * fname);
 	const char * path ="/home/jballesteros/Workspace/data/vtkESQuiData";
 }
 
@@ -72,12 +71,12 @@ using namespace EsquiExampleNS;
  * The scenario will be imported from an SRML file that contains all the info .
  */
 
-const char * EsquiExampleNS::ExpandDataFileName(const char * fname)
+const char * EsquiExampleNS::ExpandDataFileName(const char * pname, const char * fname)
 {
 	char * fullName;
-	fullName = new char[strlen(path) + 1 + strlen(fname)];
+	fullName = new char[strlen(pname) + 1 + strlen(fname)];
 	fullName[0] = 0;
-	strcat(fullName, path);
+	strcat(fullName, pname);
 	size_t len = strlen(fullName);
 	fullName[len] = '/';
 	fullName[len+1] = 0;
@@ -90,6 +89,12 @@ const char * EsquiExampleNS::ExpandDataFileName(const char * fname)
 
 int main(int argc, char * argv[])
 {
+	if (argc > 1)
+	{
+		path = argv[1];
+	}
+	const char * filename = ExpandDataFileName(path, "laparoscopy.srml");
+
 	/**********  Render Window Definitions  ********/
 	vtkRenderer *ren1= vtkRenderer::New();
 	ren1->SetBackground(1.0,1.0,1.0);
@@ -121,7 +126,7 @@ int main(int argc, char * argv[])
 	/**********  Simulation Import from SRML File  ********/
 	vtkSRMLImporter * Importer = vtkSRMLImporter::New();
 	Importer->SetDataPath(path);
-	Importer->SetFileName(ExpandDataFileName("laparoscopy.srml"));
+	Importer->SetFileName(filename);
 	Importer->SetSimulation(Simulation);
 	Importer->Read();
 
