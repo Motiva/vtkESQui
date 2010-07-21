@@ -50,7 +50,6 @@ int main(int, char *[])
 
 	//vtkUnstructuredGrid * grid = del->GetOutput();
 	vtkPolyData * grid = surface->GetOutput();
-	vtkPoints * points = grid->GetPoints();
 
 	vtkSmartPointer<vtkIdList> cells = vtkSmartPointer<vtkIdList>::New();
 	vtkSmartPointer<vtkIdList> cellPoints = vtkSmartPointer<vtkIdList>::New();

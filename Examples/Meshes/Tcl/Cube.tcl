@@ -10,12 +10,11 @@ cube SetYLength 0.5
 cube SetZLength 0.5
 cube Update
 
-vtkDelaunay3D cubeMesh
-cubeMesh SetInput [ cube GetOutput ]
-cubeMesh Update
+vtkCleanPolyData clean
+clean SetInput [cube GetOutput]
 
-writer SetInput [ cubeMesh GetOutput ]
+writer SetInput [ clean GetOutput ]
 writer SetDataModeToAscii
-set filename "cube.vtu"
+set filename "cube.vtp"
 writer SetFileName $filename
 writer Update
