@@ -44,7 +44,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkCollection.h"
 #include "vtkESQuiScenarioWin32Header.h"
-#include "vtkOrgan.h"
+
+class vtkOrgan;
 
 //!  Collection of organs
 /*! 

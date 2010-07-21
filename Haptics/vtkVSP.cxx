@@ -40,6 +40,10 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkVSP.h"
+
+#include "vtkObjectFactory.h"
+#include "XiCathInterface.h"
+
 vtkCxxRevisionMacro(vtkVSP, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkVSP);
 
@@ -135,7 +139,33 @@ void vtkVSP::GetRightJoystickState(float *data1,float *data2) {
 	*data2 = this->DevicePanel.joyLeft.up;
 }
 
+//--------------------------------------------------------------------------
+float vtkVSP::GetLeftJoystickYPosition(){
+	return this->DevicePanel.joyLeft.up;
+}
+
+//--------------------------------------------------------------------------
+float vtkVSP::GetLeftJoystickXPosition(){
+	return this->DevicePanel.joyLeft.right;
+}
+
+//--------------------------------------------------------------------------
+float vtkVSP::GetRightJoystickYPosition(){
+	return this->DevicePanel.joyRight.up;
+}
+
+//--------------------------------------------------------------------------
+float vtkVSP::GetRightJoystickXPosition(){
+	return this->DevicePanel.joyRight.right;
+}
+
 //Control panel buttons state
+
+//--------------------------------------------------------------------------
+int GetButtonsState(){
+	return this->DevicePanel.buttons;
+}
+
 //--------------------------------------------------------------------------
 int vtkVSP::GetZoomState()
 {
@@ -254,6 +284,21 @@ float vtkVSP::GetCatheter2Depth() {
 //--------------------------------------------------------------------------
 float vtkVSP::GetCatheter2Roll() {
 	return this->Catheter2.cwRoll;
+}
+
+//--------------------------------------------------------------------------
+float vtkVSP::GetStentDeployment(){
+	return this->DevicePanel.stentDeployment;
+}
+
+//--------------------------------------------------------------------------
+float vtkVSP::GetContrastFlow(){
+	return this->DevicePanel.contrastFlow;
+}
+
+//--------------------------------------------------------------------------
+float vtkVSP::GetInflationPressure(){
+	return this->DevicePanel.inflationPressure;
 }
 
 /*void vtkVSP::PrintSelf(ostream & os, vtkIndent indent)

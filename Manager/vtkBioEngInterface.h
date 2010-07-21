@@ -43,22 +43,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkBioEngInterface_h
 
 #include "vtkESQuiManagerWin32Header.h"
-
-#include "vtkObjectFactory.h"
 #include "vtkCollisionDetectionLibrary.h"
-#include "vtkCollisionDetectionFilter.h"
-#include "vtkPolyDataCollection.h"
-#include "vtkTool.h"
-#include "vtkToolCollection.h"
-#include "vtkOrgan.h"
-#include "vtkOrganCollection.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
-#include "vtkPoints.h"
-#include "vtkGenericCell.h"
-#include "vtkTriangle.h"
-#include "vtkCell.h"
-#include "vtkPointLocator.h"
+
+class vtkCollisionDetectionFilter;
+class vtkMatrix4x4;
 
 //! Interface to the collision detection library
 

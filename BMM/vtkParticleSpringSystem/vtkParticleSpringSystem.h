@@ -43,24 +43,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkParticleSpringSystem_h
 
 #include "vtkParticleSpringSystemWin32Header.h"
-#include "vtkInformation.h"
-#include "vtkInformationVector.h"
-
 #include "vtkPolyDataAlgorithm.h"
-#include "vtkPolyData.h"
-#include "vtkIdList.h"
-#include "vtkPoints.h"
-#include "vtkPointData.h"
-#include "vtkDoubleArray.h"
 
-#include "vtkMassProperties.h"
-#include "vtkSpring.h"
-#include "vtkSpringCollection.h"
-#include "vtkParticle.h"
-#include "vtkParticleCollection.h"
-#include "vtkCellLinks.h"
-#include "vtkCell.h"
+class vtkMassProperties;
 
+class vtkSpring;
+class vtkSpringCollection;
+class vtkParticle;
+class vtkParticleCollection;
 
 //BTX
 class vtkMotionEquationSolver;

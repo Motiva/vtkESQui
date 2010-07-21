@@ -41,6 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkTimerCallback.h"
 
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+
 vtkTimerCallback::vtkTimerCallback()
 {
 	this->FasterTimerId = 0;

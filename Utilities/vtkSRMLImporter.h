@@ -43,31 +43,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkSRMLImporter_h
 
 #include "vtkESQuiUtilitiesWin32Header.h"
-
-#include "vtkObjectFactory.h"
-#include "vtkObject.h"
 #include "vtkImporter.h"
-#include "vtkXMLDataParser.h"
-#include "vtkXMLDataElement.h"
-#include "vtkDataSet.h"
-#include "vtkCamera.h"
-#include "vtkLight.h"
-#include "vtkLightCollection.h"
-#include "vtkActor.h"
-#include "vtkActorCollection.h"
 
 #include "vtkSimulation.h"
 #include "vtkScenario.h"
-#include "vtkTool.h"
-#include "vtkToolCollection.h"
-#include "vtkPiece.h"
-#include "vtkPieceCollection.h"
-#include "vtkToolPincers.h"
-#include "vtkOrgan.h"
-#include "vtkOrganCollection.h"
-#include "vtkMSSInterface.h"
-#include "vtkPSSInterface.h"
-#include "vtkRDMInterface.h"
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	#include "vtkHaptic.h"
@@ -75,6 +54,17 @@ POSSIBILITY OF SUCH DAMAGE.
 	#include "vtkVSP.h"
 	#include "vtkLSW.h"
 #endif
+
+class vtkXMLDataElement;
+class vtkXMLDataParser;
+class vtkCamera;
+class vtkLight;
+class vtkActor;
+
+class vtkTool;
+class vtkToolPincers;
+class vtkOrgan;
+class vtkBioMechanicalModel;
 
 //! Import an SRML scenario file into vtkESQui platform
 

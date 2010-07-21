@@ -41,6 +41,10 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkContact.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkPoints.h"
+#include "vtkIdList.h"
+
 vtkCxxRevisionMacro(vtkContact, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkContact);
 
@@ -63,6 +67,71 @@ vtkContact::~vtkContact()
 	this->PointIds->Delete();
 	this->CellIds->Delete();
 	this->Points->Delete();
+}
+
+//--------------------------------------------------------------------------
+void vtkContact::InsertPointId(int position, int id)
+{
+	this->PointIds->InsertId(position, id);
+}
+
+//--------------------------------------------------------------------------
+int vtkContact::GetPointId(int position){
+	return this->PointIds->GetId(position);
+}
+
+//--------------------------------------------------------------------------
+int vtkContact::GetOrganPointId(){
+	return this->PointIds->GetId(0);
+}
+
+//--------------------------------------------------------------------------
+int vtkContact::GetToolPointId(){
+	return this->PointIds->GetId(1);
+}
+//--------------------------------------------------------------------------
+void vtkContact::InsertPoint(int position, double x, double y, double z) {
+	this->Points->InsertPoint(position, x, y, z);
+}
+
+//--------------------------------------------------------------------------
+void vtkContact::InsertPoint(int position, double point[3]) {
+	this->InsertPoint(position, point[0],point[1],point[2]);
+}
+
+//--------------------------------------------------------------------------
+double * vtkContact::GetPoint(int position){
+	return this->Points->GetPoint(position);
+}
+
+//--------------------------------------------------------------------------
+double * vtkContact::GetOrganPoint(){
+	return this->Points->GetPoint(0);
+}
+
+//--------------------------------------------------------------------------
+double * vtkContact::GetToolPoint(){
+	return this->Points->GetPoint(1);
+}
+
+//--------------------------------------------------------------------------
+void vtkContact::InsertCellId(int position, vtkIdType value){
+	this->CellIds->InsertId(position, value);
+}
+
+//--------------------------------------------------------------------------
+int vtkContact::GetCellId(int position){
+	return this->CellIds->GetId(position);
+}
+
+//--------------------------------------------------------------------------
+int vtkContact::GetOrganCellId(){
+	return this->CellIds->GetId(0);
+}
+
+//--------------------------------------------------------------------------
+int vtkContact::GetToolCellId(){
+	return this->CellIds->GetId(1);
 }
 
 //--------------------------------------------------------------------------

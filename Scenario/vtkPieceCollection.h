@@ -42,9 +42,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkPieceCollection_h
 #define __vtkPieceCollection_h
 
-#include "vtkCollection.h"
-#include "vtkPiece.h"
 #include "vtkESQuiScenarioWin32Header.h"
+#include "vtkCollection.h"
+
+class vtkPiece;
 
 //!Collection of Pieces
 class VTK_ESQUI_SCENARIO_EXPORT vtkPieceCollection : public vtkCollection

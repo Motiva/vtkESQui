@@ -41,6 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkOrganCollection.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkOrgan.h"
+
 vtkCxxRevisionMacro(vtkOrganCollection, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkOrganCollection);
 

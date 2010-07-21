@@ -43,17 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkParticle_h
 
 #include "vtkParticleSpringSystemWin32Header.h"
-
-#include "vtkObjectFactory.h"
-#include "vtkCollection.h"
-#include "vtkUnstructuredGrid.h"
-#include "vtkIdList.h"
-#include "vtkPoints.h"
-#include "vtkPointData.h"
-#include "vtkDoubleArray.h"
-#include "vtkCellArray.h"
-
-#include "vtkMath.h"
+#include "vtkObject.h"
 
 //! Implementation of a system particle
 /*!

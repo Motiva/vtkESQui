@@ -42,6 +42,18 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkPointPlotter.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkRenderer.h"
+#include "vtkProperty.h"
+#include "vtkGlyph3D.h"
+#include "vtkSphereSource.h"
+#include "vtkUnsignedCharArray.h"
+#include "vtkPoints.h"
+#include "vtkPointData.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataMapper.h"
+
+
 vtkCxxRevisionMacro(vtkPointPlotter, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkPointPlotter);
 

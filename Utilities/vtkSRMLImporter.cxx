@@ -41,6 +41,30 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkSRMLImporter.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkObject.h"
+#include "vtkXMLDataParser.h"
+#include "vtkXMLDataElement.h"
+#include "vtkRenderer.h"
+#include "vtkRendererCollection.h"
+#include "vtkDataSet.h"
+#include "vtkCamera.h"
+#include "vtkLight.h"
+#include "vtkLightCollection.h"
+#include "vtkActor.h"
+#include "vtkActorCollection.h"
+
+#include "vtkTool.h"
+#include "vtkToolCollection.h"
+#include "vtkPiece.h"
+#include "vtkPieceCollection.h"
+#include "vtkToolPincers.h"
+#include "vtkOrgan.h"
+#include "vtkOrganCollection.h"
+#include "vtkMSSInterface.h"
+#include "vtkPSSInterface.h"
+#include "vtkRDMInterface.h"
+
 #include <sys/stat.h>
 #include <assert.h>
 

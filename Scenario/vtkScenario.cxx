@@ -83,6 +83,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkScenario.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkRendererCollection.h"
+#include "vtkPoints.h"
+
+#include "vtkOrgan.h"
+#include "vtkOrganCollection.h"
+#include "vtkTool.h"
+#include "vtkToolCollection.h"
+
 vtkCxxRevisionMacro(vtkScenario, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkScenario);
 

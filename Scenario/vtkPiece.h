@@ -44,21 +44,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkPiece_h
 #define __vtkPiece_h
 
-#include "vtkObject.h"
-#include "vtkObjectFactory.h"
-#include "vtkPolyDataReader.h"
-#include "vtkPolyData.h"
-#include "vtkTransform.h"
-#include "vtkTransformPolyDataFilter.h"
-#include "vtkActor.h"
-#include "vtkProperty.h"
-#include "vtkDataSetMapper.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderer.h"
-#include "vtkRendererCollection.h"
-#include "vtkOBBTree.h"
-
 #include "vtkESQuiScenarioWin32Header.h"
+#include "vtkObject.h"
+
+#include "vtkRenderWindow.h"
+#include "vtkDataSetMapper.h"
+#include "vtkTransform.h"
+
+class vtkPolyData;
+class vtkPolyDataReader;
+class vtkTransformPolyDataFilter;
 
 //!This class defines an standard vtkTool piece
 //TODO: Migrate this class to vtkScenarioItem. vtkTool must not inherit vtkScenarioItem
@@ -154,13 +149,13 @@ public:
 	/*!
 	 * Piece Polydata contains all the info required for displaying the piece
 	 */
-	void SetPolyData(vtkPolyData * polyData){this->PolyData->DeepCopy(polyData);};
+	void SetPolyData(vtkPolyData * polyData);
 
 	//!Get piece polydata
 	/*!
 	 * Piece Polydata contains all the info required for displaying
 	 */
-	vtkPolyData * GetPolyData(){return this->PolyData;};
+	vtkPolyData * GetPolyData();
 
 	// **** Graphical Purposes Methods **** //
 

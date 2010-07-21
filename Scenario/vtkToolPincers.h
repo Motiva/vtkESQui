@@ -43,15 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkToolGPincers_h
 
 #include "vtkESQuiScenarioWin32Header.h"
-
 #include "vtkToolLaparoscopy.h"
-#include "vtkPoints.h"
-#include "vtk3DSImporterEsqui.h"
-#include "vtkPolyDataReader.h"
-#include "vtkTransformPolyDataFilter.h"
-
-#include "vtkDoubleArray.h"
-#include "vtkStringArray.h"
 
 //! Implementation class of pincers
 /*!

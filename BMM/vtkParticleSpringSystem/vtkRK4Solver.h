@@ -43,8 +43,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkRK4Solver_h
 
 #include "vtkParticleSpringSystemWin32Header.h"
-
-#include "vtkObjectFactory.h"
 #include "vtkMotionEquationSolver.h"
 
 //! Implementation of the Runge-Kutta solver.

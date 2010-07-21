@@ -43,19 +43,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkSpring_h
 
 #include "vtkParticleSpringSystemWin32Header.h"
+#include "vtkObject.h"
 
-#include "vtkObjectFactory.h"
-#include "vtkUnstructuredGrid.h"
-#include "vtkIdList.h"
-#include "vtkPoints.h"
-#include "vtkPointData.h"
-#include "vtkDoubleArray.h"
-#include "vtkCellArray.h"
-
-#include "vtkParticleCollection.h"
-#include "vtkParticle.h"
-
-#include "vtkMath.h"
+class vtkParticle;
+class vtkParticleCollection;
 
 //! Implementation of a system spring
 /*!

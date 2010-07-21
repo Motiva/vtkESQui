@@ -45,8 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkEulerSolver_h
 
 #include "vtkParticleSpringSystemWin32Header.h"
-
-#include "vtkObjectFactory.h"
 #include "vtkMotionEquationSolver.h"
 
 //! Implementation of the semi-implicit Euler solver.

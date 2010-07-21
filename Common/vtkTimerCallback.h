@@ -45,8 +45,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkESQuiCommonWin32Header.h"
 #include "vtkCommand.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
+
+class vtkRenderWindowInteractor;
 
 //! Implementation of a standard timer
 class VTK_ESQUI_COMMON_EXPORT vtkTimerCallback : public vtkCommand {

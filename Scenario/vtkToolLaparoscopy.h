@@ -43,10 +43,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkToolLaparoscopy
 
 #include "vtkESQuiScenarioWin32Header.h"
-
-#include "vtkObject.h"
-#include "vtkTransform.h"
-#include "vtkTransformCollection.h"
 #include "vtkTool.h"
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
@@ -89,12 +85,6 @@ public:
 
 	//!Specific initialization function
 	void ApplyInitialTransform();
-
-	//!Abstract update function
-	/*!
-	* This method updates the tool physical values, scale, position, etc...
-	*/
-	//virtual void Update() = 0;
 
 	//!Assign the haptic force as vector
 	/*!

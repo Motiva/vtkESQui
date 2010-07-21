@@ -42,6 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 #include "vtkContactCollection.h"
 
+#include "vtkContact.h"
 
 vtkCxxRevisionMacro(vtkContactCollection, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkContactCollection);

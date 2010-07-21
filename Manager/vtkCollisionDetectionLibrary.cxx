@@ -40,6 +40,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkCollisionDetectionLibrary.h"
+
 vtkCxxRevisionMacro(vtkCollisionDetectionLibrary, "$Revision: 0.1 $");
 
 vtkCollisionDetectionLibrary::vtkCollisionDetectionLibrary(){

@@ -42,20 +42,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef vtkCollisionDetectionLibrary_h
 #define vtkCollisionDetectionLibrary_h
 
-#ifdef WIN32
-#include <vector>
-#else
-#include <vector>
-#endif
-
-#include "vtkObject.h"
 #include "vtkESQuiManagerWin32Header.h"
-#include "vtkOrgan.h"
+#include "vtkObject.h"
+
 #include "vtkOrganCollection.h"
-#include "vtkTool.h"
 #include "vtkToolCollection.h"
-#include "vtkContact.h"
 #include "vtkContactCollection.h"
+
+class vtkPolyData;
 
 //! Generic interface of the Collision Detection Library
 

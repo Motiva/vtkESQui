@@ -41,6 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkToolCollection.h"
 
+#include "vtkTool.h"
+
 vtkCxxRevisionMacro(vtkToolCollection, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------

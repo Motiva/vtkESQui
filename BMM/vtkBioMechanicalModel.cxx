@@ -39,7 +39,21 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
+
 #include "vtkBioMechanicalModel.h"
+
+#include "vtkObjectFactory.h"
+#include "vtkStreamingDemandDrivenPipeline.h"
+#include "vtkInformationVector.h"
+#include "vtkInformation.h"
+#include "vtkDataObject.h"
+#include "vtkPolyData.h"
+#include "vtkDoubleArray.h"
+#include "vtkIntArray.h"
+#include "vtkIdList.h"
+
+#include "vtkContactCollection.h"
+#include "vtkContact.h"
 
 vtkCxxRevisionMacro(vtkBioMechanicalModel, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkBioMechanicalModel);
@@ -71,19 +85,19 @@ vtkBioMechanicalModel::~vtkBioMechanicalModel()
 }
 
 //--------------------------------------------------------------------------
-int vtkBioMechanicalModel::RequestData(
-    vtkInformation *vtkNotUsed(request),
-    vtkInformationVector **inputVector,
-    vtkInformationVector *outputVector) {
-    // get the info objects
-    //vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-    //vtkInformation *outInfo = outputVector->GetInformationObject(0);
-    // get the input and output
-    //vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-    //vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
-    std::cout << "vtkBioMechanicalModel::RequestData" << endl;
+int vtkBioMechanicalModel::RequestData(vtkInformation *vtkNotUsed(request),
+		vtkInformationVector **inputVector,
+		vtkInformationVector *outputVector)
+{
+	// get the info objects
+	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	//vtkInformation *outInfo = outputVector->GetInformationObject(0);
+	// get the input and output
+	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	//vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+	std::cout << "vtkBioMechanicalModel::RequestData" << endl;
 
-    return 1;
+	return 1;
 }
 
 //--------------------------------------------------------------------------

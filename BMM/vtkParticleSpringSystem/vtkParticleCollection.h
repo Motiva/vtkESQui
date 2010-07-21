@@ -44,7 +44,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkCollection.h"
 #include "vtkParticleSpringSystemWin32Header.h"
-#include "vtkParticle.h"
+
+class vtkParticle;
 
 //!  Collection of Particles
 /*! 

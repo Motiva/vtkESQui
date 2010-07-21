@@ -41,6 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkScenarioItem.h"
 
+#include "vtkMath.h"
+
 vtkCxxRevisionMacro(vtkScenarioItem, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
@@ -60,14 +62,9 @@ vtkScenarioItem::vtkScenarioItem() {
 }
 
 //--------------------------------------------------------------------------
-vtkScenarioItem::~vtkScenarioItem() {
+vtkScenarioItem::~vtkScenarioItem()
+{
 }
-
-//--------------------------------------------------------------------------
-//void vtkScenarioItem::Update()
-//{
-//	UpdateDirection();
-//}
 
 //--------------------------------------------------------------------------
 void vtkScenarioItem::UpdateDirection()

@@ -44,10 +44,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolLaparoscopy.h"
-#include "vtkStringArray.h"
-#include "vtk3DSImporterEsqui.h"
-#include "vtkPolyDataReader.h"
-#include "vtkTransformPolyDataFilter.h"
 
 //! Implementation class of scissors
 /*!

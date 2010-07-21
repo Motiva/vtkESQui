@@ -41,6 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkSpringCollection.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkSpring.h"
+
 vtkCxxRevisionMacro(vtkSpringCollection, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkSpringCollection);
 

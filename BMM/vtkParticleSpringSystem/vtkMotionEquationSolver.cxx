@@ -1,5 +1,14 @@
 #include "vtkMotionEquationSolver.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkIdList.h"
+#include "vtkDoubleArray.h"
+#include "vtkMath.h"
+
+#include "vtkParticleSpringSystem.h"
+#include "vtkParticleCollection.h"
+#include "vtkParticle.h"
+
 vtkCxxRevisionMacro(vtkMotionEquationSolver, "$Revision: 0.1 $");
 
 //----------------------------------------------------------------------------

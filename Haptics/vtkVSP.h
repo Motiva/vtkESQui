@@ -42,11 +42,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef _vtkVSP_h
 #define _vtkVSP_h
 #include "vtkESQuiHapticsWin32Header.h"
-
-#include "vtkObjectFactory.h"
 #include "vtkHaptic.h"
-#include "XiCathInterface.h"
-#include <stdio.h>
+
+class XiControlPanelState;
+class XiCathState;
+
 //! Class vtkVSP, wraps the VSP haptic device
 class VTK_ESQUI_HAPTICS_EXPORT vtkVSP:public vtkHaptic
 {
@@ -92,19 +92,19 @@ public:
 	void GetRightJoystickState(float *data1,float *data2);
 
 	//! Return the Y position of the left joystick
-	float GetLeftJoystickYPosition() { return this->DevicePanel.joyLeft.up;}
+	float GetLeftJoystickYPosition();
 
 	//! Return the X position of the left joystick
-	float GetLeftJoystickXPosition() { return this->DevicePanel.joyLeft.right;}
+	float GetLeftJoystickXPosition();
 
 	//! Return the Y position of the right joystick
-	float GetRightJoystickYPosition() { return this->DevicePanel.joyRight.up;}
+	float GetRightJoystickYPosition();
 
 	//! Return the X position of the right joystick
-	float GetRightJoystickXPosition() { return this->DevicePanel.joyRight.right;}
+	float GetRightJoystickXPosition();
 
 	//! Return the state of the buttons of the control panel
-	int GetButtonsState() {return this->DevicePanel.buttons;}
+	int GetButtonsState();
 
 	//! Return Zoom button state
 	int GetZoomState();
@@ -198,13 +198,13 @@ public:
 	float GetCatheter2Roll();
 
 	//!Return Stent Deployment
-	float GetStentDeployment(){return this->DevicePanel.stentDeployment;};
+	float GetStentDeployment();
 
 	//!Return Contrast Flow
-	float GetContrastFlow(){return this->DevicePanel.contrastFlow;};
+	float GetContrastFlow();
 
 	//!Return Inflation Pressure
-	float GetInflationPressure(){return this->DevicePanel.inflationPressure;};
+	float GetInflationPressure();
 
 private:
 	XiControlPanelState DevicePanel;

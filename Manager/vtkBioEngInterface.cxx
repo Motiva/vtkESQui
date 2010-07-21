@@ -41,7 +41,23 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkBioEngInterface.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkPolyDataCollection.h"
+#include "vtkPoints.h"
+#include "vtkGenericCell.h"
+#include "vtkTriangle.h"
+#include "vtkCell.h"
+#include "vtkPointLocator.h"
 #include "vtkSelectEnclosedPoints.h"
+#include "vtkMatrix4x4.h"
+
+#include "vtkCollisionDetectionFilter.h"
+#include "vtkTool.h"
+#include "vtkToolCollection.h"
+#include "vtkOrgan.h"
+#include "vtkOrganCollection.h"
+#include "vtkContact.h"
+#include "vtkContactCollection.h"
 
 vtkCxxRevisionMacro(vtkBioEngInterface, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkBioEngInterface);

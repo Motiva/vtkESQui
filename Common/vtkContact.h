@@ -41,11 +41,12 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #ifndef __vtkContact_h
 #define __vtkContact_h
+
 #include "vtkESQuiCommonWin32Header.h"
 #include "vtkObject.h"
-#include "vtkObjectFactory.h"
-#include "vtkPoints.h"
-#include "vtkIdList.h"
+
+class vtkPoints;
+class vtkIdList;
 
 //!This class acts as data container storing all the useful information of an organ-tool collision.
 class VTK_ESQUI_COMMON_EXPORT vtkContact : public vtkObject {
@@ -108,7 +109,7 @@ public:
 	 * \param id point id of the organ mesh
 	 * \sa GetPointId()
 	 */
-	void InsertPointId(int position, int id) {this->PointIds->InsertId(position, id);};
+	void InsertPointId(int position, int id);
 
 	//! Get the collisioned point identifier
 	/*!
@@ -116,12 +117,12 @@ public:
 	 * \return point id of the organ mesh
 	 * \sa SetPointId(int position, int id)
 	 */
-	int GetPointId(int position) {return this->PointIds->GetId(position);};
+	int GetPointId(int position);
 	
 	//! Get the collisioned organ point identifier
-	int GetOrganPointId() {return this->PointIds->GetId(0);};
+	int GetOrganPointId();
 	//! Get the collisioned tool point identifier
-	int GetToolPointId() {return this->PointIds->GetId(1);};
+	int GetToolPointId();
 
 	//! Set the organ mesh point position of the collision
 	/*!
@@ -131,9 +132,7 @@ public:
 	 * \param z z coordinate of the collision point
 	 * \sa GetVertexPosition()
 	 */
-	void InsertPoint(int position, double x, double y, double z) {
-		this->Points->InsertPoint(position, x, y, z);
-	};
+	void InsertPoint(int position, double x, double y, double z);
 
 	//! Set the collisioned point position
 	/*!
@@ -141,21 +140,20 @@ public:
 	 * \param point[] [x, y, z] coordinates vector of the collision point
 	 * \sa GetVertexPosition()
 	 */
-	void InsertPoint(int position, double point[3]) {
-		this->InsertPoint(position, point[0],point[1],point[2]);
-	};
+	void InsertPoint(int position, double point[3]);
 	//! Returns collisioned point position
 	/*!
 	 * \return pointer to position [x, y, z] coordinates vector of the collision point
 	 * \sa SetVertexPosition(double position[3])
 	 * \sa SetVertexPosition(double x, double y, double z)
 	 */
-	double * GetPoint(int position) {return this->Points->GetPoint(position);};
+	double * GetPoint(int position);
 
 	//! Get the collisioned organ point coordinates
-	double * GetOrganPoint() {return this->Points->GetPoint(0);};
+	double * GetOrganPoint();
+
 	//! Get the collisioned tool point coordinates
-	double * GetToolPoint() {return this->Points->GetPoint(1);};
+	double * GetToolPoint();
 
 	//! Set the collisioned cell of the deformable model
 	/*!
@@ -163,7 +161,7 @@ public:
 	 * \param value organ cell id
 	 * \sa GetCellId()
 	 */
-	void InsertCellId(int position, vtkIdType value) {this->CellIds->InsertId(position, value);}
+	void InsertCellId(int position, vtkIdType value);
 
 	//! Get the collisioned cell of the deformable model
 	/*!
@@ -171,12 +169,12 @@ public:
 	 * \return cell id of the organ mesh
 	 * \sa SetCellId(int value)
 	 */
-	int GetCellId(int position) {return this->CellIds->GetId(position);};
+	int GetCellId(int position);
 
 	//! Get the collisioned organ cell identifier
-	int GetOrganCellId() {return this->CellIds->GetId(0);};
+	int GetOrganCellId();
 	//! Get the collisioned tool cell identifier
-	int GetToolCellId() {return this->CellIds->GetId(1);};
+	int GetToolCellId();
 
 	//! Set force feedback magnitude
 	//void SetForceMagnitude(double value) {this->ForceMagnitude = value;};

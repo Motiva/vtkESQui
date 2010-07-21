@@ -42,34 +42,24 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkBioMechanicalModel_h
 #define __vtkBioMechanicalModel_h
 
-#ifdef WIN32
-#include <vector>
-#else
-#include <vector>
-#endif
-
 #include "vtkESQuiBMMWin32Header.h"
-#include "vtkObject.h"
-#include "vtkObjectFactory.h"
-#include "vtkPolyData.h"
 #include "vtkPolyDataAlgorithm.h"
-#include "vtkInformation.h"
-#include "vtkInformationVector.h"
-#include "vtkPolyData.h"
-#include "vtkDoubleArray.h"
-#include "vtkIntArray.h"
-#include "vtkIdList.h"
 
-#include "vtkContactCollection.h"
-#include "vtkContact.h"
+class vtkPolyData;
+class vtkPoints;
+class vtkCell;
+class vtkIdList;
+class vtkDoubleArray;
 
+class vtkContact;
+class vtkContactCollection;
 
 //! Generic interface to the Biomechanical Model
 
 class VTK_ESQUI_BMM_EXPORT vtkBioMechanicalModel: public vtkPolyDataAlgorithm
 {
 public:
-	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkPolyDataAlgorithm);
+	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkAlgorithm);
 
 	static vtkBioMechanicalModel *New();
 	const char *GetClassName() {return "vtkBioMechanicalModel";};
@@ -83,9 +73,7 @@ public:
 	vtkGetStringMacro(Name);
 
 	//! Update function
-	virtual int RequestData(vtkInformation* request,
-	                          vtkInformationVector** inputVector,
-	                          vtkInformationVector* outputVector);
+	int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Initialize the Biomechanical Model
 	virtual void Init();

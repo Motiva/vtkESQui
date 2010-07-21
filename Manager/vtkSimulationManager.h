@@ -42,17 +42,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef _vtkSimulationManager_
 #define _vtkSimulationManager_
 
-#include "vtkCollisionDetectionLibrary.h"
-#include "vtkObject.h"
-#include "vtkScenario.h"
-#include "vtkOrganCollection.h"
-#include "vtkToolCollection.h"
-#include "vtkContactCollection.h"
-#include "vtkContact.h"
-#include "vtkObjectFactory.h"
-#include "vtkPoints.h"
 #include "vtkESQuiManagerWin32Header.h"
-#include "vtkBioEngInterface.h"
+#include "vtkObject.h"
+
+#include "vtkScenario.h"
+
+class vtkCollisionDetectionLibrary;
+class vtkContactCollection;
 
 //! Implementation of the simulation manager.
 /*!

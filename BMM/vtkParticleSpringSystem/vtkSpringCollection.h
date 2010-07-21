@@ -42,9 +42,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkSpringCollection_h
 #define __vtkSpringCollection_h
 
-#include "vtkCollection.h"
 #include "vtkParticleSpringSystemWin32Header.h"
-#include "vtkSpring.h"
+#include "vtkCollection.h"
+
+class vtkSpring;
 
 //!  Collection of Springs
 /*! 

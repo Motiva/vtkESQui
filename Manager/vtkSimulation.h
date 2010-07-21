@@ -43,17 +43,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkSimulation_h
 
 #include "vtkESQuiManagerWin32Header.h"
-
 #include "vtkObject.h"
-#include "vtkObjectFactory.h"
-#include "vtkCallbackCommand.h"
 
 #include "vtkRenderWindowInteractor.h"
-#include "vtkRenderWindow.h"
 
 #include "vtkSimulationManager.h"
-#include "vtkScenario.h"
-#include "vtkTool.h"
+
+class vtkCallbackCommand;
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 #include "vtkHaptic.h"

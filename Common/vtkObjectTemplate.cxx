@@ -41,6 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkObjectTemplate.h"
 
+#include "vtkObjectFactory.h"
+
 vtkCxxRevisionMacro(vtkObjectTemplate, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkObjectTemplate);
 

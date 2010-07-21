@@ -41,6 +41,25 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkTool.h"
 
+#include "vtkObject.h"
+#include "vtkTransform.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataMapper.h"
+#include "vtkDataSetMapper.h"
+#include "vtkPolyDataCollection.h"
+#include "vtkMapperCollection.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkRendererCollection.h"
+#include "vtkTransformCollection.h"
+#include "vtkActorCollection.h"
+#include "vtkAppendPolyData.h"
+
+#include "vtkPiece.h"
+#include "vtkPieceCollection.h"
+#include "vtkContact.h"
+#include "vtkContactCollection.h"
+
 vtkCxxRevisionMacro(vtkTool, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
@@ -192,6 +211,16 @@ void vtkTool::RotateZ(double angle)
 //--------------------------------------------------------------------------
 void vtkTool::InsertNextContact(vtkContact* contact){
 	this->Contacts->InsertNextContact(contact);
+}
+
+//--------------------------------------------------------------------------
+void vtkTool::RemoveContacts(){
+	this->Contacts->RemoveAllItems();
+}
+
+//--------------------------------------------------------------------------
+vtkIdType vtkTool::GetNumberOfContacts(){
+	return this->Contacts->GetNumberOfItems();
 }
 
 //--------------------------------------------------------------------------

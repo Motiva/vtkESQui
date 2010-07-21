@@ -43,12 +43,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #define _vtkScenario_h
 
 #include "vtkESQuiScenarioWin32Header.h"
-
 #include "vtkObject.h"
-#include "vtkObjectFactory.h"
-#include "vtkOrganCollection.h"
-#include "vtkToolCollection.h"
-#include "vtkPoints.h"
+
+class vtkRenderWindow;
+class vtkRenderer;
+
+class vtkOrgan;
+class vtkOrganCollection;
+class vtkTool;
+class vtkToolCollection;
 
 //!Implementation of the simulation scenario. All the elements in the scenario (organs, tools...) are stored in collections.
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenario: public vtkObject

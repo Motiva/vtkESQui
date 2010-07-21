@@ -42,25 +42,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkScenarioItem
 #define __vtkScenarioItem
 
-#include "vtkObject.h"
-#include "vtkTransform.h"
 #include "vtkESQuiScenarioWin32Header.h"
-#include "vtkPolyData.h"
-#include "vtkPolyDataMapper.h"
-#include "vtkDataSetMapper.h"
-#include "vtkPolyDataCollection.h"
-#include "vtkMapperCollection.h"
+#include "vtkObject.h"
+
 #include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRendererCollection.h"
-#include "vtkTransformCollection.h"
-#include "vtkAssembly.h"
-#include "vtkPiece.h"
-#include "vtkPieceCollection.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
-#include "vtkMath.h"
-#include "vtkDecimatePro.h"
+
+class vtkPolyData;
 
 //! Class vtkScenarioItem, abstract the use of a surgical item
 /*!

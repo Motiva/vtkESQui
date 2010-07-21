@@ -43,23 +43,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkToolPincers_h
 
 #include "vtkESQuiScenarioWin32Header.h"
-
 #include "vtkToolLaparoscopy.h"
-#include "vtkPoints.h"
-#include "vtk3DSImporterEsqui.h"
-#include "vtkPolyDataReader.h"
-#include "vtkTransformPolyDataFilter.h"
 
-#include "vtkDoubleArray.h"
-#include "vtkStringArray.h"
-
-// Fichero que contiene la clase que representa las pinzas
-
-//! Implementation class of pincers
+//! Implementation class of a dummy tool
 /*!
- * vtkToolGPincers is the class that implements the pincers tool, inside the scene.
+ * vtkToolDummy is the class that implements a dummy tool, inside the scene.
  * Contains methods for position control of the tool in the scene and collision detection.
- * Pincers are composed of 3 pieces: 1 stick and 2 graspers (vtkPiece)
  */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolDummy: public vtkToolLaparoscopy

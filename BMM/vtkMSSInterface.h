@@ -43,13 +43,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkMSSInterface_h
 
 #include "vtkESQuiBMMWin32Header.h"
-
-#include "vtkTimerLog.h"
-
 #include "vtkBioMechanicalModel.h"
-#include "vtkMSS.h"
-#include "vtkDelaunay3D.h"
 
+class vtkMSS;
 
 //! Interface to the abstract vtkBiomechanicalModel class for a particle-spring system
 

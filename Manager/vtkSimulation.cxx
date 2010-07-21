@@ -41,6 +41,12 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkSimulation.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkCallbackCommand.h"
+
+#include "vtkRenderWindow.h"
+#include "vtkScenario.h"
+#include "vtkTool.h"
 
 void func ( vtkObject* caller, long unsigned int eventId, void* clientData, void* callData )
 {

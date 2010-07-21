@@ -41,6 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkPieceCollection.h"
 
+#include "vtkPiece.h"
+
 vtkCxxRevisionMacro(vtkPieceCollection, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------

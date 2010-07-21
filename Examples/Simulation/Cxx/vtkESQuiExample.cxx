@@ -50,7 +50,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkScenario.h"
 #include "vtkSimulationManager.h"
+#include "vtkTool.h"
 #include "vtkToolCollection.h"
+#include "vtkOrgan.h"
 #include "vtkOrganCollection.h"
 #include "vtkPolyDataReader.h"
 #include "vtkPolyDataMapper.h"
@@ -63,6 +65,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkToolPincers.h"
 #include "vtkCubeSource.h"
 #include "vtkSimulation.h"
+#include "vtkMSSInterface.h"
 
 namespace EsquiExampleNS{
 	//All these objects must be defined globally, in order to access them on timer callback

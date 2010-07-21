@@ -1,6 +1,10 @@
 #include "vtkRK4Solver.h"
 
 #include "vtkObjectFactory.h"
+#include "vtkDoubleArray.h"
+
+#include "vtkParticle.h"
+#include "vtkParticleCollection.h"
 
 vtkCxxRevisionMacro(vtkRK4Solver, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkRK4Solver);

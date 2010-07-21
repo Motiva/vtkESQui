@@ -42,6 +42,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkSimulationInteractorStyle.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderer.h"
+#include "vtkRenderWindowInteractor.h"
+
+
+#include "vtkTool.h"
+#include "vtkToolPincers.h"
+
 vtkCxxRevisionMacro(vtkSimulationInteractorStyle, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkSimulationInteractorStyle);
 
@@ -72,7 +81,7 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 	vtkToolPincers * tool = vtkToolPincers::SafeDownCast(t);
 
 	//output the key that was pressed
-	cout << "Pressed " << key << endl;
+	//std::cout << "Pressed " << key << std::endl;
 
 	//handle a "normal" key
 	if(key.compare("c") == 0)

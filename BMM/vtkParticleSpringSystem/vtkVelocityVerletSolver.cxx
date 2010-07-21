@@ -1,5 +1,11 @@
 #include "vtkVelocityVerletSolver.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkDoubleArray.h"
+
+#include "vtkParticle.h"
+#include "vtkParticleCollection.h"
+
 vtkCxxRevisionMacro(vtkVelocityVerletSolver, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkVelocityVerletSolver);
 

@@ -41,6 +41,15 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkMSSInterface.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkStreamingDemandDrivenPipeline.h"
+#include "vtkInformationVector.h"
+#include "vtkInformation.h"
+#include "vtkDataObject.h"
+#include "vtkDelaunay3D.h"
+
+#include "vtkMSS.h"
+
 vtkCxxRevisionMacro(vtkMSSInterface, "$Revision: 1.2 $");
 vtkStandardNewMacro(vtkMSSInterface);
 

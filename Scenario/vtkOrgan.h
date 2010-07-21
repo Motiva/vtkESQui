@@ -43,28 +43,22 @@ POSSIBILITY OF SUCH DAMAGE.
 #define _vtkOrgan_h_
 
 #include "vtkESQuiScenarioWin32Header.h"
-
-#include "vtkObject.h"
-#include "vtkObjectFactory.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRendererCollection.h"
-#include "vtkDataSetMapper.h"
-#include "vtkTextureMapToSphere.h"
-#include "vtkTransformTextureCoords.h"
-#include "vtkXMLPolyDataReader.h"
-#include "vtkDelaunay2D.h"
-#include "vtkBioMechanicalModel.h"
-#include "vtkMSSInterface.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
 #include "vtkScenarioItem.h"
-#include "vtkPointPlotter.h"
-#include "vtkJPEGReader.h"
-#include "vtkTransform.h"
-#include "vtkTransformPolyDataFilter.h"
 
-#include "vtkTimerLog.h"
+#include "vtkActor.h"
+#include "vtkDataSetMapper.h"
+
+#include "vtkContactCollection.h"
+#include "vtkBioMechanicalModel.h"
+
+class vtkPoints;
+class vtkCell;
+class vtkIdList;
+class vtkXMLPolyDataReader;
+class vtkPolyData;
+class vtkTransformPolyDataFilter;
+class vtkTransform;
+class vtkTexture;
 
 //! Implementation class for organ definition
 class VTK_ESQUI_SCENARIO_EXPORT vtkOrgan: public vtkScenarioItem
@@ -292,7 +286,7 @@ protected:
 	double ForceFactor;     
 
 	//!Organ is hooked
-	vtkIdType Hooked;
+	bool Hooked;
 
 	//**** Graphical Purposes objects ****//
 	//!Actor of the organ

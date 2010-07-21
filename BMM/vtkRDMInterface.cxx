@@ -41,6 +41,14 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkRDMInterface.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkStreamingDemandDrivenPipeline.h"
+#include "vtkInformationVector.h"
+#include "vtkInformation.h"
+#include "vtkDataObject.h"
+
+#include "vtkRobustDeformationModel.h"
+
 vtkCxxRevisionMacro(vtkRDMInterface, "$Revision: 1.2 $");
 vtkStandardNewMacro(vtkRDMInterface);
 

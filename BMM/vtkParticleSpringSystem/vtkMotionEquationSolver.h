@@ -45,16 +45,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkMotionEquationSolver_h
 
 #include "vtkParticleSpringSystemWin32Header.h"
-
-#include "vtkObjectFactory.h"
-#include "vtkIdList.h"
-#include "vtkDoubleArray.h"
-#include "vtkParticleCollection.h"
-#include "vtkParticle.h"
+#include "vtkObject.h"
 
 #include "vtkParticleSpringSystem.h"
 
-#include "vtkMath.h"
+class vtkDoubleArray;
+
+class vtkParticleCollection;
 
 //! Implementation of the abstract motion equation solver
 

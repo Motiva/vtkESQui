@@ -41,6 +41,26 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkOrgan.h"
 
+#include "vtkObject.h"
+#include "vtkObjectFactory.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkRendererCollection.h"
+#include "vtkDataSetMapper.h"
+#include "vtkXMLPolyDataReader.h"
+#include "vtkJPEGReader.h"
+#include "vtkTransform.h"
+#include "vtkTransformTextureCoords.h"
+#include "vtkTransformPolyDataFilter.h"
+#include "vtkTexture.h"
+#include "vtkTextureMapToSphere.h"
+
+#include "vtkBioMechanicalModel.h"
+#include "vtkContact.h"
+#include "vtkContactCollection.h"
+#include "vtkPointPlotter.h"
+
+
 vtkCxxRevisionMacro(vtkOrgan, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkOrgan);
 
@@ -63,11 +83,6 @@ vtkOrgan::vtkOrgan()
 	this->Mapper = NULL;
 	this->Texture = NULL;
 
-	//Simple Mesh (collision detection mesh)
-	//this->SimpleMesh = NULL;
-	//this->SimpleMeshActor = NULL;
-	//this->SimpleMeshMapper = NULL;
-
 	//Default gravity in -z - direction
 	this->GravityDirection = 2;
 	this->GravityOrientation = -1;
@@ -89,11 +104,6 @@ vtkOrgan::~vtkOrgan()
 	this->Mapper->Delete();
 	this->Contacts->Delete();
 	this->Bmm->Delete();
-
-	//this->SimpleMesh->Delete();
-	//this->SimpleMeshActor->Delete();
-	//this->SimpleMeshMapper->Delete();
-
 	this->Texture->Delete();
 }
 

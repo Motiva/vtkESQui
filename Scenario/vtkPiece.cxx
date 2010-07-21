@@ -41,6 +41,18 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkPiece.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkPolyDataReader.h"
+#include "vtkPolyData.h"
+#include "vtkTransform.h"
+#include "vtkTransformPolyDataFilter.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
+#include "vtkDataSetMapper.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderer.h"
+#include "vtkRendererCollection.h"
+
 vtkCxxRevisionMacro(vtkPiece, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkPiece);
 
@@ -113,6 +125,16 @@ void vtkPiece::Update()
 vtkPolyData * vtkPiece::GetOutput()
 {
 	return this->TransformFilter->GetOutput();
+}
+
+//--------------------------------------------------------------------------
+void vtkPiece::SetPolyData(vtkPolyData * polyData){
+	this->PolyData->DeepCopy(polyData);
+}
+
+//--------------------------------------------------------------------------
+vtkPolyData * vtkPiece::GetPolyData(){
+	return this->PolyData;
 }
 
 //--------------------------------------------------------------------------

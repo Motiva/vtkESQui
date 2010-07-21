@@ -42,16 +42,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkToolCollection_h
 #define __vtkToolCollection_h
 
-//#include "Macros.h"
 #include "vtkCollection.h"
-#include "vtkTool.h"
 #include "vtkESQuiScenarioWin32Header.h"
 
-//#ifdef _WIN32
-#include <vector>
-//#else
-//#include <vector.h>
-//#endif
+class vtkTool;
 
 //! Collection of tools 
 /*!

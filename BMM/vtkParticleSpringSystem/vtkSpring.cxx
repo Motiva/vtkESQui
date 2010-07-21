@@ -1,5 +1,15 @@
 #include "vtkSpring.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkIdList.h"
+#include "vtkPoints.h"
+#include "vtkPointData.h"
+#include "vtkDoubleArray.h"
+#include "vtkCellArray.h"
+#include "vtkMath.h"
+
+#include "vtkParticleCollection.h"
+#include "vtkParticle.h"
 
 vtkCxxRevisionMacro(vtkSpring, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkSpring);

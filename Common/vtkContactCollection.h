@@ -42,9 +42,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkContactCollection_h
 #define __vtkContactCollection_h
 
-#include "vtkCollection.h"
-#include "vtkContact.h"
 #include "vtkESQuiCommonWin32Header.h"
+#include "vtkCollection.h"
+
+class vtkContact;
 
 //! Implementation of a collection of contacts
 class VTK_ESQUI_COMMON_EXPORT vtkContactCollection: public vtkCollection

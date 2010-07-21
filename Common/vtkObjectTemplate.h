@@ -45,7 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkESQuiCommonWin32Header.h"
 #include "vtkObject.h"
-#include "vtkObjectFactory.h"
 
 //! Template a generic vtk object
 

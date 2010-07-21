@@ -41,6 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkParticleCollection.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkParticle.h"
+
 vtkCxxRevisionMacro(vtkParticleCollection, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkParticleCollection);
 

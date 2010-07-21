@@ -43,15 +43,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkSimulationInteractorStyle_h
 
 #include "vtkESQuiManagerWin32Header.h"
-
-#include "vtkObjectFactory.h"
 #include "vtkInteractorStyleTrackballCamera.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderer.h"
-#include "vtkRenderWindowInteractor.h"
+
 #include "vtkScenario.h"
-#include "vtkTool.h"
-#include "vtkToolPincers.h"
 
 //! Implementation of the simulation interactor
 /*!

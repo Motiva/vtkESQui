@@ -41,6 +41,19 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkSimulationManager.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkPoints.h"
+
+#include "vtkCollisionDetectionLibrary.h"
+#include "vtkBioEngInterface.h"
+#include "vtkOrgan.h"
+#include "vtkOrganCollection.h"
+#include "vtkTool.h"
+#include "vtkToolCollection.h"
+#include "vtkContact.h"
+#include "vtkContactCollection.h"
+
+
 vtkCxxRevisionMacro(vtkSimulationManager, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkSimulationManager);
 

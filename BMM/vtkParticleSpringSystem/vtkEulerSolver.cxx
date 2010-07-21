@@ -1,5 +1,11 @@
 #include "vtkEulerSolver.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkDoubleArray.h"
+
+#include "vtkParticle.h"
+#include "vtkParticleCollection.h"
+
 vtkCxxRevisionMacro(vtkEulerSolver, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkEulerSolver);
 

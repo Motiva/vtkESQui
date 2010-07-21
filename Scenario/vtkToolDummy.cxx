@@ -39,8 +39,17 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-// fichero que implementa la clase para representar las pinzas
+
 #include "vtkToolDummy.h"
+
+#include "vtkObjectFactory.h"
+#include "vtkTransformCollection.h"
+#include "vtkActorCollection.h"
+
+#include "vtkPiece.h"
+#include "vtkPieceCollection.h"
+#include "vtkContact.h"
+#include "vtkContactCollection.h"
 
 vtkCxxRevisionMacro(vtkToolDummy, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkToolDummy);

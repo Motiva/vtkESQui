@@ -43,12 +43,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkRDMInterface_h
 
 #include "vtkESQuiBMMWin32Header.h"
-
-#include "vtkTimerLog.h"
-
 #include "vtkBioMechanicalModel.h"
-#include "vtkRobustDeformationModel.h"
 
+class vtkRobustDeformationModel;
 
 //! Interface to the abstract vtkBiomechanicalModel class for a RDM system
 
@@ -60,7 +57,7 @@ public:
 	const char *GetClassName() {return "vtkRDMInterface";};
 	//! Print class object values
 	void PrintSelf(ostream& os, vtkIndent indent);
-	
+
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Initialize the Biomechanical Model
@@ -80,40 +77,40 @@ public:
 	vtkSetMacro(DeltaT, double);
 
 protected:
-  vtkRDMInterface();
-  ~vtkRDMInterface();
+	vtkRDMInterface();
+	~vtkRDMInterface();
 
 private:
-  vtkRDMInterface(const vtkRDMInterface&);  // Not implemented.
-  void operator=(const vtkRDMInterface&);  // Not implemented.
+	vtkRDMInterface(const vtkRDMInterface&);  // Not implemented.
+	void operator=(const vtkRDMInterface&);  // Not implemented.
 
-  //!Mass-spring system mesh
-  vtkRobustDeformationModel * RDMMesh;
+	//!Mass-spring system mesh
+	vtkRobustDeformationModel * RDMMesh;
 
-  // RDM specific parameters
-  //! Distance coefficient.
-  double DistanceCoefficient;
+	// RDM specific parameters
+	//! Distance coefficient.
+	double DistanceCoefficient;
 
-  //! Damping coefficient.
-  /*!
-   * Damping Ratio = DampingCoefficient/(2*sqrt(Mass*DeltaT))
-   * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
-   * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
-   * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
-   */
-  double DampingCoefficient;
+	//! Damping coefficient.
+	/*!
+	 * Damping Ratio = DampingCoefficient/(2*sqrt(Mass*DeltaT))
+	 * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
+	 * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
+	 * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
+	 */
+	double DampingCoefficient;
 
-  //! Surface Coefficient
-  double SurfaceCoefficient;
+	//! Surface Coefficient
+	double SurfaceCoefficient;
 
-  //! Surface Coefficient
-  double VolumeCoefficient;
+	//! Surface Coefficient
+	double VolumeCoefficient;
 
-  //! Mass value on each point
-  double Mass;
+	//! Mass value on each point
+	double Mass;
 
-  //! Time step
-  double DeltaT;
+	//! Time step
+	double DeltaT;
 };
 
 #endif

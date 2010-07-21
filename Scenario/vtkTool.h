@@ -42,25 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkTool
 #define __vtkTool
 
-#include "vtkObject.h"
-#include "vtkTransform.h"
 #include "vtkESQuiScenarioWin32Header.h"
-#include "vtkPolyData.h"
-#include "vtkPolyDataMapper.h"
-#include "vtkDataSetMapper.h"
-#include "vtkPolyDataCollection.h"
-#include "vtkMapperCollection.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRendererCollection.h"
-#include "vtkTransformCollection.h"
-#include "vtkActorCollection.h"
-#include "vtkAppendPolyData.h"
-#include "vtkPiece.h"
-#include "vtkPieceCollection.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
-#include "vtkMath.h"
 #include "vtkScenarioItem.h"
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
@@ -69,12 +51,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLSW.h"
 #endif
 
-// Fichero que implementa la clase vtkTool, para abstraerse del tipo de herramienta
-/*
-    vtkTool es la clase que da soporte a la simulacion para abstraerse del tipo de
-    herramienta utilizada. De esta forma se pueden usar colecciones de herramientas sin
-    problema alguno.
- */
+class vtkTransform;
+class vtkTransformCollection;
+class vtkTransformPolyDataFilter;
+class vtkAppendPolyData;
+class vtkActor;
+class vtkActorCollection;
+
+class vtkPiece;
+class vtkPieceCollection;
+class vtkContact;
+class vtkContactCollection;
 
 //! Class vtkTool, abstract the use of a surgical tool
 /*!
@@ -166,7 +153,7 @@ public:
 	/*!
 	* All Contacts are cleared but not erased on memory
 	*/
-	void RemoveContacts() {this->Contacts->RemoveAllItems();}
+	void RemoveContacts();
 
 	//!Add a contact to the collection
 	/*!
@@ -179,7 +166,7 @@ public:
 	/*!
 	* Total number of tool contact points
 	*/
-	vtkIdType GetNumberOfContacts(){return this->Contacts->GetNumberOfItems();}
+	vtkIdType GetNumberOfContacts();
 
 	// **** Haptic Management Methods **** //
 
@@ -215,7 +202,7 @@ protected:
 	char * ToolType;
 
 	//! Enable haptic device control
-	int UseHaptic;
+	bool UseHaptic;
 
 	//!Collection of tool pieces
 	vtkPieceCollection * Pieces;

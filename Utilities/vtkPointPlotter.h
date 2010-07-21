@@ -43,18 +43,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkPointPlotter_h
 #include "vtkESQuiUtilitiesWin32Header.h"
 #include "vtkObject.h"
-#include "vtkObjectFactory.h"
-#include "vtkPoints.h"
-#include "vtkUnsignedCharArray.h"
-#include "vtkDataArray.h"
-#include "vtkPointData.h"
-#include "vtkPolyData.h"
-#include "vtkPolyDataMapper.h"
-#include "vtkActor.h"
-#include "vtkProperty.h"
-#include "vtkGlyph3D.h"
-#include "vtkSphereSource.h"
-#include "vtkRenderer.h"
+
+class vtkRenderer;
+class vtkActor;
+class vtkSphereSource;
+class vtkGlyph3D;
+class vtkPolyData;
+class vtkPolyDataMapper;
+class vtkPoints;
+class vtkUnsignedCharArray;
+
 
 //!This class performs the display of a vtkPoints array
 class VTK_ESQUI_UTILITIES_EXPORT vtkPointPlotter : public vtkObject {

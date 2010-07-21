@@ -41,6 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkToolLaparoscopy.h"
 
+#include "vtkTransform.h"
+#include "vtkTransformCollection.h"
+
 vtkCxxRevisionMacro(vtkToolLaparoscopy, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
@@ -58,12 +61,6 @@ vtkToolLaparoscopy::vtkToolLaparoscopy() {
 vtkToolLaparoscopy::~vtkToolLaparoscopy() {
 
 }
-
-//--------------------------------------------------------------------------
-//void vtkToolLaparoscopy::Update()
-//{
-//	Superclass::Update();
-//}
 
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::ApplyInitialTransform()
