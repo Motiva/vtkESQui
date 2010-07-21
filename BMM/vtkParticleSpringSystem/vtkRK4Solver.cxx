@@ -62,7 +62,6 @@ void vtkRK4Solver::Reset()
 //----------------------------------------------------------------------------
 void vtkRK4Solver::ComputeNextStep(vtkParticleCollection * particles, double deltaT)
 {
-	//TODO: Generalize method to vtkRK4Solver::Evaluate + params
 	double dt05 = 0.5*deltaT;
 	double dt1_6 = deltaT/6;
 

@@ -66,10 +66,11 @@ void vtkContactCollection::InsertNextContact(vtkContact *contact) {
 }
 
 //-------------------------------------------------------------------------
-void vtkContactCollection::InsertContact(vtkIdType id, vtkContact *contact) {
+void vtkContactCollection::ReplaceContact(vtkIdType id, vtkContact *contact) {
 	this->vtkCollection::ReplaceItem(id, contact);
 }
 
+//-------------------------------------------------------------------------
 vtkIdType vtkContactCollection::ContainsContact(vtkContact * contact)
 {
 	vtkContact * local;
@@ -80,12 +81,31 @@ vtkIdType vtkContactCollection::ContainsContact(vtkContact * contact)
 		if ((local) &&
 			(local->GetToolId() == contact->GetToolId()) &&
 			(local->GetOrganId() == contact->GetOrganId()) &&
-			(local->GetPointId(0) == contact->GetPointId(0))) //Organ Id
+			(local->GetPointId(0) == contact->GetPointId(0))) //Organ Point Id
 		{
 			return 1;
 		}
 	}
 	return 0;
+}
+
+//-------------------------------------------------------------------------
+vtkIdType vtkContactCollection::FindContact(vtkContact * contact)
+{
+	vtkContact * local;
+
+	for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
+	{
+		local = this->GetContact(id);
+		if ((local) &&
+			(local->GetToolId() == contact->GetToolId()) &&
+			(local->GetOrganId() == contact->GetOrganId()) &&
+			(local->GetPointId(0) == contact->GetPointId(0))) //Organ Point Id
+		{
+			return id;
+		}
+	}
+	return -1;
 }
 
 //--------------------------------------------------------------------------

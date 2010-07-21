@@ -90,6 +90,18 @@ public:
 	 */
 	vtkGetMacro(OrganId, vtkIdType);
 	
+	//! Set the scalar distance
+	vtkSetMacro(Distance, double);
+
+	//! Get the scalar distance
+	vtkGetMacro(Distance, double);
+
+	//! Set the displacement vector of the contact
+	vtkSetVector3Macro(Displacement, double);
+
+	//! Returns the direction vector of the contact
+	vtkGetVector3Macro(Displacement, double);
+
 	//! Set the organ/tool mesh point where the collision has occured
 	/*!
 	 * \param position position of the pointId in the PointIds collection
@@ -166,23 +178,6 @@ public:
 	//! Get the collisioned tool cell identifier
 	int GetToolCellId() {return this->CellIds->GetId(1);};
 
-	//! Set the direction vector of the contact
-	void SetDirectionVector(double x, double y, double z)
-	{
-		this->Direction[0] = x;
-		this->Direction[1] = y;
-		this->Direction[2] = z;
-	};
-
-	//! Set the direction vector of the contact
-	void SetDirectionVector(double dir[3])
-	{
-		this->SetDirectionVector(dir[0], dir[1], dir[2]);
-	};
-
-	//! Returns the direction vector of the contact
-	double * GetDirectionVector() {return this->Direction;};
-
 	//! Set force feedback magnitude
 	//void SetForceMagnitude(double value) {this->ForceMagnitude = value;};
 
@@ -226,9 +221,13 @@ private:
 	// CellIds[1]: Tool Cell Id
 	vtkIdList * CellIds;
 
-	// Vector Director del contacto
-	//! Direction Vector of the contact
-	double Direction[3];
+	// Distancia escalar entre los puntos
+	//! Scalar distance
+	double Distance;
+
+	// Vector desplazamiento del contacto
+	//! Displacement Vector of the contact
+	double Displacement[3];
 
 	//! Define the contact as grasped
 	bool isGrasped;

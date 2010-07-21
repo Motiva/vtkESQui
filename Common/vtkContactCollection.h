@@ -78,13 +78,29 @@ public:
 	* \param contact contact to be added to the collection
 	* \sa InsertNextContact(vtkContact *contact)
 	*/
-	void InsertContact(vtkIdType id, vtkContact *contact);
+	void ReplaceContact(vtkIdType id, vtkContact *contact);
 
 	//! Check if the contact exists within the collection
 	/*!
-	* \param contact contact to be located in the collection
-	*/
+	 * A contact is found if the following params match:
+	 * - organId
+	 * - toolId
+	 * - organPointId
+	 * \param contact contact to be located in the collection
+	 * \return true if contact is already present
+	 */
 	vtkIdType ContainsContact(vtkContact * contact);
+
+	//! Find contact within the collection
+	/*!
+	 * A contact is found if the following params match:
+	 * - organId
+	 * - toolId
+	 * - organPointId
+	 * \param contact contact to be located in the collection.
+	 *  \return position in the collection
+	 */
+	vtkIdType FindContact(vtkContact * contact);
 
 	//! Return the Contact on id position.
 	/*!

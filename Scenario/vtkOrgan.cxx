@@ -143,9 +143,6 @@ void vtkOrgan::Init()
 			vtkPolyData * output = this->Bmm->GetOutput();
 			//cout << "Bmm->GetOutput: " << output->GetNumberOfPoints() << endl;
 
-			//FIXME: Remove this line
-			this->TextureFileName = NULL;
-
 			if(this->TextureFileName && !strcmp(this->TextureFileName, ""))
 			{
 				//No TextureFile has been defined
@@ -178,7 +175,6 @@ void vtkOrgan::Init()
 			}
 
 			this->Actor->SetMapper(this->Mapper);
-			this->Actor->GetProperty()->SetOpacity(0.5);
 
 			this->Renderer->AddActor(this->Actor);
 		}

@@ -308,8 +308,6 @@ void vtkParticleSpringSystem::ComputeContacts()
 //----------------------------------------------------------------------------
 void vtkParticleSpringSystem::ComputeForces()
 {
-	double drag[3];
-
 	for(int i=0; i<this->Particles->GetNumberOfItems(); i++)
 	{
 		vtkParticle * particle = this->Particles->GetParticle(i);
@@ -322,11 +320,6 @@ void vtkParticleSpringSystem::ComputeForces()
 		/*double gravity = -9.0;
 		double gf = gravity*particle->GetMass();
 		particle->AddForce(0, gf, 0);*/
-
-		//TODO: Add Viscous drag force
-		//Viscous Drag
-		particle->GetVelocity(drag);
-		vtkMath::Normalize(drag);
 	}
 
 	double d[3];
@@ -361,8 +354,8 @@ void vtkParticleSpringSystem::ComputeForces()
 			//Add forces
 			F[j] = Fs[j] + Fd[j];
 		}
-		//TODO: Implement Internal Pressure Force
-		//Sum up all forces
+
+		//Add up all forces
 		p0->AddForce(F[0], F[1], F[2]);
 		p1->AddForce(-F[0], -F[1], -F[2]);
 	}

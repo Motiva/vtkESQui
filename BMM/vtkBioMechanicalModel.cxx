@@ -109,7 +109,7 @@ void vtkBioMechanicalModel::InsertNextContact(vtkContact* contact)
 	this->ContactPointIds->InsertNextId(contact->GetOrganPointId());
 	this->ContactCellIds->InsertNextId(contact->GetOrganCellId());
 
-	this->ContactDisplacements->InsertNextTuple(contact->GetDirectionVector());
+	this->ContactDisplacements->InsertNextTuple(contact->GetDisplacement());
 
 	this->Modified();
 }

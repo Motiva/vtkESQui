@@ -41,6 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkBioEngInterface.h"
 
+#include "vtkSelectEnclosedPoints.h"
+
 vtkCxxRevisionMacro(vtkBioEngInterface, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkBioEngInterface);
 
@@ -75,11 +77,9 @@ void vtkBioEngInterface::Init()
 	this->DetectionFilter->SetBoxTolerance(0.0);
 	this->DetectionFilter->SetCellTolerance(0.0);
 	this->DetectionFilter->SetNumberOfCellsPerNode(2);
-	this->DetectionFilter->SetCollisionModeToFirstContact();
+	//this->DetectionFilter->SetCollisionModeToFirstContact();
 	//this->DetectionFilter->SetCollisionModeToHalfContacts();
-	//this->DetectionFilter->SetCollisionModeToAllContacts();
-	//Debug. Display contact cells.
-	this->DetectionFilter->GenerateScalarsOn();
+	this->DetectionFilter->SetCollisionModeToAllContacts();
 }
 
 //--------------------------------------------------------------------------
@@ -103,7 +103,10 @@ void vtkBioEngInterface::Update()
 	//Get the organs and tools from the collections. Set Inputs of the collision library
 	//The organ (converted to vtkPolydata) and a bounding box of the tool. This bounding box (polydata)
 	//is returned by a method created in vtkTool
-	double p0[3], p1[3], p2[3], n[3], c0[3], c1[3];
+	double p0[3], p1[3], p2[3], d[3], center[3], add[3];
+	vtkPoints * centerPoints = vtkPoints::New();
+	vtkPolyData * centerData = vtkPolyData::New();
+	vtkSelectEnclosedPoints * enclosed = vtkSelectEnclosedPoints::New();
 
 	//Clear from previous executions
 	this->Clear();
@@ -116,7 +119,7 @@ void vtkBioEngInterface::Update()
 		for (vtkIdType toolId=0; toolId < this->Tools->GetNumberOfItems(); toolId++)
 		{
 			vtkTool * tool =  this->Tools->GetTool(toolId);
-			//Whole tool shall be set as Collision Detection inputs
+			//Whole tool shall be set as Collision Detection input
 			vtkPolyData * toolBox = tool->GetOutput();
 
 			//Each organ polydata is set as an input of the CDL
@@ -133,6 +136,8 @@ void vtkBioEngInterface::Update()
 
 			vtkIdType numberOfContacts = this->DetectionFilter->GetNumberOfContacts();
 
+			//TODO: Optimize contact info generation
+			//cout << "#######################################\n";
 			for(int i =0; i < numberOfContacts; i++)
 			{
 				//There has been a collision
@@ -146,16 +151,13 @@ void vtkBioEngInterface::Update()
 					toolBox->GetCellType(toolCellId) == VTK_TRIANGLE_STRIP))
 				{
 					//Organ cell
-					//vtkPoints * organPoints = organBox->GetCell(organCellId)->GetPoints();
-					vtkPoints * organPoints = this->DetectionFilter->GetOutput(0)->GetCell(organCellId)->GetPoints();
+					vtkPoints * organPoints = organBox->GetCell(organCellId)->GetPoints();
 					organPoints->GetPoint(0,p0);
 					organPoints->GetPoint(1,p1);
 					organPoints->GetPoint(2,p2);
 
-					//cell normal
-					//vtkTriangle::ComputeNormal(p0, p1, p2, n);
-					//cell center
-					vtkTriangle::TriangleCenter(p0, p1, p2 ,c0);
+					//organ cell center
+					vtkTriangle::TriangleCenter(p0, p1, p2 ,center);
 
 					//Tool cell
 					//vtkPoints * toolPoints = toolBox->GetCell(organCellId)->GetPoints();
@@ -164,47 +166,72 @@ void vtkBioEngInterface::Update()
 					toolPoints->GetPoint(1,p1);
 					toolPoints->GetPoint(2,p2);
 
-					//cell center
-					vtkTriangle::TriangleCenter(p0, p1, p2 ,c1);
+					//Check whether tool cell points are inside the organ
+					centerPoints->Reset();
+					centerPoints->InsertNextPoint(p0);
+					centerPoints->InsertNextPoint(p1);
+					centerPoints->InsertNextPoint(p2);
+					centerData->SetPoints(centerPoints);
+					centerData->Modified();
+					enclosed->SetInput(centerData);
+					enclosed->SetSurface(organBox);
+					enclosed->Update();
 
-					//vector between points (Direction)
-					vtkMath::Subtract(c0, c1, n);
-
-					// 1 contact per cell point
-					for (int j=0;j<2;j++)
+					for(int j=0;j<3; j++)
 					{
-						vtkContact *contact = vtkContact::New();
-
-						//Set organ & tool ids
-						contact->SetOrganId(organId);
-						contact->SetToolId(toolId);
-						//Organ cell point
-						contact->InsertPointId(0, organBox->GetCell(organCellId)->GetPointId(j));
-						contact->InsertPoint(0, organPoints->GetPoint(j));
-						contact->InsertCellId(0, organCellId);
-						//Tool cell point
-						contact->InsertPointId(1, toolBox->GetCell(toolCellId)->GetPointId(j));
-						contact->InsertPoint(1, toolPoints->GetPoint(j));
-						contact->InsertCellId(1, toolCellId);
-
-						contact->SetDirectionVector(n);
-
-						//
-						if(!this->Contacts->ContainsContact(contact))
+						//Only process point that have already entered in the surface
+						if(enclosed->IsInside(j))
 						{
-							cout << "#######################################\n";
-							this->Contacts->InsertNextContact(contact);
-							contact->Print(cout);
-						}
-						else
-						{
-							contact->Delete();
+							//vector between points (Displacement)
+							double * toolPoint = toolPoints->GetPoint(j);
+							vtkMath::Subtract(toolPoint, center, d);
+							double distance = vtkMath::Distance2BetweenPoints(center,toolPoint);
+
+							//New contact is created
+							vtkContact *contact = vtkContact::New();
+							//Set organ & tool ids
+							contact->SetOrganId(organId);
+							contact->SetToolId(toolId);
+							//Organ cell point
+							contact->InsertPointId(0, organBox->GetCell(organCellId)->GetPointId(j));
+							contact->InsertPoint(0, organPoints->GetPoint(j));
+							contact->InsertCellId(0, organCellId);
+							//Tool cell point
+							contact->InsertPointId(1, toolBox->GetCell(toolCellId)->GetPointId(j));
+							contact->InsertPoint(1, toolPoints->GetPoint(j));
+							contact->InsertCellId(1, toolCellId);
+
+							contact->SetDistance(distance);
+							contact->SetDisplacement(d);
+
+							//Look for contact in the collection
+							vtkIdType contactId = this->Contacts->FindContact(contact);
+							if(contactId < 0)
+							{
+								this->Contacts->InsertNextContact(contact);
+								//contact->Print(cout);
+							}
+							else
+							{
+								//Update contact direction
+								vtkContact * c = this->Contacts->GetContact(contactId);
+								double * deltaC = c->GetDisplacement();
+								vtkMath::Add(deltaC, d, add);
+								vtkMath::MultiplyScalar(add, 0.5);
+								contact->SetDisplacement(add);
+								this->Contacts->ReplaceContact(contactId, contact);
+								c->Delete();
+							}
 						}
 					}
 				}
 			}
 		}
 	}
+
+	centerPoints->Delete();
+	centerData->Delete();
+	enclosed->Delete();
 }
 
 //------------------------------------------------------------------------------

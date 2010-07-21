@@ -88,5 +88,5 @@ void vtkContact::PrintSelf(ostream&os, vtkIndent indent)
 		os << indent << "Point[" << i <<"] Position: " << point[0] << ", " << point[1] << ", " << point[2] << endl;
 	}
 	os << indent << "isGrasped: " << this->isGrasped << endl;
-	os << indent << "Direction: " << this->Direction[0] << ", " << this->Direction[1] << ", " << this->Direction[2] << endl;
+	os << indent << "Direction: " << this->Displacement[0] << ", " << this->Displacement[1] << ", " << this->Displacement[2] << endl;
 }
