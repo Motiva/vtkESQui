@@ -57,35 +57,23 @@ public:
 	//! Print object info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Set number of particles
-	vtkSetMacro(NumberOfParticles, double);		// NumberOfParticles
-	//! Set particle spring system
-	vtkSetObjectMacro(DeformationModel, vtkParticleSpringSystem);		// NumberOfParticles
+	//! Initialize solver
+	virtual void Init();
+
+	//! Compute next step for every particle
+	/*!
+	* \param particles collection of particles
+	* \param dt time step
+	*/
+	virtual void ComputeNextStep(vtkParticleCollection * particles, double deltaT);
 
 protected:
 	vtkRK4Solver();
 	~vtkRK4Solver();
 
-	//! Initialize solver
-	void Init();
-
-	//! Comput next step of the motion equation solver
-	void ComputeNextStep(vtkParticleCollection * particles, double deltaT);
-
 private:
 	vtkRK4Solver(const vtkRK4Solver&);            // Not implemented.
 	void operator=(const vtkRK4Solver&);           // Not implemented.
-
-	//! Deformation model
-	vtkParticleSpringSystem * DeformationModel;
-
-	//! System number of particles
-	double NumberOfParticles;
-
-	//! derivative x
-	vtkDoubleArray * dx;
-	//! derivative v
-	vtkDoubleArray * dv;
 
 	//! 1st order derivative x
 	vtkDoubleArray * dx1;

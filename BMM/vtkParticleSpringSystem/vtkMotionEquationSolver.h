@@ -67,7 +67,7 @@ public:
 	vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
 
 	//! Set Deformation model
-	vtkSetObjectMacro(DeformationModel, vtkParticleSpringSystem);
+	void SetDeformationModel(vtkParticleSpringSystem * model){this->DeformationModel = model;};
 
 	//! Initialize solver.
 	/*!
@@ -94,6 +94,8 @@ protected:
 
 	//! Velocity derivative
 	vtkDoubleArray * dv;
+	//! Position derivative
+	vtkDoubleArray * dx;
 
 private:
 	vtkMotionEquationSolver(const vtkMotionEquationSolver&);            // Not implemented.
