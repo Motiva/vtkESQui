@@ -188,7 +188,6 @@ int main(int argc, char * argv[])
 
 	//Set a fictional force
 	ParticleSpringSystem->SetContacts(list, directions);
-	ParticleSpringSystem->Print(cout);
 
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
 	renWin->SetSize(500,500);

@@ -78,7 +78,7 @@ public:
 	* \param particle vtkParticle object to be inserted
 	* \sa InsertNextParticle(vtkParticle *Particle)
 	*/
-	void SetParticle(vtkIdType id, vtkParticle *particle);
+	void InsertParticle(vtkIdType id, vtkParticle *particle);
 
 	//!Return an Particle in specified position of the list.
 	/*!

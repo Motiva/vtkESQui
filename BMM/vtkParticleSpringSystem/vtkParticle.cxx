@@ -10,6 +10,9 @@
 #include "vtkCellArray.h"
 #include "vtkMath.h"
 
+#include "vtkSpring.h"
+#include "vtkSpringCollection.h"
+
 vtkCxxRevisionMacro(vtkParticle, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkParticle);
 
@@ -32,6 +35,7 @@ vtkParticle::vtkParticle()
 	this->Force[0] = 0.0;
 	this->Force[1] = 0.0;
 	this->Force[2] = 0.0;
+	this->Springs = vtkSpringCollection::New();
 }
 
 //----------------------------------------------------------------------------
@@ -76,6 +80,39 @@ void vtkParticle::AddForce(double x, double y, double z)
 		this->Force[1] += y;
 		this->Force[2] += z;
 	}
+}
+
+//----------------------------------------------------------------------------
+void vtkParticle::SetSpring(vtkIdType id, vtkSpring * spring)
+{
+	this->Springs->InsertSpring(id, spring);
+}
+
+//----------------------------------------------------------------------------
+void vtkParticle::InsertNextSpring(vtkSpring * spring)
+{
+	this->Springs->InsertNextSpring(spring);
+}
+
+//----------------------------------------------------------------------------
+vtkSpring * vtkParticle::GetSpring(vtkIdType id)
+{
+	return this->Springs->GetSpring(id);
+}
+
+//----------------------------------------------------------------------------
+bool vtkParticle::ContainsSpring(vtkSpring * spring)
+{
+	for(vtkIdType i = 0; i < this->Springs->GetNumberOfItems(); i++)
+	{
+		vtkSpring * local = this->GetSpring(i);
+		vtkParticle * p0 = spring->GetParticle(0);
+		vtkParticle * p1 = spring->GetParticle(1);
+		if(local && local->ContainsParticle(p0) && local->ContainsParticle(p1)){
+			return 1;
+		}
+	}
+	return 0;
 }
 
 //----------------------------------------------------------------------------

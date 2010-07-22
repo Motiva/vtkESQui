@@ -48,7 +48,7 @@ vtkCxxRevisionMacro(vtkParticleCollection, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkParticleCollection);
 
 //----------------------------------------------------------------------------
-void vtkParticleCollection::SetParticle(vtkIdType id, vtkParticle *particle) {
+void vtkParticleCollection::InsertParticle(vtkIdType id, vtkParticle *particle) {
 	this->vtkCollection::ReplaceItem(id, (vtkObject*) particle);
 }
 

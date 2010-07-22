@@ -9,7 +9,7 @@
 #include "vtkPointData.h"
 #include "vtkDoubleArray.h"
 #include "vtkMassProperties.h"
-#include "vtkCellLinks.h"
+//#include "vtkCellLinks.h"
 #include "vtkCell.h"
 #include "vtkMath.h"
 
@@ -110,7 +110,7 @@ void vtkParticleSpringSystem::Init()
 	//Initialize Particle System
 	this->Particles = vtkParticleCollection::New();
 	this->Springs = vtkSpringCollection::New();
-	this->Links = vtkCellLinks::New();
+	//this->Links = vtkCellLinks::New();
 
 	for(int id = 0; id < mesh->GetNumberOfPoints(); id++)
 	{
@@ -124,7 +124,7 @@ void vtkParticleSpringSystem::Init()
 		this->Particles->InsertNextParticle(p0);
 
 		//Create one link entry per particle
-		this->Links->InsertNextPoint(0);
+		//this->Links->InsertNextPoint(0);
 	}
 	cout << "Total number of particles: " << this->Particles->GetNumberOfItems() << endl;
 
@@ -137,8 +137,8 @@ void vtkParticleSpringSystem::Init()
 	{
 		vtkIdType cellId = jd;
 		//Cell points
+		cellPointIds->Reset();
 		mesh->GetCellPoints(cellId, cellPointIds);
-
 		//Structural springs
 		//Default 3 points per cell. 3D cells are unsupported
 		for(int kd=0;kd<cellPointIds->GetNumberOfIds();kd++)
@@ -164,21 +164,17 @@ void vtkParticleSpringSystem::Init()
 				{
 					vtkIdType neighborCellId = neighborCellIds->GetId(ld);
 					mesh->GetCellPoints(neighborCellId, neighborPointIds);
-					//cout << "["<< p0->GetId() << "]["<< p1->GetId() << "] neighborPoint: " ;
 					for(vtkIdType md=0;md<neighborPointIds->GetNumberOfIds();md++)
 					{
 						vtkIdType neighborPointId = neighborPointIds->GetId(md);
-						//cout << neighborPointIds->GetId(md) << ", ";
 						if(neighborPointId != p0->GetId() ||
 							neighborPointId != p1->GetId())
 						{
-							p1 = this->Particles->GetParticle(neighborPointId);
-							this->CreateSpring(p0, p1);
+							vtkParticle * pn = this->Particles->GetParticle(neighborPointId);
+							this->CreateSpring(p0, pn);
 						}
 					}
-					//cout << endl;
 				}
-
 			}
 		}
 	}
@@ -221,11 +217,11 @@ void vtkParticleSpringSystem::Init()
 	cout << this->GetClassName() << " has been init...\n";
 }
 
+//----------------------------------------------------------------------------
 void vtkParticleSpringSystem::SetParticleStatus(vtkIdType id, bool status)
 {
 	this->Particles->GetParticle(id)->SetFixed(status);
 }
-
 
 //----------------------------------------------------------------------------
 void vtkParticleSpringSystem::CreateSpring(vtkParticle * p0, vtkParticle * p1)
@@ -238,14 +234,20 @@ void vtkParticleSpringSystem::CreateSpring(vtkParticle * p0, vtkParticle * p1)
 	spring->SetDeltaT(this->DeltaT);
 	spring->InsertNextParticle(p0);
 	spring->InsertNextParticle(p1);
-	if(!this->Springs->ContainsSpring(spring))
+
+	//Check if particles are interconnected already
+	if(!p0->ContainsSpring(spring) && !p1->ContainsSpring(spring))
 	{
 		spring->Init();
+		//Link particles to spring
+		p0->InsertNextSpring(spring);
+		p1->InsertNextSpring(spring);
+		//Add to global spring collection
 		this->Springs->InsertNextSpring(spring);
-		this->Links->ResizeCellList(p0->GetId(),1);
-		this->Links->InsertNextCellReference(p0->GetId(),spring->GetId());
-		this->Links->ResizeCellList(p1->GetId(),1);
-		this->Links->InsertNextCellReference(p1->GetId(),spring->GetId());
+	}
+	else
+	{
+		spring->Delete();
 	}
 }
 
@@ -282,7 +284,7 @@ void vtkParticleSpringSystem::ComputeContacts()
 			p->AddPosition(d[0], d[1], d[2]);
 
 			//Retrieve springs containing this particle
-			vtkIdType * links = this->Links->GetCells(id);
+			/*vtkIdType * links = this->Links->GetCells(id);
 			for(int j = 0; j < this->Links->GetNcells(id); j++)
 			{
 				//Retrieve pointer component -> spring Id
@@ -298,7 +300,7 @@ void vtkParticleSpringSystem::ComputeContacts()
 				dNorm = vtkMath::Norm(distance);
 				L = spring->GetRestLength();
 				ratio = abs(100*((L-dNorm)/L));
-				/*while(ratio > spring->GetDistanceCoefficient())
+				while(ratio > spring->GetDistanceCoefficient())
 				{
 					double factor = (1/ratio)*100;
 					p->AddPosition(-d[0]/factor, -d[1]/factor, -d[2]/factor);
@@ -307,10 +309,10 @@ void vtkParticleSpringSystem::ComputeContacts()
 					dNorm = vtkMath::Norm(distance);
 					L = spring->GetRestLength();
 					ratio = 100*((dNorm-L)/L);
-				}*/
+				}
 				//Increment link pointer
 				links += 1;
-			}
+			}*/
 			p->SetContacted(1);
 		}
 

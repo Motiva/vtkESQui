@@ -8,8 +8,8 @@
 #include "vtkCellArray.h"
 #include "vtkMath.h"
 
-#include "vtkParticleCollection.h"
 #include "vtkParticle.h"
+#include "vtkParticleCollection.h"
 
 vtkCxxRevisionMacro(vtkSpring, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkSpring);
@@ -51,7 +51,7 @@ void vtkSpring::GetDirection(double Direction[3])
 //----------------------------------------------------------------------------
 void vtkSpring::SetParticle(vtkIdType id, vtkParticle * particle)
 {
-	this->Particles->SetParticle(id, particle);
+	this->Particles->InsertParticle(id, particle);
 }
 
 //----------------------------------------------------------------------------

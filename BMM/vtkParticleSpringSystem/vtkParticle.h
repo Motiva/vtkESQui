@@ -45,6 +45,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkParticleSpringSystemWin32Header.h"
 #include "vtkObject.h"
 
+class vtkSpring;
+class vtkSpringCollection;
+
 //! Implementation of a system particle
 /*!
  * Contains all the specific info for each system particle: position, velocity, acceleration, etc...
@@ -106,6 +109,18 @@ public:
 	//! Add offset to particle force
 	void AddForce(double x, double y, double z);
 
+	//! Insert a new spring in the particle spring collection
+	void InsertNextSpring(vtkSpring * spring);
+
+	//! Set a spring at a specified id
+	void SetSpring(vtkIdType id, vtkSpring * spring);
+
+	//! Get spring with the specified id
+	vtkSpring * GetSpring(vtkIdType id);
+
+	//! Check whether the particle contains a spring
+	bool ContainsSpring(vtkSpring * spring);
+
 	//! Update particle properties: position, velocity, accel...
 	/*!
 	 * All the particle properties are updated on each step. The particle will be ignored if is set as fixed
@@ -121,9 +136,9 @@ protected:
 	vtkIdType Id;
 	//! 3D position
 	double Position[3];
-	//! particle velocity. updated on every step
+	//! Particle velocity. updated on every step
 	double Velocity[3];
-	//! particle acceleration. updated on every step
+	//! Particle acceleration. updated on every step
 	double Acceleration[3];
 	//! particle force. f=m·a
 	double Force[3];
@@ -132,10 +147,13 @@ protected:
 	double Mass;
 	//! Inverse mass. optimizes calculation
 	double InverseMass;
-	//! particle is fixed. f = 0;
+	//! Particle is fixed. f = 0;
 	bool Fixed;
-	//! particle is contacted
+	//! Particle is contacted
 	bool Contacted;
+
+	//! Collection of particle springs
+	vtkSpringCollection * Springs;
 
 private:
 	vtkParticle(const vtkParticle&);            // Not implemented.
