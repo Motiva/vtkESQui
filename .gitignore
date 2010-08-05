@@ -1,6 +1,9 @@
 # Debug folder
 Debug/
 
+# Doxygen folder
+Doxygen
+
 # Eclipse files
 .cproject
 .project
