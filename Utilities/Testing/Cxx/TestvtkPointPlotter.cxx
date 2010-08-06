@@ -39,53 +39,64 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-/*
- * TestEsquivtkToolCollection.cxx
- *
- *  Created on: 12/01/2010
- *      Author: jballesteros
- */
-
 #include <iostream>
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkCamera.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
+#include "vtkRenderer.h"
+#include "vtkInteractorStyleTrackballCamera.h"
 
-#include "vtkToolDummy.h"
-#include "vtkToolCollection.h"
+#include "vtkPointPlotter.h"
+#include "vtkMath.h"
 
 using namespace std;
 
-//!This test perform a test of the vtkToolCollection class
+#if defined(WIN32)
+#include <time.h> 
+#endif
 
-int TestEsquivtkToolCollection(int argc, char * argv[])
+//!This test perform a standard execution of the vtkPointPlotter class
+
+int TestvtkPointPlotter(int argc, char * argv[])
 {
-	vtkToolDummy * tool;
-	vtkToolCollection * collection = vtkToolCollection::New();
+	/**********  Render Window Definitions  ********/
+	vtkRenderer *ren1= vtkRenderer::New();
+	ren1->SetBackground(0.90, 0.95, 0.95);
 
-	for (vtkIdType id = 0; id < 10; id++)
+	vtkPointPlotter * plotter = vtkPointPlotter::New();
+	plotter->SetRadius(0.025);
+	plotter->SetResolution(16);
+	plotter->SetRenderer(ren1);
+	plotter->Init();
+
+	// Generate some random line and random points to plot
+	vtkMath::RandomSeed(time(0));
+	double p[3];
+	for (int i=0;i<1000;i++)
 	{
-		tool = vtkToolDummy::New();
-		tool->SetPosition(0,0,0);
-		tool->SetId(id);
-
-		collection->InsertNextTool(tool);
-		//tool->Print(std::cout);
-		std::cout << "Tool (" << id <<  ") has been inserted...\n";
+	    for (int j=0;j<3;j++)
+	    {
+	    	p[j] = vtkMath::Random(-1,1);
+	    }
+	    plotter->InsertPoint(p[0],p[1],p[2], 128*p[0], 128*p[1], 128*p[2]);
 	}
+	plotter->Update();
+	
+	vtkRenderWindow *renWin = vtkRenderWindow::New();
+	renWin->AddRenderer(ren1);
+	renWin->SetSize(840,480);
 
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
+	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
+	renWin->SetInteractor(iren);
 
-	collection->InitTraversal();
+	// Create my interactor style
+	vtkInteractorStyleTrackballCamera* style = vtkInteractorStyleTrackballCamera::New();
+	iren->SetInteractorStyle( style );
 
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		std::cout << "#########################\n";
-		vtkTool * tool = collection->GetNextTool();
-		tool->Print(std::cout);
-		std::cout << "Tool (" << id <<  ") has been removed...\n";
-		//collection->RemoveItem(id);
-		tool->Delete();
-	}
-	collection->RemoveAllItems();
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
+	iren->Initialize();
+	iren->Start();
 
 	return 0;
 }

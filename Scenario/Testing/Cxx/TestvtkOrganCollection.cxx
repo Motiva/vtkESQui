@@ -39,64 +39,56 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include <iostream>
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkCamera.h"
-#include "vtkActor.h"
-#include "vtkProperty.h"
-#include "vtkRenderer.h"
-#include "vtkInteractorStyleTrackballCamera.h"
+/*
+ * TestEsquivtkOrganCollection.cxx
+ *
+ *  Created on: 12/01/2010
+ *      Author: jballesteros
+ */
 
-#include "vtkPointPlotter.h"
-#include "vtkMath.h"
+#include <iostream>
+
+#include "vtkOrgan.h"
+#include "vtkOrganCollection.h"
 
 using namespace std;
 
-#if defined(WIN32)
-#include <time.h> 
-#endif
+//!This test perform a test of the vtkOrganCollection class
 
-//!This test perform a standard execution of the vtkPointPlotter class
-
-int TestPointPlotter(int argc, char * argv[])
+int TestvtkOrganCollection(int argc, char * argv[])
 {
-	/**********  Render Window Definitions  ********/
-	vtkRenderer *ren1= vtkRenderer::New();
-	ren1->SetBackground(0.90, 0.95, 0.95);
+	vtkOrgan * organ;
+	vtkOrganCollection * collection = vtkOrganCollection::New();
 
-	vtkPointPlotter * plotter = vtkPointPlotter::New();
-	plotter->SetRadius(0.025);
-	plotter->SetResolution(16);
-	plotter->SetRenderer(ren1);
-	plotter->Init();
-
-	// Generate some random line and random points to plot
-	vtkMath::RandomSeed(time(0));
-	double p[3];
-	for (int i=0;i<1000;i++)
+	for (vtkIdType id = 0; id < 10; id++)
 	{
-	    for (int j=0;j<3;j++)
-	    {
-	    	p[j] = vtkMath::Random(-1,1);
-	    }
-	    plotter->InsertPoint(p[0],p[1],p[2], 128*p[0], 128*p[1], 128*p[2]);
+		organ = vtkOrgan::New();
+		organ->SetId(id);
+		organ->SetName("TestOrgan");
+		organ->SetFileName("FileName");
+		organ->SetTextureFileName("TextureFileName");
+		organ->SetPosition(0,0,0);
+
+
+		collection->InsertNextOrgan(organ);
+		std::cout << "Organ (" << id <<  ") has been inserted...\n";
 	}
-	plotter->Update();
-	
-	vtkRenderWindow *renWin = vtkRenderWindow::New();
-	renWin->AddRenderer(ren1);
-	renWin->SetSize(840,480);
 
-	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
-	renWin->SetInteractor(iren);
+	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
 
-	// Create my interactor style
-	vtkInteractorStyleTrackballCamera* style = vtkInteractorStyleTrackballCamera::New();
-	iren->SetInteractorStyle( style );
+	collection->InitTraversal();
 
-	iren->Initialize();
-	iren->Start();
+	for (vtkIdType id = 0; id < 10; id++)
+	{
+		std::cout << "#########################\n";
+		vtkOrgan * organ = collection->GetNextOrgan();
+		organ->Print(std::cout);
+		std::cout << "Organ (" << id <<  ") has been removed...\n";
+		//collection->RemoveItem(id);
+		organ->Delete();
+	}
+	collection->RemoveAllItems();
+	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
 
 	return 0;
 }

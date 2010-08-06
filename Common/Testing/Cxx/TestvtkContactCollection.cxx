@@ -40,63 +40,52 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include <iostream>
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkCamera.h"
-#include "vtkActor.h"
-#include "vtkProperty.h"
-#include "vtkRenderer.h"
-#include "vtkInteractorStyleTrackballCamera.h"
 
-#include "vtkSimulation.h"
 #include "vtkMath.h"
+#include "vtkContact.h"
+#include "vtkContactCollection.h"
+
 
 using namespace std;
 
-#if defined(WIN32)
-#include <time.h> 
-#endif
+//!This test perform a test of the vtkContactCollection class
 
-//!This test performs a standard execution of the vtkSimulation class
-
-int TestSimulation(int argc, char * argv[])
+int TestvtkContactCollection(int argc, char * argv[])
 {
-	vtkRenderer *ren1= vtkRenderer::New();
-	ren1->SetBackground(1.0,1.0,1.0);
+	vtkContact * contact;
+	vtkContactCollection * collection = vtkContactCollection::New();
 
-	vtkRenderWindow *renWin = vtkRenderWindow::New();
-	renWin->AddRenderer(ren1);
-	renWin->SetSize(840,480);
+	for (vtkIdType id = 0; id < 10; id++)
+	{
+		contact = vtkContact::New();
+		contact->SetToolId(0);
+		contact->SetOrganId(0);
+		contact->InsertPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+		contact->InsertPointId(0, id);
+		contact->InsertCellId(0, 1);
+		contact->InsertPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+		contact->InsertPointId(1, id);
+		contact->InsertCellId(0, 1);
 
-	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
-	iren->SetRenderWindow(renWin);
+		collection->InsertNextContact(contact);
+		std::cout << "Contact (" << id <<  ") has been inserted...\n";
+	}
 
-	/**********  Scenario Definitions  ********/
-	vtkScenario * Scenario = vtkScenario::New();
-	Scenario->SetRenderWindow(renWin);
+	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
 
-	/**********  Simulation Setup  ********/
-	vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	SimulationManager->SetLibraryName("vtkbioeng");
-	SimulationManager->SetScenario(Scenario);
-	SimulationManager->Init();
+	collection->InitTraversal();
 
-	vtkSimulation * Simulation = vtkSimulation::New();
-	Simulation->SetSimulationManager(SimulationManager);
-	Simulation->SetInteractor(iren);
-	Simulation->Init();
-
-	Simulation->Run();
-
-	//
-	// Free up any objects we created. All instances in VTK are deleted by
-	// using the Delete() method.
-	//
-	SimulationManager->Delete();
-	Scenario->Delete();
-	ren1->Delete();
-	renWin->Delete();
-	iren->Delete();
+	for (vtkIdType id = 0; id < 10; id++)
+	{
+		std::cout << "#########################\n";
+		contact = collection->GetNextContact();
+		contact->Print(std::cout);
+		std::cout << "Contact (" << id <<  ") has been removed...\n";
+		//collection->RemoveItem(id);
+		contact->Delete();
+	}
+	collection->RemoveAllItems();
+	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
 
 	return 0;
 }

@@ -39,36 +39,36 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
+/*
+ * TestEsquivtkToolCollection.cxx
+ *
+ *  Created on: 12/01/2010
+ *      Author: jballesteros
+ */
+
 #include <iostream>
 
-#include "vtkMath.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
-
+#include "vtkToolDummy.h"
+#include "vtkToolCollection.h"
 
 using namespace std;
 
-//!This test perform a test of the vtkContactCollection class
+//!This test perform a test of the vtkToolCollection class
 
-int TestEsquivtkContactCollection(int argc, char * argv[])
+int TestvtkToolCollection(int argc, char * argv[])
 {
-	vtkContact * contact;
-	vtkContactCollection * collection = vtkContactCollection::New();
+	vtkToolDummy * tool;
+	vtkToolCollection * collection = vtkToolCollection::New();
 
 	for (vtkIdType id = 0; id < 10; id++)
 	{
-		contact = vtkContact::New();
-		contact->SetToolId(0);
-		contact->SetOrganId(0);
-		contact->InsertPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-		contact->InsertPointId(0, id);
-		contact->InsertCellId(0, 1);
-		contact->InsertPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-		contact->InsertPointId(1, id);
-		contact->InsertCellId(0, 1);
+		tool = vtkToolDummy::New();
+		tool->SetPosition(0,0,0);
+		tool->SetId(id);
 
-		collection->InsertNextContact(contact);
-		std::cout << "Contact (" << id <<  ") has been inserted...\n";
+		collection->InsertNextTool(tool);
+		//tool->Print(std::cout);
+		std::cout << "Tool (" << id <<  ") has been inserted...\n";
 	}
 
 	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
@@ -78,11 +78,11 @@ int TestEsquivtkContactCollection(int argc, char * argv[])
 	for (vtkIdType id = 0; id < 10; id++)
 	{
 		std::cout << "#########################\n";
-		contact = collection->GetNextContact();
-		contact->Print(std::cout);
-		std::cout << "Contact (" << id <<  ") has been removed...\n";
+		vtkTool * tool = collection->GetNextTool();
+		tool->Print(std::cout);
+		std::cout << "Tool (" << id <<  ") has been removed...\n";
 		//collection->RemoveItem(id);
-		contact->Delete();
+		tool->Delete();
 	}
 	collection->RemoveAllItems();
 	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
