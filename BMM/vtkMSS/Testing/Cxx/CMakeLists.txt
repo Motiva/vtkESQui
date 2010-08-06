@@ -1,2 +1,2 @@
-ADD_EXECUTABLE(vtkMSSTest vtkMSSTest.cxx)
-TARGET_LINK_LIBRARIES(vtkMSSTest vtkMSS mss_vtk)
+ADD_EXECUTABLE(TestvtkMSS TestvtkMSS.cxx)
+TARGET_LINK_LIBRARIES(TestvtkMSS vtkMSS mss_vtk)

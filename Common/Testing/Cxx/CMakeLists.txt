@@ -1,6 +1,6 @@
 SET(KIT vtkESQuiCommon)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
-  
+  TestvtkContactCollection.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})

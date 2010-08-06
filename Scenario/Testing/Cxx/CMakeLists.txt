@@ -1,8 +1,7 @@
 SET(KIT vtkESQuiScenario)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
-  TestEsquivtkContactCollection.cxx
-  TestEsquivtkToolCollection.cxx
-  #vtkFeMeshInterfaceTest.cxx
+  TestvtkToolCollection.cxx
+  TestvtkOrganCollection.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})

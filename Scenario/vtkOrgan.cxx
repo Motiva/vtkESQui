@@ -97,14 +97,14 @@ vtkOrgan::vtkOrgan()
 //--------------------------------------------------------------------------
 vtkOrgan::~vtkOrgan()
 {
-	this->Reader->Delete();
-	this->TransformFilter->Delete();
-	this->Transform->Delete();
-	this->Actor->Delete();
-	this->Mapper->Delete();
-	this->Contacts->Delete();
-	this->Bmm->Delete();
-	this->Texture->Delete();
+	if(this->Reader) this->Reader->Delete();
+	if(this->TransformFilter) this->TransformFilter->Delete();
+	if(this->Transform) this->Transform->Delete();
+	if(this->Actor) this->Actor->Delete();
+	if(this->Mapper) this->Mapper->Delete();
+	if(this->Contacts) this->Contacts->Delete();
+	if(this->Bmm) this->Bmm->Delete();
+	if(this->Texture) this->Texture->Delete();
 }
 
 //--------------------------------------------------------------------------

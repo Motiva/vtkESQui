@@ -1,6 +1,6 @@
 SET(KIT vtkESQuiManager)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
-  TestSimulation
+  TestvtkSimulation
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})

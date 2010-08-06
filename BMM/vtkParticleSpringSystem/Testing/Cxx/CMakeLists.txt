@@ -1,2 +1,2 @@
-ADD_EXECUTABLE(vtkParticleSpringSystemTest vtkParticleSpringSystemTest.cxx)
-TARGET_LINK_LIBRARIES(vtkParticleSpringSystemTest vtkParticleSpringSystem vtkESQuiUtilities)
+ADD_EXECUTABLE(TestvtkParticleSpringSystem TestvtkParticleSpringSystem.cxx)
+TARGET_LINK_LIBRARIES(TestvtkParticleSpringSystem vtkParticleSpringSystem vtkESQuiUtilities)
