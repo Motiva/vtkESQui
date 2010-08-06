@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$classvtkScenarioItem.html" title="Class vtkScenarioItem, abstract the use of a surgical item." alt="" coords="5,6,123,37"/>
-<area shape="rect" id="node4" href="$classvtkContactCollection.html" title="Implementation of a collection of contacts." alt="" coords="147,6,291,37"/>
-<area shape="rect" id="node6" href="$classvtkPieceCollection.html" title="Collection of Pieces." alt="" coords="315,6,448,37"/>
-<area shape="rect" id="node8" href="$classvtkHaptic.html" title="Generic Haptic Class." alt="" coords="472,6,547,37"/>
-</map>
