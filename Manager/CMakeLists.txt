@@ -35,8 +35,7 @@ ${PROJECT_NAME}Scenario
 vtkGraphics 
 vtkCommon 
 vtkIO
-vtkBioeng 
-vtkMSS
+vtkBioeng
 vtkParticleSpringSystem
 )
 

@@ -1,2 +1,0 @@
-ADD_EXECUTABLE(TestvtkMSS TestvtkMSS.cxx)
-TARGET_LINK_LIBRARIES(TestvtkMSS vtkMSS mss_vtk)

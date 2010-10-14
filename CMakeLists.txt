@@ -23,6 +23,11 @@ ENABLE_TESTING()
 OPTION (VTKESQUI_USE_HAPTICS "Set this option if you want to use an haptic device")
 
 #
+#Enabling/disabling FEM use
+#
+OPTION (VTKESQUI_USE_FEM "Set this option if you want to enable FEM")
+
+#
 # Need to include class headers and the configuration header.
 #
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
@@ -184,5 +189,10 @@ IF(VTK_FOUND)
     INCLUDE_DIRECTORIES(${VSPSDK_INCLUDE_DIRS})
     
   ENDIF(VTKESQUI_USE_HAPTICS)
+
+	IF(VTKESQUI_USE_FEM)
+		FIND_PACKAGE(GetFEM++ REQUIRED)
+		INCLUDE_DIRECTORIES(${GETFEM_INCLUDE_DIRS})
+	ENDIF(VTKESQUI_USE_FEM)
     
 ENDIF (VTK_FOUND)

@@ -61,9 +61,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkToolPincers.h"
 #include "vtkOrgan.h"
 #include "vtkOrganCollection.h"
-#include "vtkMSSInterface.h"
 #include "vtkPSSInterface.h"
-#include "vtkRDMInterface.h"
+//#include "vtkRDMInterface.h"
 
 #include <sys/stat.h>
 #include <assert.h>
@@ -345,7 +344,6 @@ void vtkSRMLImporter::ImportTools()
 void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 {
 	tool->SetName(item->GetAttribute("Name"));
-	tool->SetToolType(item->GetAttribute("Type"));
 
 	double array[3];
 	item->GetVectorAttribute("Position", 3, array);
@@ -365,6 +363,9 @@ void vtkSRMLImporter::SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElemen
 {
 	//Set common tool data
 	this->SetToolData(tool, item);
+
+	//Set tool type
+	tool->SetToolType(vtkTool::Laparoscopy);
 
 	//Set specific vtkToolPincers parameters
 	for (int j=0; j<tool->GetNumberOfPieces();j++)
@@ -418,24 +419,10 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	vtkXMLDataElement * bmm = item->LookupElementWithName("BMM");
 	vtkBioMechanicalModel * model;
 	const char * name = bmm->GetAttribute("Name");
-	if(!strcmp(name, "vtkMSS"))
-	{
-		model = vtkMSSInterface::New();
-	}
-	else if (!strcmp(name, "vtkPSS"))
+	if (!strcmp(name, "vtkPSS"))
 	{
 		cout << "vtkParticleSpringSystem BioMech Model" << endl;
 		model = vtkPSSInterface::New();
-	}
-	else if (!strcmp(name, "vtkFeMesh"))
-	{
-		cout << "vtkFeMesh BioMech Model" << endl;
-		//model = vtkFeMeshInterface::New();
-	}
-	else if (!strcmp(name, "vtkRDM"))
-	{
-		cout << "Robust Deformation Model" << endl;
-		model = vtkRDMInterface::New();
 	}
 	model->SetName(bmm->GetAttribute("Name"));
 	this->SetBioMechanicalModelData(model ,bmm);
@@ -448,25 +435,7 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 void vtkSRMLImporter::SetBioMechanicalModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item)
 {
 	const char * name = model->GetName();
-	if(!strcmp(name, "vtkMSS"))
-	{
-		vtkMSSInterface * bmm = vtkMSSInterface::SafeDownCast(model);
-		double coefficient;
-		item->GetScalarAttribute("DistanceCoefficient", coefficient);
-		bmm->SetDistanceCoefficient(coefficient);
-		item->GetScalarAttribute("DampingCoefficient", coefficient);
-		bmm->SetDampingCoefficient(coefficient);
-		double mass;
-		item->GetScalarAttribute("Mass", mass);
-		bmm->SetMass(mass);
-		double delta;
-		item->GetScalarAttribute("DeltaT", delta);
-		bmm->SetDeltaT(delta);
-		int value;
-		item->GetScalarAttribute("Steps", value);
-		bmm->SetSteps(value);
-	}
-	else if(!strcmp(name, "vtkPSS"))
+	if(!strcmp(name, "vtkPSS"))
 	{
 		vtkPSSInterface * bmm = vtkPSSInterface::SafeDownCast(model);
 		double coefficient;
@@ -485,32 +454,6 @@ void vtkSRMLImporter::SetBioMechanicalModelData(vtkBioMechanicalModel * model, v
 		int value;
 		item->GetScalarAttribute("RigidityFactor", value);
 		bmm->SetRigidityFactor(value);
-	}
-	else if (!strcmp(name, "vtkFeMesh"))
-	{
-		cout << "vtkFeMesh BioMech Model Data" << endl;
-		//vtkFeMeshInterface * bmm = vtkFeMeshInterface::SafeDownCast(model);
-	}
-	else if (!strcmp(name, "vtkRDM"))
-	{
-		cout << "vtkRDM BioMech Model Data" << endl;
-		vtkRDMInterface * bmm = vtkRDMInterface::SafeDownCast(model);
-
-		double coefficient;
-		item->GetScalarAttribute("DistanceCoefficient", coefficient);
-		bmm->SetDistanceCoefficient(coefficient);
-		item->GetScalarAttribute("DampingCoefficient", coefficient);
-		bmm->SetDampingCoefficient(coefficient);
-		item->GetScalarAttribute("SurfaceCoefficient", coefficient);
-		bmm->SetSurfaceCoefficient(coefficient);
-		item->GetScalarAttribute("VolumeCoefficient", coefficient);
-		bmm->SetVolumeCoefficient(coefficient);
-		double mass;
-		item->GetScalarAttribute("Mass", mass);
-		bmm->SetMass(mass);
-		double delta;
-		item->GetScalarAttribute("DeltaT", delta);
-		bmm->SetDeltaT(delta);
 	}
 }
 

@@ -23,7 +23,6 @@ vtkCommon
 vtkRendering
 vtkHybrid
 vtkParticleSpringSystem
-vtkMSS
 vtkBioeng
 )
 

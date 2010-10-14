@@ -10,9 +10,8 @@ SET(UKIT BMM)  #Uppercase Kit Name
 # Kit_SRCS variable.
 SET (Kit_SRCS 
 vtkBioMechanicalModel.cxx
-vtkMSSInterface.cxx
 vtkPSSInterface.cxx
-vtkRDMInterface.cxx
+#vtkRDMInterface.cxx
 )
 
 #SET_SOURCE_FILES_PROPERTIES(
@@ -26,19 +25,15 @@ vtkRDMInterface.cxx
 #)
 
 # Set your list of libraries here.
-SET(KIT_LIBS  
-#${PROJECT_NAME}Utilities 
-${PROJECT_NAME}Common 
+SET(KIT_LIBS ${PROJECT_NAME}Common 
 vtkCommon
 vtkFiltering
-vtkRobustDeformationModel
-vtkMSS
 vtkParticleSpringSystem
+#vtkRobustDeformationModel
 )
 
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
-#${PROJECT_NAME}UtilitiesTCL
 ${PROJECT_NAME}CommonTCL
 vtkFilteringTCL
 vtkCommonTCL
@@ -81,7 +76,5 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 
 # Subdirs to be added
 
-SUBDIRS(vtkMSS)
-SUBDIRS(vtkRobustDeformationModel)
 SUBDIRS(vtkParticleSpringSystem)
-#SUBDIRS(vtkFeMesh)
+#SUBDIRS(vtkRobustDeformationModel)
