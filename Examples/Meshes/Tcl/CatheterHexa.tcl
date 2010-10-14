@@ -6,7 +6,7 @@ vtkPoints points
 vtkCellArray lines
 
 for {set x 0} {$x<$numberOfPoints} {incr x} {
-	set p [expr {$x/100.0}]
+	set p [expr {$x/20.0}]
 	#puts "$x $p"
 	vtkLine line$x
 	[line$x GetPointIds] SetId 0 $x

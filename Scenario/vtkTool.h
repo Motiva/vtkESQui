@@ -72,6 +72,14 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkTool: public vtkScenarioItem {
 
 public:
 
+	//BTX
+	enum vtkToolType{
+		Laparoscopy = 0,
+		Endovascular = 1,
+		Arthroscopy = 2,
+		Camera = 3
+	};
+	//ETX
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkTool,vtkScenarioItem);
 
@@ -102,9 +110,9 @@ public:
 	vtkIdType GetNumberOfPieces();
 
 	//!Set tool type
-	vtkSetStringMacro(ToolType);
+	vtkSetMacro(ToolType, vtkTool::vtkToolType);
 	//!Return tool type
-	vtkGetStringMacro(ToolType);
+	vtkGetMacro(ToolType, vtkTool::vtkToolType);
 
 	//!Abstract initialization function
 	/*!
@@ -199,7 +207,7 @@ protected:
 	~vtkTool();
 
 	//! Tool Type
-	char * ToolType;
+	vtkToolType ToolType;
 
 	//! Enable haptic device control
 	bool UseHaptic;

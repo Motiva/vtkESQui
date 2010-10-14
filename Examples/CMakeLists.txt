@@ -1,4 +1,5 @@
 SUBDIRS(Simulation)
+SUBDIRS(Scenario)
 SUBDIRS(Meshes)
 IF(VTKESQUI_USE_HAPTICS)
 	SUBDIRS(Haptics)

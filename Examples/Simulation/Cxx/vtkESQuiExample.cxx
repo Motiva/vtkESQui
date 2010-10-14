@@ -65,7 +65,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkToolPincers.h"
 #include "vtkCubeSource.h"
 #include "vtkSimulation.h"
-#include "vtkMSSInterface.h"
+#include "vtkPSSInterface.h"
 
 namespace EsquiExampleNS{
 	//All these objects must be defined globally, in order to access them on timer callback
@@ -134,12 +134,11 @@ int main(int argc, char * argv[])
 	organ->GetActor()->GetProperty()->SetColor(1,0.2,0.2);
 
 	//Biomechanical model
-	vtkMSSInterface * model = vtkMSSInterface::New();
+	vtkPSSInterface * model = vtkPSSInterface::New();
 	model->SetDistanceCoefficient(200);
 	model->SetDampingCoefficient(100);
 	model->SetMass(1);
 	model->SetDeltaT(0.01);
-	model->SetSteps(12);
 
 	organ->SetBioMechanicalModel(model);
 	

@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkPiece.h"
 
 #include "vtkObjectFactory.h"
-#include "vtkPolyDataReader.h"
+#include "vtkXMLPolyDataReader.h"
 #include "vtkPolyData.h"
 #include "vtkTransform.h"
 #include "vtkTransformPolyDataFilter.h"
@@ -91,8 +91,7 @@ void vtkPiece::Init()
 	//Read polydata source file
 	if(this->FileName)
 	{
-		this->Reader = vtkPolyDataReader::New();
-		this->Reader = vtkPolyDataReader::New();
+		this->Reader = vtkXMLPolyDataReader::New();
 		this->Reader->SetFileName(this->FileName);
 		this->Reader->Update();
 		this->PolyData = this->Reader->GetOutput();

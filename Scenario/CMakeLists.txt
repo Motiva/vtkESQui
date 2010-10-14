@@ -15,6 +15,8 @@ vtkOrgan.cxx
 vtkOrganCollection.cxx
 vtkTool.cxx
 vtkToolCollection.cxx
+vtkToolEndovascular.cxx
+vtkToolCatheter.cxx
 vtkToolLaparoscopy.cxx
 vtkToolPincers.cxx
 vtkToolScissors.cxx
@@ -26,6 +28,7 @@ vtkPieceCollection.cxx
 SET_SOURCE_FILES_PROPERTIES(
 vtkBioMechanicalModel
 vtkToolLaparoscopy
+vtkToolEndovascular
 vtkTool
 vtkScenarioItem
 ABSTRACT
@@ -38,9 +41,7 @@ ${PROJECT_NAME}BMM
 vtkFiltering
 vtkGraphics
 vtkCommon
-vtkMSS
 vtkParticleSpringSystem
-#vtkFeMesh
 )
 
 # Set your list of TCL libraries here.

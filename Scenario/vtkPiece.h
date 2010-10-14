@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTransform.h"
 
 class vtkPolyData;
-class vtkPolyDataReader;
+class vtkXMLPolyDataReader;
 class vtkTransformPolyDataFilter;
 
 //!This class defines an standard vtkTool piece
@@ -69,7 +69,9 @@ public:
 		Blade = 0,
 		Grasper = 1,
 		Stick = 2,
-		Ball = 3
+		Ball = 3,
+		Tube = 4,
+		Wire = 5
 	};
 	//ETX
 
@@ -221,7 +223,7 @@ private:
 	char * FileName;
 
 	//!Polydata reader
-	vtkPolyDataReader * Reader;
+	vtkXMLPolyDataReader * Reader;
 
 	//!Polydata of the piece
 	vtkPolyData * PolyData;
