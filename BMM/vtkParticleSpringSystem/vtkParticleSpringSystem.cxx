@@ -65,8 +65,6 @@ int vtkParticleSpringSystem::RequestData(
 	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//output->DeepCopy(input);
-
 	//Compute Collisions
 	this->ComputeContacts();
 
@@ -86,13 +84,13 @@ int vtkParticleSpringSystem::RequestData(
 
 	//Compute System properties
 	//TODO: Check why input is not updated on each step (volume computation)
-	vtkPolyData * surface = vtkPolyData::New();
-	surface->ShallowCopy(output);
+	//vtkPolyData * surface = vtkPolyData::New();
+	//surface->ShallowCopy(output);
 
-	this->SystemProperties->SetInput(surface);
-	this->Volume = this->SystemProperties->GetVolume();
+	//this->SystemProperties->SetInput(surface);
+	//this->Volume = this->SystemProperties->GetVolume();
 
-	surface->Delete();
+	//surface->Delete();
 	return 1;
 }
 
@@ -220,7 +218,7 @@ void vtkParticleSpringSystem::Init()
 //----------------------------------------------------------------------------
 void vtkParticleSpringSystem::SetParticleStatus(vtkIdType id, bool status)
 {
-	this->Particles->GetParticle(id)->SetFixed(status);
+	this->Particles->GetParticle(id)->SetStatus(status);
 }
 
 //----------------------------------------------------------------------------

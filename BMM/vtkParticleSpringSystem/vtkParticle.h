@@ -75,9 +75,9 @@ public:
 	//! Get particle inverse mass
 	vtkGetMacro(InverseMass, double);
 	//! Set is particle status as fixed
-	vtkSetMacro(Fixed, bool);						// Fix particle
+	vtkSetMacro(Status, bool);						// Fix particle
 	//! Set is particle status as fixed
-	vtkGetMacro(Fixed, bool);
+	vtkGetMacro(Status, bool);
 	//! Set particle as contacted
 	vtkSetMacro(Contacted, bool);					// Contacted particle
 	//! Get if particle is contacted
@@ -147,8 +147,8 @@ protected:
 	double Mass;
 	//! Inverse mass. optimizes calculation
 	double InverseMass;
-	//! Particle is fixed. f = 0;
-	bool Fixed;
+	//! Particle is free/fixed (0/1)
+	bool Status;
 	//! Particle is contacted
 	bool Contacted;
 

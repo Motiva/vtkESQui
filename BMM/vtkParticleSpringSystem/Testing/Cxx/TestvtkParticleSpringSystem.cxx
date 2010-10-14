@@ -186,6 +186,9 @@ int main(int argc, char * argv[])
 
 	plotter->Update();
 
+	//Fix a particle
+	ParticleSpringSystem->SetParticleStatus(10,1);
+
 	//Set a fictional force
 	ParticleSpringSystem->SetContacts(list, directions);
 
