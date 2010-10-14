@@ -1,4 +1,4 @@
-#
+
 # CMakeLists file for a project kit (subdir). You will only need to set the Kit name and 
 # the source files and libraries
 #
@@ -77,4 +77,7 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 # Subdirs to be added
 
 SUBDIRS(vtkParticleSpringSystem)
+IF(VTKESQUI_USE_FEM)
+  SUBDIRS(vtkFEMSystem)
+ENDIF(VTKESQUI_USE_FEM)
 #SUBDIRS(vtkRobustDeformationModel)
