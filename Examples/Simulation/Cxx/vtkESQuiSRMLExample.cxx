@@ -49,7 +49,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInteractorStyleTrackballCamera.h"
 
 #include "vtkScenario.h"
-#include "vtkSimulationManager.h"
 #include "vtkSimulationInteractorStyle.h"
 #include "vtkSimulation.h"
 
@@ -111,13 +110,13 @@ int main(int argc, char * argv[])
 	Scenario->SetRenderWindow(renWin);
 
 	/**********  Simulation Setup  ********/
-	vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	SimulationManager->SetLibraryName("vtkbioeng");
-	SimulationManager->SetScenario(Scenario);
-	SimulationManager->Init();
+	//vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
+	//SimulationManager->SetLibraryName("vtkbioeng");
+	//SimulationManager->SetScenario(Scenario);
+	//SimulationManager->Init();
 
 	vtkSimulation * Simulation = vtkSimulation::New();
-	Simulation->SetSimulationManager(SimulationManager);
+	Simulation->SetScenario(Scenario);
 
 	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
 	style->SetScenario(Scenario);
@@ -136,7 +135,7 @@ int main(int argc, char * argv[])
 	// Free up any objects we created. All instances in VTK are deleted by
 	// using the Delete() method.
 	//
-	SimulationManager->Delete();
+	//SimulationManager->Delete();
 	Scenario->Delete();
 	Importer->Delete();
 	ren1->Delete();

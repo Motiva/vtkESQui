@@ -73,6 +73,7 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkTool: public vtkScenarioItem {
 public:
 
 	//BTX
+	//!Tool tyoe definition
 	enum vtkToolType{
 		Laparoscopy = 0,
 		Endovascular = 1,
@@ -89,11 +90,10 @@ public:
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Set FileName for each piece
-	void SetFileName(vtkIdType id, const char * filename);
-
-	//! Get FileName for each piece
-	const char * GetFileName(vtkIdType id);
+	//!Set the number of pieces
+	vtkSetMacro(NumberOfPieces, int);
+	//!Get the number of pieces
+	vtkGetMacro(NumberOfPieces, int);
 
 	// **** Physical Parameters **** //
 
@@ -102,12 +102,6 @@ public:
 	* id Identifier of the tool piece
 	*/
 	vtkPiece * GetPiece(vtkIdType id);
-
-	//! Return the number of pieces
-	/*!
-	* Total number of pieces of the tool
-	*/
-	vtkIdType GetNumberOfPieces();
 
 	//!Set tool type
 	vtkSetMacro(ToolType, vtkTool::vtkToolType);
@@ -118,7 +112,7 @@ public:
 	/*!
 	* This method initializes the tool physical values, scale, position, etc...
 	*/
-	virtual void Init() = 0;
+	virtual void Init();
 
 	//!Abstract update function
 	/*!
@@ -130,12 +124,6 @@ public:
 	* This method returns the transformed polydata for collision detection purposes
 	*/
 	virtual vtkPolyData * GetOutput();
-
-	//! Applies the initial transformation to the tool loaded from vtk files
-	/*!
-	Applies the initial transformation, placing the tool in its position in the scene.
-	*/
-	virtual void ApplyInitialTransform();
 
 	// **** Graphical Purposes Methods **** //
 	//! Return the actors collection of the tool
@@ -211,6 +199,9 @@ protected:
 
 	//! Enable haptic device control
 	bool UseHaptic;
+
+	//!Number of pieces
+	int NumberOfPieces;
 
 	//!Collection of tool pieces
 	vtkPieceCollection * Pieces;

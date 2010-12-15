@@ -8,7 +8,7 @@ ADD_EXECUTABLE(${KIT}CxxTests ${Tests})
 TARGET_LINK_LIBRARIES(${KIT}CxxTests 
     ${PROJECT_NAME}Utilities
     ${PROJECT_NAME}Scenario
-    ${PROJECT_NAME}Manager  
+    ${PROJECT_NAME}Simulation  
 	vtkGraphics 
 	vtkCommon 
 	vtkFiltering

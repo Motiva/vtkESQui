@@ -62,9 +62,9 @@ vtkToolEndovascular::~vtkToolEndovascular() {
 }
 
 //--------------------------------------------------------------------------
-void vtkToolEndovascular::ApplyInitialTransform()
+void vtkToolEndovascular::Init()
 {
-	Superclass::ApplyInitialTransform();
+	Superclass::Init();
 	this->YawAngle = this->Orientation[0];
 	this->PitchAngle = this->Orientation[1];
 	this->RollAngle = this->Orientation[2];

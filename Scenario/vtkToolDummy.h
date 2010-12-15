@@ -79,6 +79,30 @@ public:
 	 */
 	virtual void Update();
 
+	//!Set stick polydata filename
+	/*!
+	* Specify the path of the file that contains the stick piece polydata
+	*/
+	vtkSetStringMacro(StickFileName);
+
+	//!Return the stick polydata file name
+	/*!
+	 * Path of the file that contains the grasper piece polydata
+	 */
+	vtkGetStringMacro(StickFileName);
+
+	//!Set grasper polydata filename
+	/*!
+	 * Specify the path of the file that contains the grasper piece polydata
+	 */
+	vtkSetStringMacro(BallFileName);
+
+	//!Return the left grasper polydata file name
+	/*!
+	* Path of the file that contains the grasper piece polydata
+	*/
+	vtkGetStringMacro(BallFileName);
+
 	//! Set Polydata object to the tool.
 	/*!
 	 * \param id identifier of the piece
@@ -104,6 +128,9 @@ private:
 
 	vtkToolDummy (const vtkToolDummy &); //Not Implemented
 	void operator =(const vtkToolDummy &); //Not Implemented
+
+	char * StickFileName;
+	char * BallFileName;
 
 };
 #endif

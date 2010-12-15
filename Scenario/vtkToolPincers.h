@@ -69,6 +69,15 @@ public:
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//BTX
+	//!Tool tyoe definition
+	enum vtkPieceType{
+		Stick = 0,
+		LeftGrasper = 1,
+		RightGrasper = 2
+	};
+	//ETX
+
 	//!Initialize the tool from VTK file
 	/*!
 		This function initializes the tool whose mesh is described on a VTK file
@@ -81,29 +90,51 @@ public:
 	 */
 	virtual void Update();
 
-	//!Set grasper polydata filename
-	/*!
-	 * Specify the path of the file that contains the grasper piece polydata
-	 */
-	void SetGrasperFileName(vtkIdType id, const char * path);
-
 	//!Set stick polydata filename
 	/*!
 	* Specify the path of the file that contains the stick piece polydata
 	*/
-	void SetStickFileName(const char * path);
-
-	//!Return the grasper polydata file name
-	/*!
-	* Path of the file that contains the grasper piece polydata
-	*/
-	const char * GetGrasperFileName(vtkIdType id);
+	vtkSetStringMacro(StickFileName);
 
 	//!Return the stick polydata file name
 	/*!
 	 * Path of the file that contains the grasper piece polydata
 	 */
-	const char * GetStickFileName(vtkIdType id);
+	vtkGetStringMacro(StickFileName);
+
+	//!Set grasper polydata filename
+	/*!
+	 * Specify the path of the file that contains the grasper piece polydata
+	 */
+	vtkSetStringMacro(LeftGrasperFileName);
+
+	//!Return the left grasper polydata file name
+	/*!
+	* Path of the file that contains the grasper piece polydata
+	*/
+	vtkGetStringMacro(LeftGrasperFileName);
+
+	//!Set grasper polydata filename
+	/*!
+	 * Specify the path of the file that contains the grasper piece polydata
+	 */
+	vtkSetStringMacro(RightGrasperFileName);
+
+	//!Return the left grasper polydata file name
+	/*!
+	 * Path of the file that contains the grasper piece polydata
+	 */
+	vtkGetStringMacro(RightGrasperFileName);
+
+	//! Set the tool's aperture according with the value given in the "Aperture" parameter
+	/*!
+		This function set the tool's aperture in function of the value given in the "Aperture" parameter.
+		The aperture is established modifying the tool's mesh position.
+		The "Aperture" parameter can take any value between "0" $ "1": "0" -> to close the tool "1" -> to open the tool
+	 */
+	void SetOpening(double opening);
+	//!Get pincer opening
+	vtkGetMacro(Opening, double);
 
 	//! Open the pincers moving piece actors
 	/*!
@@ -119,16 +150,8 @@ public:
 	*/
 	void Close();
 
-	//! Set the tool's aperture according with the value given in the "Aperture" parameter
-	/*!
-		This function set the tool's aperture in function of the value given in the "Aperture" parameter.
-		The aperture is established modifying the tool's mesh position.
-		The "Aperture" parameter can take any value between "0" $ "1": "0" -> to close the tool "1" -> to open the tool
-	*/
-	void SetOpening(double opening);
-
 	//!Return whether the grasper is closed or not
-	bool IsClosed(){return (this->Opening <= 0.0f);}
+	bool IsClosed(){return (this->Opening <= 0.);}
 
 	//! Sets the pincers' depth in its own coordinate system
 	void SetDepth(double position);
@@ -170,17 +193,29 @@ private:
 	vtkToolPincers (const vtkToolPincers &); //Not Implemented
 	void operator =(const vtkToolPincers &); //Not Implemented
 
+	char * StickFileName;
+	char * LeftGrasperFileName;
+	char * RightGrasperFileName;
+
+	//! Tool pieces opening
+	double Opening;
 	//!Return the stick piece
 	/*!
 	 * Return the vtkPiece object of the stick
 	 */
-	vtkPiece * GetStick(){return this->GetPiece(0);};
-	
-	//!Return the grasper piece
+	vtkPiece * GetStick(){return this->GetPiece(vtkToolPincers::Stick);};
+
+	//!Return the left grasper piece
 	/*!
-	 * Return the vtkPiece object of the grasper at the specified id
+	 * Return the vtkPiece object of the left grasper at the specified id
 	 */
-	vtkPiece * GetGrasper(vtkIdType id){return this->GetPiece(id);};
+	vtkPiece * GetLeftGrasper(){return this->GetPiece(vtkToolPincers::LeftGrasper);};
+	
+	//!Return the right grasper piece
+	/*!
+	 * Return the vtkPiece object of the right grasper
+	 */
+	vtkPiece * GetRightGrasper(){return this->GetPiece(vtkToolPincers::RightGrasper);};
 
 };
 #endif

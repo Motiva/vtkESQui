@@ -45,13 +45,21 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkObject.h"
 
+#include "vtkCollisionDetectionLibrary.h"
+
 class vtkRenderWindow;
 class vtkRenderer;
+
+class vtkActor;
+class vtkTextActor;
+class vtkActor2DCollection;
 
 class vtkOrgan;
 class vtkOrganCollection;
 class vtkTool;
 class vtkToolCollection;
+
+
 
 //!Implementation of the simulation scenario. All the elements in the scenario (organs, tools...) are stored in collections.
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenario: public vtkObject
@@ -70,13 +78,13 @@ public:
 	* \param collection collection of organs to be inserted to the scenario
 	* \sa GetOrganCollection()
 	*/
-	void SetOrganCollection(vtkOrganCollection * collection);
+	void SetOrgans(vtkOrganCollection * collection);
 
 	//!Get the collection of organs of the scenario
 	/*!
 	* \sa SetOrganCollection(vtkOrganCollection * collection)
 	*/
-	vtkOrganCollection * GetOrganCollection();
+	vtkOrganCollection * GetOrgans();
 
 	//!Insert organ to the scenario
 	/*!
@@ -85,7 +93,7 @@ public:
 	* \return position of the added object.
 	* \sa InsertOrgan(vtkOrgan * organ)
 	*/
-	void InsertNextOrgan(vtkOrgan * organ);
+	void AddOrgan(vtkOrgan * organ);
 
 	//!Insert an organ in the specified position
 	/*!
@@ -93,7 +101,6 @@ public:
 	* \param index index of the list where the organ will be added
 	* \param organ vtkOrgan object to be inserted
 	* \sa InsertNextOrgan(vtkOrgan * organ)
-	* \return false if the insert operation was not correctly completed
 	*/
 	void InsertOrgan(vtkIdType index, vtkOrgan * organ);
 
@@ -102,7 +109,6 @@ public:
 	/*!
 	* It will only remove the organ from the collection, it does not free memory
 	* \param index index of the organ to be removed
-	* \return false if the model could not be deleted
 	*/
 	void RemoveOrgan(vtkIdType index);
 
@@ -120,31 +126,28 @@ public:
 	/*!
 	* \param collection collection of tools
 	*/
-	void SetToolCollection(vtkToolCollection * collection);
+	void SetTools(vtkToolCollection * collection);
 
 	//!Return the collection of tools of the scenario
-	vtkToolCollection * GetToolCollection();
+	vtkToolCollection * GetTools();
 
-	//!Insert tool to the scenario
+	//!Add tool to the scenario
 	/*!
 	* \param tool vtkTool object to be inserted
-	* \return the position of the inserted object in the collection
 	*/
-	void InsertNextTool(vtkTool * tool);
+	void AddTool(vtkTool * tool);
 
 	//!Insert a tool in a given position in the scenario
 	/*!
 	* If the given position is not empty, the content is replaced by the new model
 	* \param index index of the tool to be inserted
 	* \param tool vtkTool object to be inserted
-	* \return false if the insert operation was not correctly completed
 	*/
 	void InsertTool(vtkIdType index, vtkTool * tool);
 
 	//!Delete the tool at the specified id from the scenario
 	/*!
 	It will only remove the tool from the collection, it does not liberate the memory
-	\return false if the model could not be deleted
 	*/
 	void RemoveTool(vtkIdType index);
 
@@ -157,18 +160,57 @@ public:
 	//!Return the number of tools contained in the scenario
 	vtkIdType GetNumberOfTools();
 
-	//!Assign the render window of the tool
+	//void SetExtras(vtkPropCollection * extras);
+	//vtkPropCollection * GetExtras();
+
+	//void InsertNextExtra(vtkProp * extra);
+
+	//!Insert a extra in a given position in the scenario
+	/*!
+	 * If the given position is not empty, the content is replaced by the new model
+	 * \param index index of the extra to be inserted
+	 * \param extra vtkActor object to be inserted
+	 * \return false if the insert operation was not correctly completed
+	 */
+	//void InsertExtra(vtkIdType index, vtkProp * extra);
+
+	//!Delete the extra at the specified id from the scenario
+	/*!
+		It will only remove the extra from the collection, it does not liberate the memory
+		\return false if the model could not be deleted
+	 */
+	//void RemoveExtra(vtkIdType index);
+
+	//!Return the extra stored with the specified id
+	/*!
+	 * \param id index of the extra to be returned
+	 */
+	//vtkActor * GetExtra(vtkIdType id);
+
+	//!Return the number of extras contained in the scenario
+	//vtkIdType GetNumberOfExtras();
+
+	//!Set/Get legend display
+	vtkSetMacro(LegendDisplay, bool);
+	vtkGetMacro(LegendDisplay, bool);
+
+	vtkBooleanMacro(LegendDisplay, bool);
+
+	//!Assign the render window of the scenario
 	/*!
 	* \param Renderer render window for displaying purposes
 	* \sa GetRenderWindow()
 	*/
 	void SetRenderWindow(vtkRenderWindow *Renderer);
 
-	//!Return the render window of the tool
+	//!Return the render window of the scenario
 	/*!
 	* \sa SetRenderWindow(vtkRenderWindow *Renderer)
 	*/
 	vtkRenderWindow *GetRenderWindow();
+
+	//!Initialize Scenario
+	void Init();
 
 	//!Update the whole Scenario
 	/*!
@@ -186,15 +228,26 @@ private:
 	vtkScenario(const vtkScenario&);
 	void operator=(const vtkScenario&);
 
-	//!Collection of the scenario organs
-	vtkOrganCollection * Organs;
-	//!Collection of the scenario tools
-	vtkToolCollection * Tools;
-
 	//!Scenario render window
 	vtkRenderWindow * RenderWindow;
 	//!Scenario renderer
 	vtkRenderer * Renderer;
+
+	//!Collection of the scenario organs
+	vtkOrganCollection * Organs;
+	//!Collection of the scenario tools
+	vtkToolCollection * Tools;
+	//!Collection of Extras
+	//vtkPropCollection * Extras;
+
+	//!
+	bool LegendDisplay;
+
+	//!Legends
+	vtkActor2DCollection * Legends;
+
+	//!collision detection library
+	vtkCollisionDetectionLibrary* CollisionDetection;
 
 };
 

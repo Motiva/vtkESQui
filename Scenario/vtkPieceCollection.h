@@ -74,7 +74,7 @@ public:
 	* \param Piece vtkPiece object to be inserted
 	* \sa InsertPiece(vtkIdType id, vtkPiece * Piece)
 	*/
-	void InsertNextPiece(vtkPiece * Piece);
+	void AddPiece(vtkPiece * Piece);
 
 	//!Return piece located the specified id
 	/*!

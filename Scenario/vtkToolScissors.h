@@ -65,6 +65,15 @@ public:
 	//! Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//BTX
+	//!Tool tyoe definition
+	enum vtkPieceType{
+		Stick = 0,
+		LeftBlade = 1,
+		RightBlade = 2
+	};
+	//ETX
+
 	//!Initialize the tool from VTK file
 	/*!
 	* This function initializes the tool whose mesh is described on a VTK file
@@ -77,32 +86,52 @@ public:
 	*/
 	virtual void Update();
 
-	//!Set Blade polydata filename
+	//! Set the tool's aperture according with the value given in the "Aperture" parameter
 	/*!
-	* \param id identifier of the blade (left = 0, right= 1);
-	* \param path path of the file that contains the blade polydata
-	*/
-	void SetBladeFileName(vtkIdType id, const char * path);
+		This function set the tool's aperture in function of the value given in the "Aperture" parameter.
+		The aperture is established modifying the tool's mesh position.
+		The "Aperture" parameter can take any value between "0" $ "1": "0" -> to close the tool "1" -> to open the tool
+	 */
+	void SetOpening(double opening);
+	//!Get pincer opening
+	vtkGetMacro(Opening, double);
+
 
 	//!Set stick polydata filename
 	/*!
-	* \param path path of the file that contains the stick piece polydata
+	* Specify the path of the file that contains the stick piece polydata
 	*/
-	void SetStickFileName(const char * path);
-
-	//!Return the Blade polydata file name
-	/*!
-	* \param id identifier of the blade piece
-	* \return path of the file that contains the blade piece polydata
-	*/
-	const char * GetBladeFileName(vtkIdType id);
+	vtkSetStringMacro(StickFileName);
 
 	//!Return the stick polydata file name
 	/*!
-	* \param id identifier of the stick piece
-	* \return path of the file that contains the stick piece polydata
+	 * Path of the file that contains the grasper piece polydata
+	 */
+	vtkGetStringMacro(StickFileName);
+
+	//!Set grasper polydata filename
+	/*!
+	 * Specify the path of the file that contains the grasper piece polydata
+	 */
+	vtkSetStringMacro(LeftBladeFileName);
+
+	//!Return the left grasper polydata file name
+	/*!
+	* Path of the file that contains the grasper piece polydata
 	*/
-	const char * GetStickFileName(vtkIdType id);
+	vtkGetStringMacro(LeftBladeFileName);
+
+	//!Set grasper polydata filename
+	/*!
+	 * Specify the path of the file that contains the grasper piece polydata
+	 */
+	vtkSetStringMacro(RightBladeFileName);
+
+	//!Return the left grasper polydata file name
+	/*!
+	 * Path of the file that contains the grasper piece polydata
+	 */
+	vtkGetStringMacro(RightBladeFileName);
 
 	//!Return whether the Blade is closed or not
 	bool IsClosed(){return (this->Opening < 0.0f);}
@@ -117,17 +146,28 @@ private:
 	vtkToolScissors (const vtkToolScissors &); //Not Implemented
 	void operator =(const vtkToolScissors &); //Not Implemented
 
+	double Opening;
+	char * StickFileName;
+	char * LeftBladeFileName;
+	char * RightBladeFileName;
+
 	//!Return the stick piece
 	/*!
 	* Return the vtkPiece object of the stick
 	*/
-	vtkPiece * GetStick(){return this->GetPiece(0);};
+	vtkPiece * GetStick(){return this->GetPiece(vtkToolScissors::Stick);};
 
 	//!Return the Blade piece
 	/*!
 	* Return the vtkPiece object of the Blade at the specified id
 	*/
-	vtkPiece * GetBlade(vtkIdType id){return this->GetPiece(id);};
+	vtkPiece * GetLeftBlade(){return this->GetPiece(vtkToolScissors::LeftBlade);};
+
+	//!Return the Blade piece
+	/*!
+	 * Return the vtkPiece object of the Blade at the specified id
+	 */
+	vtkPiece * GetRightBlade(){return this->GetPiece(vtkToolScissors::RightBlade);};
 };
 
 #endif

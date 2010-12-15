@@ -1,14 +1,17 @@
 SET(KIT vtkESQuiScenario)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
+  TestvtkScenario.cxx
   TestvtkToolCollection.cxx
   TestvtkOrganCollection.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})
 TARGET_LINK_LIBRARIES(${KIT}CxxTests 
-											 ${PROJECT_NAME}Scenario 
-											 vtkGraphics 
-											 vtkCommon)
+    ${PROJECT_NAME}Scenario
+    ${PROJECT_NAME}CollisionDetection
+    vtkBioeng
+	vtkGraphics 
+	vtkCommon)
 
 SET (TestsToRun ${Tests})
 REMOVE (TestsToRun ${KIT}CxxTests.cxx)

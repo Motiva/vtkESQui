@@ -339,7 +339,7 @@ int main(int argc, char * argv[])
 	Tool0->SetPosition(-3, 0, 0);
 	Tool0->SetOrientation(0, 0, 0);
 
-	Scenario->InsertNextTool(Tool0);
+	Scenario->AddTool(Tool0);
 
 	//Secondary (right) tool
 	Tool1 = vtkToolDummy::New();
@@ -364,7 +364,7 @@ int main(int argc, char * argv[])
 	Tool1->SetPosition(3, 0, 0);
 	Tool1->SetOrientation(0, 0, 0);
 
-	Scenario->InsertNextTool(Tool1);
+	Scenario->AddTool(Tool1);
 
 	//Display Axes
 	vtkTransform * transform = vtkTransform::New();

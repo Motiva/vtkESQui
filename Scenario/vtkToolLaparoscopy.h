@@ -81,10 +81,7 @@ public:
 	/*!
 	* This method initializes the tool physical values, scale, position, etc...
 	*/
-	virtual void Init() = 0;
-
-	//!Specific initialization function
-	void ApplyInitialTransform();
+	virtual void Init();
 
 	//!Assign the haptic force as vector
 	/*!
@@ -138,20 +135,26 @@ public:
 	//! Return tool contact force
 	double * GetContactForceValue();
 
+	//! Pull back tool
+	/*!
+	 *Set the tool depth position back.
+	 *\param step Z axis value (local coordinate system)
+	*/
+	virtual void Pull();
+
+	//! Pull back tool
+	/*!
+	 *Set the tool depth position forward.
+	 *\param step Z axis value (local coordinate system)
+	 */
+	virtual void Push();
+
 	// **** Geometrical Functions **** //
 	//! Sets the tool's depth in its own coordinate system
 	virtual void SetDepth(double depth);
 
 	//!Return the tool's depth
 	virtual double GetDepth();
-
-	//! Add a distance to the current tool depth
-	/*!
-	Set the tool depth position. The modification is made by transforming the tool's
-	mesh (vtkPolyData).
-	\param step Z axis value (local coordinate system)
-	*/
-	virtual void AddDepth(double step);
 
 	//! Rotate the tool in degrees from current orientation about the X axis using the right hand rule.
 	/*!
@@ -171,12 +174,6 @@ public:
 	*/
 	virtual void RotateZ(double angle);
 
-	//! Set the tool's aperture according with the value given in the "opening" parameter
-	virtual void SetOpening(double opening);
-
-	//! Return the tool's aperture
-	virtual double GetOpening();
-
 protected:
 
 	vtkToolLaparoscopy();
@@ -186,8 +183,6 @@ protected:
 	double ForceFeedback[3];
 	//! Tool depth (vtk z-axis direction)
 	double Depth;
-	//! Tool pieces opening
-	double Opening;
 	//! Tool Yaw Angle. VTK Y-axis about rotation
 	double YawAngle;
 	//! Tool Pitch Angle. VTK X-axis about rotation

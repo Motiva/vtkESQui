@@ -45,7 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiUtilitiesWin32Header.h"
 #include "vtkImporter.h"
 
-#include "vtkSimulation.h"
 #include "vtkScenario.h"
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
@@ -66,6 +65,8 @@ class vtkToolPincers;
 class vtkOrgan;
 class vtkBioMechanicalModel;
 
+class vtkSimulation;
+
 //! Import an SRML scenario file into vtkESQui platform
 
 class VTK_ESQUI_UTILITIES_EXPORT vtkSRMLImporter: public vtkImporter
@@ -81,6 +82,11 @@ public:
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//! Set the Simulation
+	void SetSimulation(vtkSimulation * sim){this->Simulation = sim;};
+	//! Get the Simulation
+	vtkSimulation * GetSimulation(){return this->Simulation;};
+
 	//! Set the name of the input file.
 	vtkSetStringMacro(FileName);
 	//! Get the name of the input file.
@@ -90,11 +96,6 @@ public:
 	vtkSetStringMacro(DataPath);
 	//! Get the data path.
 	vtkGetStringMacro(DataPath);
-
-	//! Set the Simulation
-	vtkSetObjectMacro(Simulation, vtkSimulation);
-	//! Get the Simulation
-	vtkGetObjectMacro(Simulation, vtkSimulation);
 
 protected:	
 

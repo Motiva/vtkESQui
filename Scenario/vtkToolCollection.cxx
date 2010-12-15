@@ -51,7 +51,7 @@ void vtkToolCollection::InsertTool(vtkIdType id, vtkTool *tool) {
 }
 
 //--------------------------------------------------------------------------
-void vtkToolCollection::InsertNextTool(vtkTool *tool) {
+void vtkToolCollection::AddTool(vtkTool *tool) {
 	this->vtkCollection::AddItem((vtkObject *) tool);
 }
 

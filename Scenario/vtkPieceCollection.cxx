@@ -51,7 +51,7 @@ void vtkPieceCollection::InsertPiece(vtkIdType id, vtkPiece *Piece) {
 }
 
 //--------------------------------------------------------------------------
-void vtkPieceCollection::InsertNextPiece(vtkPiece *Piece) {
+void vtkPieceCollection::AddPiece(vtkPiece *Piece) {
 	this->vtkCollection::AddItem((vtkObject *) Piece);
 }
 

@@ -74,10 +74,7 @@ public:
 	/*!
 	* This method initializes the tool physical values, scale, position, etc...
 	*/
-	virtual void Init() = 0;
-
-	//!Specific initialization function
-	void ApplyInitialTransform();
+	virtual void Init();
 
 	//!Assign the haptic force as vector
 	/*!

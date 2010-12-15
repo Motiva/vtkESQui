@@ -66,7 +66,7 @@ int TestvtkToolCollection(int argc, char * argv[])
 		tool->SetPosition(0,0,0);
 		tool->SetId(id);
 
-		collection->InsertNextTool(tool);
+		collection->AddTool(tool);
 		//tool->Print(std::cout);
 		std::cout << "Tool (" << id <<  ") has been inserted...\n";
 	}

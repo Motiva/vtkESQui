@@ -41,8 +41,6 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkScenarioItem.h"
 
-#include "vtkMath.h"
-
 vtkCxxRevisionMacro(vtkScenarioItem, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
@@ -55,6 +53,7 @@ vtkScenarioItem::vtkScenarioItem() {
 	this->Scale = 0.0;
 
 	this->Position[0]=this->Position[1]=this->Position[2]=0.0;
+	this->Velocity[0]=this->Velocity[1]=this->Velocity[2]=0.0;
 	this->Orientation[0]=this->Orientation[1]=this->Orientation[2]=0.0;
 	this->Origin[0]=this->Origin[1]=this->Origin[2]=0.0;
 	this->Direction[0]=this->Direction[1]=this->Direction[2]=0.0;
@@ -64,16 +63,6 @@ vtkScenarioItem::vtkScenarioItem() {
 //--------------------------------------------------------------------------
 vtkScenarioItem::~vtkScenarioItem()
 {
-}
-
-//--------------------------------------------------------------------------
-void vtkScenarioItem::UpdateDirection()
-{
-	//Update object direction
-	//Note: VTK Coordinate systems. X-Rotation angle is inverted (check VTK actor coordinate system. The Visualization Toolkit 4th Edition, Pag. 51).
-	this->Direction[0] = -sin(vtkMath::RadiansFromDegrees(this->Orientation[1]))*cos(vtkMath::RadiansFromDegrees(this->Orientation[2]));
-	this->Direction[1] = sin(vtkMath::RadiansFromDegrees(this->Orientation[0]))*sin(vtkMath::RadiansFromDegrees(this->Orientation[1]));
-	this->Direction[2] = -cos(vtkMath::RadiansFromDegrees(this->Orientation[2]))*cos(vtkMath::RadiansFromDegrees(this->Orientation[0]));
 }
 
 //--------------------------------------------------------------------------
@@ -87,5 +76,6 @@ void vtkScenarioItem::PrintSelf(ostream& os,vtkIndent indent) {
 	os << indent << "Origin: " << this->Origin[0] << ", " << this->Origin[1] << ", " << this->Origin[2] << endl;
 	os << indent << "Orientation: " << this->Orientation[0] << ", " << this->Orientation[1] << ", " << this->Orientation[2] <<  endl;
 	os << indent << "Direction: " << this->Direction[0] << ", " << this->Direction[1] << ", " << this->Direction[2] <<  endl;
+	os << indent << "Velocity: " << this->Velocity[0] << ", " << this->Velocity[1] << ", " << this->Velocity[2] <<  endl;
 
 }

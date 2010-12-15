@@ -1,2 +1,0 @@
-ADD_EXECUTABLE(TestvtkFEMSystem TestvtkFEMSystem.cxx)
-TARGET_LINK_LIBRARIES(TestvtkFEMSystem vtkFEMSystem vtkESQuiUtilities)

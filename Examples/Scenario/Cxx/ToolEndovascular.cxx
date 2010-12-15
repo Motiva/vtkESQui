@@ -76,7 +76,7 @@ int main(int argc, char * argv[])
 	//Set tool identifier
 	cath->SetId(0);
 	//Set source data filename
-	cath->SetFileName(0, filename0);
+	cath->SetFileName(filename0);
 	//Set geometric parameters
 	cath->SetPosition(0, 0, 0);
 	cath->SetOrientation(0, 0, 0);

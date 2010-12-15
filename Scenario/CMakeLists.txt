@@ -37,19 +37,22 @@ ABSTRACT
 # Set your list of libraries here.
 SET(KIT_LIBS 
 ${PROJECT_NAME}Common
-${PROJECT_NAME}BMM
+${PROJECT_NAME}BioMechanics
+${PROJECT_NAME}CollisionDetection
 vtkFiltering
 vtkGraphics
 vtkCommon
-vtkParticleSpringSystem
+vtkHybrid
 )
 
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
 ${PROJECT_NAME}CommonTCL
-${PROJECT_NAME}BMMTCL
+${PROJECT_NAME}BioMechanicsTCL
+${PROJECT_NAME}CollisionDetectionTCL
 vtkGraphicsTCL
 vtkCommonTCL
+vtkHybridTCL
 )
 
 #

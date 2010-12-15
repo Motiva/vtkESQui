@@ -54,6 +54,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkActor.h"
 #include "vtkActorCollection.h"
 
+
+#include "vtkSimulation.h"
 #include "vtkTool.h"
 #include "vtkToolCollection.h"
 #include "vtkPiece.h"
@@ -62,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkOrgan.h"
 #include "vtkOrganCollection.h"
 #include "vtkPSSInterface.h"
-//#include "vtkRDMInterface.h"
+
 
 #include <sys/stat.h>
 #include <assert.h>
@@ -101,7 +103,7 @@ int vtkSRMLImporter::OpenSRMLFile(){
 
 	if (this->FileStream)
 	{
-		vtkErrorMacro("File already open.")
+		vtkErrorMacro("File already open.");
 		return 1;
 	}
 
@@ -245,10 +247,7 @@ void vtkSRMLImporter::ReadData()
 
 	//Import haptic devices functionality
 	vtkXMLDataElement * simulation = this->Element;
-	std::cout << "== Simulation ==\n" <<
-			"Name: " << simulation->GetAttribute("Name") << "\n" <<
-			"Type: " << simulation->GetAttribute("Type") << "\n" <<
-			"UseHaptic: " << simulation->GetAttribute("UseHaptic") << std::endl;
+
 	int useHaptic;
 	simulation->GetScalarAttribute("UseHaptic", useHaptic);
 	if(useHaptic)
@@ -256,9 +255,26 @@ void vtkSRMLImporter::ReadData()
 		this->Simulation->UseHapticOn();
 		this->ImportHaptic();
 	}
+	int verbose;
+	simulation->GetScalarAttribute("Verbose", verbose);
+	if(verbose)
+	{
+		this->Simulation->VerboseOn();
+	}
+	int rate;
+	simulation->GetScalarAttribute("SimulationRate", rate);
+	this->Simulation->SetSimulationTimerRate(rate);
 
-	//Initlialize Simulation
+	simulation->GetScalarAttribute("HapticRate", rate);
+	this->Simulation->SetHapticTimerRate(rate);
+
+	simulation->GetScalarAttribute("RenderRate", rate);
+	this->Simulation->SetRenderTimerRate(rate);
+
+	//Initialize Simulation
 	this->Simulation->Init();
+
+	this->Simulation->Print(cout);
 }
 
 //----------------------------------------------------------------------------
@@ -270,7 +286,7 @@ int vtkSRMLImporter::ImportBegin ()
 		if(!this->Scenario)
 		{
 			cout << "Scenario being set...\n";
-			this->SetScenario(this->Simulation->GetSimulationManager()->GetScenario());
+			this->SetScenario(this->Simulation->GetScenario());
 			this->SetRenderWindow(this->Scenario->GetRenderWindow());
 			this->Renderer = this->RenderWindow->GetRenderers()->GetFirstRenderer();
 		}
@@ -352,6 +368,9 @@ void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 	tool->SetOrientation(array[0], array[1], array[2]);
 	item->GetVectorAttribute("Origin", 3, array);
 	tool->SetOrigin(array[0], array[1], array[2]);
+	int value;
+	item->GetScalarAttribute("NumberOfPieces", value);
+	tool->SetNumberOfPieces(value);
 
 	double scale;
 	item->GetScalarAttribute("Scale", scale);
@@ -374,11 +393,13 @@ void vtkSRMLImporter::SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElemen
 		child = item->GetNestedElement(j);
 		int id;
 		child->GetScalarAttribute("Id", id);
-		tool->SetFileName(id, ExpandDataFileName(child->GetAttribute("FileName")));
+		if(id==0) tool->SetStickFileName(ExpandDataFileName(child->GetAttribute("FileName")));
+		else if(id==1) tool->SetLeftGrasperFileName(ExpandDataFileName(child->GetAttribute("FileName")));
+		else if(id==2) tool->SetRightGrasperFileName(ExpandDataFileName(child->GetAttribute("FileName")));
 	}
 
 	//tool->Print(cout);
-	this->Scenario->InsertNextTool(tool);
+	this->Scenario->AddTool(tool);
 }
 
 //----------------------------------------------------------------------------
@@ -428,7 +449,7 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	this->SetBioMechanicalModelData(model ,bmm);
 	organ->SetBioMechanicalModel(model);
 
-	this->Scenario->InsertNextOrgan(organ);
+	this->Scenario->AddOrgan(organ);
 }
 
 //----------------------------------------------------------------------------
@@ -461,6 +482,13 @@ void vtkSRMLImporter::SetBioMechanicalModelData(vtkBioMechanicalModel * model, v
 void vtkSRMLImporter::ImportExtras()
 {
 	vtkDebugMacro("Importing Extras...");
+	vtkXMLDataElement * extras = this->Element->LookupElementWithName("Extras");
+	vtkXMLDataElement * item;
+	for(int i=0; i<extras->GetNumberOfNestedElements(); i++)
+	{
+		item = extras->GetNestedElement(i);
+		const char * type = item->GetAttribute("Type");
+	}
 }
 
 //----------------------------------------------------------------------------

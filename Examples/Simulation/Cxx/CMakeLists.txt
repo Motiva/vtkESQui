@@ -7,6 +7,7 @@ SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
+    vtkESQuiLap
     vtkESQuiExample
     vtkESQuiSRMLExample
 )
@@ -23,7 +24,7 @@ ENDIF(VTKESQUI_USE_HAPTICS)
 SET(KIT_LIBS 
     ${PROJECT_NAME}Utilities
     ${PROJECT_NAME}Scenario
-    ${PROJECT_NAME}Manager
+    ${PROJECT_NAME}Simulation
     ${PROJECT_NAME}Common
     vtkRendering
 	vtkGraphics 
@@ -35,7 +36,7 @@ SET(KIT_LIBS
 SET(KIT_TCL_LIBS 
     ${PROJECT_NAME}UtilitiesTCL
     ${PROJECT_NAME}ScenarioTCL
-    ${PROJECT_NAME}ManagerTCL
+    ${PROJECT_NAME}SimulationTCL
     ${PROJECT_NAME}CommonTCL
     vtkRenderingTCL
     vtkGraphicsTCL

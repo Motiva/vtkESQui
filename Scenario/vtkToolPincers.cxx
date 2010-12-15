@@ -55,26 +55,12 @@ vtkCxxRevisionMacro(vtkToolPincers, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkToolPincers);
 
 //----------------------------------------------------------------------------
-vtkToolPincers::vtkToolPincers() {
-	
-	//Physical pieces Tool Construction
-	vtkPiece * piece;
-	
-	for (vtkIdType id = 0; id < 3 ; id++)
-	{
-		piece = vtkPiece::New();
-		piece->SetId(id);
-		this->Pieces->InsertNextPiece(piece);
-	}
-	
-	// Tool Piece Types (id)
-	// 0 -> Stick
-	// 1 -> Grasper 1
-	// 2 -> Grasper 2
-	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Stick);
-	this->Pieces->GetPiece(1)->SetPieceType(vtkPiece::Grasper);
-	this->Pieces->GetPiece(2)->SetPieceType(vtkPiece::Grasper);
-	
+vtkToolPincers::vtkToolPincers()
+{
+	this->Opening = 0;
+	this->StickFileName = NULL;
+	this->LeftGrasperFileName = NULL;
+	this->RightGrasperFileName = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -89,25 +75,31 @@ vtkToolPincers::~vtkToolPincers()
 //----------------------------------------------------------------------------
 void vtkToolPincers::Init() { 
 	
+	//Physical pieces Tool Construction
 	vtkPiece * piece;
-	
-	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
+
+	for (vtkIdType id = 0; id < this->NumberOfPieces ; id++)
 	{
-		piece = this->GetPiece(id);
+		piece = vtkPiece::New();
+		piece->SetId(id);
 		piece->SetRenderWindow(this->RenderWindow);
+		if(id == 0) {
+			piece->SetPieceType(vtkPiece::Stick);
+			piece->SetFileName(this->StickFileName);
+		}
+		else {
+			piece->SetPieceType(vtkPiece::Grasper);
+			if(id==1) piece->SetFileName(this->LeftGrasperFileName);
+			else piece->SetFileName(this->RightGrasperFileName);
+		}
 		piece->Init();
+		this->Pieces->AddPiece(piece);
 		
 		this->Actors->AddItem((vtkActor*) piece->GetActor());
 		this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
 	}
 	
-	this->ApplyInitialTransform();
-
-	this->PitchAngle = this->Orientation[0];
-	this->YawAngle = this->Orientation[1];
-	this->RollAngle = this->Orientation[2];
-
-	this->Update();
+	Superclass::Init();
 }
 
 //----------------------------------------------------------------------------
@@ -174,39 +166,15 @@ void vtkToolPincers::Update()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::SetStickFileName(const char * path)
-{
-	this->GetStick()->SetFileName(path);
-}
-
-//----------------------------------------------------------------------------
-void vtkToolPincers::SetGrasperFileName(vtkIdType id, const char * path)
-{
-	this->GetGrasper(id)->SetFileName(path);
-}
-
-//----------------------------------------------------------------------------
-const char * vtkToolPincers::GetGrasperFileName(vtkIdType id)
-{
-	return this->GetGrasper(id)->GetFileName();
-}
-
-//----------------------------------------------------------------------------
-const char * vtkToolPincers::GetStickFileName(vtkIdType id)
-{
-	return this->GetStick()->GetFileName();
-}
-
-//----------------------------------------------------------------------------
 void vtkToolPincers::Open(){
-	if(!this->IsClosed()) {
+	if(this->IsClosed()) {
 		this->SetOpening(1);
 	}
 }
 
 //----------------------------------------------------------------------------
 void vtkToolPincers::Close(){
-	if(this->IsClosed()) {
+	if(!this->IsClosed()) {
 		this->SetOpening(0);
 	}
 }
@@ -214,9 +182,10 @@ void vtkToolPincers::Close(){
 //----------------------------------------------------------------------------
 void vtkToolPincers::SetOpening(double opening) {
 	double step = opening - this->Opening;
-	this->GetGrasper(1)->GetTransform()->RotateX(-20*step);
-	this->GetGrasper(2)->GetTransform()->RotateX(20*step);
-	Superclass::SetOpening(opening);
+	int angle = 30;
+	this->GetLeftGrasper()->GetTransform()->RotateX(-angle*step);
+	this->GetRightGrasper()->GetTransform()->RotateX(angle*step);
+	this->Opening = opening;
 }
 
 //----------------------------------------------------------------------------

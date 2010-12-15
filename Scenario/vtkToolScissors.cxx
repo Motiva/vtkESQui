@@ -56,25 +56,10 @@ vtkStandardNewMacro(vtkToolScissors);
 
 //--------------------------------------------------------------------------
 vtkToolScissors::vtkToolScissors(){
-	this->Opening=0;
-
-	//Physical pieces construction
-	vtkPiece * piece;
-
-	for (vtkIdType id = 0; id < 3 ; id++)
-	{
-		piece = vtkPiece::New();
-		piece->SetId(id);
-		this->Pieces->InsertNextPiece(piece);
-	}
-
-	// Tool Piece Types (id)
-	// 0 -> Stick
-	// 1 -> Blade 1
-	// 2 -> Blade 2
-	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Stick);
-	this->Pieces->GetPiece(1)->SetPieceType(vtkPiece::Blade);
-	this->Pieces->GetPiece(2)->SetPieceType(vtkPiece::Blade);
+	this->Opening = 0;
+	this->StickFileName = NULL;
+	this->LeftBladeFileName = NULL;
+	this->RightBladeFileName = NULL;
 }
 
 //--------------------------------------------------------------------------
@@ -91,21 +76,31 @@ vtkToolScissors::~vtkToolScissors(){
 //--------------------------------------------------------------------------
 void vtkToolScissors::Init(){
 
+	//Physical pieces Tool Construction
 	vtkPiece * piece;
 
-	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
+	for (vtkIdType id = 0; id < this->NumberOfPieces ; id++)
 	{
-		piece = this->GetPiece(id);
+		piece = vtkPiece::New();
+		piece->SetId(id);
 		piece->SetRenderWindow(this->RenderWindow);
+		if(id == 0) {
+			piece->SetPieceType(vtkPiece::Stick);
+			piece->SetFileName(this->StickFileName);
+		}
+		else {
+			piece->SetPieceType(vtkPiece::Blade);
+			if(id==1) piece->SetFileName(this->LeftBladeFileName);
+			else piece->SetFileName(this->RightBladeFileName);
+		}
 		piece->Init();
+		this->Pieces->AddPiece(piece);
 
 		this->Actors->AddItem((vtkActor*) piece->GetActor());
 		this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
 	}
 
-	this->ApplyInitialTransform();
-
-	this->Update();
+	Superclass::Init();
 
 }
 
@@ -115,28 +110,11 @@ void vtkToolScissors::Update()
 	this->Superclass::Update();
 }
 
-//--------------------------------------------------------------------------
-void vtkToolScissors::SetStickFileName(const char * path)
-{
-	this->GetStick()->SetFileName(path);
-}
-
-//--------------------------------------------------------------------------
-void vtkToolScissors::SetBladeFileName(vtkIdType id, const char * path)
-{
-	this->GetBlade(id)->SetFileName(path);
-}
-
-//--------------------------------------------------------------------------
-const char * vtkToolScissors::GetBladeFileName(vtkIdType id)
-{
-	return this->GetBlade(id)->GetFileName();
-}
-
-//--------------------------------------------------------------------------
-const char * vtkToolScissors::GetStickFileName(vtkIdType id)
-{
-	return this->GetStick()->GetFileName();
+//----------------------------------------------------------------------------
+void vtkToolScissors::SetOpening(double opening) {
+	double step = opening - this->Opening;
+	this->GetLeftBlade()->GetTransform()->RotateX(-20*step);
+	this->GetRightBlade()->GetTransform()->RotateX(20*step);
 }
 
 //--------------------------------------------------------------------------

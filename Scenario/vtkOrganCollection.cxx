@@ -53,7 +53,7 @@ void vtkOrganCollection::InsertOrgan(vtkIdType id, vtkOrgan *organ) {
 }
 
 //--------------------------------------------------------------------------
-void vtkOrganCollection::InsertNextOrgan(vtkOrgan *organ) {
+void vtkOrganCollection::AddOrgan(vtkOrgan *organ) {
 	this->vtkCollection::AddItem((vtkObject *) organ);
 }
 

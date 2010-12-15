@@ -8,8 +8,6 @@ SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
     PolyDataConnectivity
-    STLtoUnstructuredGrid
-    Cube
 )
 
  # Set your list of libraries here.

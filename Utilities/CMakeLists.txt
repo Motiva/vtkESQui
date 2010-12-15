@@ -16,9 +16,10 @@ vtkPointPlotter.cxx
 
 # Set your list of libraries here.
 SET(KIT_LIBS
-${PROJECT_NAME}Manager
+${PROJECT_NAME}Simulation
 ${PROJECT_NAME}Scenario
-${PROJECT_NAME}BMM
+${PROJECT_NAME}BioMechanics
+${PROJECT_NAME}CollisionDetection
 vtkCommon 
 vtkRendering
 vtkHybrid
@@ -28,9 +29,10 @@ vtkBioeng
 
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS
-${PROJECT_NAME}ManagerTCL
+${PROJECT_NAME}SimulationTCL
 ${PROJECT_NAME}ScenarioTCL
-${PROJECT_NAME}BMMTCL
+${PROJECT_NAME}BioMechanicsTCL
+${PROJECT_NAME}CollisionDetectionTCL
 vtkCommonTCL
 vtkRenderingTCL
 vtkHybridTCL

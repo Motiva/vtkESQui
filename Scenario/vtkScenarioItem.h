@@ -45,15 +45,21 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkObject.h"
 
-#include "vtkRenderWindow.h"
-
+class vtkRenderWindow;
+class vtkRenderer;
 class vtkPolyData;
 
 //! Class vtkScenarioItem, abstract the use of a surgical item
 /*!
- *vtkScenarioItem abstracts the use of a surgical item during the simulation exercise.
- *This provide an easy use of surgical items collections.
+ * vtkScenarioItem abstracts the use of a surgical item during the simulation exercise.
+ * This provide an easy use of surgical items collections.
  */
+
+//FIXME: This class must be redesigned. Every scenario item should be inherited from this class. This class should generic:
+// - Visualization Model
+// - Collision Model
+// - Mechanical Model (Rigid/Deformable)
+
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioItem: public vtkObject {
 
 public:
@@ -92,6 +98,18 @@ public:
 	 * This method returns the transformed polydata for collision detection purposes
 	 */
 	virtual vtkPolyData * GetOutput() = 0;
+
+	//! Set the render window of the item
+	/*!
+	 * Assign the render window for the item
+	 */
+	void SetRenderWindow(vtkRenderWindow * r){this->RenderWindow = r;};
+
+	//! Get the render window of the item
+	/*!
+	 *Return the render window of the item
+	 */
+	vtkRenderWindow * GetRenderWindow(vtkRenderWindow * r){return this->RenderWindow;};
 
 	//! Assign the identifying key of the item
 	/*!
@@ -144,18 +162,6 @@ public:
 	vtkGetMacro(Scale, double);
 
 	// **** Graphical Purposes Methods **** //
-	//! Set the render window of the item
-	/*!
-	 * Assign the render window for the item
-	 */
-	vtkSetObjectMacro(RenderWindow, vtkRenderWindow);
-
-	//! Get the render window of the item
-	/*!
-	 *Return the render window of the item
-	 */
-	vtkGetObjectMacro(RenderWindow, vtkRenderWindow);
-
 	//! Set the object origin Point.
 	/*!
 	 * Reference point where the rotation calculus are made
@@ -183,6 +189,11 @@ public:
 	//!Get the Object position (WXYZ)
 	vtkGetVector3Macro(Position, double);
 
+	//!Set the Object velocity (WXYZ)
+	vtkSetVector3Macro(Velocity, double);
+	//!Get the Object velocity (WXYZ)
+	vtkGetVector3Macro(Velocity, double);
+
 	//! Get the object direction unit vector (WXYZ)
 	vtkGetVector3Macro(Direction, double);
 
@@ -201,24 +212,24 @@ protected:
 	//**** Graphical Purposes objects ****//
 	//! Origin point for transforms
 	double Origin[3];
-	//! Initial position
+	//! Object Position
 	double Position[3];
 	//! Object orientation: Yaw, Pitch, Roll angles
 	double Orientation[3];
 	//! Unit direction vector
 	double Direction[3];
+	//! Velocity
+	double Velocity[3];
 
 	//! Scale factor (size)
 	double Scale;
 
 	//!Render Window of the item
-	vtkRenderWindow *RenderWindow;
+	vtkRenderWindow * RenderWindow;
 
 	//!Renderer of the item
 	vtkRenderer * Renderer;
 
-	//! Update item direction vector
-	void UpdateDirection();
 private:
 	vtkScenarioItem (const vtkScenarioItem &);
 	void operator =(const vtkScenarioItem &);

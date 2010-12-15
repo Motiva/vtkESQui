@@ -64,7 +64,7 @@ vtkToolDummy::vtkToolDummy() {
 	{
 		piece = vtkPiece::New();
 		piece->SetId(0);
-		this->Pieces->InsertNextPiece(piece);
+		this->Pieces->AddPiece(piece);
 	}
 
 	// Tool Piece Types (id)
@@ -97,7 +97,7 @@ void vtkToolDummy::Init() {
 		this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
 	}
 
-	this->ApplyInitialTransform();
+	Superclass::Init();
 
 	this->Update();
 }
@@ -127,7 +127,6 @@ void vtkToolDummy::Yaw(double angle)
 //----------------------------------------------------------------------------
 void vtkToolDummy::Pitch(double angle)
 {
-	//std::cout << "angle: " << angle << " | Pitch: " << this->PitchAngle << std::endl;
 	double step = angle - this->PitchAngle;
 	if(step != 0)
 	{

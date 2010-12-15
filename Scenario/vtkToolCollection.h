@@ -73,7 +73,7 @@ public:
 	/*!
 	 * \param tool vtkTool object to be inserted
 	 */
-	void InsertNextTool(vtkTool * tool);
+	void AddTool(vtkTool * tool);
 	//!Return tool at the specified id
 	/*!
 	 * \param id identifier key of the tool

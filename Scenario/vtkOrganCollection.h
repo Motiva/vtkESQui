@@ -57,7 +57,7 @@ entries are not prevented.
 class VTK_ESQUI_SCENARIO_EXPORT vtkOrganCollection : public vtkCollection
 {
 public:
-	//!Create new organism object
+	//!Create new organ object
 	static vtkOrganCollection *New();
 	//!Type Revision Macro
 	vtkTypeRevisionMacro(vtkOrganCollection,vtkCollection);
@@ -70,7 +70,7 @@ public:
 	* \param organ vtkOrgan object to be inserted
 	* \sa InsertOrgan(vtkIdType id, vtkOrgan *organism)
 	*/
-	void InsertNextOrgan(vtkOrgan *organ);
+	void AddOrgan(vtkOrgan *organ);
 
 	//!Insert an organ at the specified index
 	/*!

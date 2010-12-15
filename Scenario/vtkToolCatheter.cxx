@@ -61,7 +61,7 @@ vtkToolCatheter::vtkToolCatheter() {
 	//Physical pieces Tool Construction
 	vtkPiece * piece = vtkPiece::New();
 	piece->SetId(0);
-	this->Pieces->InsertNextPiece(piece);
+	this->Pieces->AddPiece(piece);
 
 	// Tool Piece Types (id)
 	// 0 -> Stick
@@ -91,9 +91,7 @@ void vtkToolCatheter::Init() {
 		piece->GetActor()->GetProperty()->SetColor(0.6, 0.8, 1);
 	}
 
-	this->ApplyInitialTransform();
-
-	this->Update();
+	Superclass::Init();
 }
 
 //----------------------------------------------------------------------------

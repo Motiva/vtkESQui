@@ -79,10 +79,11 @@ int main(int argc, char * argv[])
 	vtkToolPincers * pincers = vtkToolPincers::New();
 	//Set tool identifier
 	pincers->SetId(0);
+	pincers->SetNumberOfPieces(3);
 	//Set source data filename
-	pincers->SetFileName(0, filename0);
-	pincers->SetFileName(1, filename1);
-	pincers->SetFileName(2, filename2);
+	pincers->SetStickFileName(filename0);
+	pincers->SetLeftGrasperFileName(filename1);
+	pincers->SetRightGrasperFileName(filename2);
 	//Set geometric parameters
 	pincers->SetPosition(0, 0, 0);
 	pincers->SetOrientation(0, 0, 0);

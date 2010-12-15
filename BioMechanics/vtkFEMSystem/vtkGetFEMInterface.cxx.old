@@ -1,0 +1,226 @@
+#include "vtkGetFEMInterface.h"
+
+#include "vtkObjectFactory.h"
+#include "vtkPolyData.h"
+#include "vtkIdList.h"
+
+
+vtkCxxRevisionMacro(vtkGetFEMInterface, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkGetFEMInterface);
+
+//----------------------------------------------------------------------------
+vtkGetFEMInterface::vtkGetFEMInterface()
+{
+}
+
+//----------------------------------------------------------------------------
+vtkGetFEMInterface::~vtkGetFEMInterface()
+{
+}
+
+void vtkGetFEMInterface::SetPolyData(vtkPolyData * data)
+{
+	this->Data = data;
+}
+
+void vtkGetFEMInterface::SelectBoundaries()
+{
+	size_type N = this->Mesh->dim();
+	getfem::mesh_region border_faces;
+	getfem::outer_faces_of_mesh(*(this->Mesh), border_faces);
+	for (getfem::mr_visitor i(border_faces); !i.finished(); ++i) {
+		base_node un = this->Mesh->normal_of_face_of_convex(i.cv(), i.f());
+		un /= gmm::vect_norm2(un);
+		if (gmm::abs(un[N-1] - 1.0) < 0.5) { // new Neumann face
+			this->Mesh->region(NEUMANN_BOUNDARY_NUM).add(i.cv(), i.f());
+		} else {
+			this->Mesh->region(DIRICHLET_BOUNDARY_NUM).add(i.cv(), i.f());
+		}
+	}
+	std::cout << "NEUMANN: " << this->Mesh->region(NEUMANN_BOUNDARY_NUM).nb_convex() << std::endl;
+	std::cout << "DIRICHLET: " << this->Mesh->region(DIRICHLET_BOUNDARY_NUM).nb_convex() << std::endl;
+}
+
+void vtkGetFEMInterface::Init()
+{
+	//Create new mesh object
+	this->Mesh = new getfem::mesh();
+
+	//Default parameters
+	std::string MESH_FILE = "structured:GT=\"GT_PK(3,1)\";SIZES=[1,1,1];NOISED=0";
+	std::string FEM_TYPE  = "FEM_PK(3,1)";
+	std::string INTEGRATION = "IM_TETRAHEDRON(6)";
+
+	cout << "MESH_FILE=" << MESH_FILE << "\n";
+	cout << "FEM_TYPE="  << FEM_TYPE << "\n";
+	cout << "INTEGRATION=" << INTEGRATION << "\n";
+
+	size_type NX = 10;
+	size_type N = 3;
+
+	if(this->FileName)
+	{
+		std::cout << this->FileName << std::endl;
+		getfem::import_mesh(this->FileName,"gmsh",*(this->Mesh));
+	}
+	else
+	{
+		std::stringstream filename; filename << MESH_FILE;
+		if ((MESH_FILE.compare(0,11,"structured:") == 0) && NX > 0) {
+			filename << ";NSUBDIV=[" << NX;
+			for (size_type i = 1; i < N; ++i) filename << "," << NX;
+			filename << "];";
+		}
+		getfem::import_mesh(filename.str(), *(this->Mesh));
+	}
+
+	std::cout << "Mesh Dimension:" << static_cast<int>(this->Mesh->dim()) << "\n";
+	std::cout << "Mesh nb points:" << this->Mesh->nb_points() << "\n";
+	std::cout << "Mesh nb convex:" << this->Mesh->nb_convex() << "\n";
+
+	double FT = 3.0; //exact solution
+	int dirichlet_version = 0; //multipliers
+
+	//Check if mu and lambda has already been set
+	int refine = 0;
+
+	//Init MF_U, MF_RHS and MF_Mult
+	this->MF_U = new getfem::mesh_fem(*(this->Mesh));
+	this->MF_Mult = new getfem::mesh_fem(*(this->Mesh));
+	this->MF_RHS = new getfem::mesh_fem(*(this->Mesh));
+
+	this->MF_U->set_qdim(dim_type(N));
+	this->MF_Mult->set_qdim(dim_type(N));
+
+	//Set the Integration Method
+	this->MIM = new getfem::mesh_im(*(this->Mesh));
+	getfem::pfem pf_u = getfem::fem_descriptor(FEM_TYPE);
+	getfem::pintegration_method ppi = getfem::int_method_descriptor(INTEGRATION);
+
+	this->MIM->set_integration_method(ppi);
+
+	//Set the finite element on the solution
+	this->MF_U->set_finite_element(pf_u);
+
+	//Set the finite element on the dirichlet condition
+	this->MF_Mult->set_finite_element(pf_u);
+
+	//Set the finite element on rhs
+	this->MF_RHS->set_finite_element(pf_u);
+
+	//Set boundary conditions
+	this->SelectBoundaries();
+
+	//Init DOFs
+	this->MF_U->nb_dof();
+	this->MF_RHS->nb_dof();
+	this->MF_Mult->nb_dof();
+
+	//Init FEM Model
+	this->Model = new getfem::model();
+
+	std::cout << "FEM Elastostatic problem has been correctly initialized\n";
+}
+
+//----------------------------------------------------------------------------
+void vtkGetFEMInterface::Solve()
+{
+	bgeot::size_type N = this->Mesh->dim();
+	bgeot::size_type numberOfDOFs = this->MF_RHS->nb_dof();
+
+	// Main unknown of the problem
+	this->Model->add_fem_variable("u",*(this->MF_U));
+
+	//Linear elasticity brick
+	//Lame parameters (lambda & mu)
+	this->Model->add_initialized_scalar_data("lambda", this->Lambda);
+	this->Model->add_initialized_scalar_data("mu", this->Mu);
+
+	//Add a linear elasticity brick to the model
+	getfem::add_isotropic_linearized_elasticity_brick(*(this->Model), *(this->MIM), "u", "lambda", "mu");
+
+	// Volumic source term.
+	bgeot::base_vector f(N);
+	f[0] = 0;
+	f[1] = 0;
+	if (N>2)
+		f[2] = 0;
+	plain_vector F(numberOfDOFs * N);
+	for (size_type i = 0; i < numberOfDOFs; ++i) {
+		gmm::copy(f, gmm::sub_vector(F, gmm::sub_interval(i*N, N)));
+	}
+
+	//RHS is set to F(0,0,0)
+	this->Model->add_initialized_fem_data("VolumicData", *(this->MF_RHS), F);
+	getfem::add_source_term_brick(*(this->Model), *(this->MIM), "u", "VolumicData");
+
+	//Dirichlet condition
+	plain_vector F2 (numberOfDOFs * N);
+	this->Model->add_initialized_fem_data("DirichletData", *(this->MF_RHS), F2);
+	getfem::add_Dirichlet_condition_with_multipliers(*(this->Model), *(this->MIM), "u", *(this->MF_U), DIRICHLET_BOUNDARY_NUM, "DirichletData");
+
+	//Neumann condition
+
+	//Iterate solution
+	gmm::iteration iter;
+
+	int nb_step = 1000;
+	int maxit = 200;
+	for (int step = 0; step < nb_step; ++step)
+	{
+		plain_vector DF(F);
+
+		gmm::copy(gmm::scaled(F, (step+1.)/(scalar_type)nb_step), DF);
+		gmm::copy(DF, this->Model->set_real_variable("VolumicData"));
+
+		if (N>2)
+		{
+			/* Apply the gradual torsion/extension */
+			//scalar_type torsion = PARAM.real_value("TORSION","Amplitude of the torsion");
+			//torsion *= (step+1)/scalar_type(nb_step);
+			scalar_type extension = 1.0;
+			extension *= (step+1)/scalar_type(nb_step);
+			base_node G(N); G[0] = G[1] = 0.5;
+			for (size_type i = 0; i < numberOfDOFs; ++i) {
+				const base_node P = this->MF_RHS->point_of_basic_dof(i) - G;
+				F2[i*N+2] = extension * P[2];
+			}
+		}
+
+		gmm::copy(F2, this->Model->set_real_variable("DirichletData"));
+
+		cout << "step " << step << ", number of variables : " << this->Model->nb_dof() << endl;
+		iter = gmm::iteration(this->Residual, 0, maxit ? maxit : 40000);
+
+		/* let the default non-linear solve (Newton) do its job */
+		getfem::standard_solve(*(this->Model), iter);
+
+		this->Model->assembly(getfem::model::BUILD_RHS);
+
+		//gmm::copy(this->Model->real_variable("u"), U);
+		cout << iter.converged() << endl;
+
+		std::stringstream filename;
+		filename << "solution" << step << ".vtk";
+
+		cout << filename.str() << endl;
+		getfem::vtk_export exp(filename.str(), 1);
+		exp.exporting(*(this->MF_U));
+		exp.write_point_data(*(this->MF_U), this->Model->real_variable("u"), "displacement");
+
+	}
+
+}
+
+//----------------------------------------------------------------------------
+void vtkGetFEMInterface::Write()
+{
+	//TODO: Create an Importer/Exporter of getFEM mesh file format
+	this->Mesh->write_to_file("getFEM.mesh");
+}
+
+//----------------------------------------------------------------------------
+void vtkGetFEMInterface::PrintSelf(ostream& os, vtkIndent indent)
+{
+	this->Superclass::PrintSelf(os,indent);
+}

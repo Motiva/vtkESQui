@@ -49,7 +49,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInteractorStyleTrackballCamera.h"
 
 #include "vtkScenario.h"
-#include "vtkSimulationManager.h"
 #include "vtkTool.h"
 #include "vtkToolCollection.h"
 #include "vtkOrgan.h"
@@ -142,20 +141,20 @@ int main(int argc, char * argv[])
 
 	organ->SetBioMechanicalModel(model);
 	
-	Scenario->InsertNextOrgan(organ);
+	Scenario->AddOrgan(organ);
 
 	/********** Tools **********/
 	//Add new tool To the scenario
 	vtkToolPincers *pincers = vtkToolPincers::New();
 	pincers->SetStickFileName(ExpandDataFileName("Scenario/Tools/Pincers/Stick.vtk"));
-	pincers->SetGrasperFileName(1, ExpandDataFileName("Scenario/Tools/Pincers/LeftGrasper.vtk"));
-	pincers->SetGrasperFileName(2, ExpandDataFileName("Scenario/Tools/Pincers/RightGrasper.vtk"));
+	pincers->SetLeftGrasperFileName(ExpandDataFileName("Scenario/Tools/Pincers/LeftGrasper.vtk"));
+	pincers->SetRightGrasperFileName(ExpandDataFileName("Scenario/Tools/Pincers/RightGrasper.vtk"));
 
 	pincers->SetScale(30.0);
 	pincers->SetPosition(-3, 0, 0);
 	pincers->SetOrientation(0, -10, 0);
 
-	Scenario->InsertNextTool(pincers);
+	Scenario->AddTool(pincers);
 
 	/**********  Load Scene Environment  ********/
 
@@ -187,13 +186,13 @@ int main(int argc, char * argv[])
 	camera->SetViewAngle(70);
 
 	/**********  Simulation Setup  ********/
-	vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	SimulationManager->SetLibraryName("vtkbioeng");
-	SimulationManager->SetScenario(Scenario);
-	SimulationManager->Init();
+	//vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
+	//SimulationManager->SetLibraryName("vtkbioeng");
+	//SimulationManager->SetScenario(Scenario);
+	//SimulationManager->Init();
 
 	vtkSimulation * Simulation = vtkSimulation::New();
-	Simulation->SetSimulationManager(SimulationManager);
+	Simulation->SetScenario(Scenario);
 	Simulation->Init();
 
 	Simulation->Run();
@@ -202,7 +201,7 @@ int main(int argc, char * argv[])
 	// Free up any objects we created. All instances in VTK are deleted by
 	// using the Delete() method.
 	//
-	SimulationManager->Delete();
+	//SimulationManager->Delete();
 	Scenario->Delete();
 	vtkreader1->Delete();
 	vtkmapper1->Delete();

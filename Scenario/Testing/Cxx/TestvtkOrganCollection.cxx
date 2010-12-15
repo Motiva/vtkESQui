@@ -70,7 +70,7 @@ int TestvtkOrganCollection(int argc, char * argv[])
 		organ->SetPosition(0,0,0);
 
 
-		collection->InsertNextOrgan(organ);
+		collection->AddOrgan(organ);
 		std::cout << "Organ (" << id <<  ") has been inserted...\n";
 	}
 

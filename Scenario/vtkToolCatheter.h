@@ -79,6 +79,11 @@ public:
 	 */
 	virtual void Update();
 
+	//!Set catheter model filename
+	vtkSetStringMacro(FileName);
+	//!Get catheter model filename
+	vtkGetStringMacro(FileName);
+
 	//! Set Polydata object to the tool.
 	/*!
 	 * \param id identifier of the piece
@@ -104,6 +109,8 @@ private:
 
 	vtkToolCatheter (const vtkToolCatheter &); //Not Implemented
 	void operator =(const vtkToolCatheter &); //Not Implemented
+
+	char * FileName;
 
 };
 #endif
