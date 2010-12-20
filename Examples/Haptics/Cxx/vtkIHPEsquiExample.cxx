@@ -156,8 +156,6 @@ void IHPEsquiExampleNS::UpdateHaptic(vtkIHP * Haptic)
 			std::cout << "Tool("<<i<< ") Right pedal is pressed...\n";
 		}
 
-		//tool->Print(cout);
-
 		//Set Tool Feedback Forces
 		float force[3];
 		force[0] = 0;

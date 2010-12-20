@@ -107,50 +107,25 @@ void vtkToolLaparoscopy::Push() {
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::RotateX(double angle)
 {
-	double roll = this->Orientation[2];
-
-	//Set back to the origin for translation/rotation
-	Superclass::Translate(this->Origin[0], this->Origin[1], this->Origin[2]);
-	Superclass::RotateZ(-roll);
-
+	this->TranslateToOrigin();
 	//Rotate X
 	Superclass::RotateX(angle);
-
-	//Set back to previous position
-	Superclass::RotateZ(roll);
-	Superclass::Translate(-this->Origin[0], -this->Origin[1], -this->Origin[2]);
-
-	//Update Orientation
-	this->GetTransform(0)->GetOrientation(this->Orientation);
+	this->TranslateFromOrigin();
 }
 
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::RotateY(double angle)
 {
-	double roll = this->Orientation[2];
-
-	//Set back to the origin for translation/rotation
-	Superclass::Translate(this->Origin[0], this->Origin[1], this->Origin[2]);
-	Superclass::RotateZ(-roll);
-
+	this->TranslateToOrigin();
 	//Rotate Y
 	Superclass::RotateY(angle);
-
-	//Set back to previous position
-	Superclass::RotateZ(roll);
-	Superclass::Translate(-this->Origin[0], -this->Origin[1], -this->Origin[2]);
-
-	//Update Orientation
-	this->GetTransform(0)->GetOrientation(this->Orientation);
+	this->TranslateFromOrigin();
 }
 
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::RotateZ(double angle)
 {
 	Superclass::RotateZ(angle);
-
-	//Update Orientation
-	this->GetTransform(0)->GetOrientation(this->Orientation);
 }
 
 //--------------------------------------------------------------------------

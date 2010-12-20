@@ -46,7 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
 vtkCxxRevisionMacro(vtkToolCollection, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
-void vtkToolCollection::InsertTool(vtkIdType id, vtkTool *tool) {
+void vtkToolCollection::ReplaceTool(vtkIdType id, vtkTool *tool) {
 	this->vtkToolCollection::ReplaceItem(id, (vtkObject*) tool);
 }
 

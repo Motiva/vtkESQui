@@ -68,7 +68,7 @@ public:
 	 * \param id identifier key of tool
 	 * \param tool vtkTool object to be inserted
 	 */
-	void InsertTool(vtkIdType id, vtkTool * tool);
+	void ReplaceTool(vtkIdType id, vtkTool * tool);
 	//!Insert tool at the last position of the collection
 	/*!
 	 * \param tool vtkTool object to be inserted

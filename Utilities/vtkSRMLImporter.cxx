@@ -242,9 +242,6 @@ void vtkSRMLImporter::DestroySRMLParser()
 //SRML Importer specific import.
 void vtkSRMLImporter::ReadData()
 {
-	//Import Actors (Tools, Organs, Extras), Cameras, Lights and Properties
-	Superclass::ReadData();
-
 	//Import haptic devices functionality
 	vtkXMLDataElement * simulation = this->Element;
 
@@ -274,7 +271,8 @@ void vtkSRMLImporter::ReadData()
 	//Initialize Simulation
 	this->Simulation->Init();
 
-	this->Simulation->Print(cout);
+	//Import Actors (Tools, Organs, Extras), Cameras, Lights and Properties
+	Superclass::ReadData();
 }
 
 //----------------------------------------------------------------------------
@@ -285,7 +283,7 @@ int vtkSRMLImporter::ImportBegin ()
 	{
 		if(!this->Scenario)
 		{
-			cout << "Scenario being set...\n";
+			vtkDebugMacro("Scenario being set...");
 			this->SetScenario(this->Simulation->GetScenario());
 			this->SetRenderWindow(this->Scenario->GetRenderWindow());
 			this->Renderer = this->RenderWindow->GetRenderers()->GetFirstRenderer();
@@ -375,6 +373,7 @@ void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 	double scale;
 	item->GetScalarAttribute("Scale", scale);
 	tool->SetScale(scale);
+	tool->SetDeltaT(this->Simulation->GetSimulationTimerRate());
 }
 
 //----------------------------------------------------------------------------
@@ -398,7 +397,6 @@ void vtkSRMLImporter::SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElemen
 		else if(id==2) tool->SetRightGrasperFileName(ExpandDataFileName(child->GetAttribute("FileName")));
 	}
 
-	//tool->Print(cout);
 	this->Scenario->AddTool(tool);
 }
 
@@ -442,12 +440,12 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	const char * name = bmm->GetAttribute("Name");
 	if (!strcmp(name, "vtkPSS"))
 	{
-		cout << "vtkParticleSpringSystem BioMech Model" << endl;
 		model = vtkPSSInterface::New();
 	}
 	model->SetName(bmm->GetAttribute("Name"));
 	this->SetBioMechanicalModelData(model ,bmm);
 	organ->SetBioMechanicalModel(model);
+	organ->SetDeltaT(this->Simulation->GetSimulationTimerRate());
 
 	this->Scenario->AddOrgan(organ);
 }
@@ -599,7 +597,6 @@ void vtkSRMLImporter::SetLightData(vtkLight * light, vtkXMLDataElement * item)
 		light->SetLightTypeToCameraLight();
 	}
 
-	//light->Print(cout);
 }
 
 //----------------------------------------------------------------------------

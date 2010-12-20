@@ -61,7 +61,11 @@ class vtkToolCollection;
 
 
 
-//!Implementation of the simulation scenario. All the elements in the scenario (organs, tools...) are stored in collections.
+//!Implementation of the simulation scenario.
+/*!
+ * The elements in the scenario (organs, tools...) are stored in collections.
+ * Any scenario item should be predefined (all of its required parameters set) before being inserted/added to the scenario.
+ */
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenario: public vtkObject
 {
 
@@ -102,7 +106,7 @@ public:
 	* \param organ vtkOrgan object to be inserted
 	* \sa InsertNextOrgan(vtkOrgan * organ)
 	*/
-	void InsertOrgan(vtkIdType index, vtkOrgan * organ);
+	void ReplaceOrgan(vtkIdType index, vtkOrgan * organ);
 
 
 	//!Delete the organ at the specified id from the scenario
@@ -143,7 +147,7 @@ public:
 	* \param index index of the tool to be inserted
 	* \param tool vtkTool object to be inserted
 	*/
-	void InsertTool(vtkIdType index, vtkTool * tool);
+	void ReplaceTool(vtkIdType index, vtkTool * tool);
 
 	//!Delete the tool at the specified id from the scenario
 	/*!

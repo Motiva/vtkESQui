@@ -48,7 +48,7 @@ vtkCxxRevisionMacro(vtkOrganCollection, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkOrganCollection);
 
 //----------------------------------------------------------------------------
-void vtkOrganCollection::InsertOrgan(vtkIdType id, vtkOrgan *organ) {
+void vtkOrganCollection::ReplaceOrgan(vtkIdType id, vtkOrgan *organ) {
 	this->vtkCollection::ReplaceItem(id, (vtkObject*) organ);
 }
 

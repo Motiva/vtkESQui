@@ -160,10 +160,10 @@ void vtkScenario::AddOrgan(vtkOrgan* organ)
 
 //----------------------------------------------------------------------------
 // Insert an organ in the specified position
-void vtkScenario::InsertOrgan(vtkIdType index,vtkOrgan* organ)
+void vtkScenario::ReplaceOrgan(vtkIdType index,vtkOrgan* organ)
 {
 	organ->SetId(index);
-	this->Organs->InsertOrgan(index, organ);
+	this->Organs->ReplaceOrgan(index, organ);
 }
 
 //----------------------------------------------------------------------------
@@ -213,18 +213,40 @@ vtkToolCollection * vtkScenario::GetTools()
 //Add Tools to the Scenario
 void vtkScenario::AddTool(vtkTool* tool)
 {
-	tool->SetId(this->GetNumberOfTools());
 	tool->SetRenderWindow(this->RenderWindow);
+	tool->SetId(this->GetNumberOfTools());
 	tool->Init();
 	this->Tools->AddTool(tool);
+
+	//Display legend
+	int * size;
+	int padding = 10;
+	size = this->RenderWindow->GetSize();
+
+	if(this->LegendDisplay)
+	{
+		vtkTextActor * legend = vtkTextActor::New();
+		vtkTextProperty * prop = vtkTextProperty::New();
+        prop->SetFontFamilyToTimes();
+        prop->SetFontSize(9);
+		prop->SetColor(1,1,1);
+		legend->SetTextProperty(prop);
+		int x = (tool->GetId()*size[0]/2)+padding;
+		int y = padding;
+		legend->SetDisplayPosition(x, y);
+		this->Legends->AddItem(legend);
+		this->Renderer->AddActor(legend);
+	}
 }
 
 //----------------------------------------------------------------------------
 //Insert in a given position in the vector the tool for collisions detection purposes
-void vtkScenario::InsertTool(vtkIdType index, vtkTool* tool)
+void vtkScenario::ReplaceTool(vtkIdType index, vtkTool* tool)
 {
 	tool->SetId(index);
-	this->Tools->InsertTool(index, tool);
+	tool->SetRenderWindow(this->RenderWindow);
+	tool->Init();
+	this->Tools->ReplaceTool(index, tool);
 }
 
 //----------------------------------------------------------------------------
@@ -329,25 +351,6 @@ void vtkScenario::Init()
 	//FIXME:Set this as param in the srml file
 	this->LegendDisplay = 1;
 
-	vtkTextActor * legend;
-	if(this->LegendDisplay)
-	{
-		for(int i = 0; i < this->Tools->GetNumberOfItems(); i++)
-		{
-			legend = vtkTextActor::New();
-			vtkTextProperty * prop = vtkTextProperty::New();
-			prop->SetFontFamilyToTimes();
-			prop->SetFontSize(9);
-			prop->SetColor(1,1,1);
-			int * size = this->RenderWindow->GetSize();
-			cout << size[0] << "," << size[1] << endl;
-			legend->SetTextProperty(prop);
-			legend->SetDisplayPosition(size[0]-160, size[1]-(i+1)*50);
-			this->Legends->AddItem(legend);
-			this->Renderer->AddActor(legend);
-		}
-	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -405,12 +408,12 @@ void vtkScenario::Update()
 		tool->Update();
 
 		//Update Legend
-		char text[120];
+		char text[256];
 		o = tool->GetOrientation();
 		d = tool->GetDirection();
 		p = tool->GetPosition();
 		v = tool->GetVelocity();
-		sprintf( text, "O: (%1.3f,  %1.3f,  %1.3f)\nD: (%1.3f,  %1.3f,  %1.3f)\nP: (%1.3f,  %1.3f,  %1.3f)\nV: (%1.3f,  %1.3f,  %1.3f)\n",
+		sprintf( text, "O: (%1.3f,  %1.3f,  %1.3f)\nD: (%1.3f,  %1.3f,  %1.3f)\nP: (%1.3f,  %1.3f,  %1.3f)\nV: (%1.3f,  %1.3f,  %1.3f)",
 				o[0], o[1], o[2], d[0], d[1], d[2], p[0], p[1], p[2], v[0], v[1], v[2]);
 		legend->SetInput(text);
 		tool = this->Tools->GetNextTool();

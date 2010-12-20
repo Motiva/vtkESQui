@@ -120,11 +120,7 @@ void vtkParticleSpringSystem::Init()
 		p0->SetPosition(point);
 		p0->SetMass(this->Mass);
 		this->Particles->InsertNextParticle(p0);
-
-		//Create one link entry per particle
-		//this->Links->InsertNextPoint(0);
 	}
-	cout << "Total number of particles: " << this->Particles->GetNumberOfItems() << endl;
 
 	vtkIdList * cellPointIds = vtkIdList::New();
 	vtkIdList * neighborCellIds = vtkIdList::New();
@@ -176,21 +172,17 @@ void vtkParticleSpringSystem::Init()
 			}
 		}
 	}
-	cout << "Total number of springs: " << this->Springs->GetNumberOfItems() << endl;
 
 	switch(this->SolverType)
 	{
 	case Euler:
 		this->Solver = vtkEulerSolver::New();
-		cout << "Euler solver selected\n";
 		break;
 	case VelocityVerlet:
 		this->Solver = vtkVelocityVerletSolver::New();
-		cout << "Velocity verlet solver selected\n";
 		break;
 	case RungeKutta4:
 		this->Solver = vtkRK4Solver::New();
-		cout << "Runge-Kutta45 solver selected\n";
 		break;
 	default:
 		break;
@@ -211,8 +203,6 @@ void vtkParticleSpringSystem::Init()
 
 	//Raise update event
 	this->Modified();
-
-	cout << this->GetClassName() << " has been init...\n";
 }
 
 //----------------------------------------------------------------------------
@@ -277,7 +267,7 @@ void vtkParticleSpringSystem::ComputeContacts()
 			//Distance Coefficient constraint
 			//Save original position
 			p->GetPosition(position);
-			//p->Print(cout);
+
 			//Add contact displacement
 			p->AddPosition(d[0], d[1], d[2]);
 

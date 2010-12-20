@@ -161,6 +161,18 @@ public:
 	 */
 	vtkGetMacro(Scale, double);
 
+	//! Assign simulation time step
+	/*!
+	 *\sa GetDeltaT()
+	 */
+	vtkSetMacro(DeltaT, double);
+
+	//!Return simulation time step
+	/*!
+	 *\sa SetDeltaT(double)
+	 */
+	vtkGetMacro(DeltaT, double);
+
 	// **** Graphical Purposes Methods **** //
 	//! Set the object origin Point.
 	/*!
@@ -220,6 +232,10 @@ protected:
 	double Direction[3];
 	//! Velocity
 	double Velocity[3];
+	//! Acceleration
+	double Acceleration[3];
+	//! Simulation time step
+	double DeltaT;
 
 	//! Scale factor (size)
 	double Scale;

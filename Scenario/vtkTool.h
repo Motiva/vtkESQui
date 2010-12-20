@@ -230,6 +230,18 @@ protected:
 	*/
 	void Translate(double x, double y, double z);
 
+	//! Implements the translation of the tool (Local coordinate system)
+	/*!
+		\param vector position vector of the translation
+	 */
+	void Translate(double * vector);
+
+	//!Set tool back to Origin for rotation translation
+	void TranslateToOrigin();
+
+	//!Restore tool position from origin
+	void TranslateFromOrigin();
+
 	//! Implements the lateral movements of the tool  (Local coordinate system)
 	/*!
 	The X parameter contains the relative movement in the horizontal axes

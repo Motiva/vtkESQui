@@ -69,14 +69,11 @@ vtkTool::vtkTool() {
 	this->ToolType = vtkTool::Laparoscopy;
 	this->UseHaptic = 0;
 	this->NumberOfPieces = 0;
-
 	this->AppendFilter = NULL;
 
 	this->Actors = vtkActorCollection::New();
 	this->Transforms = vtkTransformCollection::New();
-
 	this->Pieces = vtkPieceCollection::New();
-	
 	this->Contacts =vtkContactCollection::New();
 }
 
@@ -85,51 +82,9 @@ vtkTool::~vtkTool() {
 
 	this->Actors->Delete();
 	this->Transforms->Delete();
-
 	this->Pieces->Delete();
-
 	this->Contacts->Delete();
 
-}
-
-//--------------------------------------------------------------------------
-void vtkTool::Update()
-{
-	//Superclass::Update();
-
-	//Reset velocity
-	this->Velocity[0]=this->Velocity[1]=this->Velocity[2]=0;
-
-	double dir[3];
-	dir[0] = this->Direction[0];
-	dir[1] = this->Direction[1];
-	dir[2] = this->Direction[2];
-
-	//Update object direction
-	//Note: VTK Coordinate systems. X-Rotation angle is inverted (check VTK actor coordinate system. The Visualization Toolkit 4th Edition, Pag. 51).
-	this->Direction[0] = -sin(vtkMath::RadiansFromDegrees(this->Orientation[1]))*cos(vtkMath::RadiansFromDegrees(this->Orientation[2]));
-	this->Direction[1] = sin(vtkMath::RadiansFromDegrees(this->Orientation[0]))*sin(vtkMath::RadiansFromDegrees(this->Orientation[1]));
-	this->Direction[2] = -cos(vtkMath::RadiansFromDegrees(this->Orientation[2]))*cos(vtkMath::RadiansFromDegrees(this->Orientation[0]));
-
-	this->Velocity[0] = dir[0] - this->Direction[0];
-	this->Velocity[1] = dir[1] - this->Direction[1];
-	this->Velocity[2] = dir[2] - this->Direction[2];
-
-	//Add Z Component force
-
-	this->AppendFilter->Update();
-}
-
-//--------------------------------------------------------------------------
-vtkPolyData * vtkTool::GetOutput()
-{
-	return this->AppendFilter->GetOutput();
-}
-
-//--------------------------------------------------------------------------
-vtkPiece * vtkTool::GetPiece(vtkIdType id)
-{
-	return this->Pieces->GetPiece(id);
 }
 
 //--------------------------------------------------------------------------
@@ -143,7 +98,7 @@ void vtkTool::Init()
 		pieceTransform = piece->GetTransform();
 
 		pieceTransform->PreMultiply();
-		
+
 		pieceTransform->RotateX(this->Orientation[0]);
 		pieceTransform->RotateY(this->Orientation[1]);
 		pieceTransform->RotateZ(this->Orientation[2]);
@@ -165,6 +120,65 @@ void vtkTool::Init()
 }
 
 //--------------------------------------------------------------------------
+void vtkTool::Update()
+{
+	//Update position & orientation
+	this->Velocity[0] = this->Position[0];
+	this->Velocity[1] = this->Position[1];
+	this->Velocity[2] = this->Position[2];
+	this->Acceleration[0] = this->Velocity[0];
+	this->Acceleration[1] = this->Velocity[1];
+	this->Acceleration[2] = this->Velocity[2];
+
+	//Get transformed vaules
+	this->GetTransform(0)->GetPosition(this->Position);
+	this->GetTransform(0)->GetOrientation(this->Orientation);
+
+	/*//Update object direction
+	//Note: VTK Coordinate systems. X-Rotation angle is inverted (check VTK actor coordinate system. The Visualization Toolkit 4th Edition, Pag. 51).
+	double dir[3];
+	dir[0] = this->Direction[0];
+	dir[1] = this->Direction[1];
+	dir[2] = this->Direction[2];
+	this->Direction[0] = -sin(vtkMath::RadiansFromDegrees(this->Orientation[1]))*cos(vtkMath::RadiansFromDegrees(this->Orientation[2]));
+	this->Direction[1] = sin(vtkMath::RadiansFromDegrees(this->Orientation[0]))*sin(vtkMath::RadiansFromDegrees(this->Orientation[1]));
+	this->Direction[2] = -cos(vtkMath::RadiansFromDegrees(this->Orientation[2]))*cos(vtkMath::RadiansFromDegrees(this->Orientation[0]));
+	 */
+
+	//Update object velocity
+	//Velocity will be calculated from delta(Position)/dt
+	vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
+	//TODO: Multiply by 1/dt
+	//vtkMath::MultiplyScalar(this->Velocity, 1/dt));
+
+	//Update object acceleration
+	vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
+	//TODO: Multiply by 1/dt
+	//vtkMath::MultiplyScalar(this->Acceleration, 1/dt));
+	//TODO: Add torsion force
+
+	this->AppendFilter->Update();
+}
+
+//--------------------------------------------------------------------------
+vtkPolyData * vtkTool::GetOutput()
+{
+	return this->AppendFilter->GetOutput();
+}
+
+//--------------------------------------------------------------------------
+vtkPiece * vtkTool::GetPiece(vtkIdType id)
+{
+	return this->Pieces->GetPiece(id);
+}
+
+//--------------------------------------------------------------------------
+void vtkTool::Translate(double * vector)
+{
+	this->Translate(vector[0], vector[1], vector[2]);
+}
+
+//--------------------------------------------------------------------------
 void vtkTool::Translate(double x, double y, double z) {
 	vtkTransform *transform;
 
@@ -173,16 +187,24 @@ void vtkTool::Translate(double x, double y, double z) {
 		transform = this->Transforms->GetNextItem();
 		transform->Translate(x, y, z);
 	}
+}
 
-	//Update object position
-	this->Position[0] += x;
-	this->Position[1] += y;
-	this->Position[2] -= z;
-	//Update object velocity
-	this->Velocity[0] = x;
-	this->Velocity[1] = y;
-	this->Velocity[2] = -z;
-	this->Print(cout);
+//--------------------------------------------------------------------------
+void vtkTool::TranslateToOrigin()
+{
+	//Set back to the origin for translation/rotation
+	this->Translate(this->Origin);
+	this->RotateZ(-this->Orientation[2]);
+}
+
+//--------------------------------------------------------------------------
+void vtkTool::TranslateFromOrigin()
+{
+	//Set back to previous position
+	this->RotateZ(this->Orientation[2]);
+	vtkMath::MultiplyScalar(this->Origin, -1);
+	this->Translate(this->Origin);
+	vtkMath::MultiplyScalar(this->Origin, -1);
 }
 
 //--------------------------------------------------------------------------

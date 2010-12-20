@@ -78,7 +78,7 @@ public:
 	* \param organ vtkOrgan object to be inserted
 	* \sa InsertNextOrgan(vtkOrgan *organ)
 	*/
-	void InsertOrgan(vtkIdType id, vtkOrgan *organ);
+	void ReplaceOrgan(vtkIdType id, vtkOrgan *organ);
 
 	//!Return an organ in specified position of the list.
 	/*!

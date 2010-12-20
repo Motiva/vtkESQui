@@ -233,7 +233,6 @@ void vtkBioEngInterface::Update()
 							if(contactId < 0)
 							{
 								this->Contacts->InsertNextContact(contact);
-								//contact->Print(cout);
 							}
 							else
 							{

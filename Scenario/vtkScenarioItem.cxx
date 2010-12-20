@@ -52,8 +52,11 @@ vtkScenarioItem::vtkScenarioItem() {
 
 	this->Scale = 0.0;
 
+	this->DeltaT = 0.0;
+
 	this->Position[0]=this->Position[1]=this->Position[2]=0.0;
 	this->Velocity[0]=this->Velocity[1]=this->Velocity[2]=0.0;
+	this->Acceleration[0]=this->Acceleration[1]=this->Acceleration[2]=0.0;
 	this->Orientation[0]=this->Orientation[1]=this->Orientation[2]=0.0;
 	this->Origin[0]=this->Origin[1]=this->Origin[2]=0.0;
 	this->Direction[0]=this->Direction[1]=this->Direction[2]=0.0;
@@ -72,10 +75,13 @@ void vtkScenarioItem::PrintSelf(ostream& os,vtkIndent indent) {
 
 	os << indent << "Name: " << this->GetName() << "\n";
 	os << indent << "Id: " << this->GetId() << "\n";
-	os << indent << "Position: " << this->Position[0] << ", " << this->Position[1] << ", " << this->Position[2] << endl;
+	os << indent << "Scale: " << this->Scale << "\n";
+	os << indent << "DeltaT: " << this->DeltaT << "\n";
 	os << indent << "Origin: " << this->Origin[0] << ", " << this->Origin[1] << ", " << this->Origin[2] << endl;
 	os << indent << "Orientation: " << this->Orientation[0] << ", " << this->Orientation[1] << ", " << this->Orientation[2] <<  endl;
 	os << indent << "Direction: " << this->Direction[0] << ", " << this->Direction[1] << ", " << this->Direction[2] <<  endl;
+	os << indent << "Position: " << this->Position[0] << ", " << this->Position[1] << ", " << this->Position[2] << endl;
 	os << indent << "Velocity: " << this->Velocity[0] << ", " << this->Velocity[1] << ", " << this->Velocity[2] <<  endl;
+	os << indent << "Acceleration: " << this->Acceleration[0] << ", " << this->Acceleration[1] << ", " << this->Acceleration[2] <<  endl;
 
 }
