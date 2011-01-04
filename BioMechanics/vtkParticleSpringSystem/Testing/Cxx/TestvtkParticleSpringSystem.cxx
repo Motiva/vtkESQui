@@ -122,26 +122,14 @@ int main(int argc, char * argv[])
 	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
 	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
 
-	//Float to Double Conversion
-	if(mesh->GetPoints()->GetDataType() != VTK_DOUBLE)
-	{
-		vtkPoints * ps = vtkPoints::New();
-		ps->SetDataTypeToDouble();
-		ps->DeepCopy(mesh->GetPoints());
-		mesh->SetPoints(ps);
-		cout << "DataType has been modified\n";
-	}
-
-	mesh->Update();
-
 	vtkParticleSpringSystem* ParticleSpringSystem = vtkParticleSpringSystem::New();
 	ParticleSpringSystem->SetInput(mesh);
-	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
-	ParticleSpringSystem->SetSpringCoefficient(200);
+	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::VelocityVerlet);
+	ParticleSpringSystem->SetSpringCoefficient(150);
 	ParticleSpringSystem->SetDistanceCoefficient(10);
-	ParticleSpringSystem->SetDampingCoefficient(1.5);//Friction
-	ParticleSpringSystem->SetMass(0.1);
-	ParticleSpringSystem->SetDeltaT(0.001);
+	ParticleSpringSystem->SetDampingCoefficient(5);//Friction
+	ParticleSpringSystem->SetMass(.5);
+	ParticleSpringSystem->SetDeltaT(0.001);//10ms
 	ParticleSpringSystem->SetRigidityFactor(2);
 	ParticleSpringSystem->Init();
 
@@ -159,7 +147,7 @@ int main(int argc, char * argv[])
 	double bounds[6];
 	mesh->GetBounds(bounds);
 
-	double p[3] = {bounds[1], bounds[3], bounds[5]};
+	double p[3] = {0, bounds[2], 0};
 
 	locator->SetDataSet(mesh);
 
@@ -173,7 +161,7 @@ int main(int argc, char * argv[])
 	//Set Contact
 	double dir[3];
 	dir[0] = 0;//-0.1;
-	dir[1] = -0.2;
+	dir[1] = 0.2;
 	dir[2] = 0;//0.05;
 
 	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
@@ -187,7 +175,7 @@ int main(int argc, char * argv[])
 	plotter->Update();
 
 	//Fix a particle
-	ParticleSpringSystem->SetParticleStatus(10,1);
+	//ParticleSpringSystem->SetParticleStatus(10,1);
 
 	//Set a fictional force
 	ParticleSpringSystem->SetContacts(list, directions);
@@ -206,8 +194,6 @@ int main(int argc, char * argv[])
 	vtkActor * actor = vtkActor::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetColor(0,1,0);
-	//actor->GetProperty()->SetRepresentationToWireframe();
-	//actor->GetProperty()->SetOpacity(0.9);
 
 	vtkDataSetMapper * mapper2 = vtkDataSetMapper::New();
 	mapper2->SetInput(ParticleSpringSystem->GetOutput());
@@ -218,13 +204,12 @@ int main(int argc, char * argv[])
 	actor2->GetProperty()->SetColor(1,0,0);
 	actor2->GetProperty()->SetRepresentationToWireframe();
 
-
 	//renderer->AddActor(actor);
 	renderer->AddActor(actor2);
 	renderer->SetBackground(1,1,1);
 
 	renderer->ResetCamera();
-	renderer->GetActiveCamera()->Azimuth(90);
+	//renderer->GetActiveCamera()->Azimuth(90);
 	iren->Initialize();
 
 	renWin->Render();
@@ -244,7 +229,7 @@ int main(int argc, char * argv[])
 	// Create a slower repeating timer to trigger Render calls.
 	// (This fires at the rate of approximately 25 frames per second.)
 	//
-	tid = iren->CreateRepeatingTimer(40);
+	tid = iren->CreateRepeatingTimer(25);
 	cb->SetRenderTimerId(tid);
 
 	iren->Start();

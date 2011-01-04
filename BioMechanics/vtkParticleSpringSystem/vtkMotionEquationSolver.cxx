@@ -15,6 +15,7 @@ vtkCxxRevisionMacro(vtkMotionEquationSolver, "$Revision: 0.1 $");
 vtkMotionEquationSolver::vtkMotionEquationSolver()
 {
 	this->NumberOfParticles = 0;
+	this->Residual = 1e-6;
 	this->dv = vtkDoubleArray::New();
 	this->dv->SetNumberOfComponents(3);
 	this->dx = vtkDoubleArray::New();

@@ -45,6 +45,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRenderWindowInteractor.h"
 #include "vtkCamera.h"
 
+#include "vtkSimulationInteractorStyle.h"
 #include "vtkScenario.h"
 #include "vtkTool.h"
 #include "vtkToolLaparoscopy.h"
@@ -77,6 +78,17 @@ int main(int argc, char * argv[])
 	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
 	iren->SetRenderWindow(renWin);
 
+	//Create new Scenario
+	vtkScenario * scenario = vtkScenario::New();
+	scenario->SetRenderWindow(renWin);
+
+	//Set Scenario Interactor
+	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
+	style->SetScenario(scenario);
+	style->SetDebug(1);
+	iren->SetInteractorStyle(style);
+
+	//Create a Tool
 	vtkToolPincers * pincers = vtkToolPincers::New();
 	//Set tool identifier
 	pincers->SetId(0);
@@ -86,16 +98,15 @@ int main(int argc, char * argv[])
 	pincers->SetLeftGrasperFileName(filename1);
 	pincers->SetRightGrasperFileName(filename2);
 	//Set geometric parameters
-	pincers->SetPosition(3, 0, 0);
-	pincers->SetOrientation(0, -10, 0);
+	pincers->SetPosition(-3, 0, 0);
+	pincers->SetOrientation(0, 10, 0);
 	pincers->SetOrigin(0, 0, 4);
 
 	//Set tool scale (size)
 	pincers->SetScale(1);
 
-	//Assign render window for display purposes
-	pincers->SetRenderWindow(renWin);
-	pincers->Init();
+	//Add tool to the scenario
+	scenario->AddTool(pincers);
 
 	//Adjust Camera
 	vtkCamera * camera = ren1->GetActiveCamera();

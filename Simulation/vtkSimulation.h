@@ -97,22 +97,22 @@ public:
 	*/
 	vtkGetObjectMacro(Interactor, vtkRenderWindowInteractor);
 
-	//!Set haptic device timer refresh rate (ms)
+	//!Set haptic device timer refresh rate (s)
 	vtkSetMacro(HapticTimerRate, double);
 
-	//!Set simulation refresh rate (ms)
+	//!Set simulation refresh rate (s)
 	vtkSetMacro(SimulationTimerRate, double);
 
-	//!Set render refresh rate (ms)
+	//!Set render refresh rate (s)
 	vtkSetMacro(RenderTimerRate, double);
 
-	//!Get haptic device timer refresh rate (ms)
+	//!Get haptic device timer refresh rate (s)
 	vtkGetMacro(HapticTimerRate, double);
 
-	//!Get simulation refresh rate (ms)
+	//!Get simulation refresh rate (s)
 	vtkGetMacro(SimulationTimerRate, double);
 
-	//!Get render refresh rate (ms)
+	//!Get render refresh rate (s)
 	vtkGetMacro(RenderTimerRate, double);
 
 	//Get timer identifiers for event handling

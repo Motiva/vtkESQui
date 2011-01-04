@@ -73,17 +73,11 @@ int TestvtkSRMLImporter(int argc, char * argv[])
 	iren->SetRenderWindow(renWin);
 
 	vtkSimulation * Simulation = vtkSimulation::New();
-	//vtkSimulationManager * Manager = vtkSimulationManager::New();
+
 	vtkScenario * Scenario = vtkScenario::New();
 	Scenario->SetRenderWindow(renWin);
 
-	//Manager->SetScenario(Scenario);
-	//Manager->SetLibraryName("vtkbioeng");
-	//Manager->Init();
-
-	//Simulation->SetSimulationManager(Manager);
 	Simulation->SetScenario(Scenario);
-	Simulation->Init();
 
 	vtkSRMLImporter * Importer = vtkSRMLImporter::New();
 	Importer->SetDebug(1);

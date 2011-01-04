@@ -258,7 +258,7 @@ void vtkSRMLImporter::ReadData()
 	{
 		this->Simulation->VerboseOn();
 	}
-	int rate;
+	double rate;
 	simulation->GetScalarAttribute("SimulationRate", rate);
 	this->Simulation->SetSimulationTimerRate(rate);
 
@@ -300,7 +300,7 @@ int vtkSRMLImporter::ImportBegin ()
 	// reported by OpenSRMLFile.
 	if(!this->OpenSRMLFile())
 	{
-		std::cout << "File has not been opened..." << std::endl;
+		vtkErrorMacro("File has not been opened...");
 		return 0;
 	}
 	return this->ReadSRMLData();
@@ -435,44 +435,55 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	organ->SetScale(scale);
 
 	//Biomechanical Model Import
-	vtkXMLDataElement * bmm = item->LookupElementWithName("BMM");
-	vtkBioMechanicalModel * model;
+	vtkXMLDataElement * bmm = item->LookupElementWithName("DeformationModel");
+	vtkDeformationModel * model;
 	const char * name = bmm->GetAttribute("Name");
-	if (!strcmp(name, "vtkPSS"))
+	if (!strcmp(name, "ParticleSpring"))
 	{
 		model = vtkPSSInterface::New();
 	}
 	model->SetName(bmm->GetAttribute("Name"));
-	this->SetBioMechanicalModelData(model ,bmm);
-	organ->SetBioMechanicalModel(model);
+	this->SetDeformationModelData(model ,bmm);
+	organ->SetDeformationModel(model);
 	organ->SetDeltaT(this->Simulation->GetSimulationTimerRate());
 
 	this->Scenario->AddOrgan(organ);
 }
 
 //----------------------------------------------------------------------------
-void vtkSRMLImporter::SetBioMechanicalModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item)
+void vtkSRMLImporter::SetDeformationModelData(vtkDeformationModel * model, vtkXMLDataElement * item)
 {
 	const char * name = model->GetName();
-	if(!strcmp(name, "vtkPSS"))
+	if(!strcmp(name, "ParticleSpring"))
 	{
-		vtkPSSInterface * bmm = vtkPSSInterface::SafeDownCast(model);
+		vtkPSSInterface * particleSpring = vtkPSSInterface::SafeDownCast(model);
+		particleSpring->SetDeltaT(this->Simulation->GetSimulationTimerRate());
 		double coefficient;
 		item->GetScalarAttribute("SpringCoefficient", coefficient);
-		bmm->SetSpringCoefficient(coefficient);
+		particleSpring->SetSpringCoefficient(coefficient);
 		item->GetScalarAttribute("DampingCoefficient", coefficient);
-		bmm->SetDampingCoefficient(coefficient);
+		particleSpring->SetDampingCoefficient(coefficient);
 		item->GetScalarAttribute("DistanceCoefficient", coefficient);
-		bmm->SetDistanceCoefficient(coefficient);
+		particleSpring->SetDistanceCoefficient(coefficient);
 		double mass;
 		item->GetScalarAttribute("Mass", mass);
-		bmm->SetMass(mass);
-		double delta;
-		item->GetScalarAttribute("DeltaT", delta);
-		bmm->SetDeltaT(delta);
+		particleSpring->SetMass(mass);
 		int value;
 		item->GetScalarAttribute("RigidityFactor", value);
-		bmm->SetRigidityFactor(value);
+		particleSpring->SetRigidityFactor(value);
+		const char * type = item->GetAttribute("Solver");
+		if(strcmp(type, "RK4") == 0)
+		{
+			particleSpring->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
+		}
+		else if(strcmp(type, "Euler") == 0)
+		{
+			particleSpring->SetSolverType(vtkParticleSpringSystem::Euler);
+		}
+		else
+		{
+			particleSpring->SetSolverType(vtkParticleSpringSystem::VelocityVerlet);
+		}
 	}
 }
 
@@ -485,14 +496,14 @@ void vtkSRMLImporter::ImportExtras()
 	for(int i=0; i<extras->GetNumberOfNestedElements(); i++)
 	{
 		item = extras->GetNestedElement(i);
-		const char * type = item->GetAttribute("Type");
+		//const char * type = item->GetAttribute("Type");
 	}
 }
 
 //----------------------------------------------------------------------------
 void vtkSRMLImporter::ImportCameras (vtkRenderer * renderer)
 {
-	vtkDebugMacro("Importing Extras...");
+	vtkDebugMacro("Importing Cameras...");
 	vtkXMLDataElement * cameras = this->Element->LookupElementWithName("Cameras");
 	vtkXMLDataElement * item;
 	if(this->Scenario || this->RenderWindow || renderer)

@@ -33,6 +33,7 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->DampingCoefficient = 0;
 	this->DeltaT = 0;
 	this->Mass = 0;
+	this->Residual = 1e-6;
 	this->RigidityFactor = 0;
 	this->Volume = 0;
 	this->SystemProperties = NULL;
@@ -72,6 +73,7 @@ int vtkParticleSpringSystem::RequestData(
 	this->Step();
 
 	//Update output points
+	//TODO: Use vtkWarpVector to set displacement
 	vtkPoints * points = input->GetPoints();
 	//vtkPoints * points = output->GetPoints();
 	for (int i=0; i < input->GetNumberOfPoints(); i++)
@@ -194,6 +196,7 @@ void vtkParticleSpringSystem::Init()
 	//Initialize motion equation solver
 	this->Solver->SetDeformationModel(this);
 	this->Solver->SetNumberOfParticles(this->Particles->GetNumberOfItems());
+	this->Solver->SetResidual(this->Residual);
 	this->Solver->Init();
 
 	//Initialize contact objects

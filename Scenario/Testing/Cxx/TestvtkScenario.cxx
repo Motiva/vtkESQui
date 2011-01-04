@@ -55,7 +55,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 using namespace std;
 
-//!This test perform a test of the vtkOrganCollection class
+//!This test perform a test of the vtkScenario class
 
 int TestvtkScenario(int argc, char * argv[])
 {

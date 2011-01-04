@@ -63,7 +63,7 @@ class vtkActor;
 class vtkTool;
 class vtkToolPincers;
 class vtkOrgan;
-class vtkBioMechanicalModel;
+class vtkDeformationModel;
 
 class vtkSimulation;
 
@@ -219,7 +219,7 @@ private:
 	 * \param model biomechanical model
 	 * \param item parsed XMLDataElement that contains element info
 	 */
-	void SetBioMechanicalModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item);
+	void SetDeformationModelData(vtkDeformationModel * model, vtkXMLDataElement * item);
 
 	//! Generate full path of filename
 	const char * ExpandDataFileName(const char * fname);

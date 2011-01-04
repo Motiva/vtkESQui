@@ -9,6 +9,7 @@ SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 SET(Kit_SRCS
     ToolEndovascular
     ToolLaparoscopy
+    ScenarioLaparoscopy
 )
 
 #-----------------------------------------------------------------------------
@@ -22,6 +23,7 @@ ENDIF(VTKESQUI_USE_HAPTICS)
  # Set your list of libraries here.
 SET(KIT_LIBS 
     ${PROJECT_NAME}Scenario
+    ${PROJECT_NAME}Simulation
     vtkRendering
 	vtkGraphics 
 	vtkCommon
@@ -31,6 +33,7 @@ SET(KIT_LIBS
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
     ${PROJECT_NAME}ScenarioTCL
+    ${PROJECT_NAME}SimulationTCL
     vtkRenderingTCL
     vtkGraphicsTCL
 	vtkCommonTCL

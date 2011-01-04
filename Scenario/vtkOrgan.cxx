@@ -55,7 +55,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTexture.h"
 #include "vtkTextureMapToSphere.h"
 
-#include "vtkBioMechanicalModel.h"
 #include "vtkContact.h"
 #include "vtkContactCollection.h"
 #include "vtkPointPlotter.h"
@@ -110,33 +109,31 @@ vtkOrgan::~vtkOrgan()
 //--------------------------------------------------------------------------
 void vtkOrgan::Init()
 {	
-	if(this->Bmm)
+	if(!this->Input)
 	{
-		if(!this->Input)
-		{
-			this->Reader = vtkXMLPolyDataReader::New();
-			this->Reader->SetFileName(this->FileName);
-			this->Reader->Update();
-			this->Input = this->Reader->GetOutput();
-		}
+		this->Reader = vtkXMLPolyDataReader::New();
+		this->Reader->SetFileName(this->FileName);
+		this->Reader->Update();
+		this->Input = this->Reader->GetOutput();
+	}
 
-		if(this->RenderWindow)
-		{
-			this->Renderer= this->RenderWindow->GetRenderers()->GetFirstRenderer();
+	if(this->RenderWindow)
+	{
+		this->Renderer= this->RenderWindow->GetRenderers()->GetFirstRenderer();
 
-			this->Transform = vtkTransform::New();
-			this->TransformFilter = vtkTransformPolyDataFilter::New();
-			this->TransformFilter->SetInput(this->Input);
-			this->TransformFilter->SetTransform(this->Transform);
+		this->Transform = vtkTransform::New();
+		this->TransformFilter = vtkTransformPolyDataFilter::New();
+		this->TransformFilter->SetInput(this->Input);
+		this->TransformFilter->SetTransform(this->Transform);
 
-			this->Transform->Translate(this->Position);
-			this->Transform->RotateX(this->Orientation[0]);
-			this->Transform->RotateY(this->Orientation[1]);
-			this->Transform->RotateZ(this->Orientation[2]);
+		this->Transform->Translate(this->Position);
+		this->Transform->RotateX(this->Orientation[0]);
+		this->Transform->RotateY(this->Orientation[1]);
+		this->Transform->RotateZ(this->Orientation[2]);
 
-			this->TransformFilter->Update();
+		this->TransformFilter->Update();
 
-			vtkPolyData * txGrid = this->TransformFilter->GetOutput();
+		/*vtkPolyData * txGrid = this->TransformFilter->GetOutput();
 			if (txGrid->GetPoints()->GetData()->GetDataType() != VTK_DOUBLE)
 			{
 				//Set input mesh where deformation will be calculated
@@ -145,53 +142,58 @@ void vtkOrgan::Init()
 				ps->DeepCopy(txGrid->GetPoints());
 				txGrid->SetPoints(ps);
 				txGrid->Update();
-			}
+			}*/
 
-			this->Bmm->SetInput(txGrid);
+		vtkPolyData * output;
+		if(this->Bmm)
+		{
+			this->Bmm->SetInput(this->TransformFilter->GetOutput());
 			this->Bmm->Init();
-
-			vtkPolyData * output = this->Bmm->GetOutput();
-			//cout << "Bmm->GetOutput: " << output->GetNumberOfPoints() << endl;
-
-			if(this->TextureFileName && !strcmp(this->TextureFileName, ""))
-			{
-				//No TextureFile has been defined
-				this->Mapper->SetInput(output);
-			}
-			else
-			{
-				//Texture will be added
-				vtkTextureMapToSphere * map = vtkTextureMapToSphere::New();
-				map->SetInput(output);
-				map->PreventSeamOn();
-
-				vtkTransformTextureCoords *  xform = vtkTransformTextureCoords::New();
-				xform->SetInputConnection(map->GetOutputPort());
-				xform->SetScale(1, 1, 1);
-
-				this->Mapper = vtkDataSetMapper::New();
-				this->Mapper->SetInputConnection(xform->GetOutputPort());
-
-				vtkJPEGReader * jpegReader = vtkJPEGReader::New();
-				jpegReader->SetFileName(this->TextureFileName);
-				jpegReader->Update();
-
-				this->Texture = vtkTexture::New();
-				this->Texture->SetInputConnection(jpegReader->GetOutputPort());
-				this->Texture->InterpolateOn();
-
-				this->Actor = vtkActor::New();
-				this->Actor->SetTexture(this->Texture);
-			}
-
-			this->Actor->SetMapper(this->Mapper);
-
-			this->Renderer->AddActor(this->Actor);
+			output = this->Bmm->GetOutput();
+		}
+		else
+		{
+			vtkErrorMacro("BioMechanical Model not defined. You must indicate the bmm...");
+			output = this->TransformFilter->GetOutput();
 		}
 
-		this->Update();
+		if(!this->TextureFileName || !strcmp(this->TextureFileName, ""))
+		{
+			//No TextureFile has been defined
+			this->Mapper->SetInput(output);
+		}
+		else
+		{
+			//Texture will be added
+			vtkTextureMapToSphere * map = vtkTextureMapToSphere::New();
+			map->SetInput(output);
+			map->PreventSeamOn();
+
+			vtkTransformTextureCoords *  xform = vtkTransformTextureCoords::New();
+			xform->SetInputConnection(map->GetOutputPort());
+			xform->SetScale(1, 1, 1);
+
+			this->Mapper = vtkDataSetMapper::New();
+			this->Mapper->SetInputConnection(xform->GetOutputPort());
+
+			vtkJPEGReader * jpegReader = vtkJPEGReader::New();
+			jpegReader->SetFileName(this->TextureFileName);
+			jpegReader->Update();
+
+			this->Texture = vtkTexture::New();
+			this->Texture->SetInputConnection(jpegReader->GetOutputPort());
+			this->Texture->InterpolateOn();
+
+			this->Actor = vtkActor::New();
+			this->Actor->SetTexture(this->Texture);
+		}
+
+		this->Actor->SetMapper(this->Mapper);
+
+		this->Renderer->AddActor(this->Actor);
 	}
-	else vtkErrorMacro("BioMechanical Model not defined. You must indicate the bmm...");
+
+	this->Update();
 
 }
 
@@ -204,15 +206,13 @@ void vtkOrgan::SetInput(vtkPolyData * data)
 //--------------------------------------------------------------------------
 void vtkOrgan::Update()
 {
-	if(this->Contacts->GetNumberOfItems() > 0)
+	if(this->Bmm)// && this->Contacts->GetNumberOfItems() > 0)
 	{
 		this->Bmm->InsertContacts(this->Contacts);
+		//Force the Biomechanical Model to be recalculated
+		this->Bmm->Modified();
+		this->Bmm->Update();
 	}
-
-	//Force the Biomechanical Model to be recalculated
-	this->Bmm->Modified();
-	this->Bmm->Update();
-
 	//Remove Contacts
 	this->RemoveContacts();
 
@@ -225,7 +225,7 @@ vtkPolyData * vtkOrgan::GetOutput()
 }
 
 //--------------------------------------------------------------------------
-void vtkOrgan::SetBioMechanicalModel(vtkBioMechanicalModel * bmm)
+void vtkOrgan::SetDeformationModel(vtkDeformationModel * bmm)
 {
 	if(this->Bmm)
 	{
@@ -235,7 +235,7 @@ void vtkOrgan::SetBioMechanicalModel(vtkBioMechanicalModel * bmm)
 }
 
 //--------------------------------------------------------------------------
-vtkBioMechanicalModel * vtkOrgan::GetBioMechanicalModel()
+vtkDeformationModel * vtkOrgan::GetBioMechanicalModel()
 {
 	return this->Bmm;
 }
@@ -265,7 +265,9 @@ void vtkOrgan::PrintSelf(ostream& os,vtkIndent indent) {
 
 	os << indent << "FileName: " << this->FileName << "\n";
 	os << indent << "TextureFileName: " << this->TextureFileName << "\n";
-	os << indent << "BMM: " << this->Bmm->GetClassName() << "\n";
+	if(this->Bmm){
+		os << indent << "BMM: " << this->Bmm->GetClassName() << "\n";
+	}
 
 }
 

@@ -200,6 +200,12 @@ public:
 
 	vtkBooleanMacro(LegendDisplay, bool);
 
+	//!Set/Get legend display
+	vtkSetMacro(Collision, bool);
+	vtkGetMacro(Collision, bool);
+
+	vtkBooleanMacro(Collision, bool);
+
 	//!Assign the render window of the scenario
 	/*!
 	* \param Renderer render window for displaying purposes
@@ -244,12 +250,14 @@ private:
 	//!Collection of Extras
 	//vtkPropCollection * Extras;
 
-	//!
-	bool LegendDisplay;
-
 	//!Legends
 	vtkActor2DCollection * Legends;
+	//!Enable legend display
+	bool LegendDisplay;
 
+
+	//!Enable collision detection
+	bool Collision;
 	//!collision detection library
 	vtkCollisionDetectionLibrary* CollisionDetection;
 

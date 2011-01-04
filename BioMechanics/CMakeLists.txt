@@ -9,9 +9,8 @@ SET(UKIT BioMechanics)  #Uppercase Kit Name
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
 SET (Kit_SRCS 
-vtkBioMechanicalModel.cxx
+vtkDeformationModel.cxx
 vtkPSSInterface.cxx
-#vtkRDMInterface.cxx
 )
 
 #SET_SOURCE_FILES_PROPERTIES(

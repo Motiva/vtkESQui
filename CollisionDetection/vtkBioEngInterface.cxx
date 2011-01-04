@@ -161,7 +161,13 @@ void vtkBioEngInterface::Update()
 			vtkIdType numberOfContacts = this->DetectionFilter->GetNumberOfContacts();
 
 			//TODO: Optimize contact info generation
-			//cout << "#######################################\n";
+			if(numberOfContacts > 0){
+				cout << "#######################################\n";
+				cout << "Number of Contacts: " << numberOfContacts << endl;
+				tool->Print(cout);
+				vtkPolyData * contacts = this->DetectionFilter->GetContactsOutput();
+				cout << "NumberOfPoints:" << contacts->GetNumberOfPoints() << endl;
+			}
 			for(int i =0; i < numberOfContacts; i++)
 			{
 				//There has been a collision
@@ -170,7 +176,7 @@ void vtkBioEngInterface::Update()
 				vtkIdType toolCellId = this->DetectionFilter->GetContactCells(1)->GetValue(i);
 
 				//Get cell normal & center
-				if(organBox->GetCellType(organCellId) == VTK_TRIANGLE &&
+				/*if(organBox->GetCellType(organCellId) == VTK_TRIANGLE &&
 					(toolBox->GetCellType(toolCellId) == VTK_TRIANGLE ||
 					toolBox->GetCellType(toolCellId) == VTK_TRIANGLE_STRIP))
 				{
@@ -247,7 +253,7 @@ void vtkBioEngInterface::Update()
 							}
 						}
 					}
-				}
+				}*/
 			}
 		}
 	}

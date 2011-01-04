@@ -56,13 +56,11 @@ void func ( vtkObject* caller, long unsigned int eventId, void* clientData, void
 		int tid = * static_cast<int *>(callData);
 		if (tid == sim->GetHapticTimerId())
 		{
-			//Do whatever
 			//cout << "Haptic\n";
 			sim->UpdateHaptic();
 		}
 		if (tid == sim->GetSimulationTimerId())
 		{
-			//Do whatever
 			//cout << "Simulation\n";
 			sim->UpdateScenario();
 		}
@@ -113,17 +111,17 @@ void vtkSimulation::Init() {
 	{
 		int connected = this->HapticDevice->Init();
 		if(connected > 0){
-			std::cout << "Haptic device is connected..." << std::endl;
+			vtkDebugMacro("Haptic device is connected...");
 			for(int i = 0; i < this->HapticDevice->GetNumberOfTools(); i++)
 			{
-				vtkTool * tool =  this->SimulationManager->GetScenario()->GetTool(i);
+				vtkTool * tool =  this->Scenario->GetTool(i);
 				tool->UseHapticOn();
 				tool->SetHapticDevice(this->HapticDevice);
 			}
 		}
 		else
 		{
-			std::cout << "Haptic device is not connected... \nPlease startup device and restart the application" << std::endl;
+			vtkErrorMacro("Haptic device is not connected...");
 			exit(0);
 		}
 	}
@@ -147,29 +145,26 @@ void vtkSimulation::Init() {
 	//Check for haptic device resfresh rate
 	if(this->HapticTimerRate == 0)
 	{
-		//Set Default Haptic Rate
-		this->HapticTimerRate = 1; //1ms
+		vtkErrorMacro("Haptic Device refresh time has not been defined");
 	}
 
-	this->HapticTimerId = this->Interactor->CreateRepeatingTimer(this->HapticTimerRate);
+	this->HapticTimerId = this->Interactor->CreateRepeatingTimer(1000*this->HapticTimerRate);
 
 	//Check for simulation resfresh rate
 	if(this->SimulationTimerRate == 0)
 	{
-		//Set Default Simulation Rate
-		this->SimulationTimerRate = 10; //10ms
+		vtkErrorMacro("Simulation refresh time has not been defined");
 	}
 
-	this->SimulationTimerId = this->Interactor->CreateRepeatingTimer(this->SimulationTimerRate);
+	this->SimulationTimerId = this->Interactor->CreateRepeatingTimer(1000*this->SimulationTimerRate);
 
 	//Check for rendering rate
 	if(this->RenderTimerRate == 0)
 	{
-		//Set Default Haptic Rate
-		this->RenderTimerRate = 30;
+		vtkErrorMacro("Render time has not been defined");
 	}
 
-	this->RenderTimerId = this->Interactor->CreateRepeatingTimer(this->RenderTimerRate);
+	this->RenderTimerId = this->Interactor->CreateRepeatingTimer(1000*this->RenderTimerRate);
 
 	//Init Scenario
 	this->Scenario->Init();

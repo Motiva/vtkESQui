@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkDataSetMapper.h"
 
 #include "vtkContactCollection.h"
-#include "vtkBioMechanicalModel.h"
+#include "vtkDeformationModel.h"
 
 class vtkPoints;
 class vtkCell;
@@ -93,7 +93,7 @@ public:
 	/*!
 	* \param model biomechanical model of the organ
 	*/
-	void SetBioMechanicalModel(vtkBioMechanicalModel * model);
+	void SetDeformationModel(vtkDeformationModel * model);
 
 
 	//!Get the Biomechanical Model of the organ
@@ -101,7 +101,7 @@ public:
 	* \return biomechanical model of the organ
 	* \sa SetBioMechModel(vtkBioMechanicalModel * model)
 	*/
-	vtkBioMechanicalModel * GetBioMechanicalModel();
+	vtkDeformationModel * GetBioMechanicalModel();
 
 	//!Set initial values filename
 	/*!
@@ -272,7 +272,7 @@ protected:
 	vtkXMLPolyDataReader * Reader;
 
 	//!BioMechamical Model of the organ
-	vtkBioMechanicalModel * Bmm;
+	vtkDeformationModel * Bmm;
 
 	//!Collection of organ contact points
 	vtkContactCollection * Contacts;

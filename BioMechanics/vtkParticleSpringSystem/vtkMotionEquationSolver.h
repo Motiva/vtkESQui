@@ -66,6 +66,9 @@ public:
 	//! Set number of particles
 	vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
 
+	//! Set residual error
+	vtkSetMacro(Residual, double);// NumberOfParticles
+
 	//! Set Deformation model
 	void SetDeformationModel(vtkParticleSpringSystem * model){this->DeformationModel = model;};
 
@@ -92,6 +95,8 @@ protected:
 	//! Number of particles
 	double NumberOfParticles;
 
+	//!Residual Error
+	double Residual;
 	//! Velocity derivative
 	vtkDoubleArray * dv;
 	//! Position derivative

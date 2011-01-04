@@ -139,7 +139,7 @@ int main(int argc, char * argv[])
 	model->SetMass(1);
 	model->SetDeltaT(0.01);
 
-	organ->SetBioMechanicalModel(model);
+	organ->SetDeformationModel(model);
 	
 	Scenario->AddOrgan(organ);
 

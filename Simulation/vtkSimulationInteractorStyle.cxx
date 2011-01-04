@@ -84,70 +84,84 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 	if(key.compare("c") == 0)
 	{
 		this->Mode = !this->Mode;
-		cout << "Camera selection/deselection: " << this->Mode << endl;
+		vtkDebugMacro("Camera Mode On/Off");
 	}
 	if(this->Mode)
 	{
 		//Tool Movement
 		if(key.compare("Up") == 0)
 		{
+			vtkDebugMacro("RotateX (Up)");
 			tool->RotateX(1);
 		}
 		if(key.compare("Down") == 0)
 		{
+			vtkDebugMacro("RotateX (Down)");
 			tool->RotateX(-1);
 		}
 		if(key.compare("Left") == 0)
 		{
+			vtkDebugMacro("RotateY (Left)");
 			tool->RotateY(1);
 		}
 		if(key.compare("Right") == 0)
 		{
+			vtkDebugMacro("RotateY (Right)");
 			tool->RotateY(-1);
 		}
 		if(key.compare("Prior") == 0)
 		{
+			vtkDebugMacro("Push Forward");
 			tool->Push();
 		}
 		if(key.compare("Next") == 0)
 		{
+			vtkDebugMacro("Pull Back");
 			tool->Pull();
 		}
-		if(key.compare("i") == 0)
+		if(key.compare("0") == 0)
 		{
+			vtkDebugMacro("Select Tool (0)");
 			this->ActiveToolId = 0;
 		}
-		if(key.compare("d") == 0)
+		if(key.compare("1") == 0)
 		{
+			vtkDebugMacro("Select Tool (1)");
 			this->ActiveToolId = 1;
+		}
+		if(key.compare("2") == 0)
+		{
+			vtkDebugMacro("Select Tool (2)");
+			this->ActiveToolId = 2;
 		}
 		if(key.compare("a") == 0)
 		{
-			cout << "Open Tool" << endl;
+			vtkDebugMacro("Open Tool");
 			tool->Open();
 		}
 		if(key.compare("s") == 0)
 		{
-			cout << "Close Tool" << endl;
+			vtkDebugMacro("Close Tool");
 			tool->Close();
 		}
 		if(key.compare("x") == 0)
 		{
-			cout << "Rotate Tool Left" << endl;
+			vtkDebugMacro("Roll Tool Left");
 			tool->RotateZ(-10);
 		}
 		if(key.compare("z") == 0)
 		{
-			cout << "Rotate Tool Right" << endl;
+			vtkDebugMacro("Roll Tool Right");
 			tool->RotateZ(10);
 		}
 	}
 	if(key.compare("q") == 0)
 	{
-		cout << "Exit" << endl;
+		vtkDebugMacro("Exit Application");
 		exit(0);
 	}
 
+	//this->GetInteractor()->Render();
 	// forward events
 	vtkInteractorStyleTrackballCamera::OnKeyPress();
 }

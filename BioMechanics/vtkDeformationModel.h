@@ -39,80 +39,90 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkPSSInterface_h
-#define __vtkPSSInterface_h
+#ifndef __vtkBioMechanicalModel_h
+#define __vtkBioMechanicalModel_h
 
 #include "vtkESQuiBMMWin32Header.h"
-#include "vtkDeformationModel.h"
+#include "vtkPolyDataAlgorithm.h"
 
-#include "vtkParticleSpringSystem.h"
+class vtkPolyData;
+class vtkPoints;
+class vtkCell;
+class vtkIdList;
+class vtkDoubleArray;
 
-//! Interface to the abstract vtkBiomechanicalModel class for a particle-spring system
+class vtkContact;
+class vtkContactCollection;
 
-class VTK_ESQUI_BMM_EXPORT vtkPSSInterface : public vtkDeformationModel
+//! Generic interface to the Biomechanical Model
+
+class VTK_ESQUI_BMM_EXPORT vtkDeformationModel: public vtkPolyDataAlgorithm
 {
 public:
-	vtkTypeRevisionMacro(vtkPSSInterface, vtkDeformationModel);
-	//! Create a new PSS Interface
-	static vtkPSSInterface* New();
-	const char *GetClassName() {return "vtkPSSInterface";};
+	vtkTypeRevisionMacro(vtkDeformationModel, vtkAlgorithm);
+
+	static vtkDeformationModel *New();
+	const char *GetClassName() {return "vtkBioMechanicalModel";};
 	//! Print class object values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Process the algorithm request (Update).
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+	//!Set BioMechanical model name
+	vtkSetStringMacro(Name);
+
+	//!Get BioMechanical model name
+	vtkGetStringMacro(Name);
+
+	//! Update function
+	int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Initialize the Biomechanical Model
 	virtual void Init();
+	
+	//!Cleans algorithm from previous executions
+	virtual void Clear();
 
-	//! Set the distance coefficient
-	vtkSetMacro(DistanceCoefficient, double);
-	//! Set the damping coefficient
-	vtkSetMacro(DampingCoefficient, double);
-	//! Set the damping coefficient
-	vtkSetMacro(SpringCoefficient, double);
-	//! Set the mass value
-	vtkSetMacro(Mass, double);
-	//! Set the time step
-	vtkSetMacro(DeltaT, double);
-	//! Set the neighborhood size
-	vtkSetMacro(RigidityFactor, int);
-	//! Set motion equation solver type.
-	vtkSetMacro(SolverType, vtkParticleSpringSystem::MotionEquationSolverType);
+	//!Insert a contact into the biomechanical model
+	virtual void InsertNextContact(vtkContact * contact) ;
+
+	//!Insert a collection of contacts into the biomechanical model
+	virtual void InsertContacts(vtkContactCollection * collection);
+
+	//!Remove contacts of the biomechanical model
+	virtual void DeleteContacts();
+
+	//!Return the contact points
+	virtual vtkPoints * GetContactPoints();
+
+	//!Return the organ mesh cell specified with the id
+	virtual vtkCell * GetMeshCell(vtkIdType id);
 
 protected:
-	vtkPSSInterface();
-	~vtkPSSInterface();
+	vtkDeformationModel();
+	~vtkDeformationModel();
+
+	//!Model Name
+	char * Name;
+
+	//!3D Surface Input
+	vtkPolyData * Mesh;
+
+	//!Contacted points
+	vtkPoints * ContactPoints;
+
+	//!Contacted point ids
+	vtkIdList * ContactPointIds;
+
+	//!Contacted cell ids
+	vtkIdList * ContactCellIds;
+
+	//!Contact direction of each contact points
+	vtkDoubleArray * ContactDisplacements;
 
 private:
-	vtkPSSInterface(const vtkPSSInterface&);  // Not implemented.
-	void operator=(const vtkPSSInterface&);  // Not implemented.
-
-	//!Particle-spring system mesh
-	vtkParticleSpringSystem * ParticleSpringSystem;
-
-	// PSS specific parameters
-	//! Distance coefficient.
-	double DistanceCoefficient;
-	//! Damping coefficient.
-	/*!
-	 * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
-	 * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
-	 * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
-	 */
-	double DampingCoefficient;
-	//! Spring Coefficient K
-	double SpringCoefficient;
-	//! Mass value on each point
-	double Mass;
-	//! calculation time step
-	double DeltaT;
-	//! Neighborhood size factor
-	int RigidityFactor;
-	//! Motion equation solver type
-	//BTX
-	vtkParticleSpringSystem::MotionEquationSolverType SolverType;
-	//ETX
+	vtkDeformationModel(const vtkDeformationModel &); //NotImplemented
+	void operator =(const vtkDeformationModel &); //Not Implemented
 };
 
-#endif
+
+#endif 
+
