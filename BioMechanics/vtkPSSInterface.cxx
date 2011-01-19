@@ -47,6 +47,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInformation.h"
 #include "vtkDataObject.h"
 
+#include "vtkContact.h"
+#include "vtkContactCollection.h"
+
 vtkCxxRevisionMacro(vtkPSSInterface, "$Revision: 1.2 $");
 vtkStandardNewMacro(vtkPSSInterface);
 
@@ -94,20 +97,26 @@ int vtkPSSInterface::RequestData(
 		vtkInformationVector *outputVector) {
 
 	// Get the info objects
-	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	//vtkInformation *outInfo = outputVector->GetInformationObject(0);
+	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
 	// Get the input and output
-	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	//vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	std::cout << "vtkPSSInterface::RequestData\n";
+	this->ParticleSpringSystem->SetInput(input);
 
-	this->ParticleSpringSystem->SetInput(this->GetInput());
-	this->ParticleSpringSystem->SetContacts(this->Contacts);
+	this->Contacts->InitTraversal();
+	while(vtkContact * contact = this->Contacts->GetNextContact())
+	{
+		cout << contact->GetOrganPointId() << endl;
+		this->ParticleSpringSystem->InsertContact(contact->GetOrganPointId(), contact->GetDisplacement());
+	}
+
+	this->ParticleSpringSystem->Modified();
 	this->ParticleSpringSystem->Update();
 
-	this->GetOutput()->ShallowCopy(this->ParticleSpringSystem->GetOutput());
+	output->ShallowCopy(this->ParticleSpringSystem->GetOutput());
 
 	this->DeleteContacts();
 

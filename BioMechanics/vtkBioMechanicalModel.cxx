@@ -56,7 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkContact.h"
 
 vtkCxxRevisionMacro(vtkBioMechanicalModel, "$Revision: 0.1 $");
-vtkStandardNewMacro(vtkBioMechanicalModel);
+//vtkStandardNewMacro(vtkBioMechanicalModel);
 
 //--------------------------------------------------------------------------
 vtkBioMechanicalModel::vtkBioMechanicalModel()
@@ -72,33 +72,11 @@ vtkBioMechanicalModel::~vtkBioMechanicalModel()
 }
 
 //--------------------------------------------------------------------------
-/*int vtkBioMechanicalModel::RequestData(vtkInformation *vtkNotUsed(request),
-		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector)
-{
-	// get the info objects
-	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	//vtkInformation *outInfo = outputVector->GetInformationObject(0);
-	// get the input and output
-	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	//vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
-	std::cout << "vtkBioMechanicalModel::RequestData" << endl;
-
-	return 1;
-}*/
-
-//--------------------------------------------------------------------------
-void vtkBioMechanicalModel::Init()
-{
- std::cout << "vtkBioMechanicalModel::Init()\n";
-}
-
-//--------------------------------------------------------------------------
 void vtkBioMechanicalModel::InsertNextContact(vtkContact* contact)
 {
 	//Insert collision point coordinates
 	this->Contacts->InsertNextContact(contact);
-	this->Modified();
+	this->Superclass::Modified();
 }
 
 //--------------------------------------------------------------------------
@@ -114,14 +92,14 @@ void vtkBioMechanicalModel::InsertContacts(vtkContactCollection * collection)
 		c = collection->GetNextContact();
 	}
 
-	this->Modified();
+	this->Superclass::Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkBioMechanicalModel::DeleteContacts()
 {
 	this->Contacts->RemoveContacts();
-	this->Modified();
+	this->Superclass::Modified();
 }
 
 //--------------------------------------------------------------------------

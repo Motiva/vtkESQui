@@ -9,12 +9,8 @@
 #include "vtkPointData.h"
 #include "vtkDoubleArray.h"
 #include "vtkMassProperties.h"
-//#include "vtkCellLinks.h"
 #include "vtkCell.h"
 #include "vtkMath.h"
-
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
 
 #include "vtkSpring.h"
 #include "vtkSpringCollection.h"
@@ -41,7 +37,8 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->Volume = 0;
 	this->SystemProperties = NULL;
 	this->SolverType = vtkParticleSpringSystem::VelocityVerlet;
-	//this->Contacts = NULL;
+	this->ContactIds = NULL;
+	this->ContactDisplacements = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -75,7 +72,6 @@ int vtkParticleSpringSystem::RequestData(
 	this->Step();
 
 	//Update output points
-	//TODO: Use vtkWarpVector to set displacement
 	vtkPoints * points = input->GetPoints();
 	//vtkPoints * points = output->GetPoints();
 	for (int i=0; i < input->GetNumberOfPoints(); i++)
@@ -86,8 +82,8 @@ int vtkParticleSpringSystem::RequestData(
 
 	output->ShallowCopy(input);
 
-	//Compute System properties
 	//TODO: Check why input is not updated on each step (volume computation)
+	//Compute System properties
 	//vtkPolyData * surface = vtkPolyData::New();
 	//surface->ShallowCopy(output);
 
@@ -112,7 +108,6 @@ void vtkParticleSpringSystem::Init()
 	//Initialize Particle System
 	this->Particles = vtkParticleCollection::New();
 	this->Springs = vtkSpringCollection::New();
-	//this->Links = vtkCellLinks::New();
 
 	for(int id = 0; id < mesh->GetNumberOfPoints(); id++)
 	{
@@ -202,7 +197,10 @@ void vtkParticleSpringSystem::Init()
 	this->Solver->Init();
 
 	//Initialize contact objects
-	this->Contacts = vtkContactCollection::New();
+	//this->Contacts = vtkContactCollection::New();
+	this->ContactIds = vtkIdList::New();
+	this->ContactDisplacements = vtkDoubleArray::New();
+	this->ContactDisplacements->SetNumberOfComponents(3);
 
 	//Raise update event
 	this->Modified();
@@ -243,9 +241,28 @@ void vtkParticleSpringSystem::CreateSpring(vtkParticle * p0, vtkParticle * p1)
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::SetContacts(vtkContactCollection * collection)
+void vtkParticleSpringSystem::InsertContact(vtkIdType id, double * displacement)
 {
-	this->Contacts->DeepCopy(collection);
+	this->ContactIds->InsertNextId(id);
+	this->ContactDisplacements->InsertNextTuple(displacement);
+	this->Modified();
+}
+
+//----------------------------------------------------------------------------
+void vtkParticleSpringSystem::SetContacts(vtkIdList * ids, vtkDoubleArray * displacements)
+{
+	if(ids->GetNumberOfIds() != displacements->GetNumberOfTuples())
+	{
+		vtkDebugMacro("Not the same number of contact ids and displacements")
+		return;
+	}
+
+	this->ContactIds->Reset();
+	this->ContactDisplacements->Reset();
+
+	this->ContactIds->DeepCopy(ids);
+	this->ContactDisplacements->DeepCopy(displacements);
+
 	this->Modified();
 }
 
@@ -256,58 +273,29 @@ void vtkParticleSpringSystem::ComputeContacts()
 	double distance[3];
 	double dNorm, L, ratio;
 
-	if(this->Contacts && this->Contacts->GetNumberOfItems() != 0)
+	if(this->ContactIds && this->ContactIds->GetNumberOfIds() != 0)
 	{
-		for (vtkIdType id = 0; id < this->Contacts->GetNumberOfItems(); id++)
+		for (vtkIdType i = 0; i < this->ContactIds->GetNumberOfIds(); i++)
 		{
 			//
-			vtkContact * contact = this->Contacts->GetContact(id);
-			double * d = contact->GetDisplacement();
+			vtkIdType id = this->ContactIds->GetId(i);
+			double * d = this->ContactDisplacements->GetTuple(i);
 
 			vtkParticle * p = this->Particles->GetParticle(id);
 
-			//Distance Coefficient constraint
 			//Save original position
 			p->GetPosition(position);
 
 			//Add contact displacement
 			p->AddPosition(d[0], d[1], d[2]);
 
-			//Retrieve springs containing this particle
-			/*vtkIdType * links = this->Links->GetCells(id);
-			for(int j = 0; j < this->Links->GetNcells(id); j++)
-			{
-				//Retrieve pointer component -> spring Id
-				vtkIdType springId = *links;
-
-				//Springs containing particle
-				vtkSpring * spring = this->Springs->GetSpring(springId);
-				vtkParticle * p0 = spring->GetParticle(0);
-				vtkParticle * p1 = spring->GetParticle(1);
-				//spring->Print(cout);
-
-				vtkMath::Subtract(p0->GetPosition(), p1->GetPosition(), distance); // distance = p[0]-p[1]
-				dNorm = vtkMath::Norm(distance);
-				L = spring->GetRestLength();
-				ratio = abs(100*((L-dNorm)/L));
-				while(ratio > spring->GetDistanceCoefficient())
-				{
-					double factor = (1/ratio)*100;
-					p->AddPosition(-d[0]/factor, -d[1]/factor, -d[2]/factor);
-					//p->Print(cout);
-					vtkMath::Subtract(p0->GetPosition(), p1->GetPosition(), distance); // distance = p[0]-p[1]
-					dNorm = vtkMath::Norm(distance);
-					L = spring->GetRestLength();
-					ratio = 100*((dNorm-L)/L);
-				}
-				//Increment link pointer
-				links += 1;
-			}*/
+			//Set particle as contacted
 			p->SetContacted(1);
 		}
 
 		//Reset contact state
-		this->Contacts->RemoveContacts();
+		this->ContactIds->Reset();
+		this->ContactDisplacements->Reset();
 	}
 }
 

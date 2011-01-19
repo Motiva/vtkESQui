@@ -14,10 +14,10 @@ vtkPSSInterface.cxx
 #vtkRDMInterface.cxx
 )
 
-#SET_SOURCE_FILES_PROPERTIES(
-#vtkBioMechanicalModel
-#ABSTRACT
-#)
+SET_SOURCE_FILES_PROPERTIES(
+vtkBioMechanicalModel
+ABSTRACT
+)
 
 #SET_SOURCE_FILES_PROPERTIES(
 #vtkBioMechanicalModel

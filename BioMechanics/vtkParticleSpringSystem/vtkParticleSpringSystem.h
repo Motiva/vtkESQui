@@ -51,8 +51,6 @@ class vtkSpring;
 class vtkSpringCollection;
 class vtkParticle;
 class vtkParticleCollection;
-class vtkContact;
-class vtkContactCollection;
 
 //BTX
 class vtkMotionEquationSolver;
@@ -121,12 +119,15 @@ public:
 	 */
 	void SetParticleStatus(vtkIdType id, bool status);
 
-	//! Set particle-spring system contacts
+	//! Insert a contact in the particle-spring system
+	void InsertContact(vtkIdType id, double * displacement);
+
+	//! Insert contacts particle-spring system
 	/*!
 	 * \param ids List of particle ids
-	 * \param directions Array containing displacement directions
+	 * \param displacements Array containing displacement displacements
 	 */
-	void SetContacts(vtkContactCollection * collection);
+	void SetContacts(vtkIdList * ids, vtkDoubleArray * displacements);
 
 	//! Compute the forces attending to the contacts
 	/*!
@@ -177,8 +178,12 @@ protected:
 	MotionEquationSolverType SolverType;
 
 	//Contact data
-	//! Contacts
-	vtkContactCollection * Contacts;
+	//! Contact Point Ids
+	vtkIdList * ContactIds;
+	//! Contact Point Displacements
+	vtkDoubleArray * ContactDisplacements;
+
+	//vtkContactCollection * Contacts;
 
 private:
 	vtkParticleSpringSystem(const vtkParticleSpringSystem&);            // Not implemented.

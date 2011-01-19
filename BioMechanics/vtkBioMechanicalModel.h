@@ -57,7 +57,6 @@ class VTK_ESQUI_BMM_EXPORT vtkBioMechanicalModel: public vtkPolyDataAlgorithm
 public:
 	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkPolyDataAlgorithm);
 
-	static vtkBioMechanicalModel *New();
 	const char *GetClassName() {return "vtkBioMechanicalModel";};
 	//! Print class object values
 	void PrintSelf(ostream& os, vtkIndent indent);
@@ -68,11 +67,8 @@ public:
 	//!Get BioMechanical model name
 	vtkGetStringMacro(Name);
 
-	//! Update function
-	//virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
-
 	//!Initialize the Biomechanical Model
-	virtual void Init();
+	virtual void Init() = 0;
 
 	//!Insert a contact into the biomechanical model
 	virtual void InsertNextContact(vtkContact * contact) ;

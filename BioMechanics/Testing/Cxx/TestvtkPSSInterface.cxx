@@ -165,7 +165,19 @@ int main(int argc, char * argv[])
 	{
 		double * mp = mesh->GetPoint(list->GetId(i));
 		directions->InsertNextTuple(dir);
+		vtkIdType id = list->GetId(i);
+
+		//Insert contact info
 		vtkContact * contact = vtkContact::New();
+		contact->SetToolId(0);
+		contact->SetOrganId(0);
+
+		//Organ cell point
+		contact->InsertPointId(0, id);
+		//contact->InsertPoint(0, organPoints->GetPoint(j));
+		//contact->InsertCellId(0, organCellId);
+		contact->SetDisplacement(dir);
+
 		contacts->InsertNextContact(contact);
 	}
 

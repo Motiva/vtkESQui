@@ -15,19 +15,13 @@
 #include "vtkPolyData.h"
 #include "vtkPolyDataWriter.h"
 #include "vtkXMLPolyDataReader.h"
-
 #include "vtkTimerLog.h"
 #include "vtkDoubleArray.h"
-
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
 #include "vtkPointLocator.h"
 #include "vtkPointPlotter.h"
 
 #include "vtkCommand.h"
-
 #include "vtkParticleSpringSystem.h"
-
 
 class vtkTimerCallback : public vtkCommand
 {
@@ -156,8 +150,6 @@ int main(int argc, char * argv[])
 	locator->SetDataSet(mesh);
 	locator->FindClosestNPoints(3, p, list);
 
-	vtkContactCollection * contacts = vtkContactCollection::New();
-
 	//Set Contact
 	double dir[3];
 	dir[0] = 0;//-0.1;
@@ -168,20 +160,13 @@ int main(int argc, char * argv[])
 	{
 		double * mp = mesh->GetPoint(list->GetId(i));
 		plotter->InsertPoint(mp[0], mp[1], mp[2], 0, 128, 64);
-		vtkContact * contact = vtkContact::New();
-		contact->SetOrganId(0);
-		contact->SetToolId(0);
-		contact->SetDisplacement(dir);
-		contacts->InsertNextContact(contact);
+		ParticleSpringSystem->InsertContact(list->GetId(i), dir);
 	}
 
 	plotter->Update();
 
 	//Fix a particle
 	//ParticleSpringSystem->SetParticleStatus(10,1);
-
-	//Set a fictional force
-	ParticleSpringSystem->SetContacts(contacts);
 
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
 	renWin->SetSize(500,500);
