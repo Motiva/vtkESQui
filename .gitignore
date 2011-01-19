@@ -5,8 +5,8 @@ Debug/
 Doxygen
 
 # Eclipse files
-#.cproject
-#.project
+.cproject
+.project
 
 #Logs
 *.log
