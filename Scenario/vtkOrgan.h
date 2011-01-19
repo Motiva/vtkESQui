@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkDataSetMapper.h"
 
 #include "vtkContactCollection.h"
-#include "vtkDeformationModel.h"
+#include "vtkBioMechanicalModel.h"
 
 class vtkPoints;
 class vtkCell;
@@ -73,27 +73,21 @@ public:
 
 	virtual void PrintSelf(ostream &os, vtkIndent indent);
 
-	//!Set input mesh dataset
-	/*!
-	* \param data vtkPolyData object containing mesh data (points, cells...)
-	* \sa GetOutput()
-	*/
-	void SetInput(vtkPolyData * data);
+	//BTX
+	//!Organ type definition
+	enum vtkOrganType{
+		Static = 0,
+		Deformable = 1
+	};
 
-	//!Update the object
-	void Update();
-
-	//!Return output data as a vtkPolyData object
-	/*!
-	* \sa SetInput(vtkPolyData *data)
-	*/
-	vtkPolyData * GetOutput();
+	//! Process the algorithm request (Update).
+	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Set the Biomechanical Model of the organ
 	/*!
 	* \param model biomechanical model of the organ
 	*/
-	void SetDeformationModel(vtkDeformationModel * model);
+	void SetDeformationModel(vtkBioMechanicalModel * model);
 
 
 	//!Get the Biomechanical Model of the organ
@@ -101,7 +95,12 @@ public:
 	* \return biomechanical model of the organ
 	* \sa SetBioMechModel(vtkBioMechanicalModel * model)
 	*/
-	vtkDeformationModel * GetBioMechanicalModel();
+	vtkBioMechanicalModel * GetDeformationModel();
+
+	//!Set organ type
+	vtkSetMacro(OrganType, vtkOrgan::vtkOrganType);
+	//!Return organ type
+	vtkGetMacro(OrganType, vtkOrgan::vtkOrganType);
 
 	//!Set initial values filename
 	/*!
@@ -126,6 +125,18 @@ public:
 	* \sa SetTextureFileName(const char* name);
 	*/
 	vtkGetStringMacro(TextureFileName);
+
+	//!Set initial values filename
+	/*!
+	 * \sa GetFileName()
+	 */
+	vtkSetStringMacro(DeformationModelName);
+
+	//!Return initial values filename
+	/*!
+	 * \sa SetFileName(const char* name);
+	 */
+	vtkGetStringMacro(DeformationModelName);
 
 	//!Set force factor.
 	/*!
@@ -154,6 +165,8 @@ public:
 
 	//!Set On/Off organ as hooked
 	vtkBooleanMacro(Hooked, bool);
+
+
 
 	//!Initialize mesh data
 	/*!
@@ -222,26 +235,17 @@ public:
 	*/
 	void InsertContacts( vtkContactCollection* contacts )  { this->Contacts->DeepCopy(contacts); };
 
-	//!Remove all contacts
-	/*!
-	* Remove all contacts from the list. Memory is not freed
-	*/
-	void RemoveContacts() {this->Contacts->RemoveContacts();};
-
-	//!Return a list containing the moved elements on last iteration.
-	vtkPoints * GetContactPoints();
-
 	//!Get organ contacts
 	vtkContactCollection * GetContacts() {return this->Contacts;};
 
 	//!Get number of contacts
 	vtkIdType GetNumberOfContacts() {return this->Contacts->GetNumberOfItems();};
 
-	//!Return a specific cell of the organ mesh
+	//!Remove all contacts
 	/*!
-	* \param id identifying key of the mesh cell
-	*/
-	vtkCell * GetCell(vtkIdType id){ return this->Bmm->GetMeshCell(id);};
+	 * Remove all contacts from the list. Memory is not freed
+	 */
+	void CleanContacts() {this->Contacts->RemoveContacts();};
 
 	//!Cauterize organ at specified element
 	//BTX
@@ -256,11 +260,17 @@ public:
 	//*****   p r o t e c t e d   m e m b e r s
 protected:
 
+	//! Organ Type
+	vtkOrganType OrganType;
+
 	//!Configuration filename
 	char * FileName;
 
 	//!Configuration filename
 	char * TextureFileName;
+
+	//!Deformation Model Name
+	char * DeformationModelName;
 
 	//!Texture
 	vtkTexture * Texture;
@@ -268,11 +278,14 @@ protected:
 	//!Input Unstructured Grid
 	vtkPolyData * Input;
 
+	//!Input Unstructured Grid
+	vtkPolyData * Output;
+
 	//!Unstructured grid reader
 	vtkXMLPolyDataReader * Reader;
 
 	//!BioMechamical Model of the organ
-	vtkDeformationModel * Bmm;
+	vtkBioMechanicalModel * DeformationModel;
 
 	//!Collection of organ contact points
 	vtkContactCollection * Contacts;

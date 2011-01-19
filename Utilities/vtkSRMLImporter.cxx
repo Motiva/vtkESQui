@@ -99,6 +99,26 @@ vtkSRMLImporter::~vtkSRMLImporter()
 }
 
 //----------------------------------------------------------------------------
+void vtkSRMLImporter::SetSimulation(vtkSimulation * simulation){
+	this->Simulation = simulation;
+}
+
+//----------------------------------------------------------------------------
+vtkSimulation * vtkSRMLImporter::GetSimulation(){
+	return this->Simulation;
+}
+
+//----------------------------------------------------------------------------
+void vtkSRMLImporter::SetScenario(vtkScenario * scenario){
+	this->Scenario = scenario;
+}
+
+//----------------------------------------------------------------------------
+vtkScenario * vtkSRMLImporter::GetScenario(){
+	return this->Scenario;
+}
+
+//----------------------------------------------------------------------------
 int vtkSRMLImporter::OpenSRMLFile(){
 
 	if (this->FileStream)
@@ -300,7 +320,7 @@ int vtkSRMLImporter::ImportBegin ()
 	// reported by OpenSRMLFile.
 	if(!this->OpenSRMLFile())
 	{
-		vtkErrorMacro("File has not been opened...");
+		std::cout << "File has not been opened..." << std::endl;
 		return 0;
 	}
 	return this->ReadSRMLData();
@@ -417,12 +437,19 @@ void vtkSRMLImporter::ImportOrgans()
 //----------------------------------------------------------------------------
 void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 {
+	//Model Definition File
 	organ->SetName(item->GetAttribute("Name"));
 	organ->SetFileName(ExpandDataFileName(item->GetAttribute("FileName")));
+
+	//Texture File
 	if (item->GetAttribute("TextureFile"))
 	{
 		organ->SetTextureFileName(ExpandDataFileName(item->GetAttribute("TextureFile")));
 	}
+
+	//Deformation Model
+	vtkXMLDataElement * modelXML = item->LookupElementWithName("DeformationModel");
+	organ->SetDeformationModelName(modelXML->GetAttribute("Name"));
 
 	double array[3];
 	item->GetVectorAttribute("Position", 3, array);
@@ -434,24 +461,31 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	item->GetScalarAttribute("Scale", scale);
 	organ->SetScale(scale);
 
-	//Biomechanical Model Import
-	vtkXMLDataElement * bmm = item->LookupElementWithName("DeformationModel");
-	vtkDeformationModel * model;
-	const char * name = bmm->GetAttribute("Name");
-	if (!strcmp(name, "ParticleSpring"))
+	vtkBioMechanicalModel * model;
+	const char * name = modelXML->GetAttribute("Name");
+	if (!strcmp(name, "Static"))
 	{
-		model = vtkPSSInterface::New();
+		//Static organ
 	}
-	model->SetName(bmm->GetAttribute("Name"));
-	this->SetDeformationModelData(model ,bmm);
-	organ->SetDeformationModel(model);
+	else
+	{
+		if (!strcmp(name, "ParticleSpring"))
+		{
+			model = vtkPSSInterface::New();
+		}
+		model->SetName(modelXML->GetAttribute("Name"));
+
+		this->SetDeformationModelData(model ,modelXML);
+		organ->SetDeformationModel(model);
+	}
+
 	organ->SetDeltaT(this->Simulation->GetSimulationTimerRate());
 
 	this->Scenario->AddOrgan(organ);
 }
 
 //----------------------------------------------------------------------------
-void vtkSRMLImporter::SetDeformationModelData(vtkDeformationModel * model, vtkXMLDataElement * item)
+void vtkSRMLImporter::SetDeformationModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item)
 {
 	const char * name = model->GetName();
 	if(!strcmp(name, "ParticleSpring"))

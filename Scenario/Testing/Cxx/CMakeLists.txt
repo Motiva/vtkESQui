@@ -9,9 +9,9 @@ ADD_EXECUTABLE(${KIT}CxxTests ${Tests})
 TARGET_LINK_LIBRARIES(${KIT}CxxTests 
     ${PROJECT_NAME}Scenario
     ${PROJECT_NAME}CollisionDetection
+    vtkCommon
     vtkBioeng
-	vtkGraphics 
-	vtkCommon)
+	vtkGraphics )
 
 SET (TestsToRun ${Tests})
 REMOVE (TestsToRun ${KIT}CxxTests.cxx)

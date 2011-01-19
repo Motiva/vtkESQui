@@ -26,7 +26,6 @@ vtkPieceCollection.cxx
 )
 
 SET_SOURCE_FILES_PROPERTIES(
-vtkBioMechanicalModel
 vtkToolLaparoscopy
 vtkToolEndovascular
 vtkTool

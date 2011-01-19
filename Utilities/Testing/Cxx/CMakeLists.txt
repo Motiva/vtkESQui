@@ -8,10 +8,11 @@ ADD_EXECUTABLE(${KIT}CxxTests ${Tests})
 TARGET_LINK_LIBRARIES(${KIT}CxxTests 
     ${PROJECT_NAME}Utilities
     ${PROJECT_NAME}Scenario
-    ${PROJECT_NAME}Simulation  
+    ${PROJECT_NAME}Simulation
+    vtkCommon  
 	vtkGraphics 
-	vtkCommon 
 	vtkFiltering
+	vtkHybrid
 	)
 
 SET (TestsToRun ${Tests})

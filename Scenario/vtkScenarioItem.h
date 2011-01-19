@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkScenarioItem
 
 #include "vtkESQuiScenarioWin32Header.h"
-#include "vtkObject.h"
+#include "vtkPolyDataAlgorithm.h"
 
 class vtkRenderWindow;
 class vtkRenderer;
@@ -55,14 +55,16 @@ class vtkPolyData;
  * This provide an easy use of surgical items collections.
  */
 
-//FIXME: This class must be redesigned. Every scenario item should be inherited from this class. This class should generic:
-// - Visualization Model
-// - Collision Model
-// - Mechanical Model (Rigid/Deformable)
-
-class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioItem: public vtkObject {
+class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioItem: public vtkPolyDataAlgorithm {
 
 public:
+
+	//!Type revision macro
+	vtkTypeRevisionMacro(vtkScenarioItem,vtkPolyDataAlgorithm);
+	//!Return the class name
+	const char *GetClassName() {return "vtkScenarioItem";}
+	//!Print class values
+	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//BTX
 	//!Enumeration of piece types
@@ -74,30 +76,11 @@ public:
 	};
 	//ETX
 
-	//!Type revision macro
-	vtkTypeRevisionMacro(vtkScenarioItem,vtkObject);
-	//!Return the class name
-	const char *GetClassName() {return "vtkScenarioItem";}
-	//!Print class values
-	void PrintSelf(ostream& os, vtkIndent indent);
-
 	//!Abstract initialization function
 	/*!
 	 * This method initializes the item physical values, scale, position, etc...
 	 */
 	virtual void Init() = 0;
-
-	//!Abstract update function
-	/*!
-	 * This method updates the item physical values, scale, position, etc...
-	 */
-	virtual void Update() = 0;
-
-	//! Returns item transformed polydata
-	/*!
-	 * This method returns the transformed polydata for collision detection purposes
-	 */
-	virtual vtkPolyData * GetOutput() = 0;
 
 	//! Set the render window of the item
 	/*!

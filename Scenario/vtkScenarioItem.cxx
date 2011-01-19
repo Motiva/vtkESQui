@@ -50,8 +50,10 @@ vtkScenarioItem::vtkScenarioItem() {
 	this->RenderWindow = NULL;
 	this->Renderer = NULL;
 
-	this->Scale = 0.0;
+	this->SetNumberOfInputPorts(1);
+	this->SetNumberOfOutputPorts(1);
 
+	this->Scale = 0.0;
 	this->DeltaT = 0.0;
 
 	this->Position[0]=this->Position[1]=this->Position[2]=0.0;

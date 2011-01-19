@@ -68,6 +68,24 @@ vtkPSSInterface::~vtkPSSInterface()
 	this->ParticleSpringSystem->Delete();
 }
 
+//--------------------------------------------------------------------------
+void vtkPSSInterface::Init()
+{
+	std::cout << "vtkPSSInterface::Init()\n";
+	//Set input data
+	this->ParticleSpringSystem->SetInput(this->GetInput());
+	//Set Mass-Spring System parameters
+	this->ParticleSpringSystem->SetDistanceCoefficient(this->DistanceCoefficient);
+	this->ParticleSpringSystem->SetSpringCoefficient(this->SpringCoefficient);//Friction
+	this->ParticleSpringSystem->SetDampingCoefficient(this->DampingCoefficient);//Friction
+	this->ParticleSpringSystem->SetMass(this->Mass);
+	this->ParticleSpringSystem->SetDeltaT(this->DeltaT);
+	this->ParticleSpringSystem->SetRigidityFactor(this->RigidityFactor);
+	this->ParticleSpringSystem->SetSolverType(this->SolverType);
+	//Initialize system
+	this->ParticleSpringSystem->Init();
+}
+
 // VTK specific method: This method is called when the pipeline is calculated.
 //----------------------------------------------------------------------------
 int vtkPSSInterface::RequestData(
@@ -83,32 +101,17 @@ int vtkPSSInterface::RequestData(
 	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	//vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
+	std::cout << "vtkPSSInterface::RequestData\n";
+
 	this->ParticleSpringSystem->SetInput(this->GetInput());
-	this->ParticleSpringSystem->SetContacts(this->ContactPointIds, this->ContactDisplacements);
+	this->ParticleSpringSystem->SetContacts(this->Contacts);
 	this->ParticleSpringSystem->Update();
 
 	this->GetOutput()->ShallowCopy(this->ParticleSpringSystem->GetOutput());
 
-	this->Clear();
+	this->DeleteContacts();
 
 	return 1;
-}
-
-//--------------------------------------------------------------------------
-void vtkPSSInterface::Init()
-{
-	//Set input data
-	this->ParticleSpringSystem->SetInput(this->GetInput());
-	//Set Mass-Spring System parameters
-	this->ParticleSpringSystem->SetDistanceCoefficient(this->DistanceCoefficient);
-	this->ParticleSpringSystem->SetSpringCoefficient(this->SpringCoefficient);//Friction
-	this->ParticleSpringSystem->SetDampingCoefficient(this->DampingCoefficient);//Friction
-	this->ParticleSpringSystem->SetMass(this->Mass);
-	this->ParticleSpringSystem->SetDeltaT(this->DeltaT);
-	this->ParticleSpringSystem->SetRigidityFactor(this->RigidityFactor);
-	this->ParticleSpringSystem->SetSolverType(this->SolverType);
-	//Initialize system
-	this->ParticleSpringSystem->Init();
 }
 
 //--------------------------------------------------------------------------

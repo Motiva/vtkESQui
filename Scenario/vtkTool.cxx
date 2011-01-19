@@ -41,7 +41,11 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkTool.h"
 
-#include "vtkObject.h"
+#include "vtkObjectFactory.h"
+#include "vtkStreamingDemandDrivenPipeline.h"
+#include "vtkInformationVector.h"
+#include "vtkInformation.h"
+
 #include "vtkTransform.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
@@ -117,53 +121,53 @@ void vtkTool::Init()
 	}
 
 	this->AppendFilter->Update();
+
+	this->SetInput(this->AppendFilter->GetOutput());
 }
 
-//--------------------------------------------------------------------------
-void vtkTool::Update()
+int vtkTool::RequestData(vtkInformation *vtkNotUsed(request),
+                                             vtkInformationVector **inputVector,
+                                             vtkInformationVector *outputVector)
 {
-	//Update position & orientation
-	this->Velocity[0] = this->Position[0];
-	this->Velocity[1] = this->Position[1];
-	this->Velocity[2] = this->Position[2];
-	this->Acceleration[0] = this->Velocity[0];
-	this->Acceleration[1] = this->Velocity[1];
-	this->Acceleration[2] = this->Velocity[2];
 
-	//Get transformed vaules
-	this->GetTransform(0)->GetPosition(this->Position);
-	this->GetTransform(0)->GetOrientation(this->Orientation);
+  // get the info objects
+  vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+  vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	/*//Update object direction
-	//Note: VTK Coordinate systems. X-Rotation angle is inverted (check VTK actor coordinate system. The Visualization Toolkit 4th Edition, Pag. 51).
-	double dir[3];
-	dir[0] = this->Direction[0];
-	dir[1] = this->Direction[1];
-	dir[2] = this->Direction[2];
-	this->Direction[0] = -sin(vtkMath::RadiansFromDegrees(this->Orientation[1]))*cos(vtkMath::RadiansFromDegrees(this->Orientation[2]));
-	this->Direction[1] = sin(vtkMath::RadiansFromDegrees(this->Orientation[0]))*sin(vtkMath::RadiansFromDegrees(this->Orientation[1]));
-	this->Direction[2] = -cos(vtkMath::RadiansFromDegrees(this->Orientation[2]))*cos(vtkMath::RadiansFromDegrees(this->Orientation[0]));
-	 */
+  // get the input and output
+  vtkPolyData *input = vtkPolyData::SafeDownCast(
+      inInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Update object velocity
-	//Velocity will be calculated from delta(Position)/dt
-	vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
-	//TODO: Multiply by 1/dt
-	//vtkMath::MultiplyScalar(this->Velocity, 1/dt));
+  vtkPolyData *output = vtkPolyData::SafeDownCast(
+      outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Update object acceleration
-	vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
-	//TODO: Multiply by 1/dt
-	//vtkMath::MultiplyScalar(this->Acceleration, 1/dt));
-	//TODO: Add torsion force
+  //Update position & orientation
+  this->Velocity[0] = this->Position[0];
+  this->Velocity[1] = this->Position[1];
+  this->Velocity[2] = this->Position[2];
+  this->Acceleration[0] = this->Velocity[0];
+  this->Acceleration[1] = this->Velocity[1];
+  this->Acceleration[2] = this->Velocity[2];
 
-	this->AppendFilter->Update();
-}
+  //Get transformed values
+  this->GetTransform(0)->GetPosition(this->Position);
+  this->GetTransform(0)->GetOrientation(this->Orientation);
 
-//--------------------------------------------------------------------------
-vtkPolyData * vtkTool::GetOutput()
-{
-	return this->AppendFilter->GetOutput();
+  //Update object velocity
+  //Velocity will be calculated from delta(Position)/dt
+  vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
+  //TODO: Multiply by 1/dt
+  //vtkMath::MultiplyScalar(this->Velocity, 1/dt));
+
+  //Update object acceleration
+  vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
+  //TODO: Multiply by 1/dt
+  //vtkMath::MultiplyScalar(this->Acceleration, 1/dt));
+  //TODO: Add torsion force
+
+  output->ShallowCopy(input);
+
+  return 1;
 }
 
 //--------------------------------------------------------------------------

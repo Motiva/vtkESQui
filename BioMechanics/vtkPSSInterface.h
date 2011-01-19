@@ -43,16 +43,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkPSSInterface_h
 
 #include "vtkESQuiBMMWin32Header.h"
-#include "vtkDeformationModel.h"
+#include "vtkBioMechanicalModel.h"
 
 #include "vtkParticleSpringSystem.h"
 
 //! Interface to the abstract vtkBiomechanicalModel class for a particle-spring system
 
-class VTK_ESQUI_BMM_EXPORT vtkPSSInterface : public vtkDeformationModel
+class VTK_ESQUI_BMM_EXPORT vtkPSSInterface : public vtkBioMechanicalModel
 {
 public:
-	vtkTypeRevisionMacro(vtkPSSInterface, vtkDeformationModel);
+	vtkTypeRevisionMacro(vtkPSSInterface, vtkBioMechanicalModel);
 	//! Create a new PSS Interface
 	static vtkPSSInterface* New();
 	const char *GetClassName() {return "vtkPSSInterface";};

@@ -61,31 +61,18 @@ vtkStandardNewMacro(vtkBioMechanicalModel);
 //--------------------------------------------------------------------------
 vtkBioMechanicalModel::vtkBioMechanicalModel()
 {
-	this->Mesh = vtkPolyData::New();
-
-	this->ContactPoints = vtkPoints::New();
-	this->ContactPointIds = vtkIdList::New();
-	this->ContactCellIds = vtkIdList::New();
-
-	this->ContactDisplacements = vtkDoubleArray::New();
-	this->ContactDisplacements->SetNumberOfComponents(3);
-
 	this->Name = NULL;
+	this->Contacts = vtkContactCollection::New();
 
 }
 //--------------------------------------------------------------------------
 vtkBioMechanicalModel::~vtkBioMechanicalModel()
 {
-	this->Mesh->Delete();
-
-	this->ContactPoints->Delete();
-	this->ContactPointIds->Delete();
-	this->ContactCellIds->Delete();
-	this->ContactDisplacements->Delete();
+	this->Contacts->Delete();
 }
 
 //--------------------------------------------------------------------------
-int vtkBioMechanicalModel::RequestData(vtkInformation *vtkNotUsed(request),
+/*int vtkBioMechanicalModel::RequestData(vtkInformation *vtkNotUsed(request),
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector)
 {
@@ -98,33 +85,19 @@ int vtkBioMechanicalModel::RequestData(vtkInformation *vtkNotUsed(request),
 	std::cout << "vtkBioMechanicalModel::RequestData" << endl;
 
 	return 1;
-}
+}*/
 
 //--------------------------------------------------------------------------
 void vtkBioMechanicalModel::Init()
 {
-
-}
-//--------------------------------------------------------------------------
-void vtkBioMechanicalModel::Clear()
-{
-	this->ContactPoints->Reset();
-	this->ContactPointIds->Reset();
-	this->ContactCellIds->Reset();
-	this->ContactDisplacements->Reset();
+ std::cout << "vtkBioMechanicalModel::Init()\n";
 }
 
 //--------------------------------------------------------------------------
 void vtkBioMechanicalModel::InsertNextContact(vtkContact* contact)
 {
 	//Insert collision point coordinates
-	double * point = contact->GetOrganPoint();
-	this->ContactPoints->InsertNextPoint(point[0],point[1],point[2]);
-	this->ContactPointIds->InsertNextId(contact->GetOrganPointId());
-	this->ContactCellIds->InsertNextId(contact->GetOrganCellId());
-
-	this->ContactDisplacements->InsertNextTuple(contact->GetDisplacement());
-
+	this->Contacts->InsertNextContact(contact);
 	this->Modified();
 }
 
@@ -140,24 +113,15 @@ void vtkBioMechanicalModel::InsertContacts(vtkContactCollection * collection)
 		this->InsertNextContact(c);
 		c = collection->GetNextContact();
 	}
+
+	this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkBioMechanicalModel::DeleteContacts()
 {
-	this->Clear();
-}
-
-//--------------------------------------------------------------------------
-vtkPoints * vtkBioMechanicalModel::GetContactPoints()
-{
-	return this->ContactPoints;
-}
-
-//--------------------------------------------------------------------------
-vtkCell * vtkBioMechanicalModel::GetMeshCell(vtkIdType id)
-{
-	return this->Mesh->GetCell(id);
+	this->Contacts->RemoveContacts();
+	this->Modified();
 }
 
 //--------------------------------------------------------------------------

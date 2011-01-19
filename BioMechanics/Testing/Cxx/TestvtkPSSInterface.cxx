@@ -18,15 +18,14 @@
 
 #include "vtkTimerLog.h"
 #include "vtkDoubleArray.h"
+#include "vtkPointLocator.h"
 
 #include "vtkContact.h"
 #include "vtkContactCollection.h"
-#include "vtkPointLocator.h"
-#include "vtkPointPlotter.h"
 
 #include "vtkCommand.h"
 
-#include "vtkParticleSpringSystem.h"
+#include "vtkPSSInterface.h"
 
 
 class vtkTimerCallback : public vtkCommand
@@ -88,7 +87,7 @@ public:
 		this->RenderTimerId = tid;
 	}
 
-	void SetBMM(vtkParticleSpringSystem * bmm)
+	void SetBMM(vtkPSSInterface * bmm)
 	{
 		this->BMM = bmm;
 	}
@@ -104,7 +103,7 @@ private:
 
 	vtkIdList * List;
 
-	vtkParticleSpringSystem * BMM;
+	vtkPSSInterface * BMM;
 };
 
 int main(int argc, char * argv[])
@@ -125,7 +124,7 @@ int main(int argc, char * argv[])
 	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
 	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
 
-	vtkParticleSpringSystem* ParticleSpringSystem = vtkParticleSpringSystem::New();
+	vtkPSSInterface* ParticleSpringSystem = vtkPSSInterface::New();
 	ParticleSpringSystem->SetInput(mesh);
 	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::VelocityVerlet);
 	ParticleSpringSystem->SetSpringCoefficient(150);
@@ -138,27 +137,25 @@ int main(int argc, char * argv[])
 
 	vtkRenderer * renderer = vtkRenderer::New();
 
-	//Point plotter
-	vtkPointPlotter * plotter = vtkPointPlotter::New();
-	plotter->SetRadius(0.025);
-	plotter->SetResolution(16);
-	plotter->SetRenderer(renderer);
-	plotter->Init();
-
 	//Locate contact points
 	vtkPointLocator * locator = vtkPointLocator::New();
 	double bounds[6];
 	mesh->GetBounds(bounds);
 
-	vtkIdList * list = vtkIdList::New();
 	double p[3] = {0, bounds[2], 0};
 
 	locator->SetDataSet(mesh);
+
+	vtkIdList * list = vtkIdList::New();
+	vtkDoubleArray * directions = vtkDoubleArray::New();
+	directions->SetNumberOfComponents(3);
+
+	//list->InsertNextId(0);
 	locator->FindClosestNPoints(3, p, list);
 
+	//Set Contacts
 	vtkContactCollection * contacts = vtkContactCollection::New();
 
-	//Set Contact
 	double dir[3];
 	dir[0] = 0;//-0.1;
 	dir[1] = 0.2;
@@ -167,21 +164,13 @@ int main(int argc, char * argv[])
 	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
 	{
 		double * mp = mesh->GetPoint(list->GetId(i));
-		plotter->InsertPoint(mp[0], mp[1], mp[2], 0, 128, 64);
+		directions->InsertNextTuple(dir);
 		vtkContact * contact = vtkContact::New();
-		contact->SetOrganId(0);
-		contact->SetToolId(0);
-		contact->SetDisplacement(dir);
 		contacts->InsertNextContact(contact);
 	}
 
-	plotter->Update();
-
-	//Fix a particle
-	//ParticleSpringSystem->SetParticleStatus(10,1);
-
 	//Set a fictional force
-	ParticleSpringSystem->SetContacts(contacts);
+	ParticleSpringSystem->InsertContacts(contacts);
 
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
 	renWin->SetSize(500,500);

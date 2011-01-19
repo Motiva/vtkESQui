@@ -72,15 +72,6 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkTool: public vtkScenarioItem {
 
 public:
 
-	//BTX
-	//!Tool tyoe definition
-	enum vtkToolType{
-		Laparoscopy = 0,
-		Endovascular = 1,
-		Arthroscopy = 2,
-		Camera = 3
-	};
-	//ETX
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkTool,vtkScenarioItem);
 
@@ -89,6 +80,19 @@ public:
 
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
+
+	//BTX
+	//!Tool type definition
+	enum vtkToolType{
+		Laparoscopy = 0,
+		Endovascular = 1,
+		Arthroscopy = 2,
+		Camera = 3
+	};
+	//ETX
+
+	//! Process the algorithm request (Update).
+	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Set the number of pieces
 	vtkSetMacro(NumberOfPieces, int);
@@ -118,12 +122,12 @@ public:
 	/*!
 	* This method updates the tool physical values, scale, position, etc...
 	*/
-	virtual void Update();
+	//virtual void Update();
 	//!function that returns transformed polydata
 	/*!
 	* This method returns the transformed polydata for collision detection purposes
 	*/
-	virtual vtkPolyData * GetOutput();
+	//virtual vtkPolyData * GetOutput();
 
 	// **** Graphical Purposes Methods **** //
 	//! Return the actors collection of the tool

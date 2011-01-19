@@ -9,8 +9,9 @@ SET(UKIT BioMechanics)  #Uppercase Kit Name
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
 SET (Kit_SRCS 
-vtkDeformationModel.cxx
+vtkBioMechanicalModel.cxx
 vtkPSSInterface.cxx
+#vtkRDMInterface.cxx
 )
 
 #SET_SOURCE_FILES_PROPERTIES(
@@ -74,6 +75,7 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 
 # Subdirs to be added
 
+SUBDIRS(Testing)
 SUBDIRS(vtkParticleSpringSystem)
 IF(VTKESQUI_USE_FEM)
   SUBDIRS(vtkFEMSystem)

@@ -13,6 +13,9 @@
 #include "vtkCell.h"
 #include "vtkMath.h"
 
+#include "vtkContact.h"
+#include "vtkContactCollection.h"
+
 #include "vtkSpring.h"
 #include "vtkSpringCollection.h"
 #include "vtkParticle.h"
@@ -38,8 +41,7 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->Volume = 0;
 	this->SystemProperties = NULL;
 	this->SolverType = vtkParticleSpringSystem::VelocityVerlet;
-	this->ContactIds = NULL;
-	this->ContactDisplacements = NULL;
+	//this->Contacts = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -200,9 +202,7 @@ void vtkParticleSpringSystem::Init()
 	this->Solver->Init();
 
 	//Initialize contact objects
-	this->ContactIds = vtkIdList::New();
-	this->ContactDisplacements = vtkDoubleArray::New();
-	this->ContactDisplacements->SetNumberOfComponents(3);
+	this->Contacts = vtkContactCollection::New();
 
 	//Raise update event
 	this->Modified();
@@ -243,10 +243,9 @@ void vtkParticleSpringSystem::CreateSpring(vtkParticle * p0, vtkParticle * p1)
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::SetContacts(vtkIdList * ids, vtkDoubleArray * directions)
+void vtkParticleSpringSystem::SetContacts(vtkContactCollection * collection)
 {
-	this->ContactIds->DeepCopy(ids);
-	this->ContactDisplacements->DeepCopy(directions);
+	this->Contacts->DeepCopy(collection);
 	this->Modified();
 }
 
@@ -257,13 +256,13 @@ void vtkParticleSpringSystem::ComputeContacts()
 	double distance[3];
 	double dNorm, L, ratio;
 
-	if(this->ContactIds && this->ContactDisplacements)
+	if(this->Contacts && this->Contacts->GetNumberOfItems() != 0)
 	{
-		for (vtkIdType i = 0; i < this->ContactIds->GetNumberOfIds(); i++)
+		for (vtkIdType id = 0; id < this->Contacts->GetNumberOfItems(); id++)
 		{
 			//
-			vtkIdType id = this->ContactIds->GetId(i);
-			double * d = this->ContactDisplacements->GetTuple3(i);
+			vtkContact * contact = this->Contacts->GetContact(id);
+			double * d = contact->GetDisplacement();
 
 			vtkParticle * p = this->Particles->GetParticle(id);
 
@@ -308,8 +307,7 @@ void vtkParticleSpringSystem::ComputeContacts()
 		}
 
 		//Reset contact state
-		this->ContactIds->Reset();
-		this->ContactDisplacements->Reset();
+		this->Contacts->RemoveContacts();
 	}
 }
 

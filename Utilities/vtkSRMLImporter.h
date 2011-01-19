@@ -45,8 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiUtilitiesWin32Header.h"
 #include "vtkImporter.h"
 
-#include "vtkScenario.h"
-
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	#include "vtkHaptic.h"
 	#include "vtkIHP.h"
@@ -63,9 +61,10 @@ class vtkActor;
 class vtkTool;
 class vtkToolPincers;
 class vtkOrgan;
-class vtkDeformationModel;
+class vtkBioMechanicalModel;
 
 class vtkSimulation;
+class vtkScenario;
 
 //! Import an SRML scenario file into vtkESQui platform
 
@@ -83,9 +82,9 @@ public:
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//! Set the Simulation
-	void SetSimulation(vtkSimulation * sim){this->Simulation = sim;};
+	void SetSimulation(vtkSimulation * simulation);
 	//! Get the Simulation
-	vtkSimulation * GetSimulation(){return this->Simulation;};
+	vtkSimulation * GetSimulation();
 
 	//! Set the name of the input file.
 	vtkSetStringMacro(FileName);
@@ -104,9 +103,11 @@ protected:
 
 	// Description:
 	//! Set the simulation scenario
-	vtkSetObjectMacro(Scenario, vtkScenario);
+	//vtkSetObjectMacro(Scenario, vtkScenario);
+	void SetScenario(vtkScenario * scenario);
 	//! Get the simulation scenario
-	vtkGetObjectMacro(Scenario, vtkScenario);
+	//vtkGetObjectMacro(Scenario, vtkScenario);
+	vtkScenario * GetScenario();
 
 	//! Starts the Import process
 	virtual int ImportBegin ();
@@ -219,7 +220,7 @@ private:
 	 * \param model biomechanical model
 	 * \param item parsed XMLDataElement that contains element info
 	 */
-	void SetDeformationModelData(vtkDeformationModel * model, vtkXMLDataElement * item);
+	void SetDeformationModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item);
 
 	//! Generate full path of filename
 	const char * ExpandDataFileName(const char * fname);

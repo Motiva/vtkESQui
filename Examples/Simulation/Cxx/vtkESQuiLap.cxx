@@ -95,6 +95,8 @@ int main(int argc, char * argv[])
 	}
 	const char * filename = ExpandDataFileName(path, "lap.srml");
 
+	cout << filename << endl;
+
 	/**********  Render Window Definitions  ********/
 	vtkRenderer *ren1= vtkRenderer::New();
 	ren1->SetBackground(1.0,1.0,1.0);

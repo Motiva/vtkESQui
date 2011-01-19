@@ -64,12 +64,12 @@ vtkToolLaparoscopy::~vtkToolLaparoscopy() {
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::Init()
 {
-	Superclass::Init();
-
 	//TODO:This should not be defined. Use present variable Orientation
 	this->YawAngle = this->Orientation[0];
 	this->PitchAngle = this->Orientation[1];
 	this->RollAngle = this->Orientation[2];
+
+	Superclass::Init();
 }
 
 //--------------------------------------------------------------------------

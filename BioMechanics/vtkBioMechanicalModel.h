@@ -46,10 +46,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkPolyDataAlgorithm.h"
 
 class vtkPolyData;
-class vtkPoints;
-class vtkCell;
-class vtkIdList;
-class vtkDoubleArray;
 
 class vtkContact;
 class vtkContactCollection;
@@ -59,7 +55,7 @@ class vtkContactCollection;
 class VTK_ESQUI_BMM_EXPORT vtkBioMechanicalModel: public vtkPolyDataAlgorithm
 {
 public:
-	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkAlgorithm);
+	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkPolyDataAlgorithm);
 
 	static vtkBioMechanicalModel *New();
 	const char *GetClassName() {return "vtkBioMechanicalModel";};
@@ -73,13 +69,10 @@ public:
 	vtkGetStringMacro(Name);
 
 	//! Update function
-	int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+	//virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Initialize the Biomechanical Model
 	virtual void Init();
-	
-	//!Cleans algorithm from previous executions
-	virtual void Clear();
 
 	//!Insert a contact into the biomechanical model
 	virtual void InsertNextContact(vtkContact * contact) ;
@@ -90,12 +83,6 @@ public:
 	//!Remove contacts of the biomechanical model
 	virtual void DeleteContacts();
 
-	//!Return the contact points
-	virtual vtkPoints * GetContactPoints();
-
-	//!Return the organ mesh cell specified with the id
-	virtual vtkCell * GetMeshCell(vtkIdType id);
-
 protected:
 	vtkBioMechanicalModel();
 	~vtkBioMechanicalModel();
@@ -104,19 +91,10 @@ protected:
 	char * Name;
 
 	//!3D Surface Input
-	vtkPolyData * Mesh;
+	//vtkPolyData * Mesh;
 
-	//!Contacted points
-	vtkPoints * ContactPoints;
-
-	//!Contacted point ids
-	vtkIdList * ContactPointIds;
-
-	//!Contacted cell ids
-	vtkIdList * ContactCellIds;
-
-	//!Contact direction of each contact points
-	vtkDoubleArray * ContactDisplacements;
+	//!Contacts
+	vtkContactCollection * Contacts;
 
 private:
 	vtkBioMechanicalModel(const vtkBioMechanicalModel &); //NotImplemented
