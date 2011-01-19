@@ -176,18 +176,6 @@ public:
 	//! Get the collisioned tool cell identifier
 	int GetToolCellId();
 
-	//! Set force feedback magnitude
-	//void SetForceMagnitude(double value) {this->ForceMagnitude = value;};
-
-	//! Get force feedback magnitude
-	//double GetForceMagnitude() {return this->ForceMagnitude;};
-
-	//! Get if the organ has been grasped
-	//bool IsGrasped() {return this->isGrasped;};
-
-	//! Set the organ as grasped
-	//void SetAsGrasped(bool value) { isGrasped = value;};
-
 protected:
 	vtkContact();
 	~vtkContact();

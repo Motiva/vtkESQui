@@ -121,6 +121,8 @@ void vtkBioEngInterface::Clear()
 
 }
 
+//FIXME: Add Tool-Tool contact
+
 //--------------------------------------------------------------------------
 void vtkBioEngInterface::Update()
 {
@@ -135,22 +137,25 @@ void vtkBioEngInterface::Update()
 	//Clear from previous executions
 	this->Clear();
 
-	for (vtkIdType organId=0; organId < this->Organs->GetNumberOfItems(); organId++)
+	for (vtkIdType toolId = 0; toolId < this->Tools->GetNumberOfItems(); toolId++)
 	{
-		vtkOrgan * organ = this->Organs->GetOrgan(organId);
-		vtkPolyData * organBox = organ->GetOutput();
+		vtkTool * tool =  this->Tools->GetTool(toolId);
+		//Whole tool shall be set as Collision Detection input
+		vtkPolyData * toolBox = tool->GetOutput();
 
-		for (vtkIdType toolId=0; toolId < this->Tools->GetNumberOfItems(); toolId++)
+		for (vtkIdType organId = 0; organId < this->Organs->GetNumberOfItems(); organId++)
 		{
-			vtkTool * tool =  this->Tools->GetTool(toolId);
-			//Whole tool shall be set as Collision Detection input
-			vtkPolyData * toolBox = tool->GetOutput();
+			vtkOrgan * organ = this->Organs->GetOrgan(organId);
+			vtkPolyData * organBox = organ->GetOutput();
+
+			cout << "Tool p's: " << toolBox->GetNumberOfPoints() << endl;
+			cout << "Organ p's: " << organBox->GetNumberOfPoints() << endl;
 
 			//Each organ polydata is set as an input of the CDL
-			this->DetectionFilter->SetInput(0, organBox);
+			this->DetectionFilter->SetInput(0, toolBox);
 
 			//Tool bounding box is set as CDL input
-			this->DetectionFilter->SetInput(1, toolBox);
+			this->DetectionFilter->SetInput(1, organBox);
 
 			//Transformation matrixes
 			this->DetectionFilter->SetMatrix(0, Matrix0);
@@ -190,7 +195,7 @@ void vtkBioEngInterface::Update()
 					toolPoints->GetPoint(1,p1);
 					toolPoints->GetPoint(2,p2);
 
-					//Check whether tool cell points are inside the organ
+					//Check which tool cell points are inside the organ
 					centerPoints->Reset();
 					centerPoints->InsertNextPoint(p0);
 					centerPoints->InsertNextPoint(p1);

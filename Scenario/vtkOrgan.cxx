@@ -93,10 +93,6 @@ vtkOrgan::vtkOrgan()
 	this->SetNumberOfInputPorts(1);
 	this->SetNumberOfOutputPorts(1);
 
-	//Default gravity in -z - direction
-	this->GravityDirection = 2;
-	this->GravityOrientation = -1;
-
 	this->Hooked = 0;
 
 	//Initialize organ contact list
@@ -143,7 +139,7 @@ void vtkOrgan::Init()
 
 		this->TransformFilter->Update();
 
-		if(this->DeformationModel)
+		if(!this->DeformationModel)
 		{
 			this->DeformationModel->SetInputConnection(this->TransformFilter->GetOutputPort());
 		}
@@ -189,7 +185,7 @@ void vtkOrgan::Init()
 		this->Renderer->AddActor(this->Actor);
 	}
 
-	this->Modified();
+	this->Update();
 
 }
 
@@ -204,14 +200,12 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 
 	// get the input and output
 	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 	if(this->DeformationModel)
 	{
 		this->DeformationModel->InsertContacts(this->Contacts);
-		vtkPolyData * o = this->DeformationModel->GetOutput();
-		o->Print(cout);
+		this->DeformationModel->Update();
 
 		output->ShallowCopy(this->DeformationModel->GetOutput());
 	}
@@ -220,9 +214,10 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 		output->ShallowCopy(this->TransformFilter->GetOutput());
 	}
 
-	input->Print(cout);
 	std::cout << "#################################\n";
-	output->Print(cout);
+	std::cout << "i: " << input->GetNumberOfPoints() << "\n";
+	std::cout << "o: " << output->GetNumberOfPoints() << "\n";
+
 	//clean previous executions
 	this->CleanContacts();
 

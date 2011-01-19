@@ -56,7 +56,6 @@ class vtkXMLPolyDataReader;
 class vtkTransformPolyDataFilter;
 
 //!This class defines an standard vtkTool piece
-//TODO: Migrate this class to vtkScenarioItem. vtkTool must not inherit vtkScenarioItem
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkPiece:public vtkObject
 {

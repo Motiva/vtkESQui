@@ -175,18 +175,6 @@ public:
 	*/
 	void Init();
 
-	//!Set gravity parameters,
-	/*!
-	* where the direction must be 0, 1, or 2 according to x, y, and z direction, and the orientation must have a value of +1 or -1
-	*/
-
-	//FIXME: gravity from vtkSimulation
-	void SetGravityInfo(vtkIdType direction, vtkIdType orientation)
-	{
-		this->GravityDirection = direction;
-		this->GravityOrientation = orientation;
-	}
-
 	//------- Rendering purposes ----------//
 
 	//!Set the actor of the organ
@@ -289,11 +277,6 @@ protected:
 
 	//!Collection of organ contact points
 	vtkContactCollection * Contacts;
-
-	//!Gravity Direction (0/1/2 for x/y/z)
-	vtkIdType GravityDirection;
-	//!Gravity Orientation (+/- 1)
-	vtkIdType GravityOrientation;
 
 	//!Force estimation
 	double ForceFactor;     
