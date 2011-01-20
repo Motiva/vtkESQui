@@ -75,7 +75,7 @@ vtkPSSInterface::~vtkPSSInterface()
 void vtkPSSInterface::Init()
 {
 	std::cout << "vtkPSSInterface::Init()\n";
-	//Set input data
+	//Set pss input data
 	this->ParticleSpringSystem->SetInput(this->GetInput());
 	//Set Mass-Spring System parameters
 	this->ParticleSpringSystem->SetDistanceCoefficient(this->DistanceCoefficient);
@@ -96,6 +96,7 @@ int vtkPSSInterface::RequestData(
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
 
+	cout << "vtkPSSInterface::RequestData\n";
 	// Get the info objects
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
@@ -109,8 +110,11 @@ int vtkPSSInterface::RequestData(
 	this->Contacts->InitTraversal();
 	while(vtkContact * contact = this->Contacts->GetNextContact())
 	{
-		cout << contact->GetOrganPointId() << endl;
-		this->ParticleSpringSystem->InsertContact(contact->GetOrganPointId(), contact->GetDisplacement());
+		if(contact->GetContactType() == vtkContact::ToolOrgan)
+		{
+			contact->Print(cout);
+			this->ParticleSpringSystem->InsertContact(contact->GetPointId(1), contact->GetDisplacement());
+		}
 	}
 
 	this->ParticleSpringSystem->Modified();

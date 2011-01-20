@@ -169,11 +169,11 @@ int main(int argc, char * argv[])
 
 		//Insert contact info
 		vtkContact * contact = vtkContact::New();
-		contact->SetToolId(0);
-		contact->SetOrganId(0);
+		contact->SetItemId(0, 1);
+		contact->SetItemId(0, 0);
 
 		//Organ cell point
-		contact->InsertPointId(0, id);
+		contact->SetPointId(0, id);
 		//contact->InsertPoint(0, organPoints->GetPoint(j));
 		//contact->InsertCellId(0, organCellId);
 		contact->SetDisplacement(dir);

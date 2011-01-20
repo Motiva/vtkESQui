@@ -43,6 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkObjectFactory.h"
 #include "vtkObject.h"
+#include "vtkXMLPolyDataReader.h"
 #include "vtkXMLDataParser.h"
 #include "vtkXMLDataElement.h"
 #include "vtkRenderer.h"
@@ -369,8 +370,11 @@ void vtkSRMLImporter::ImportTools()
 		{
 			vtkToolPincers * tool = vtkToolPincers::New();
 			this->SetToolPincersData(tool, item);
+			this->Scenario->AddTool(tool);
 		}
+
 		//TODO: Complete with the rest of the tools
+		vtkDebugMacro("Tool successfully imported.");
 	}
 }
 
@@ -416,8 +420,6 @@ void vtkSRMLImporter::SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElemen
 		else if(id==1) tool->SetLeftGrasperFileName(ExpandDataFileName(child->GetAttribute("FileName")));
 		else if(id==2) tool->SetRightGrasperFileName(ExpandDataFileName(child->GetAttribute("FileName")));
 	}
-
-	this->Scenario->AddTool(tool);
 }
 
 //----------------------------------------------------------------------------
@@ -431,6 +433,7 @@ void vtkSRMLImporter::ImportOrgans()
 		item = organs->GetNestedElement(i);
 		vtkOrgan * organ = vtkOrgan::New();
 		this->SetOrganData(organ, item);
+		this->Scenario->AddOrgan(organ);
 	}
 }
 
@@ -447,10 +450,6 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 		organ->SetTextureFileName(ExpandDataFileName(item->GetAttribute("TextureFile")));
 	}
 
-	//Deformation Model
-	vtkXMLDataElement * modelXML = item->LookupElementWithName("DeformationModel");
-	organ->SetDeformationModelName(modelXML->GetAttribute("Name"));
-
 	double array[3];
 	item->GetVectorAttribute("Position", 3, array);
 	organ->SetPosition(array[0], array[1], array[2]);
@@ -461,36 +460,58 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	item->GetScalarAttribute("Scale", scale);
 	organ->SetScale(scale);
 
-	vtkBioMechanicalModel * model;
-	const char * name = modelXML->GetAttribute("Name");
-	if (!strcmp(name, "Static"))
+	//Deformation Model
+	vtkXMLDataElement * modelXML = item->LookupElementWithName("DeformationModel");
+	if(modelXML)
 	{
-		//Static organ
-	}
-	else
-	{
-		if (!strcmp(name, "ParticleSpring"))
-		{
-			model = vtkPSSInterface::New();
-		}
-		model->SetName(modelXML->GetAttribute("Name"));
+		organ->SetDeformationModelName(modelXML->GetAttribute("Name"));
 
-		this->SetDeformationModelData(model ,modelXML);
-		organ->SetDeformationModel(model);
+		vtkBioMechanicalModel * model;
+		const char * name = modelXML->GetAttribute("Name");
+		if (!strcmp(name, "Static"))
+		{
+			//Static organ
+			organ->SetOrganType(vtkOrgan::Static);
+		}
+		else
+		{
+			organ->SetOrganType(vtkOrgan::Deformable);
+
+			if (!strcmp(name, "ParticleSpring"))
+			{
+				model = vtkPSSInterface::New();
+			}
+			model->SetName(modelXML->GetAttribute("Name"));
+
+			this->SetDeformationModelData(model ,modelXML);
+			organ->SetDeformationModel(model);
+		}
 	}
 
 	organ->SetDeltaT(this->Simulation->GetSimulationTimerRate());
-
-	this->Scenario->AddOrgan(organ);
 }
 
 //----------------------------------------------------------------------------
 void vtkSRMLImporter::SetDeformationModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item)
 {
+	vtkDebugMacro("Importing Organ Deformation Model...");
 	const char * name = model->GetName();
 	if(!strcmp(name, "ParticleSpring"))
 	{
 		vtkPSSInterface * particleSpring = vtkPSSInterface::SafeDownCast(model);
+		//TODO: Different deformation model mesh
+		/*const char * filename = item->GetAttribute("FileName");
+		if(filename)
+		{
+			vtkXMLPolyDataReader * reader = vtkXMLPolyDataReader::New();
+			cout << filename << endl;
+			reader->SetFileName(ExpandDataFileName(filename));
+			reader->Update();
+			reader->GetOutput()->Print(cout);
+			model->SetInput(reader->GetOutput());
+			reader->Delete();
+		}*/
+
 		particleSpring->SetDeltaT(this->Simulation->GetSimulationTimerRate());
 		double coefficient;
 		item->GetScalarAttribute("SpringCoefficient", coefficient);

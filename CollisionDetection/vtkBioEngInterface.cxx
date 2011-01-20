@@ -141,21 +141,18 @@ void vtkBioEngInterface::Update()
 	{
 		vtkTool * tool =  this->Tools->GetTool(toolId);
 		//Whole tool shall be set as Collision Detection input
-		vtkPolyData * toolBox = tool->GetOutput();
+		vtkPolyData * toolData = tool->GetOutput();
 
 		for (vtkIdType organId = 0; organId < this->Organs->GetNumberOfItems(); organId++)
 		{
 			vtkOrgan * organ = this->Organs->GetOrgan(organId);
-			vtkPolyData * organBox = organ->GetOutput();
-
-			cout << "Tool p's: " << toolBox->GetNumberOfPoints() << endl;
-			cout << "Organ p's: " << organBox->GetNumberOfPoints() << endl;
+			vtkPolyData * organData = organ->GetOutput();
 
 			//Each organ polydata is set as an input of the CDL
-			this->DetectionFilter->SetInput(0, toolBox);
+			this->DetectionFilter->SetInput(0, toolData);
 
 			//Tool bounding box is set as CDL input
-			this->DetectionFilter->SetInput(1, organBox);
+			this->DetectionFilter->SetInput(1, organData);
 
 			//Transformation matrixes
 			this->DetectionFilter->SetMatrix(0, Matrix0);
@@ -169,18 +166,19 @@ void vtkBioEngInterface::Update()
 			//cout << "#######################################\n";
 			for(int i =0; i < numberOfContacts; i++)
 			{
+				cout << "New contacts: " << i << endl;
 				//There has been a collision
 				//A new contact will be created, filling the collision info
 				vtkIdType organCellId = this->DetectionFilter->GetContactCells(0)->GetValue(i);
 				vtkIdType toolCellId = this->DetectionFilter->GetContactCells(1)->GetValue(i);
 
 				//Get cell normal & center
-				if(organBox->GetCellType(organCellId) == VTK_TRIANGLE &&
-					(toolBox->GetCellType(toolCellId) == VTK_TRIANGLE ||
-					toolBox->GetCellType(toolCellId) == VTK_TRIANGLE_STRIP))
+				if(organData->GetCellType(organCellId) == VTK_TRIANGLE &&
+					(toolData->GetCellType(toolCellId) == VTK_TRIANGLE ||
+					toolData->GetCellType(toolCellId) == VTK_TRIANGLE_STRIP))
 				{
 					//Organ cell
-					vtkPoints * organPoints = organBox->GetCell(organCellId)->GetPoints();
+					vtkPoints * organPoints = organData->GetCell(organCellId)->GetPoints();
 					organPoints->GetPoint(0,p0);
 					organPoints->GetPoint(1,p1);
 					organPoints->GetPoint(2,p2);
@@ -203,7 +201,7 @@ void vtkBioEngInterface::Update()
 					centerData->SetPoints(centerPoints);
 					centerData->Modified();
 					enclosed->SetInput(centerData);
-					enclosed->SetSurface(organBox);
+					enclosed->SetSurface(organData);
 					enclosed->Update();
 
 					for(int j=0;j<3; j++)
@@ -218,17 +216,22 @@ void vtkBioEngInterface::Update()
 
 							//New contact is created
 							vtkContact *contact = vtkContact::New();
-							//Set organ & tool ids
-							contact->SetOrganId(organId);
-							contact->SetToolId(toolId);
-							//Organ cell point
-							contact->InsertPointId(0, organBox->GetCell(organCellId)->GetPointId(j));
-							contact->InsertPoint(0, organPoints->GetPoint(j));
-							contact->InsertCellId(0, organCellId);
+
+							//Now only tool-organ contacts are being checked
+							//TODO: Add tool-tool support
+							contact->SetContactType(vtkContact::ToolOrgan);
+
+							//Set scenario item ids
+							contact->SetItemId(0, toolId);
+							contact->SetItemId(1, organId);
 							//Tool cell point
-							contact->InsertPointId(1, toolBox->GetCell(toolCellId)->GetPointId(j));
-							contact->InsertPoint(1, toolPoints->GetPoint(j));
-							contact->InsertCellId(1, toolCellId);
+							contact->SetPointId(0, toolData->GetCell(toolCellId)->GetPointId(j));
+							contact->SetPoint(0, toolPoints->GetPoint(j));
+							contact->SetCellId(0, toolCellId);
+							//Organ cell point
+							contact->SetPointId(1, organData->GetCell(organCellId)->GetPointId(j));
+							contact->SetPoint(1, organPoints->GetPoint(j));
+							contact->SetCellId(1, organCellId);
 
 							contact->SetDistance(distance);
 							contact->SetDisplacement(d);

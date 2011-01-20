@@ -370,11 +370,11 @@ void vtkScenario::Update()
 	while(contact)
 	{
 		//Set organ contact point for deformation purposes
-		vtkOrgan * organ = this->GetOrgan(contact->GetOrganId());
-		vtkTool * tool = this->GetTool(contact->GetToolId());
+		vtkTool * tool = this->GetTool(contact->GetItemId(0));
+		vtkOrgan * organ = this->GetOrgan(contact->GetItemId(1));
 
-		organ->InsertNextContact(contact);
 		tool->InsertNextContact(contact);
+		organ->InsertNextContact(contact);
 
 		contact = contacts->GetNextContact();
 	}
@@ -388,6 +388,7 @@ void vtkScenario::Update()
 	organ = this->Organs->GetNextOrgan();
 	while(organ)
 	{
+		organ->Modified();
 		organ->Update();
 		organ = this->Organs->GetNextOrgan();
 	}

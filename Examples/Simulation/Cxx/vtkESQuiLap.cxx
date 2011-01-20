@@ -122,6 +122,7 @@ int main(int argc, char * argv[])
 
 	/**********  Simulation Import from SRML File  ********/
 	vtkSRMLImporter * Importer = vtkSRMLImporter::New();
+	Importer->SetDebug(1);
 	Importer->SetDataPath(path);
 	Importer->SetFileName(filename);
 	Importer->SetSimulation(Simulation);

@@ -50,8 +50,9 @@ vtkStandardNewMacro(vtkContact);
 
 //--------------------------------------------------------------------------
 vtkContact::vtkContact() {
-	this->ToolId = this->OrganId = -1;
 	this->isGrasped=false;
+	this->ItemIds = vtkIdList::New();
+	this->ItemIds->SetNumberOfIds(2);
 	this->PointIds = vtkIdList::New();
 	this->PointIds->SetNumberOfIds(2);
 	this->CellIds = vtkIdList::New();
@@ -64,93 +65,75 @@ vtkContact::vtkContact() {
 //--------------------------------------------------------------------------
 vtkContact::~vtkContact()
 {
+	this->ItemIds->Delete();
 	this->PointIds->Delete();
 	this->CellIds->Delete();
 	this->Points->Delete();
 }
 
 //--------------------------------------------------------------------------
-void vtkContact::InsertPointId(int position, int id)
+void vtkContact::SetItemId(int i, int id)
 {
-	this->PointIds->InsertId(position, id);
+	this->ItemIds->SetId(i, id);
 }
 
 //--------------------------------------------------------------------------
-int vtkContact::GetPointId(int position){
-	return this->PointIds->GetId(position);
+int vtkContact::GetItemId(int i){
+	return this->ItemIds->GetId(i);
 }
 
 //--------------------------------------------------------------------------
-int vtkContact::GetOrganPointId(){
-	return this->PointIds->GetId(0);
+void vtkContact::SetPointId(int i, int id)
+{
+	this->PointIds->SetId(i, id);
 }
 
 //--------------------------------------------------------------------------
-int vtkContact::GetToolPointId(){
-	return this->PointIds->GetId(1);
-}
-//--------------------------------------------------------------------------
-void vtkContact::InsertPoint(int position, double x, double y, double z) {
-	this->Points->InsertPoint(position, x, y, z);
+int vtkContact::GetPointId(int i){
+	return this->PointIds->GetId(i);
 }
 
 //--------------------------------------------------------------------------
-void vtkContact::InsertPoint(int position, double point[3]) {
-	this->InsertPoint(position, point[0],point[1],point[2]);
+void vtkContact::SetPoint(int i, double x, double y, double z) {
+	this->Points->SetPoint(i, x, y, z);
 }
 
 //--------------------------------------------------------------------------
-double * vtkContact::GetPoint(int position){
-	return this->Points->GetPoint(position);
+void vtkContact::SetPoint(int i, double point[3]) {
+	this->SetPoint(i, point[0],point[1],point[2]);
 }
 
 //--------------------------------------------------------------------------
-double * vtkContact::GetOrganPoint(){
-	return this->Points->GetPoint(0);
+double * vtkContact::GetPoint(int i){
+	return this->Points->GetPoint(i);
 }
 
 //--------------------------------------------------------------------------
-double * vtkContact::GetToolPoint(){
-	return this->Points->GetPoint(1);
+void vtkContact::SetCellId(int i, vtkIdType value){
+	this->CellIds->SetId(i, value);
 }
 
 //--------------------------------------------------------------------------
-void vtkContact::InsertCellId(int position, vtkIdType value){
-	this->CellIds->InsertId(position, value);
-}
-
-//--------------------------------------------------------------------------
-int vtkContact::GetCellId(int position){
-	return this->CellIds->GetId(position);
-}
-
-//--------------------------------------------------------------------------
-int vtkContact::GetOrganCellId(){
-	return this->CellIds->GetId(0);
-}
-
-//--------------------------------------------------------------------------
-int vtkContact::GetToolCellId(){
-	return this->CellIds->GetId(1);
+int vtkContact::GetCellId(int i){
+	return this->CellIds->GetId(i);
 }
 
 //--------------------------------------------------------------------------
 void vtkContact::DeepCopy(vtkContact *info) {
-	this->OrganId = info->OrganId;
-	this->ToolId = info->ToolId;
-	this->isGrasped = info->isGrasped;
+	this->ItemIds->DeepCopy(info->ItemIds);
 	this->PointIds->DeepCopy(info->PointIds);
 	this->CellIds->DeepCopy(info->CellIds);
 	this->Points->DeepCopy(info->Points);
+	this->isGrasped = info->isGrasped;
 }
 
 //--------------------------------------------------------------------------
 void vtkContact::PrintSelf(ostream&os, vtkIndent indent)
 {
-	os << indent << "Organ Id: " << this->OrganId << endl;
-	os << indent << "Tool Id: " << this->ToolId << endl;
+	os << indent << "ContactType: " << this->ContactType << endl;
 	for(int i = 0; i< 2; i++)
 	{
+		os << indent << "Item["<< i <<"] Id: " << this->ItemIds->GetId(i) << endl;
 		os << indent << "Cell[" << i <<"] Id: " << this->CellIds->GetId(i) << endl;
 		os << indent << "Point[" << i <<"] Id: " << this->PointIds->GetId(i)<< endl;
 		double * point = this->Points->GetPoint(i);

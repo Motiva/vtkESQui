@@ -80,9 +80,9 @@ vtkIdType vtkContactCollection::ContainsContact(vtkContact * contact)
 	{
 		local = this->GetContact(id);
 		if ((local) &&
-			(local->GetToolId() == contact->GetToolId()) &&
-			(local->GetOrganId() == contact->GetOrganId()) &&
-			(local->GetPointId(0) == contact->GetPointId(0))) //Organ Point Id
+			(local->GetItemId(0) == contact->GetItemId(0)) &&
+			(local->GetItemId(1) == contact->GetItemId(1)) &&
+			(local->GetPointId(0) == contact->GetPointId(0)))
 		{
 			return 1;
 		}
@@ -99,9 +99,9 @@ vtkIdType vtkContactCollection::FindContact(vtkContact * contact)
 	{
 		local = this->GetContact(id);
 		if ((local) &&
-			(local->GetToolId() == contact->GetToolId()) &&
-			(local->GetOrganId() == contact->GetOrganId()) &&
-			(local->GetPointId(0) == contact->GetPointId(0))) //Organ Point Id
+				(local->GetItemId(0) == contact->GetItemId(0)) &&
+				(local->GetItemId(1) == contact->GetItemId(1)) &&
+				(local->GetPointId(0) == contact->GetPointId(0)))
 		{
 			return id;
 		}

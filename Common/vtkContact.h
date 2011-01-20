@@ -48,7 +48,11 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkPoints;
 class vtkIdList;
 
-//!This class acts as data container storing all the useful information of an organ-tool collision.
+//!This class acts as data container storing all the useful information of an item-item collision.
+/*!
+ * All the information (ids, points, cells...) is stored in pairs, one for each collided item.
+ */
+
 class VTK_ESQUI_COMMON_EXPORT vtkContact : public vtkObject {
 	
 public:
@@ -62,35 +66,93 @@ public:
 	//! Return class name
 	const char *GetClassName() {return "vtkContact";};
 
-	//! Performs a full detailed copy of the contact
-	void DeepCopy(vtkContact *info);
+	//BTX
+	//!Organ type definition
+	enum vtkContactType{
+		ToolOrgan = 0,
+		ToolTool = 1
+	};
+	//ETX
 
-	//! Set the id of the tool
-	/*!
-	 * \sa GetToolId()
-	 */
-	vtkSetMacro(ToolId, vtkIdType);
+	//!Set contact type
+	vtkSetMacro(ContactType, vtkContact::vtkContactType);
+	//!Return contact type
+	vtkGetMacro(ContactType, vtkContact::vtkContactType);
 
-	//! Get the index of the tool
+	//! Set the id of the item at the i position
 	/*!
-	 * \return Identifying key of the tool
-	 * \sa SetToolId(int id)
+	 * \param i item index
+	 * \param id item identifier
+	 * \sa GetItemId()
 	 */
-	vtkGetMacro(ToolId, vtkIdType);
+	void SetItemId(int i, vtkIdType id);
 
-	//! Set the index of the organ
+	//! Get the index of the item
 	/*!
-	 * \sa GetOrganId()
+	 * \param item index
+	 * \return Identifying key of the item
+	 * \sa SetItemId(int i, vtkIdType id)
 	 */
-	vtkSetMacro(OrganId, vtkIdType);
-
-	//! Get the index of the deformable organ
-	/*!
-	 * \return Identifying key of the organ
-	 * \sa SetOrganId(int id)
-	 */
-	vtkGetMacro(OrganId, vtkIdType);
+	vtkIdType GetItemId(int i);
 	
+	//! Set the item mesh point identifier where the collision has occurred
+	/*!
+	 * \param i index of the item in the collection
+	 * \param id point id of the mesh
+	 * \sa GetPointId()
+	 */
+	void SetPointId(int i, int id);
+
+	//! Get the collided point identifier
+	/*!
+	 * \param i index of the item in the collection
+	 * \return point id of the organ mesh
+	 * \sa SetPointId(int i, int id)
+	 */
+	int GetPointId(int i);
+	
+	//! Set the organ mesh point position of the collision
+	/*!
+	 * \param i index of the item in the collection
+	 * \param x x coordinate of the collision point
+	 * \param y y coordinate of the collision point
+	 * \param z z coordinate of the collision point
+	 * \sa GetVertexPosition()
+	 */
+	void SetPoint(int i, double x, double y, double z);
+
+	//! Set the collided point position
+	/*!
+	 * \param i index of the item in the collection
+	 * \param point[] [x, y, z] coordinates vector of the collision point
+	 * \sa GetVertexPosition()
+	 */
+	void SetPoint(int i, double point[3]);
+	//! Returns collided point position
+	/*!
+	 * \param i index of the item in the collection
+	 * \return pointer to position [x, y, z] coordinates vector of the collision point
+	 * \sa SetVertexPosition(double position[3])
+	 * \sa SetVertexPosition(double x, double y, double z)
+	 */
+	double * GetPoint(int i);
+
+	//! Set the collisioned cell of the deformable model
+	/*!
+	 * \param i index of the item in the collection
+	 * \param value organ cell id
+	 * \sa GetCellId()
+	 */
+	void SetCellId(int i, vtkIdType value);
+
+	//! Get the collisioned cell of the deformable model
+	/*!
+	 * \param i index of the item in the collection
+	 * \return cell id of the organ mesh
+	 * \sa SetCellId(int value)
+	 */
+	int GetCellId(int i);
+
 	//! Set the scalar distance
 	vtkSetMacro(Distance, double);
 
@@ -103,108 +165,31 @@ public:
 	//! Returns the direction vector of the contact
 	vtkGetVector3Macro(Displacement, double);
 
-	//! Set the organ/tool mesh point where the collision has occured
-	/*!
-	 * \param position position of the pointId in the PointIds collection
-	 * \param id point id of the organ mesh
-	 * \sa GetPointId()
-	 */
-	void InsertPointId(int position, int id);
-
-	//! Get the collisioned point identifier
-	/*!
-	 * \param position position of the pointId on the PointIds collection
-	 * \return point id of the organ mesh
-	 * \sa SetPointId(int position, int id)
-	 */
-	int GetPointId(int position);
-	
-	//! Get the collisioned organ point identifier
-	int GetOrganPointId();
-	//! Get the collisioned tool point identifier
-	int GetToolPointId();
-
-	//! Set the organ mesh point position of the collision
-	/*!
-	 * \param position position of the point on the Points collection
-	 * \param x x coordinate of the collision point
-	 * \param y y coordinate of the collision point
-	 * \param z z coordinate of the collision point
-	 * \sa GetVertexPosition()
-	 */
-	void InsertPoint(int position, double x, double y, double z);
-
-	//! Set the collisioned point position
-	/*!
-	 * \param position position of the point on the Points collection
-	 * \param point[] [x, y, z] coordinates vector of the collision point
-	 * \sa GetVertexPosition()
-	 */
-	void InsertPoint(int position, double point[3]);
-	//! Returns collisioned point position
-	/*!
-	 * \return pointer to position [x, y, z] coordinates vector of the collision point
-	 * \sa SetVertexPosition(double position[3])
-	 * \sa SetVertexPosition(double x, double y, double z)
-	 */
-	double * GetPoint(int position);
-
-	//! Get the collisioned organ point coordinates
-	double * GetOrganPoint();
-
-	//! Get the collisioned tool point coordinates
-	double * GetToolPoint();
-
-	//! Set the collisioned cell of the deformable model
-	/*!
-	 * \param position position of the cell on the CellIds collection
-	 * \param value organ cell id
-	 * \sa GetCellId()
-	 */
-	void InsertCellId(int position, vtkIdType value);
-
-	//! Get the collisioned cell of the deformable model
-	/*!
-	 * \param position position of the cell on the CellIds collection
-	 * \return cell id of the organ mesh
-	 * \sa SetCellId(int value)
-	 */
-	int GetCellId(int position);
-
-	//! Get the collisioned organ cell identifier
-	int GetOrganCellId();
-	//! Get the collisioned tool cell identifier
-	int GetToolCellId();
+	//! Performs a full detailed copy of the contact
+	void DeepCopy(vtkContact *info);
 
 protected:
 	vtkContact();
 	~vtkContact();
 private:
 
-	// Modelo Deformable colisionado (-1 si no colisiona con ningun modelo)
-	//! Deformable model clashed (-1 if there is not any model clashed)
-	int OrganId;
+	//! Contact Type
+	vtkContactType ContactType;
 
-	// Herramienta que produjo la colision
-	//! Tool which produced the collision
-	int ToolId;
+	// Identificadores de cada uno de los objetos colisionados
+	//! Collided items ids
+	vtkIdList * ItemIds;
 
 	// Posición donde se debe mover el vertice para sacarlo de la herramienta
-	//! Position where would be moved the vertex to extract it from the tool
-	// Points[0]: Organ Point
-	// Points[1]: Tool Point
+	//! Collision point on both objects
 	vtkPoints * Points;
 
-	// Numero del vertice del modelo deformable colisionado
-	//! Number of the vertex of the deformable model clashed
-	// PointIds[0]: Organ Point Id
-	// PointIds[1]: Tool Point Id
+	// Identificadores de los objetos en colisión
+	//! Point ids of the collided items.
 	vtkIdList * PointIds;
 
 	// Id de la celda del vertice colisionado
 	//! Clashed vertex cell Id
-	// CellIds[0]: Organ Cell Id
-	// CellIds[1]: Tool Cell Id
 	vtkIdList * CellIds;
 
 	// Distancia escalar entre los puntos

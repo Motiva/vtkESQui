@@ -117,10 +117,10 @@ void vtkOrgan::Init()
 {	
 	//if(!this->Input)
 	//{
-		this->Reader = vtkXMLPolyDataReader::New();
-		this->Reader->SetFileName(this->FileName);
-		this->Reader->Update();
-		this->SetInputConnection(this->Reader->GetOutputPort());
+	this->Reader = vtkXMLPolyDataReader::New();
+	this->Reader->SetFileName(this->FileName);
+	this->Reader->Update();
+	this->SetInputConnection(this->Reader->GetOutputPort());
 	//}
 
 	if(this->RenderWindow)
@@ -139,9 +139,10 @@ void vtkOrgan::Init()
 
 		this->TransformFilter->Update();
 
-		if(!this->DeformationModel)
+		if(this->DeformationModel)
 		{
 			this->DeformationModel->SetInputConnection(this->TransformFilter->GetOutputPort());
+			this->DeformationModel->Init();
 		}
 		else
 		{
@@ -161,7 +162,7 @@ void vtkOrgan::Init()
 			map->SetInput(this->GetOutput());
 			map->PreventSeamOn();
 
-			vtkTransformTextureCoords *  xform = vtkTransformTextureCoords::New();
+			vtkTransformTextureCoords * xform = vtkTransformTextureCoords::New();
 			xform->SetInputConnection(map->GetOutputPort());
 			xform->SetScale(1, 1, 1);
 
@@ -185,21 +186,22 @@ void vtkOrgan::Init()
 		this->Renderer->AddActor(this->Actor);
 	}
 
-	this->Update();
-
 }
 
 //--------------------------------------------------------------------------
 int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
-                                             vtkInformationVector **inputVector,
-                                             vtkInformationVector *outputVector)
+		vtkInformationVector **inputVector,
+		vtkInformationVector *outputVector)
 {
+
+	cout << "vtkOrgan::RequestData" << endl;
+
 	// get the info objects
-	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
 	// get the input and output
-	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 	if(this->DeformationModel)
@@ -213,10 +215,6 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 	{
 		output->ShallowCopy(this->TransformFilter->GetOutput());
 	}
-
-	std::cout << "#################################\n";
-	std::cout << "i: " << input->GetNumberOfPoints() << "\n";
-	std::cout << "o: " << output->GetNumberOfPoints() << "\n";
 
 	//clean previous executions
 	this->CleanContacts();
@@ -260,7 +258,7 @@ void vtkOrgan::PrintSelf(ostream& os,vtkIndent indent) {
 	os << indent << "FileName: " << this->FileName << "\n";
 	os << indent << "TextureFileName: " << this->TextureFileName << "\n";
 	if(this->DeformationModel){
-		os << indent << "BMM: " << this->DeformationModel->GetClassName() << "\n";
+		os << indent << "DeformationModel: " << this->DeformationModel->GetClassName() << "\n";
 	}
 
 }

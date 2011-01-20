@@ -58,14 +58,14 @@ int TestvtkContactCollection(int argc, char * argv[])
 	for (vtkIdType id = 0; id < 10; id++)
 	{
 		contact = vtkContact::New();
-		contact->SetToolId(0);
-		contact->SetOrganId(0);
-		contact->InsertPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-		contact->InsertPointId(0, id);
-		contact->InsertCellId(0, 1);
-		contact->InsertPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-		contact->InsertPointId(1, id);
-		contact->InsertCellId(0, 1);
+		contact->SetItemId(0, 0);
+		contact->SetItemId(0, 1);
+		contact->SetPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+		contact->SetPointId(0, id);
+		contact->SetCellId(0, 1);
+		contact->SetPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+		contact->SetPointId(1, id);
+		contact->SetCellId(0, 1);
 
 		collection->InsertNextContact(contact);
 		std::cout << "Contact (" << id <<  ") has been inserted...\n";
