@@ -37,7 +37,6 @@ ABSTRACT
 SET(KIT_LIBS 
 ${PROJECT_NAME}Common
 ${PROJECT_NAME}BioMechanics
-${PROJECT_NAME}CollisionDetection
 vtkFiltering
 vtkGraphics
 vtkCommon
@@ -48,7 +47,6 @@ vtkHybrid
 SET(KIT_TCL_LIBS 
 ${PROJECT_NAME}CommonTCL
 ${PROJECT_NAME}BioMechanicsTCL
-${PROJECT_NAME}CollisionDetectionTCL
 vtkGraphicsTCL
 vtkCommonTCL
 vtkHybridTCL

@@ -2,47 +2,6 @@
 --------------------------------------------------
 Program: ESQUI
 Info and Bugs: {marf,jballesteros}@itccanarias.org
-url: http://motivando.me 
---------------------------------------------------
-
-Copyright (c) 2006-2007, Center for Technology in Medicine (CTM), 
-University of Las Palmas de Gran Canaria (ULPGC), Canary Islands, Spain.
-Copyright (c) 2007-2010, Institute of Technology at CanaryIslands (ITC),
-Canary Islands, Spain.
-
-This software is free software; you can redistribute it and/or modify it 
-under the terms of the GNU Lesser General Public License (LGPL) as published
-by the Free Software Foundation, either version 3 of the License, or (at 
-your option) any later version.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-1) Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2) Redistributions in binary form must reproduce the above copyright 
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-
-You should have received a copy of the GNU Lesser General Public License 
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
-PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE 
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-POSSIBILITY OF SUCH DAMAGE.
-==========================================================================*/
-/*==========================================================================
---------------------------------------------------
-Program: ESQUI
-Info and Bugs: {marf,jballesteros}@itccanarias.org
 url: http://motivando.me
 --------------------------------------------------
 
@@ -87,7 +46,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRendererCollection.h"
 #include "vtkPoints.h"
 
-#include "vtkBioEngInterface.h"
 #include "vtkOrgan.h"
 #include "vtkOrganCollection.h"
 #include "vtkTool.h"
@@ -102,7 +60,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <sstream>
 
-
 vtkCxxRevisionMacro(vtkScenario, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkScenario);
 
@@ -111,6 +68,8 @@ vtkScenario::vtkScenario() {
 
 	this->Organs = vtkOrganCollection::New();
 	this->Tools = vtkToolCollection::New();
+	//this->Contacts = vtkContactCollection::New();
+	this->Contacts = NULL;
 	this->Legends = vtkActor2DCollection::New();
 
 }
@@ -269,6 +228,21 @@ vtkTool * vtkScenario::GetTool(vtkIdType id)
 }
 
 //----------------------------------------------------------------------------
+//Set the Collection of contacts of the scenario
+void vtkScenario::SetContacts(vtkContactCollection * collection)
+{
+	//this->Contacts->DeepCopy(collection);
+	this->Contacts = collection;
+}
+
+//----------------------------------------------------------------------------
+//Get the collection of contacts of the Scenario
+vtkContactCollection * vtkScenario::GetContacts()
+{
+	return this->Contacts;
+}
+
+//----------------------------------------------------------------------------
 //Set the Collection of extras of the scenario
 /*void vtkScenario::SetExtras(vtkPropCollection * collection)
 {
@@ -340,75 +314,53 @@ vtkRenderWindow* vtkScenario::GetRenderWindow() {
 //----------------------------------------------------------------------------
 void vtkScenario::Init()
 {
-	//Init Collision Detection & Scenario
-	this->CollisionDetection = vtkBioEngInterface::New();
-	this->CollisionDetection->Init();
-
-	this->CollisionDetection->SetTools(this->Tools);
-	this->CollisionDetection->SetOrgans(this->Organs);
-
-	//Add
 	//FIXME:Set this as param in the srml file
 	this->LegendDisplay = 1;
-
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::Update()
 {
-	//Check if any collision between tools & organs has occurred
-	this->CollisionDetection->Update();
-
 	//Update organs & tools after collision detection has been performed
-	vtkContactCollection * contacts;
-	vtkContact * contact;
-
-	contacts = this->CollisionDetection->GetContacts();
-	contacts->InitTraversal();
-
-	contact = contacts->GetNextContact();
-	while(contact)
+	if(this->Contacts && this->Contacts > 0)
 	{
-		//Set organ contact point for deformation purposes
-		vtkTool * tool = this->GetTool(contact->GetItemId(0));
-		vtkOrgan * organ = this->GetOrgan(contact->GetItemId(1));
+		this->Contacts->InitTraversal();
+		while(vtkContact * contact = this->Contacts->GetNextContact())
+		{
+			//Set organ contact point for deformation purposes
+			//contact->Print(cout);
+			vtkTool * tool = this->GetTool(contact->GetItemId(0));
+			vtkOrgan * organ = this->GetOrgan(contact->GetItemId(1));
 
-		tool->InsertNextContact(contact);
-		organ->InsertNextContact(contact);
-
-		contact = contacts->GetNextContact();
+			tool->InsertNextContact(contact);
+			organ->InsertNextContact(contact);
+		}
 	}
-
 	//Process every scenario item and perform an update on it
-	vtkOrgan * organ;
-	vtkTool * tool;
-	vtkTextActor * legend;
 
 	this->Organs->InitTraversal();
-	organ = this->Organs->GetNextOrgan();
-	while(organ)
+	while(vtkOrgan * organ = this->Organs->GetNextOrgan())
 	{
 		organ->Modified();
 		organ->Update();
-		organ = this->Organs->GetNextOrgan();
 	}
-
-	this->Tools->InitTraversal();
-	this->Legends->InitTraversal();
-
-	tool = this->Tools->GetNextTool();
-	legend = static_cast<vtkTextActor*>(this->Legends->GetNextItemAsObject());
 
 	double * o;
 	double * d;
 	double * v;
 	double * p;
 
-	while(tool)
+	this->Tools->InitTraversal();
+	this->Legends->InitTraversal();
+
+	while(vtkTool * tool = this->Tools->GetNextTool())
 	{
+		//tool->Modified();
 		tool->Update();
 
 		//Update Legend
+		vtkTextActor * legend = static_cast<vtkTextActor*>(this->Legends->GetNextItemAsObject());
+		//Build info string
 		char text[256];
 		o = tool->GetOrientation();
 		d = tool->GetDirection();
@@ -417,8 +369,6 @@ void vtkScenario::Update()
 		sprintf( text, "O: (%1.3f,  %1.3f,  %1.3f)\nD: (%1.3f,  %1.3f,  %1.3f)\nP: (%1.3f,  %1.3f,  %1.3f)\nV: (%1.3f,  %1.3f,  %1.3f)",
 				o[0], o[1], o[2], d[0], d[1], d[2], p[0], p[1], p[2], v[0], v[1], v[2]);
 		legend->SetInput(text);
-		tool = this->Tools->GetNextTool();
-		legend = static_cast<vtkTextActor*>(this->Legends->GetNextItemAsObject());
 	}
 }
 

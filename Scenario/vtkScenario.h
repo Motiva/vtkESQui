@@ -164,6 +164,16 @@ public:
 	//!Return the number of tools contained in the scenario
 	vtkIdType GetNumberOfTools();
 
+	//!Set the collection of contacts of the scenario
+	/*!
+	 * \param collection collection of contacts
+	 */
+	void SetContacts(vtkContactCollection * collection);
+
+	//!Return the collection of contacts of the scenario
+	vtkContactCollection * GetContacts();
+
+
 	//void SetExtras(vtkPropCollection * extras);
 	//vtkPropCollection * GetExtras();
 
@@ -249,6 +259,8 @@ private:
 	vtkToolCollection * Tools;
 	//!Collection of Extras
 	//vtkPropCollection * Extras;
+	//!Collection of the scenario contacts
+	vtkContactCollection * Contacts;
 
 	//!Legends
 	vtkActor2DCollection * Legends;
@@ -258,8 +270,6 @@ private:
 
 	//!Enable collision detection
 	bool Collision;
-	//!collision detection library
-	vtkCollisionDetectionLibrary* CollisionDetection;
 
 };
 

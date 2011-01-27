@@ -50,6 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRenderWindowInteractor.h"
 #include "vtkRendererCollection.h"
 #include "vtkDataSetMapper.h"
+#include "vtkPolyDataMapper.h"
 #include "vtkXMLPolyDataReader.h"
 #include "vtkJPEGReader.h"
 #include "vtkTransform.h"
@@ -57,6 +58,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTransformPolyDataFilter.h"
 #include "vtkTexture.h"
 #include "vtkTextureMapToSphere.h"
+#include "vtkProperty.h"
+#include "vtkActor2D.h"
+#include "vtkSelectVisiblePoints.h"
+
+#include "vtkLabeledDataMapper.h"
 
 #include "vtkBioMechanicalModel.h"
 #include "vtkContact.h"
@@ -181,8 +187,34 @@ void vtkOrgan::Init()
 			this->Actor->SetTexture(this->Texture);
 		}
 
-		this->Actor->SetMapper(this->Mapper);
+		//Display PointIds
+		if(this->GetDebug())
+		{
+			vtkPolyDataMapper * pointMapper = vtkPolyDataMapper::New();
+			pointMapper->SetInput(this->GetOutput());
 
+			vtkActor * pointActor = vtkActor::New();
+			pointActor->GetProperty()->SetPointSize(10);
+			pointActor->GetProperty()->SetColor(1,1,.4);
+
+			vtkSelectVisiblePoints * visPoints = vtkSelectVisiblePoints::New();
+			visPoints->SetInputConnection(this->GetOutputPort());
+			visPoints->SelectInvisibleOff();
+			visPoints->SetRenderer(this->Renderer);
+
+			vtkLabeledDataMapper * labelMapper = vtkLabeledDataMapper::New();
+			labelMapper->SetInputConnection(visPoints->GetOutputPort());
+
+			vtkActor2D * labelActor = vtkActor2D::New();
+			labelActor->SetMapper(labelMapper);
+			//this->Renderer->AddActor(pointActor);
+			this->Renderer->AddActor(labelActor);
+
+			//TODO: Remove "returning AbortExecute of 0"
+			this->SetDebug(0);
+		}
+
+		this->Actor->SetMapper(this->Mapper);
 		this->Renderer->AddActor(this->Actor);
 	}
 
@@ -193,9 +225,6 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector)
 {
-
-	cout << "vtkOrgan::RequestData" << endl;
-
 	// get the info objects
 	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
