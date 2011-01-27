@@ -266,6 +266,13 @@ void vtkSRMLImporter::ReadData()
 	//Import haptic devices functionality
 	vtkXMLDataElement * simulation = this->Element;
 
+	int verbose;
+	simulation->GetScalarAttribute("Verbose", verbose);
+	if(verbose)
+	{
+		this->Simulation->VerboseOn();
+	}
+
 	int useHaptic;
 	simulation->GetScalarAttribute("UseHaptic", useHaptic);
 	if(useHaptic)
@@ -273,12 +280,7 @@ void vtkSRMLImporter::ReadData()
 		this->Simulation->UseHapticOn();
 		this->ImportHaptic();
 	}
-	int verbose;
-	simulation->GetScalarAttribute("Verbose", verbose);
-	if(verbose)
-	{
-		this->Simulation->VerboseOn();
-	}
+
 	double rate;
 	simulation->GetScalarAttribute("SimulationRate", rate);
 	this->Simulation->SetSimulationTimerRate(rate);
@@ -288,6 +290,10 @@ void vtkSRMLImporter::ReadData()
 
 	simulation->GetScalarAttribute("RenderRate", rate);
 	this->Simulation->SetRenderTimerRate(rate);
+
+	double array[3];
+	simulation->GetVectorAttribute("Gravity", 3, array);
+	this->Simulation->SetGravity(array);
 
 	//Import Actors (Tools, Organs, Extras), Cameras, Lights and Properties
 	Superclass::ReadData();
@@ -519,7 +525,11 @@ void vtkSRMLImporter::SetDeformationModelData(vtkBioMechanicalModel * model, vtk
 			reader->Delete();
 		}*/
 
+		//Set common simulation parameters
+		particleSpring->SetGravity(this->Simulation->GetGravity());
 		particleSpring->SetDeltaT(this->Simulation->GetSimulationTimerRate());
+
+		//Set particle-spring system specific parameters
 		double coefficient;
 		item->GetScalarAttribute("SpringCoefficient", coefficient);
 		particleSpring->SetSpringCoefficient(coefficient);

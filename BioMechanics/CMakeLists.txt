@@ -11,6 +11,7 @@ SET(UKIT BioMechanics)  #Uppercase Kit Name
 SET (Kit_SRCS 
 vtkBioMechanicalModel.cxx
 vtkPSSInterface.cxx
+vtkBoundaryCondition.cxx
 #vtkRDMInterface.cxx
 )
 

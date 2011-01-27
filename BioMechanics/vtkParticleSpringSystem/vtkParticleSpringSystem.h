@@ -112,6 +112,11 @@ public:
 	//! Set motion equation solver type.
 	vtkSetMacro(SolverType, MotionEquationSolverType);		// Motion equation solver type
 
+	//! Set Gravity Force (m/s2)
+	vtkSetVector3Macro(Gravity, double);
+	//! Get Gravity Force (m/s2)
+	vtkGetVector3Macro(Gravity, double);
+
 	//! Set particle status
 	/*!
 	 * 0: Free
@@ -171,6 +176,8 @@ protected:
 	vtkMassProperties * SystemProperties;
 	//! Volume of the mesh
 	double Volume;
+	//!Gravity
+	double Gravity[3];
 
 	//! Motion equation solver
 	vtkMotionEquationSolver * Solver;

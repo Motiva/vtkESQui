@@ -79,6 +79,11 @@ public:
 	//!Remove contacts of the biomechanical model
 	virtual void DeleteContacts();
 
+	//! Set Gravity Force (m/s2)
+	vtkSetVector3Macro(Gravity, double);
+	//! Get Gravity Force (m/s2)
+	vtkGetVector3Macro(Gravity, double);
+
 protected:
 	vtkBioMechanicalModel();
 	~vtkBioMechanicalModel();
@@ -86,8 +91,8 @@ protected:
 	//!Model Name
 	char * Name;
 
-	//!3D Surface Input
-	//vtkPolyData * Mesh;
+	//! Gravitation force
+	double Gravity[3];
 
 	//!Contacts
 	vtkContactCollection * Contacts;

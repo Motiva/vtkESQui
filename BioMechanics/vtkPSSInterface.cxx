@@ -77,12 +77,14 @@ void vtkPSSInterface::Init()
 	std::cout << "vtkPSSInterface::Init()\n";
 	//Set pss input data
 	this->ParticleSpringSystem->SetInput(this->GetInput());
+	//Set common params
+	this->ParticleSpringSystem->SetGravity(this->Gravity);
+	this->ParticleSpringSystem->SetDeltaT(this->DeltaT);
 	//Set Mass-Spring System parameters
 	this->ParticleSpringSystem->SetDistanceCoefficient(this->DistanceCoefficient);
 	this->ParticleSpringSystem->SetSpringCoefficient(this->SpringCoefficient);//Friction
 	this->ParticleSpringSystem->SetDampingCoefficient(this->DampingCoefficient);//Friction
 	this->ParticleSpringSystem->SetMass(this->Mass);
-	this->ParticleSpringSystem->SetDeltaT(this->DeltaT);
 	this->ParticleSpringSystem->SetRigidityFactor(this->RigidityFactor);
 	this->ParticleSpringSystem->SetSolverType(this->SolverType);
 	//Initialize system

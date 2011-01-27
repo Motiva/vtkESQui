@@ -72,6 +72,12 @@ void vtkParticle::AddPosition(double x, double y, double z)
 }
 
 //----------------------------------------------------------------------------
+void vtkParticle::AddForce(double f[3])
+{
+	this->AddForce(f[0], f[1], f[2]);
+}
+
+//----------------------------------------------------------------------------
 void vtkParticle::AddForce(double x, double y, double z)
 {
 	if(!this->Status)

@@ -150,6 +150,11 @@ public:
 	//!Return the scenario of the simulation
 	vtkGetObjectMacro(Scenario, vtkScenario);
 
+	//! Set Gravity Force (m/s2)
+	vtkSetVector3Macro(Gravity, double);
+	//! Get Gravity Force (m/s2)
+	vtkGetVector3Macro(Gravity, double);
+
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	//BTX
 	//! Set the haptic device for the simulation///
@@ -198,7 +203,7 @@ private:
 	bool Verbose;
 
 	//! Gravitational force
-	bool Gravity;
+	double Gravity[3];
 
 };
 #endif

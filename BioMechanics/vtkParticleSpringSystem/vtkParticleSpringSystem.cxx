@@ -35,6 +35,7 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->Residual = 1e-6;
 	this->RigidityFactor = 0;
 	this->Volume = 0;
+	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
 	this->SystemProperties = NULL;
 	this->SolverType = vtkParticleSpringSystem::VelocityVerlet;
 	this->ContactIds = NULL;
@@ -270,8 +271,8 @@ void vtkParticleSpringSystem::SetContacts(vtkIdList * ids, vtkDoubleArray * disp
 void vtkParticleSpringSystem::ComputeContacts()
 {
 	double position[3];
-	double distance[3];
-	double dNorm, L, ratio;
+	//double distance[3];
+	//double dNorm, L, ratio;
 
 	if(this->ContactIds && this->ContactIds->GetNumberOfIds() != 0)
 	{
@@ -309,11 +310,10 @@ void vtkParticleSpringSystem::ComputeForces()
 		particle->SetForce(0, 0, 0);
 
 		//Gravitational Force
-		//TODO: Obtain Gravity from simulation
-		//FIXME: Reset gravity force
-		/*double gravity = -9.0;
-		double gf = gravity*particle->GetMass();
-		particle->AddForce(0, gf, 0);*/
+		double g[3];
+		this->GetGravity(g);
+		vtkMath::MultiplyScalar(g, particle->GetMass());
+		particle->AddForce(g);
 	}
 
 	double d[3];

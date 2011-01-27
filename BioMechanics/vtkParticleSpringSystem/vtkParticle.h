@@ -107,6 +107,8 @@ public:
 	//! Get particle force
 	vtkGetVector3Macro(Force, double);
 	//! Add offset to particle force
+	void AddForce(double f[3]);
+	//! Add offset to particle force
 	void AddForce(double x, double y, double z);
 
 	//! Insert a new spring in the particle spring collection
