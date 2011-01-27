@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkBioEngInterface_h
 #define __vtkBioEngInterface_h
 
-#include "vtkESQuiManagerWin32Header.h"
+#include "vtkESQuiCollisionDetectionWin32Header.h"
 #include "vtkCollisionDetectionLibrary.h"
 
 class vtkCollisionDetectionFilter;
@@ -50,8 +50,9 @@ class vtkMatrix4x4;
 
 //! Interface to the collision detection library
 
-class VTK_ESQUI_MANAGER_EXPORT vtkBioEngInterface: public vtkCollisionDetectionLibrary
+class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkBioEngInterface: public vtkCollisionDetectionLibrary
 {
+
 
 public:
 	//! Type revision macro

@@ -39,72 +39,26 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef vtkCollisionDetectionLibrary_h
-#define vtkCollisionDetectionLibrary_h
+// .NAME vtkmyCommonWin32Header - manage Windows system differences
+// .SECTION Description
+// The vtkmyCommonWin32Header captures some system differences between Unix
+// and Windows operating systems. 
 
-#include "vtkESQuiCollisionDetectionWin32Header.h"
-#include "vtkObject.h"
+#ifndef __vtkESQuiCollisionDetectionWin32Header_h
+#define __vtkESQuiCollisionDetectionWin32Header_h
 
-#include "vtkOrganCollection.h"
-#include "vtkToolCollection.h"
-#include "vtkContactCollection.h"
+#include "vtkESQuiConfigure.h"
 
-class vtkPolyData;
+#if defined(WIN32)&& !defined(VTKESQUI_STATIC)
+  #if defined(vtkESQuiCollisionDetection_EXPORTS)
+    #define VTK_ESQUI_COLLISIONDETECTION_EXPORT __declspec(dllexport)
+  #else
+	#undef VTK_ESQUI_COLLISIONDETECTION_EXPORT
+	#define VTK_ESQUI_COLLISIONDETECTION_EXPORT __declspec( dllimport )
+  #endif
 
-//! Generic interface of the Collision Detection Library
-
-class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollisionDetectionLibrary: public vtkObject
-{
-public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkCollisionDetectionLibrary, vtkObject);
-	vtkCollisionDetectionLibrary();
-	~vtkCollisionDetectionLibrary();
-
-	//BTX
-	//! Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use
-	/*!
-	* Abstract method to be defined on each implementation class
-	*/
-	virtual void Update() = 0;
-	//!Initializes the CollisionDetectionLibrary
-	/*!
-	* Abstract method to be defined on each implementation class
-	*/
-	virtual void Init() = 0;
-	//ETX
-
-	virtual vtkPolyData * GetContactSurface() = 0;
-	//! Specify the organs to be checked in the collision detection process
-	vtkSetObjectMacro(Organs, vtkOrganCollection);
-	//! Specify the tools to be checked in the collision detection process
-	vtkSetObjectMacro(Tools, vtkToolCollection);
-
-	//! Return the contacts obtained after collision detection has been performed
-	vtkGetObjectMacro(Contacts, vtkContactCollection);
-	//! Get total number of contacts detected
-	vtkIdType GetNumberOfContacts(){return this->Contacts->GetNumberOfItems();}
-
-protected:
-
-	//! Collection of Organs
-	vtkOrganCollection * Organs;
-	//! Collection of Tools
-	vtkToolCollection * Tools;
-	//! Collection of Contacts
-	vtkContactCollection * Contacts;
-
-private:
-	vtkCollisionDetectionLibrary(const vtkCollisionDetectionLibrary &); //NotImplemented
-	void operator =(const vtkCollisionDetectionLibrary &); //Not Implemented
-
-	//!Clear the CollisionDetectionLibrary
-	/*!
-	* Pure virtual method. Should be defined in the implementation classes
-	*/
-	virtual void Clear() = 0;
-};
-
-
+#else
+  #define VTK_ESQUI_COLLISIONDETECTION_EXPORT
 #endif
 
+#endif
