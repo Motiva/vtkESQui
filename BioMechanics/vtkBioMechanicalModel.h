@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkBioMechanicalModel_h
 #define __vtkBioMechanicalModel_h
 
-#include "vtkESQuiBMMWin32Header.h"
+#include "vtkESQuiBioMechanicsWin32Header.h"
 #include "vtkPolyDataAlgorithm.h"
 
 class vtkPolyData;
@@ -52,7 +52,7 @@ class vtkContactCollection;
 
 //! Generic interface to the Biomechanical Model
 
-class VTK_ESQUI_BMM_EXPORT vtkBioMechanicalModel: public vtkPolyDataAlgorithm
+class VTK_ESQUI_BIOMECHANICS_EXPORT vtkBioMechanicalModel: public vtkPolyDataAlgorithm
 {
 public:
 	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkPolyDataAlgorithm);

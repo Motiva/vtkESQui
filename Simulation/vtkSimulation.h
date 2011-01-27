@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkSimulation_h
 #define __vtkSimulation_h
 
-#include "vtkESQuiManagerWin32Header.h"
+#include "vtkESQuiSimulationWin32Header.h"
 #include "vtkObject.h"
 
 #include "vtkRenderWindowInteractor.h"
@@ -59,7 +59,7 @@ class vtkCallbackCommand;
 /*!
  * Periodically executes the simulation and haptic manager and updates the whole scenario.
  */
-class VTK_ESQUI_MANAGER_EXPORT vtkSimulation: public vtkObject
+class VTK_ESQUI_SIMULATION_EXPORT vtkSimulation: public vtkObject
 {
 public:
 	//! Type revision macro
@@ -187,6 +187,9 @@ private:
 
 	//!Window interactor to control simulation display
 	vtkRenderWindowInteractor *Interactor;
+
+	//!collision detection library
+	vtkCollisionDetectionLibrary* CollisionDetection;
 
 	//! Enable/disable haptic device usage
 	bool UseHaptic;

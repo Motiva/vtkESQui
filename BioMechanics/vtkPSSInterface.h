@@ -42,14 +42,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkPSSInterface_h
 #define __vtkPSSInterface_h
 
-#include "vtkESQuiBMMWin32Header.h"
+#include "vtkESQuiBioMechanicsWin32Header.h"
 #include "vtkBioMechanicalModel.h"
 
 #include "vtkParticleSpringSystem.h"
 
 //! Interface to the abstract vtkBiomechanicalModel class for a particle-spring system
 
-class VTK_ESQUI_BMM_EXPORT vtkPSSInterface : public vtkBioMechanicalModel
+class VTK_ESQUI_BIOMECHANICS_EXPORT vtkPSSInterface : public vtkBioMechanicalModel
 {
 public:
 	vtkTypeRevisionMacro(vtkPSSInterface, vtkBioMechanicalModel);

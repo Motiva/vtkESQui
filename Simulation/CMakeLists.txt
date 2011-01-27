@@ -18,6 +18,7 @@ vtkSimulationInteractorStyle.cxx
 SET(KIT_LIBS  
 ${PROJECT_NAME}Common
 ${PROJECT_NAME}Scenario
+${PROJECT_NAME}CollisionDetection
 vtkGraphics 
 vtkCommon 
 vtkIO
@@ -28,6 +29,7 @@ SET(KIT_TCL_LIBS
 #${PROJECT_NAME}UtilitiesTCL
 ${PROJECT_NAME}CommonTCL
 ${PROJECT_NAME}ScenarioTCL
+${PROJECT_NAME}CollisionDetectionTCL
 vtkGraphicsTCL
 vtkCommonTCL
 vtkIOTCL

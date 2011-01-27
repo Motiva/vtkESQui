@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkSimulationInteractorStyle_h
 #define __vtkSimulationInteractorStyle_h
 
-#include "vtkESQuiManagerWin32Header.h"
+#include "vtkESQuiSimulationWin32Header.h"
 #include "vtkInteractorStyleTrackballCamera.h"
 
 #include "vtkScenario.h"
@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /*!
  * Defines a keyboard layout for simulation control
  */
-class VTK_ESQUI_MANAGER_EXPORT vtkSimulationInteractorStyle : public vtkInteractorStyleTrackballCamera {
+class VTK_ESQUI_SIMULATION_EXPORT vtkSimulationInteractorStyle : public vtkInteractorStyleTrackballCamera {
 
 public:
 	//! Type revision macro

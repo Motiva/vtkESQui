@@ -25,7 +25,7 @@ ABSTRACT
 #)
 
 # Set your list of libraries here.
-SET(KIT_LIBS ${PROJECT_NAME}Common 
+SET(KIT_LIBS ${PROJECT_NAME}Common
 vtkCommon
 vtkFiltering
 vtkParticleSpringSystem

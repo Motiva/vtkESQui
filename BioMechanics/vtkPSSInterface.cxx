@@ -96,7 +96,7 @@ int vtkPSSInterface::RequestData(
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
 
-	cout << "vtkPSSInterface::RequestData\n";
+	//cout << "vtkPSSInterface::RequestData\n";
 	// Get the info objects
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);

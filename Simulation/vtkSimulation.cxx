@@ -43,8 +43,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkObjectFactory.h"
 #include "vtkCallbackCommand.h"
-
 #include "vtkRenderWindow.h"
+
+#include "vtkBioEngInterface.h"
 #include "vtkTool.h"
 
 void func ( vtkObject* caller, long unsigned int eventId, void* clientData, void* callData )
@@ -168,6 +169,13 @@ void vtkSimulation::Init() {
 
 	//Init Scenario
 	this->Scenario->Init();
+
+	this->CollisionDetection = vtkBioEngInterface::New();
+	this->CollisionDetection->Init();
+
+	this->CollisionDetection->SetTools(this->Scenario->GetTools());
+	this->CollisionDetection->SetOrgans(this->Scenario->GetOrgans());
+
 }
 
 //----------------------------------------------------------------------------
@@ -179,6 +187,9 @@ void vtkSimulation::Run()
 //----------------------------------------------------------------------------
 void vtkSimulation::UpdateScenario()
 {
+	//Check if any collision between tools & organs has occurred
+	this->CollisionDetection->Update();
+	this->Scenario->SetContacts(this->CollisionDetection->GetContacts());
 	this->Scenario->Update();
 }
 
