@@ -156,13 +156,12 @@ int vtkTool::RequestData(vtkInformation *vtkNotUsed(request),
   //Update object velocity
   //Velocity will be calculated from delta(Position)/dt
   vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
-  //TODO: Multiply by 1/dt
   vtkMath::MultiplyScalar(this->Velocity, 1/this->DeltaT);
 
   //Update object acceleration
   vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
-  //TODO: Multiply by 1/dt
-  //vtkMath::MultiplyScalar(this->Acceleration, 1/dt));
+  vtkMath::MultiplyScalar(this->Acceleration, 1/this->DeltaT);
+
   //TODO: Add torsion force
 
   output->ShallowCopy(input);

@@ -205,12 +205,6 @@ public:
 	//vtkIdType GetNumberOfExtras();
 
 	//!Set/Get legend display
-	vtkSetMacro(LegendDisplay, bool);
-	vtkGetMacro(LegendDisplay, bool);
-
-	vtkBooleanMacro(LegendDisplay, bool);
-
-	//!Set/Get legend display
 	vtkSetMacro(Collision, bool);
 	vtkGetMacro(Collision, bool);
 
@@ -261,12 +255,6 @@ private:
 	//vtkPropCollection * Extras;
 	//!Collection of the scenario contacts
 	vtkContactCollection * Contacts;
-
-	//!Legends
-	vtkActor2DCollection * Legends;
-	//!Enable legend display
-	bool LegendDisplay;
-
 
 	//!Enable collision detection
 	bool Collision;

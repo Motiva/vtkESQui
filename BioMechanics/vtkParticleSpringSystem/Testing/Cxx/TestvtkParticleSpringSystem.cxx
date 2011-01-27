@@ -18,7 +18,6 @@
 #include "vtkTimerLog.h"
 #include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
-#include "vtkPointPlotter.h"
 
 #include "vtkCommand.h"
 #include "vtkParticleSpringSystem.h"
@@ -132,13 +131,6 @@ int main(int argc, char * argv[])
 
 	vtkRenderer * renderer = vtkRenderer::New();
 
-	//Point plotter
-	vtkPointPlotter * plotter = vtkPointPlotter::New();
-	plotter->SetRadius(0.025);
-	plotter->SetResolution(16);
-	plotter->SetRenderer(renderer);
-	plotter->Init();
-
 	//Locate contact points
 	vtkPointLocator * locator = vtkPointLocator::New();
 	double bounds[6];
@@ -159,11 +151,8 @@ int main(int argc, char * argv[])
 	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
 	{
 		double * mp = mesh->GetPoint(list->GetId(i));
-		plotter->InsertPoint(mp[0], mp[1], mp[2], 0, 128, 64);
 		ParticleSpringSystem->InsertContact(list->GetId(i), dir);
 	}
-
-	plotter->Update();
 
 	//Fix a particle
 	//ParticleSpringSystem->SetParticleStatus(10,1);

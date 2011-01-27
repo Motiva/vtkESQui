@@ -263,9 +263,6 @@ void vtkSRMLImporter::DestroySRMLParser()
 //SRML Importer specific import.
 void vtkSRMLImporter::ReadData()
 {
-	//Import Actors (Tools, Organs, Extras), Cameras, Lights and Properties
-	Superclass::ReadData();
-
 	//Import haptic devices functionality
 	vtkXMLDataElement * simulation = this->Element;
 
@@ -292,8 +289,8 @@ void vtkSRMLImporter::ReadData()
 	simulation->GetScalarAttribute("RenderRate", rate);
 	this->Simulation->SetRenderTimerRate(rate);
 
-	//Initialize Simulation
-	this->Simulation->Init();
+	//Import Actors (Tools, Organs, Extras), Cameras, Lights and Properties
+	Superclass::ReadData();
 }
 
 //----------------------------------------------------------------------------

@@ -112,7 +112,6 @@ int vtkPSSInterface::RequestData(
 	{
 		if(contact->GetContactType() == vtkContact::ToolOrgan)
 		{
-			contact->Print(cout);
 			this->ParticleSpringSystem->InsertContact(contact->GetPointId(1), contact->GetDisplacement());
 		}
 	}

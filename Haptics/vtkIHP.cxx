@@ -259,7 +259,7 @@ float vtkIHP::GetTrocarYaw(int id)
 //--------------------------------------------------------------------------
 float vtkIHP::GetLeftTrocarYaw()
 {
-	//	Yaw angle is obtained from the x unit vector component
+	// Yaw angle is obtained from the x unit vector component
 	// Range [-90,90]
 	// Angle in degrees must be translated to VTK coordinate system
 	return -(vtkMath::DegreesFromRadians(acos(this->Trocar0.trocarDir[0]))-90);

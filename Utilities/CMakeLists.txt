@@ -9,9 +9,8 @@ SET(UKIT UTILITIES)  #Uppercase Kit Name
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
 SET (Kit_SRCS 
-vtk3DSImporterEsqui.cpp
+vtk3DSImporterEsqui.cxx
 vtkSRMLImporter.cxx
-vtkPointPlotter.cxx
 )
 
 # Set your list of libraries here.

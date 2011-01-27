@@ -128,6 +128,10 @@ int main(int argc, char * argv[])
 	Importer->SetSimulation(Simulation);
 	Importer->Read();
 
+	//Initialize Simulation
+	Simulation->Init();
+
+	//Execute simulation
 	Simulation->Run();
 
 	//

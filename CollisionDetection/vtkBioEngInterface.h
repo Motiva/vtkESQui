@@ -92,7 +92,7 @@ private:
 	/*!
 	* Should be called every time collision detection is performed
 	*/
-	void Clear();
+	void Reset();
 
 	//!Collision detection filter
 	vtkCollisionDetectionFilter *DetectionFilter;

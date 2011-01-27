@@ -102,7 +102,7 @@ private:
 	/*!
 	* Pure virtual method. Should be defined in the implementation classes
 	*/
-	virtual void Clear() = 0;
+	virtual void Reset() = 0;
 };
 
 

@@ -130,7 +130,6 @@ void vtkToolLaparoscopy::RotateZ(double angle)
 
 //--------------------------------------------------------------------------
 double *  vtkToolLaparoscopy::GetContactForceValue() {
-	//FIXME: redo this method
 	return this->ForceFeedback;
 }
 

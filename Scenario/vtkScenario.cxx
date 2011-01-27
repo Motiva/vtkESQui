@@ -68,9 +68,7 @@ vtkScenario::vtkScenario() {
 
 	this->Organs = vtkOrganCollection::New();
 	this->Tools = vtkToolCollection::New();
-	//this->Contacts = vtkContactCollection::New();
 	this->Contacts = NULL;
-	this->Legends = vtkActor2DCollection::New();
 
 }
 
@@ -80,7 +78,6 @@ vtkScenario::~vtkScenario(){
 	this->Tools->RemoveAllItems();
 	this->Organs->Delete();
 	this->Tools->Delete();
-
 }
 
 //----------------------------------------------------------------------------
@@ -176,26 +173,6 @@ void vtkScenario::AddTool(vtkTool* tool)
 	tool->SetId(this->GetNumberOfTools());
 	tool->Init();
 	this->Tools->AddTool(tool);
-
-	//Display legend
-	int * size;
-	int padding = 10;
-	size = this->RenderWindow->GetSize();
-
-	if(this->LegendDisplay)
-	{
-		vtkTextActor * legend = vtkTextActor::New();
-		vtkTextProperty * prop = vtkTextProperty::New();
-        prop->SetFontFamilyToTimes();
-        prop->SetFontSize(9);
-		prop->SetColor(1,1,1);
-		legend->SetTextProperty(prop);
-		int x = (tool->GetId()*size[0]/2)+padding;
-		int y = padding;
-		legend->SetDisplayPosition(x, y);
-		this->Legends->AddItem(legend);
-		this->Renderer->AddActor(legend);
-	}
 }
 
 //----------------------------------------------------------------------------
@@ -314,8 +291,6 @@ vtkRenderWindow* vtkScenario::GetRenderWindow() {
 //----------------------------------------------------------------------------
 void vtkScenario::Init()
 {
-	//FIXME:Set this as param in the srml file
-	this->LegendDisplay = 1;
 }
 
 //----------------------------------------------------------------------------
@@ -328,7 +303,6 @@ void vtkScenario::Update()
 		while(vtkContact * contact = this->Contacts->GetNextContact())
 		{
 			//Set organ contact point for deformation purposes
-			//contact->Print(cout);
 			vtkTool * tool = this->GetTool(contact->GetItemId(0));
 			vtkOrgan * organ = this->GetOrgan(contact->GetItemId(1));
 
@@ -345,30 +319,11 @@ void vtkScenario::Update()
 		organ->Update();
 	}
 
-	double * o;
-	double * d;
-	double * v;
-	double * p;
-
 	this->Tools->InitTraversal();
-	this->Legends->InitTraversal();
-
 	while(vtkTool * tool = this->Tools->GetNextTool())
 	{
 		//tool->Modified();
 		tool->Update();
-
-		//Update Legend
-		vtkTextActor * legend = static_cast<vtkTextActor*>(this->Legends->GetNextItemAsObject());
-		//Build info string
-		char text[256];
-		o = tool->GetOrientation();
-		d = tool->GetDirection();
-		p = tool->GetPosition();
-		v = tool->GetVelocity();
-		sprintf( text, "O: (%1.3f,  %1.3f,  %1.3f)\nD: (%1.3f,  %1.3f,  %1.3f)\nP: (%1.3f,  %1.3f,  %1.3f)\nV: (%1.3f,  %1.3f,  %1.3f)",
-				o[0], o[1], o[2], d[0], d[1], d[2], p[0], p[1], p[2], v[0], v[1], v[2]);
-		legend->SetInput(text);
 	}
 }
 

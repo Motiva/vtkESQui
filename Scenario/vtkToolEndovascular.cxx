@@ -158,7 +158,7 @@ double *  vtkToolEndovascular::GetContactForceValue() {
 	TotalForceFeedback[2]  = TotalForceFeedback[2] / NumberOfContacts;
 	cout << "Fx = " << TotalForceFeedback[0] << "Fy = " << TotalForceFeedback[1] << "Fz = " << TotalForceFeedback[2] << endl;
 */
-	//FIXME: redo this method
+	//TODO: Implement force feedback
 	return this->ForceFeedback;
 }
 

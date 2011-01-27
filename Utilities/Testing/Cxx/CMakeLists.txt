@@ -1,7 +1,6 @@
 SET(KIT vtkESQuiUtilities)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
   TestvtkSRMLImporter.cxx
-  TestvtkPointPlotter.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})

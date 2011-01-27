@@ -67,7 +67,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkBioMechanicalModel.h"
 #include "vtkContact.h"
 #include "vtkContactCollection.h"
-#include "vtkPointPlotter.h"
 
 
 vtkCxxRevisionMacro(vtkOrgan, "$Revision: 0.1 $");
