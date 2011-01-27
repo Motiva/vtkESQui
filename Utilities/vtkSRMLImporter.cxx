@@ -263,6 +263,9 @@ void vtkSRMLImporter::DestroySRMLParser()
 //SRML Importer specific import.
 void vtkSRMLImporter::ReadData()
 {
+	//Import Actors (Tools, Organs, Extras), Cameras, Lights and Properties
+	Superclass::ReadData();
+
 	//Import haptic devices functionality
 	vtkXMLDataElement * simulation = this->Element;
 
@@ -291,9 +294,6 @@ void vtkSRMLImporter::ReadData()
 
 	//Initialize Simulation
 	this->Simulation->Init();
-
-	//Import Actors (Tools, Organs, Extras), Cameras, Lights and Properties
-	Superclass::ReadData();
 }
 
 //----------------------------------------------------------------------------
@@ -381,6 +381,11 @@ void vtkSRMLImporter::ImportTools()
 //----------------------------------------------------------------------------
 void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 {
+	//Enable Debug Mode
+	int debug;
+	item->GetScalarAttribute("Debug", debug);
+	tool->SetDebug(debug);
+
 	tool->SetName(item->GetAttribute("Name"));
 
 	double array[3];
@@ -440,6 +445,11 @@ void vtkSRMLImporter::ImportOrgans()
 //----------------------------------------------------------------------------
 void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 {
+	//Enable Debug Mode
+	int debug;
+	item->GetScalarAttribute("Debug", debug);
+	organ->SetDebug(debug);
+
 	//Model Definition File
 	organ->SetName(item->GetAttribute("Name"));
 	organ->SetFileName(ExpandDataFileName(item->GetAttribute("FileName")));
