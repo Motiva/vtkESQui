@@ -119,8 +119,8 @@ public:
 
 	//! Set particle status
 	/*!
-	 * 0: Free
-	 * 1: Fixed
+	 * 0: Fixed
+	 * 1: Free
 	 */
 	void SetParticleStatus(vtkIdType id, bool status);
 

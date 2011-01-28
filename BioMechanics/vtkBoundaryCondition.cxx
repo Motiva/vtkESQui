@@ -50,95 +50,35 @@ vtkStandardNewMacro(vtkBoundaryCondition);
 
 //--------------------------------------------------------------------------
 vtkBoundaryCondition::vtkBoundaryCondition() {
-	this->isGrasped=false;
-	this->ItemIds = vtkIdList::New();
-	this->ItemIds->SetNumberOfIds(2);
-	this->PointIds = vtkIdList::New();
-	this->PointIds->SetNumberOfIds(2);
-	this->CellIds = vtkIdList::New();
-	this->CellIds->SetNumberOfIds(2);
-	this->Points = vtkPoints::New();
-	this->Points->SetDataTypeToDouble();
-	this->Points->SetNumberOfPoints(2);
+	this->Type = vtkBoundaryCondition::Neumann;
+	this->Id = -1;
+	this->PointId = -1;
+	this->Value = 0;
+	this->Point[0] = this->Point[1] = this->Point[2] = 0;
 }
 
 //--------------------------------------------------------------------------
 vtkBoundaryCondition::~vtkBoundaryCondition()
 {
-	this->ItemIds->Delete();
-	this->PointIds->Delete();
-	this->CellIds->Delete();
-	this->Points->Delete();
-}
-
-//--------------------------------------------------------------------------
-void vtkBoundaryCondition::SetItemId(int i, int id)
-{
-	this->ItemIds->SetId(i, id);
-}
-
-//--------------------------------------------------------------------------
-int vtkBoundaryCondition::GetItemId(int i){
-	return this->ItemIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkBoundaryCondition::SetPointId(int i, int id)
-{
-	this->PointIds->SetId(i, id);
-}
-
-//--------------------------------------------------------------------------
-int vtkBoundaryCondition::GetPointId(int i){
-	return this->PointIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkBoundaryCondition::SetPoint(int i, double x, double y, double z) {
-	this->Points->SetPoint(i, x, y, z);
-}
-
-//--------------------------------------------------------------------------
-void vtkBoundaryCondition::SetPoint(int i, double point[3]) {
-	this->SetPoint(i, point[0],point[1],point[2]);
-}
-
-//--------------------------------------------------------------------------
-double * vtkBoundaryCondition::GetPoint(int i){
-	return this->Points->GetPoint(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkBoundaryCondition::SetCellId(int i, vtkIdType value){
-	this->CellIds->SetId(i, value);
-}
-
-//--------------------------------------------------------------------------
-int vtkBoundaryCondition::GetCellId(int i){
-	return this->CellIds->GetId(i);
 }
 
 //--------------------------------------------------------------------------
 void vtkBoundaryCondition::DeepCopy(vtkBoundaryCondition *info) {
-	this->ItemIds->DeepCopy(info->ItemIds);
-	this->PointIds->DeepCopy(info->PointIds);
-	this->CellIds->DeepCopy(info->CellIds);
-	this->Points->DeepCopy(info->Points);
-	this->isGrasped = info->isGrasped;
+	this->Type = info->Type;
+	this->Id = info->Id;
+	this->Value = info->Value;
+	this->PointId = info->PointId;
+	this->Point[0] = info->Point[0];
+	this->Point[1] = info->Point[1];
+	this->Point[2] = info->Point[2];
 }
 
 //--------------------------------------------------------------------------
 void vtkBoundaryCondition::PrintSelf(ostream&os, vtkIndent indent)
 {
-	os << indent << "ContactType: " << this->ContactType << endl;
-	for(int i = 0; i< 2; i++)
-	{
-		os << indent << "Item["<< i <<"] Id: " << this->ItemIds->GetId(i) << endl;
-		os << indent << "Cell[" << i <<"] Id: " << this->CellIds->GetId(i) << endl;
-		os << indent << "Point[" << i <<"] Id: " << this->PointIds->GetId(i)<< endl;
-		double * point = this->Points->GetPoint(i);
-		os << indent << "Point[" << i <<"] Position: " << point[0] << ", " << point[1] << ", " << point[2] << endl;
-	}
-	os << indent << "isGrasped: " << this->isGrasped << endl;
-	os << indent << "Direction: " << this->Displacement[0] << ", " << this->Displacement[1] << ", " << this->Displacement[2] << endl;
+	os << indent << "Condition Type: " << this->Type << endl;
+	os << indent << "Id: " << this->Id << endl;
+	os << indent << "Point Id: " << this->PointId<< endl;
+	os << indent << "Point: " << this->Point[0] << ", " << this->Point[1] << ", " << this->Point[2] << endl;
+	os << indent << "Value: " << this->Value << endl;
 }

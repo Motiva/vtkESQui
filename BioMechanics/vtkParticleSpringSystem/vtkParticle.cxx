@@ -22,7 +22,7 @@ vtkParticle::vtkParticle()
 	this->Id = -1;
 	this->Mass = 0.0;
 	this->InverseMass = 100000.0;
-	this->Status = 0;
+	this->Status = 1;
 	this->Position[0] = 0.0;
 	this->Position[1] = 0.0;
 	this->Position[2] = 0.0;
@@ -80,7 +80,7 @@ void vtkParticle::AddForce(double f[3])
 //----------------------------------------------------------------------------
 void vtkParticle::AddForce(double x, double y, double z)
 {
-	if(!this->Status)
+	if(this->Status)
 	{
 		this->Force[0] += x;
 		this->Force[1] += y;

@@ -74,20 +74,7 @@ void vtkContactCollection::ReplaceContact(vtkIdType id, vtkContact *contact) {
 //-------------------------------------------------------------------------
 vtkIdType vtkContactCollection::ContainsContact(vtkContact * contact)
 {
-	vtkContact * local;
-
-	for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
-	{
-		local = this->GetContact(id);
-		if ((local) &&
-			(local->GetItemId(0) == contact->GetItemId(0)) &&
-			(local->GetItemId(1) == contact->GetItemId(1)) &&
-			(local->GetPointId(0) == contact->GetPointId(0)))
-		{
-			return 1;
-		}
-	}
-	return 0;
+	return (this->FindContact(contact) != -1);
 }
 
 //-------------------------------------------------------------------------
@@ -101,8 +88,6 @@ vtkIdType vtkContactCollection::FindContact(vtkContact * contact)
 		if ((local) &&
 				(local->GetItemId(0) == contact->GetItemId(0)) &&
 				(local->GetItemId(1) == contact->GetItemId(1)) &&
-				//(local->GetCellId(0) == contact->GetCellId(0)) &&
-				//(local->GetCellId(1) == contact->GetCellId(1)) &&
 				(local->GetPointId(1) == contact->GetPointId(1)))
 		{
 			return id;

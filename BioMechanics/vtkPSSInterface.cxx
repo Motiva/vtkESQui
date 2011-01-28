@@ -49,6 +49,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkContact.h"
 #include "vtkContactCollection.h"
+#include "vtkBoundaryCondition.h"
+#include "vtkBoundaryConditionCollection.h"
 
 vtkCxxRevisionMacro(vtkPSSInterface, "$Revision: 1.2 $");
 vtkStandardNewMacro(vtkPSSInterface);
@@ -89,6 +91,19 @@ void vtkPSSInterface::Init()
 	this->ParticleSpringSystem->SetSolverType(this->SolverType);
 	//Initialize system
 	this->ParticleSpringSystem->Init();
+
+	//Once the system has been initialized the boundary conditions are set
+	this->BoundaryConditions->InitTraversal();
+	while(vtkBoundaryCondition * c = this->BoundaryConditions->GetNextBoundaryCondition())
+	{
+		if(c->GetType() == vtkBoundaryCondition::Neumann){
+			// Set condition value
+			/* 0 -> Fixed
+			 * 1 -> Free
+			 */
+			this->ParticleSpringSystem->SetParticleStatus(c->GetPointId(), c->GetValue());
+		}
+	}
 }
 
 // VTK specific method: This method is called when the pipeline is calculated.

@@ -65,7 +65,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkOrgan.h"
 #include "vtkOrganCollection.h"
 #include "vtkPSSInterface.h"
-
+#include "vtkBoundaryCondition.h"
 
 #include <sys/stat.h>
 #include <assert.h>
@@ -555,6 +555,48 @@ void vtkSRMLImporter::SetDeformationModelData(vtkBioMechanicalModel * model, vtk
 		else
 		{
 			particleSpring->SetSolverType(vtkParticleSpringSystem::VelocityVerlet);
+		}
+
+		//Set Boundary Conditions
+		vtkXMLDataElement * BCs = item->LookupElementWithName("BCs");
+		if(BCs){
+			for (int i = 0; i < BCs->GetNumberOfNestedElements(); i++)
+			{
+				vtkXMLDataElement * BC = BCs->GetNestedElement(i);
+				vtkBoundaryCondition * condition = vtkBoundaryCondition::New();
+
+				//Set ID
+				condition->SetId(i);
+
+				//Set condition type
+				const char * type = BC->GetAttribute("Type");
+				if(strcmp(type, "Neumann") == 0)
+				{
+					condition->SetType(vtkBoundaryCondition::Neumann);
+				}
+				else if(strcmp(type, "Dirichlet") == 0)
+				{
+					condition->SetType(vtkBoundaryCondition::Dirichlet);
+				}
+				else if(strcmp(type, "Cauchy") == 0)
+				{
+					condition->SetType(vtkBoundaryCondition::Cauchy);
+				}
+
+				//Set condition point id
+				int id;
+				BC->GetScalarAttribute("PointId", id);
+				condition->SetPointId(id);
+
+				// Set condition value
+				double value;
+				BC->GetScalarAttribute("Value", value);
+				condition->SetValue(value);
+
+				//Insert condition into biomechanical model
+				particleSpring->InsertNextBoundaryCondition(condition);
+				condition->Print(cout);
+			}
 		}
 	}
 }

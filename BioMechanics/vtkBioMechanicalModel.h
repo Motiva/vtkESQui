@@ -49,6 +49,8 @@ class vtkPolyData;
 
 class vtkContact;
 class vtkContactCollection;
+class vtkBoundaryCondition;
+class vtkBoundaryConditionCollection;
 
 //! Generic interface to the Biomechanical Model
 
@@ -79,6 +81,15 @@ public:
 	//!Remove contacts of the biomechanical model
 	virtual void DeleteContacts();
 
+	//!Insert a condition into the biomechanical model
+	virtual void InsertNextBoundaryCondition(vtkBoundaryCondition * condition) ;
+
+	//!Insert a collection of conditions into the biomechanical model
+	virtual void InsertBoundaryConditions(vtkBoundaryConditionCollection * collection);
+
+	//!Remove conditions of the biomechanical model
+	virtual void DeleteBoundaryConditions();
+
 	//! Set Gravity Force (m/s2)
 	vtkSetVector3Macro(Gravity, double);
 	//! Get Gravity Force (m/s2)
@@ -96,6 +107,9 @@ protected:
 
 	//!Contacts
 	vtkContactCollection * Contacts;
+
+	//!Boundary conditions
+	vtkBoundaryConditionCollection * BoundaryConditions;
 
 private:
 	vtkBioMechanicalModel(const vtkBioMechanicalModel &); //NotImplemented

@@ -12,6 +12,7 @@ SET (Kit_SRCS
 vtkBioMechanicalModel.cxx
 vtkPSSInterface.cxx
 vtkBoundaryCondition.cxx
+vtkBoundaryConditionCollection.cxx
 #vtkRDMInterface.cxx
 )
 

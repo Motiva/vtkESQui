@@ -39,107 +39,86 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-
-#include "vtkBioMechanicalModel.h"
-
 #include "vtkObjectFactory.h"
-#include "vtkStreamingDemandDrivenPipeline.h"
-#include "vtkInformationVector.h"
-#include "vtkInformation.h"
-#include "vtkDataObject.h"
-#include "vtkPolyData.h"
-#include "vtkDoubleArray.h"
-#include "vtkIntArray.h"
-#include "vtkIdList.h"
-
-#include "vtkContactCollection.h"
-#include "vtkContact.h"
 #include "vtkBoundaryConditionCollection.h"
+
 #include "vtkBoundaryCondition.h"
 
-vtkCxxRevisionMacro(vtkBioMechanicalModel, "$Revision: 0.1 $");
-//vtkStandardNewMacro(vtkBioMechanicalModel);
+vtkCxxRevisionMacro(vtkBoundaryConditionCollection, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkBoundaryConditionCollection);
 
 //--------------------------------------------------------------------------
-vtkBioMechanicalModel::vtkBioMechanicalModel()
-{
-	this->Name = NULL;
-	this->Contacts = vtkContactCollection::New();
-	this->BoundaryConditions = vtkBoundaryConditionCollection::New();
-
-}
-//--------------------------------------------------------------------------
-vtkBioMechanicalModel::~vtkBioMechanicalModel()
-{
-	this->Contacts->Delete();
-	this->BoundaryConditions->Delete();
-}
-
-//--------------------------------------------------------------------------
-void vtkBioMechanicalModel::InsertNextContact(vtkContact* contact)
-{
-	//Insert collision point coordinates
-	this->Contacts->InsertNextContact(contact);
-	this->Superclass::Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkBioMechanicalModel::InsertContacts(vtkContactCollection * collection)
-{
-	//Extract data from vtkContactCollection object
-	collection->InitTraversal();
-	vtkContact * c;
-	c = collection->GetNextContact();
-	while(c)
-	{
-		this->InsertNextContact(c);
-		c = collection->GetNextContact();
+void vtkBoundaryConditionCollection::DeepCopy(vtkBoundaryConditionCollection *collection) {
+	vtkBoundaryCondition * AuxCopy;
+	vtkBoundaryCondition * Aux;
+	this->InitTraversal();
+	AuxCopy = collection->GetNextBoundaryCondition();
+	while(AuxCopy) {
+		Aux = vtkBoundaryCondition::New();
+		Aux->DeepCopy(AuxCopy);
+		this->InsertNextBoundaryCondition(Aux);
+		AuxCopy = collection->GetNextBoundaryCondition();
 	}
-
-	this->Superclass::Modified();
 }
 
 //--------------------------------------------------------------------------
-void vtkBioMechanicalModel::DeleteContacts()
-{
-	this->Contacts->RemoveContacts();
-	this->Superclass::Modified();
+void vtkBoundaryConditionCollection::InsertNextBoundaryCondition(vtkBoundaryCondition *condition) {
+	this->vtkCollection::AddItem(condition);
 }
 
-//--------------------------------------------------------------------------
-void vtkBioMechanicalModel::InsertNextBoundaryCondition(vtkBoundaryCondition* condition)
-{
-	//Insert collision point coordinates
-	this->BoundaryConditions->InsertNextBoundaryCondition(condition);
-	this->Superclass::Modified();
+//-------------------------------------------------------------------------
+void vtkBoundaryConditionCollection::ReplaceBoundaryCondition(vtkIdType id, vtkBoundaryCondition *condition) {
+	this->vtkCollection::ReplaceItem(id, condition);
 }
 
-//--------------------------------------------------------------------------
-void vtkBioMechanicalModel::InsertBoundaryConditions(vtkBoundaryConditionCollection * collection)
+//-------------------------------------------------------------------------
+vtkIdType vtkBoundaryConditionCollection::ContainsBoundaryCondition(vtkBoundaryCondition * condition)
 {
-	//Extract data from vtkBoundaryConditionCollection object
-	collection->InitTraversal();
-	vtkBoundaryCondition * c;
-	c = collection->GetNextBoundaryCondition();
-	while(c)
+	return (this->FindBoundaryCondition(condition) != -1);
+}
+
+//-------------------------------------------------------------------------
+vtkIdType vtkBoundaryConditionCollection::FindBoundaryCondition(vtkBoundaryCondition * condition)
+{
+	vtkBoundaryCondition * local;
+
+	for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
 	{
-		this->InsertNextBoundaryCondition(c);
-		c = collection->GetNextBoundaryCondition();
+		local = this->GetBoundaryCondition(id);
+		if ((local) &&
+			(local->GetId() == condition->GetId()) &&
+			(local->GetPointId() == condition->GetPointId()) &&
+			(local->GetValue() == condition->GetValue()))
+		{
+			return id;
+		}
 	}
-
-	this->Superclass::Modified();
+	return -1;
 }
 
 //--------------------------------------------------------------------------
-void vtkBioMechanicalModel::DeleteBoundaryConditions()
-{
-	this->BoundaryConditions->RemoveBoundaryConditions();
-	this->Superclass::Modified();
+vtkBoundaryCondition* vtkBoundaryConditionCollection::GetBoundaryCondition(vtkIdType id) {
+	return static_cast <vtkBoundaryCondition *>(this->GetItemAsObject(id));
 }
 
 //--------------------------------------------------------------------------
-void vtkBioMechanicalModel::PrintSelf(ostream& os, vtkIndent indent)
-{
-	this->Superclass::PrintSelf(os, indent);
-	os << indent <<  "Name: " << this->Name << endl;
+vtkBoundaryCondition * vtkBoundaryConditionCollection::GetNextBoundaryCondition() {
+	return static_cast <vtkBoundaryCondition*>(this->GetNextItemAsObject());
 }
+
+//--------------------------------------------------------------------------
+void vtkBoundaryConditionCollection::RemoveBoundaryCondition(vtkIdType id) {
+	this->vtkCollection::RemoveItem(id);
+}
+
+//--------------------------------------------------------------------------
+void vtkBoundaryConditionCollection::RemoveBoundaryConditions() {
+	this->RemoveAllItems();
+}
+
+//----------------------------------------------------------------------------
+void vtkBoundaryConditionCollection::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+}
+

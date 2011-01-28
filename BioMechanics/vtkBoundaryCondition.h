@@ -64,7 +64,7 @@ public:
 	const char *GetClassName() {return "vtkBoundaryCondition";};
 
 	//BTX
-	//!Organ type definition
+	//!Condition type definition
 	enum vtkBoundaryConditionType{
 		Dirichlet = 0,
 		Neumann = 1,
@@ -72,96 +72,30 @@ public:
 	};
 	//ETX
 
-	//!Set contact type
-	vtkSetMacro(ContactType, vtkBoundaryCondition::vtkBoundaryConditionType);
-	//!Return contact type
-	vtkGetMacro(ContactType, vtkBoundaryCondition::vtkBoundaryConditionType);
+	//!Set condition type
+	vtkSetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);
+	//!Return condition type
+	vtkGetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);
 
-	//! Set the id of the item at the i position
-	/*!
-	 * \param i item index
-	 * \param id item identifier
-	 * \sa GetItemId()
-	 */
-	void SetItemId(int i, vtkIdType id);
+	//!Set condition id
+	vtkSetMacro(Id, vtkIdType);
+	//!Return condition id
+	vtkGetMacro(Id, vtkIdType);
 
-	//! Get the index of the item
-	/*!
-	 * \param item index
-	 * \return Identifying key of the item
-	 * \sa SetItemId(int i, vtkIdType id)
-	 */
-	vtkIdType GetItemId(int i);
-	
-	//! Set the item mesh point identifier where the collision has occurred
-	/*!
-	 * \param i index of the item in the collection
-	 * \param id point id of the mesh
-	 * \sa GetPointId()
-	 */
-	void SetPointId(int i, int id);
+	//!Set condition value
+	vtkSetMacro(Value, double);
+	//!Return condition value
+	vtkGetMacro(Value, double);
 
-	//! Get the collided point identifier
-	/*!
-	 * \param i index of the item in the collection
-	 * \return point id of the organ mesh
-	 * \sa SetPointId(int i, int id)
-	 */
-	int GetPointId(int i);
-	
-	//! Set the organ mesh point position of the collision
-	/*!
-	 * \param i index of the item in the collection
-	 * \param x x coordinate of the collision point
-	 * \param y y coordinate of the collision point
-	 * \param z z coordinate of the collision point
-	 * \sa GetVertexPosition()
-	 */
-	void SetPoint(int i, double x, double y, double z);
+	//!Set condition value
+	vtkSetMacro(PointId, vtkIdType);
+	//!Return condition value
+	vtkGetMacro(PointId, vtkIdType);
 
-	//! Set the collided point position
-	/*!
-	 * \param i index of the item in the collection
-	 * \param point[] [x, y, z] coordinates vector of the collision point
-	 * \sa GetVertexPosition()
-	 */
-	void SetPoint(int i, double point[3]);
-	//! Returns collided point position
-	/*!
-	 * \param i index of the item in the collection
-	 * \return pointer to position [x, y, z] coordinates vector of the collision point
-	 * \sa SetVertexPosition(double position[3])
-	 * \sa SetVertexPosition(double x, double y, double z)
-	 */
-	double * GetPoint(int i);
-
-	//! Set the collisioned cell of the deformable model
-	/*!
-	 * \param i index of the item in the collection
-	 * \param value organ cell id
-	 * \sa GetCellId()
-	 */
-	void SetCellId(int i, vtkIdType value);
-
-	//! Get the collisioned cell of the deformable model
-	/*!
-	 * \param i index of the item in the collection
-	 * \return cell id of the organ mesh
-	 * \sa SetCellId(int value)
-	 */
-	int GetCellId(int i);
-
-	//! Set the scalar distance
-	vtkSetMacro(Distance, double);
-
-	//! Get the scalar distance
-	vtkGetMacro(Distance, double);
-
-	//! Set the displacement vector of the contact
-	vtkSetVector3Macro(Displacement, double);
-
-	//! Returns the direction vector of the contact
-	vtkGetVector3Macro(Displacement, double);
+	//!Set condition point coordinates
+	vtkSetVector3Macro(Point, double);
+	//!Return condition point coordinates
+	vtkGetVector3Macro(Point, double);
 
 	//! Performs a full detailed copy of the contact
 	void DeepCopy(vtkBoundaryCondition *info);
@@ -171,35 +105,20 @@ protected:
 	~vtkBoundaryCondition();
 private:
 
-	//! Contact Type
-	vtkBoundaryConditionType ContactType;
+	//! Condition Type
+	vtkBoundaryConditionType Type;
 
-	// Identificadores de cada uno de los objetos colisionados
-	//! Collided items ids
-	vtkIdList * ItemIds;
+	//! Condition Id
+	vtkIdType Id;
 
-	// Posición donde se debe mover el vertice para sacarlo de la herramienta
-	//! Collision point on both objects
-	vtkPoints * Points;
+	//! Condition point coordinates
+	double Point[3];
 
-	// Identificadores de los objetos en colisión
-	//! Point ids of the collided items.
-	vtkIdList * PointIds;
+	//! Condition point id
+	vtkIdType PointId;
 
-	// Id de la celda del vertice colisionado
-	//! Clashed vertex cell Id
-	vtkIdList * CellIds;
-
-	// Distancia escalar entre los puntos
-	//! Scalar distance
-	double Distance;
-
-	// Vector desplazamiento del contacto
-	//! Displacement Vector of the contact
-	double Displacement[3];
-
-	//! Define the contact as grasped
-	bool isGrasped;
+	//! Condition value
+	double Value;
 
 	vtkBoundaryCondition (const vtkBoundaryCondition &);//NotImplemented
 	void operator =(const vtkBoundaryCondition &);//Not Implemented
