@@ -119,6 +119,7 @@ void vtkParticleSpringSystem::Init()
 		p0->SetId(id);
 		p0->SetPosition(point);
 		p0->SetMass(this->Mass);
+		p0->SetStatus(1);
 		this->Particles->InsertNextParticle(p0);
 	}
 

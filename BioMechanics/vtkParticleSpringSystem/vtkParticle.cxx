@@ -63,7 +63,7 @@ void vtkParticle::Update()
 //----------------------------------------------------------------------------
 void vtkParticle::AddPosition(double x, double y, double z)
 {
-	if(!this->Status)
+	if(this->Status)
 	{
 		this->Position[0] += x;
 		this->Position[1] += y;

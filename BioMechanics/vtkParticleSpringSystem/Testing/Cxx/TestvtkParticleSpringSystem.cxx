@@ -154,9 +154,6 @@ int main(int argc, char * argv[])
 		ParticleSpringSystem->InsertContact(list->GetId(i), dir);
 	}
 
-	//Fix a particle
-	//ParticleSpringSystem->SetParticleStatus(10,1);
-
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
 	renWin->SetSize(500,500);
 	renWin->AddRenderer(renderer);
