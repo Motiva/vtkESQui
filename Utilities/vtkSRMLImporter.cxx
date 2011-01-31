@@ -526,8 +526,12 @@ void vtkSRMLImporter::SetDeformationModelData(vtkBioMechanicalModel * model, vtk
 		}*/
 
 		//Set common simulation parameters
-		particleSpring->SetGravity(this->Simulation->GetGravity());
 		particleSpring->SetDeltaT(this->Simulation->GetSimulationTimerRate());
+		int gravity;
+		item->GetScalarAttribute("EnableGravity",gravity);
+		if(gravity && gravity == 1) {
+			particleSpring->SetGravity(this->Simulation->GetGravity());
+		}
 
 		//Set particle-spring system specific parameters
 		double coefficient;
@@ -594,8 +598,7 @@ void vtkSRMLImporter::SetDeformationModelData(vtkBioMechanicalModel * model, vtk
 				condition->SetValue(value);
 
 				//Insert condition into biomechanical model
-				particleSpring->InsertNextBoundaryCondition(condition);
-				condition->Print(cout);
+				//particleSpring->InsertNextBoundaryCondition(condition);
 			}
 		}
 	}
