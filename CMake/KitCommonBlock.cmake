@@ -17,16 +17,16 @@ INCLUDE (${PROJECT_SOURCE_DIR}/${KIT}/LocalUserOptions.cmake OPTIONAL)
 # if we are wrapping into Tcl then add the library and extra
 # source files
 #
-IF (VTK_WRAP_TCL)
+IF (VTKESQUI_WRAP_TCL)
   INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonTclWrapBlock.cmake)
-ENDIF (VTK_WRAP_TCL)
+ENDIF (VTKESQUI_WRAP_TCL)
 
 # if we are wrapping into Python then add the library and extra
 # source files
 #
-#IF (VTK_WRAP_PYTHON)
-#  INCLUDE(KitCommonPythonWrapBlock)
-#ENDIF (VTK_WRAP_PYTHON)
+IF (VTKESQUI_WRAP_PYTHON)
+  #INCLUDE(KitCommonPythonWrapBlock)
+ENDIF (VTKESQUI_WRAP_PYTHON)
 
 # if we are wrapping into Java then add the library and extra
 # source files

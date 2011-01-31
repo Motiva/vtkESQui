@@ -145,6 +145,24 @@ IF(VTK_FOUND)
 
   ENDIF(VTK_WRAP_TCL)
   
+  # Create Python wrappers if VTK is wrapped in Tcl.
+IF (VTK_WRAP_PYTHON)
+
+  OPTION(VTKESQUI_WRAP_PYTHON
+         "Wrap classes into the Python interpreted language."
+         ON)
+
+  IF (VTKESQUI_WRAP_PYTHON)
+    INCLUDE(${VTK_CMAKE_DIR}/vtkWrapPython.cmake)
+    IF (WIN32)
+      IF (NOT BUILD_SHARED_LIBS)
+        MESSAGE(FATAL_ERROR "Python support requires BUILD_SHARED_LIBS to be ON.")
+        SET (VTKESQUI_CAN_BUILD 0)
+      ENDIF (NOT BUILD_SHARED_LIBS)
+    ENDIF (WIN32)
+  ENDIF (VTKESQUI_WRAP_PYTHON)
+ENDIF (VTK_WRAP_PYTHON)
+  
   #
   # Build examples too.
   #
