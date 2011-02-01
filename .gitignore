@@ -8,5 +8,8 @@ Doxygen
 .cproject
 .project
 
-#Logs
+# Temporary files
+*.swp
+
+# Logs
 *.log
