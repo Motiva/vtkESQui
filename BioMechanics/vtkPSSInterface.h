@@ -52,6 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 class VTK_ESQUI_BIOMECHANICS_EXPORT vtkPSSInterface : public vtkBioMechanicalModel
 {
 public:
+	//! Type Revision Macro
 	vtkTypeRevisionMacro(vtkPSSInterface, vtkBioMechanicalModel);
 	//! Create a new PSS Interface
 	static vtkPSSInterface* New();

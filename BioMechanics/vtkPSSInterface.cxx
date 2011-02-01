@@ -76,7 +76,6 @@ vtkPSSInterface::~vtkPSSInterface()
 //--------------------------------------------------------------------------
 void vtkPSSInterface::Init()
 {
-	std::cout << "vtkPSSInterface::Init()\n";
 	//Set pss input data
 	this->ParticleSpringSystem->SetInput(this->GetInput());
 	//Set common params

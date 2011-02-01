@@ -66,6 +66,18 @@ public:
 	//! Handle onKeyPress event
 	virtual void OnKeyPress();
 
+	virtual void OnMouseMove();
+
+	//! Handle onLeftButtonDown event
+	virtual void OnLeftButtonDown();
+	virtual void OnLeftButtonUp();
+
+	virtual void OnMiddleButtonDown();
+	virtual void OnMiddleButtonUp();
+
+	virtual void OnRightButtonDown();
+	virtual void OnRightButtonUp();
+
 	//! Set Interactor Scenario
 	vtkSetObjectMacro(Scenario, vtkScenario);
 	//! Get Interactor Scenario
@@ -76,17 +88,26 @@ public:
 	//! Get currently active tool id
 	vtkGetMacro(ActiveToolId, vtkIdType);
 
+	//! Set movement scale factor
+	vtkSetMacro(Scale, double);
+	//! Get movement scale
+	vtkGetMacro(Scale, double);
 
 protected:
 	vtkSimulationInteractorStyle();
 	~vtkSimulationInteractorStyle();
 private:
 
-	bool Mode;
+	int PreviousPosition[2];
+	double Scale;
 
-	vtkIdType ActiveToolId;
+	bool LeftButtonPressed;
+	bool RightButtonPressed;
 
 	vtkScenario * Scenario;
+	//! Camera/Tool Mode
+	bool Mode;
+	vtkIdType ActiveToolId;
 
 	vtkSimulationInteractorStyle (const vtkSimulationInteractorStyle &);//NotImplemented
 	void operator =(const vtkSimulationInteractorStyle &);//Not Implemented

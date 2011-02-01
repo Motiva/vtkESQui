@@ -58,9 +58,12 @@ vtkStandardNewMacro(vtkSimulationInteractorStyle);
 
 vtkSimulationInteractorStyle::vtkSimulationInteractorStyle()
 {
+	this->PreviousPosition[0] = this->PreviousPosition[1] = 0;
+	this->LeftButtonPressed = this->RightButtonPressed = 0;
 	this->Scenario = NULL;
 	this->Mode = 0;
 	this->ActiveToolId = 0;
+	this->Scale = 0.1;
 }
 
 //--------------------------------------------------------------------------
@@ -127,12 +130,18 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 		if(key.compare("1") == 0)
 		{
 			vtkDebugMacro("Select Tool (1)");
-			this->ActiveToolId = 1;
+			if (this->Scenario->GetNumberOfTools() > 1)
+			{
+				this->ActiveToolId = 1;
+			}
 		}
 		if(key.compare("2") == 0)
 		{
 			vtkDebugMacro("Select Tool (2)");
-			this->ActiveToolId = 2;
+			if (this->Scenario->GetNumberOfTools() > 2)
+			{
+				this->ActiveToolId = 2;
+			}
 		}
 		if(key.compare("a") == 0)
 		{
@@ -166,3 +175,68 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 	vtkInteractorStyleTrackballCamera::OnKeyPress();
 }
 
+void vtkSimulationInteractorStyle::OnMouseMove()
+{
+	int pick[2];
+	this->GetInteractor()->GetEventPosition(pick);
+
+	if(Mode)
+	{
+		int x = -this->Scale*(pick[0] - this->PreviousPosition[0]);
+		int y = this->Scale*(pick[1] - this->PreviousPosition[1]);
+
+		vtkTool * t = this->Scenario->GetTool(this->ActiveToolId);
+		vtkToolPincers * tool = vtkToolPincers::SafeDownCast(t);
+
+		if(this->LeftButtonPressed)
+		{
+			tool->RotateY(x);
+			tool->RotateX(y);
+		}
+		else if (this->RightButtonPressed)
+		{
+			tool->SetDepth((tool->GetDepth()+0.5*y));
+		}
+	}
+
+	this->PreviousPosition[0] = pick[0];
+	this->PreviousPosition[1] = pick[1];
+}
+
+//--------------------------------------------------------------------------
+void vtkSimulationInteractorStyle::OnLeftButtonDown()
+{
+	this->LeftButtonPressed = 1;
+	this->GetInteractor()->GetEventPosition(this->PreviousPosition);
+}
+
+//--------------------------------------------------------------------------
+void vtkSimulationInteractorStyle::OnLeftButtonUp()
+{
+	this->LeftButtonPressed = 0;
+}
+
+//--------------------------------------------------------------------------
+void vtkSimulationInteractorStyle::OnMiddleButtonDown()
+{
+	std::cout << "MiddleButtonDown\n";
+}
+
+//--------------------------------------------------------------------------
+void vtkSimulationInteractorStyle::OnMiddleButtonUp()
+{
+	std::cout << "MiddleButtonUp\n";
+}
+
+//--------------------------------------------------------------------------
+void vtkSimulationInteractorStyle::OnRightButtonDown()
+{
+	this->RightButtonPressed = 1;
+	this->GetInteractor()->GetEventPosition(this->PreviousPosition);
+}
+
+//--------------------------------------------------------------------------
+void vtkSimulationInteractorStyle::OnRightButtonUp()
+{
+	this->RightButtonPressed = 0;
+}
