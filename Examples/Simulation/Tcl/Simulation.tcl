@@ -19,14 +19,16 @@ proc CreateSimulation {} {
 	
 	global Scenario
 	global Simulation
-	global SimulationManager
 	global renWin
 	
 	puts "Creating simulation..."
+	
+	#Create renderer window
 	vtkRenderer ren1
 	vtkRenderWindow renWin
 	renWin AddRenderer ren1
 	
+	#Default window interactor
 	vtkRenderWindowInteractor iren
 	iren SetRenderWindow renWin
 
@@ -40,18 +42,15 @@ proc CreateSimulation {} {
 
 	pack $vtkw
 
-	renWin Render
+	#renWin Render
 
-	vtkSimulation Simulation
-	vtkSimulationManager SimulationManager
+	# Create the scenario
 	vtkScenario Scenario
 	Scenario SetRenderWindow renWin
 	
-	SimulationManager SetLibraryName "vtkbioeng"
-	SimulationManager SetScenario Scenario
-	SimulationManager Init
-
-	Simulation SetSimulationManager SimulationManager
+	# New simulation
+	vtkSimulation Simulation
+	Simulation SetScenario Scenario
 	
 	puts "Simulation has been created."
 }
@@ -70,6 +69,8 @@ proc ImportSimulation {path name} {
 	puts "Simulation has been correctly imported..."
 	
 	AddEvents
+	
+	Simulation Init
 	
 	Simulation Run
 	

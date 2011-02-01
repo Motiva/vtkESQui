@@ -98,9 +98,9 @@ proc SetToolDepth {Tool x y lastX lastY} {
 
 	global ActiveTool
 	
-	set mouseRight [expr [expr  $lastY - $y ] * 0.05]	
-	$Tool AddDepth $mouseRight
-	
+	set mouseRight [expr [expr  $lastY - $y ] * 0.05]
+	set d [$Tool GetDepth]
+	$Tool SetDepth [expr $d - $mouseRight ]
 	renWin Render
 }
 
@@ -121,7 +121,7 @@ proc KeyPress {} {
 	global cam ActiveTool Opened0 Opened1
 
 	set pi 3.1415926535897931
-
+	
 	switch $tecla {
 
 	"c" {
@@ -150,7 +150,6 @@ proc KeyPress {} {
 		SetCameraAzimuth [ren1 GetActiveCamera] 5
 	}
 	"x" {
-		#moviento mouseLeft mouseRight de la herramienta de la derecha
 		if {!$cam} {
 			set tool [Scenario GetTool $ActiveTool]
 			set angle -10
@@ -160,7 +159,6 @@ proc KeyPress {} {
 		}
 	}
 	"z" {
-		#moviento mouseLeft mouseRight de la herramienta de la derecha
 		if {!$cam} {
 			set tool [Scenario GetTool $ActiveTool]
 			set angle 10
@@ -178,11 +176,10 @@ proc KeyPress {} {
 		SetToolOpening 0
 		renWin Render
 		#puts "\tTool State: Closed\n"
-  #moviento mouseLeft mouseLeft de la herramienta de la izquierda
-	}
+  	}
 	"u" {
 		wm deiconify .vtkInteract
-		}
+	}
 
 	"q" {::vtk::cb_exit
 				exit}
