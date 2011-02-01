@@ -389,6 +389,17 @@ void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 	item->GetScalarAttribute("Debug", debug);
 	tool->SetDebug(debug);
 
+	const char * status = item->GetAttribute("Status");
+	// By default the item is visible
+	if (!strcmp(status, "Hidden"))
+	{
+		tool->SetStatus(vtkScenarioItem::Hidden);
+	}
+	else if (!strcmp(status, "Disabled"))
+	{
+		tool->SetStatus(vtkScenarioItem::Disabled);
+	}
+
 	tool->SetName(item->GetAttribute("Name"));
 
 	double array[3];

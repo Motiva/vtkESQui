@@ -53,6 +53,8 @@ vtkScenarioItem::vtkScenarioItem() {
 	this->SetNumberOfInputPorts(1);
 	this->SetNumberOfOutputPorts(1);
 
+	this->Type = Tool;
+	this->Status = Visible;
 	this->Scale = 0.0;
 	this->DeltaT = 0.0;
 

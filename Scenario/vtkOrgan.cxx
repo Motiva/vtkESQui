@@ -92,6 +92,9 @@ vtkOrgan::vtkOrgan()
 	this->Mapper = NULL;
 	this->Texture = NULL;
 
+	// Item type
+	this->Type = vtkScenarioItem::Organ;
+
 	//Organ Type
 	this->OrganType = Static;
 

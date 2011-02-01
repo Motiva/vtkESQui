@@ -76,6 +76,14 @@ public:
 	};
 	//ETX
 
+	//!Enumeration of piece types
+	enum vtkScenarioItemStatus
+	{
+		Visible = 0,
+		Hidden = 1,
+		Disabled = 2
+	};
+
 	//!Abstract initialization function
 	/*!
 	 * This method initializes the item physical values, scale, position, etc...
@@ -107,18 +115,29 @@ public:
 	vtkGetMacro(Id, vtkIdType);
 
 	//BTX
-	//! Assign the identifying key of the item
+	//! Assign the item type
 	/*!
-	 *\sa GetId()
+	 *\sa GetType()
 	 */
 	vtkSetMacro(Type, vtkScenarioItem::vtkScenarioItemType);
 
-	//! Returns the identifying key of the item
+	//! Returns the type of the item
 	/*!
-	 *\sa SetId(vtkIdType Id)
+	 *\sa SetType(vtkScenarioItemType)
 	 */
 	vtkGetMacro(Type, vtkScenarioItem::vtkScenarioItemType);
 	//ETX
+	//! Assign the item state
+	/*!
+	 *\sa GetState()
+	 */
+	vtkSetMacro(Status, vtkScenarioItem::vtkScenarioItemStatus);
+
+	//! Returns the state of the item
+	/*!
+	 *\sa SetState(vtkScenarioStateType)
+	 */
+	vtkGetMacro(Status, vtkScenarioItem::vtkScenarioItemStatus);
 
 	//! Assign item name
 	/*!
@@ -192,6 +211,15 @@ public:
 	//! Get the object direction unit vector (WXYZ)
 	vtkGetVector3Macro(Direction, double);
 
+	//! Check if item is visible
+	bool IsVisible(){ return this->Status == Visible;};
+
+	//! Check if item is hidden
+	bool IsHidden(){ return this->Status == Hidden;};
+
+	//! Check if item is disabled
+	bool IsDisabled(){ return this->Status == Disabled;};
+
 protected:
 
 	vtkScenarioItem();
@@ -203,6 +231,8 @@ protected:
 	vtkScenarioItemType Type;
 	//! Item Name
 	char * Name;
+	//! Item State
+	vtkScenarioItemStatus Status;
 
 	//**** Graphical Purposes objects ****//
 	//! Origin point for transforms

@@ -70,6 +70,7 @@ vtkCxxRevisionMacro(vtkTool, "$Revision: 0.1 $");
 //--------------------------------------------------------------------------
 vtkTool::vtkTool() {
 	this->Id = -1;
+	this->Type = vtkScenarioItem::Tool;
 	this->ToolType = vtkTool::Laparoscopy;
 	this->UseHaptic = 0;
 	this->NumberOfPieces = 0;

@@ -20,7 +20,6 @@ proc sleep {} {
 
 # Modify scenario
 proc scene {} {
-	Scenario
 	sleep
 }
 
