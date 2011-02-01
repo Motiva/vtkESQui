@@ -34,8 +34,6 @@
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #=============================================================================
 
-
-
 #Especifica la libreria necesaria
 
 global Scenario
@@ -63,15 +61,10 @@ puts "\t Loading TCL modules in progress ...\n"
 
 source Window.tcl
 source Simulation.tcl
-source Events.tcl  
-#source LoadSceneComponents.tcl
-#source LoadSceneTools.tcl
-#source LoadAndRunExerciseFromSRML.tcl
-#source SRMLParser.tcl
+source Events.tcl
 
 #Este script contiene los procedimientos desarrollados
 #para el control de los dispositivos h�pticos
-#source HapticDeviceControl.tcl 
 puts "\t TCL modules loaded.\n"
 
 puts "Setting up the system, done. \n\n"

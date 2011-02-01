@@ -60,6 +60,8 @@ proc ImportSimulation {path name} {
 	CreateSimulation
 	
 	puts "Importing simulation from SRML file..."
+	puts "DataPath: $path "
+	puts "Name: $name "
 	vtkSRMLImporter SRMLImporter
 	SRMLImporter SetDataPath $path
 	SRMLImporter SetFileName $name
