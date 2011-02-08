@@ -73,12 +73,13 @@ public:
 
 	virtual void PrintSelf(ostream &os, vtkIndent indent);
 
-	//BTX
+	
 	//!Organ type definition
 	enum vtkOrganType{
 		Static = 0,
 		Deformable = 1
 	};
+	
 
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
@@ -173,7 +174,7 @@ public:
 	* The following parameters should be set before calling this function:
 	* Biomechanical Model
 	*/
-	void Init();
+	virtual void Init();
 
 	//------- Rendering purposes ----------//
 
@@ -200,7 +201,6 @@ public:
 	* \sa SetMapper(vtkDataSetMapper *)
 	*/
 	vtkGetObjectMacro(Mapper, vtkDataSetMapper);
-
 	//!Function that returns simplified mesh
 	/*!
 	 * This method returns a simplified mesh for collision detection purposes
@@ -235,15 +235,10 @@ public:
 	 */
 	void CleanContacts() {this->Contacts->RemoveContacts();};
 
-	//!Cauterize organ at specified element
-	//BTX
-	void Cauterize( vtkIdType element );
-	//ETX
-
-	//BTX
-	//!Cut the organ at specified elements
-	void Cut(vtkIdList *ids);
-	//ETX
+	//! Hide scenario organ.
+	virtual void Hide();
+	//! Show/Display organ.
+	virtual void Show();
 
 	//*****   p r o t e c t e d   m e m b e r s
 protected:

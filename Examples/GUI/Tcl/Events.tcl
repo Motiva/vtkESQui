@@ -6,11 +6,7 @@ proc AddEvents {} {
     global mouseLeft; set mouseLeft 0
     global mouseRight; set mouseRight 0
     global cam; set cam 1
-    global IzqTool; set IzqTool 0 
-    global DchaTool; set DchaTool 0
     global ActiveTool; set ActiveTool 0
-    global Opened0; set Opened0 0
-    global Opened1; set Opened1 0
     set iren [renWin GetInteractor]
     $iren SetInteractorStyle ""
     #
@@ -29,7 +25,7 @@ proc AddEvents {} {
 
 proc UpdateScenario {} {
     set iren [renWin GetInteractor]
-    global cam mouseLeft mouseRight ActiveTool DefModels cajas
+    global cam mouseLeft mouseRight ActiveTool
     set lastX [lindex [$iren GetLastEventPosition] 0]
     set lastY [lindex [$iren GetLastEventPosition] 1]
     set x [lindex [$iren GetEventPosition] 0]

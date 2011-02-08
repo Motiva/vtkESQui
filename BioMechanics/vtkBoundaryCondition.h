@@ -63,14 +63,14 @@ public:
 	//! Return class name
 	const char *GetClassName() {return "vtkBoundaryCondition";};
 
-	//BTX
+	
 	//!Condition type definition
 	enum vtkBoundaryConditionType{
 		Dirichlet = 0,
 		Neumann = 1,
 		Cauchy = 2
 	};
-	//ETX
+	
 
 	//!Set condition type
 	vtkSetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);

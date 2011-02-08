@@ -52,9 +52,9 @@ class vtkSpringCollection;
 class vtkParticle;
 class vtkParticleCollection;
 
-//BTX
+
 class vtkMotionEquationSolver;
-//ETX
+
 
 //! Implementation of the particle-spring deformation model
 /*!
@@ -65,7 +65,7 @@ class vtkMotionEquationSolver;
 class VTK_vtkParticleSpringSystem_EXPORT vtkParticleSpringSystem : public vtkPolyDataAlgorithm {
 public:
 
-	//BTX
+	
 	//!Enumeration of solver types
 	enum MotionEquationSolverType{
 		Euler = 0,
@@ -73,7 +73,7 @@ public:
 		VelocityVerlet = 2,
 		RungeKutta4 = 3
 	};
-	//ETX
+	
 
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkParticleSpringSystem,vtkPolyDataAlgorithm);

@@ -1,7 +1,3 @@
-#!/bin/sh
-# ESQUILapPS.tcl \
-exec tclsh "$0" ${1+"$@"}
-
 puts "----------------------------------------------"
 puts "|    ESQuiLap Precission & Speed Exercise    |"
 puts "----------------------------------------------\n"
@@ -16,27 +12,23 @@ puts "Loading vtkESQui in progress ...\n"
 package require vtkesqui
 puts "vtkESQui loaded.\n"
 
-#catch {package require vtkesquiHaptics}
-#catch {::vtk::load_component vtkesquiHapticsTCL}
-
-global active; set active 1
-global organ;
 
 # idle loop
-proc sleep10ms {} {
-	after 100 scene
+proc sleep {} {
+	after 10 scene
 }
 
 # Modify scenario
 proc scene {} {
-	set organ [Scenario GetOrgan $::active]
-	
-	sleep10ms
+	sleep
 }
+
+#catch {package require vtkesquiHaptics}
+#catch {::vtk::load_component vtkesquiHapticsTCL}
 
 # Path of the importer filename
 set path "/home/jballesteros/Workspace/data/vtkESQuiData"
-set name "/home/jballesteros/Workspace/data/vtkESQuiData/lapPS.srml"
+set name "/home/jballesteros/Workspace/data/vtkESQuiData/lap.srml"
 
 # Create renderer window
 vtkRenderer ren1
@@ -83,7 +75,7 @@ iren Initialize
 # prevent the tk window from showing up then start the event loop
 wm withdraw .
 
-sleep10ms
+sleep
 
 Simulation Run
 

@@ -66,13 +66,13 @@ public:
 	//! Return class name
 	const char *GetClassName() {return "vtkContact";};
 
-	//BTX
+	
 	//!Organ type definition
 	enum vtkContactType{
 		ToolOrgan = 0,
 		ToolTool = 1
 	};
-	//ETX
+	
 
 	//!Set contact type
 	vtkSetMacro(ContactType, vtkContact::vtkContactType);

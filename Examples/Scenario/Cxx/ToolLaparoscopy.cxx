@@ -91,7 +91,7 @@ int main(int argc, char * argv[])
 	pincers->SetOrigin(0, 0, 4);
 
 	//Set tool scale (size)
-	pincers->SetScale(1);
+	pincers->SetScale(1.0, 1.0, 1.0);
 
 	//Assign render window for display purposes
 	pincers->SetRenderWindow(renWin);

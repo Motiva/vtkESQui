@@ -69,14 +69,14 @@ public:
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//BTX
+	
 	//!Tool tyoe definition
 	enum vtkPieceType{
 		Stick = 0,
 		LeftGrasper = 1,
 		RightGrasper = 2
 	};
-	//ETX
+	
 
 	//!Initialize the tool from VTK file
 	/*!

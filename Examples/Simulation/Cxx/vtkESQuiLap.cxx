@@ -74,7 +74,7 @@ using namespace EsquiExampleNS;
 const char * EsquiExampleNS::ExpandDataFileName(const char * pname, const char * fname)
 {
 	char * fullName;
-	fullName = new char[strlen(pname) + 1 + strlen(fname)];
+	fullName = new char[strlen(pname) + 2 + strlen(fname)];
 	fullName[0] = 0;
 	strcat(fullName, pname);
 	size_t len = strlen(fullName);
@@ -94,8 +94,6 @@ int main(int argc, char * argv[])
 		path = argv[1];
 	}
 	const char * filename = ExpandDataFileName(path, "lap.srml");
-
-	cout << filename << endl;
 
 	/**********  Render Window Definitions  ********/
 	vtkRenderer *ren1= vtkRenderer::New();
@@ -138,6 +136,7 @@ int main(int argc, char * argv[])
 	// Free up any objects we created. All instances in VTK are deleted by
 	// using the Delete() method.
 	//
+	delete[] filename;
 	Scenario->Delete();
 	Importer->Delete();
 	ren1->Delete();

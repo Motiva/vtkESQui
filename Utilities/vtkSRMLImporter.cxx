@@ -403,6 +403,8 @@ void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 	tool->SetName(item->GetAttribute("Name"));
 
 	double array[3];
+	item->GetVectorAttribute("Scale", 3, array);
+	tool->SetScale(array);
 	item->GetVectorAttribute("Position", 3, array);
 	tool->SetPosition(array[0], array[1], array[2]);
 	item->GetVectorAttribute("Orientation", 3, array);
@@ -413,9 +415,6 @@ void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 	item->GetScalarAttribute("NumberOfPieces", value);
 	tool->SetNumberOfPieces(value);
 
-	double scale;
-	item->GetScalarAttribute("Scale", scale);
-	tool->SetScale(scale);
 	tool->SetDeltaT(this->Simulation->GetSimulationTimerRate());
 }
 
@@ -435,9 +434,11 @@ void vtkSRMLImporter::SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElemen
 		child = item->GetNestedElement(j);
 		int id;
 		child->GetScalarAttribute("Id", id);
-		if(id==0) tool->SetStickFileName(ExpandDataFileName(child->GetAttribute("FileName")));
-		else if(id==1) tool->SetLeftGrasperFileName(ExpandDataFileName(child->GetAttribute("FileName")));
-		else if(id==2) tool->SetRightGrasperFileName(ExpandDataFileName(child->GetAttribute("FileName")));
+		const char *fn = ExpandDataFileName(child->GetAttribute("FileName"));
+		if(id==0) tool->SetStickFileName(fn);
+		else if(id==1) tool->SetLeftGrasperFileName(fn);
+		else if(id==2) tool->SetRightGrasperFileName(fn);
+		delete[] fn;
 	}
 }
 
@@ -466,23 +467,36 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 
 	//Model Definition File
 	organ->SetName(item->GetAttribute("Name"));
-	organ->SetFileName(ExpandDataFileName(item->GetAttribute("FileName")));
+	const char *fn = ExpandDataFileName(item->GetAttribute("FileName"));
+	organ->SetFileName(fn);
+	delete[] fn;
+
+	const char * status = item->GetAttribute("Status");
+	// By default the item is visible
+	if (!strcmp(status, "Hidden"))
+	{
+		organ->SetStatus(vtkScenarioItem::Hidden);
+	}
+	else if (!strcmp(status, "Disabled"))
+	{
+		organ->SetStatus(vtkScenarioItem::Disabled);
+	}
 
 	//Texture File
 	if (item->GetAttribute("TextureFile"))
 	{
-		organ->SetTextureFileName(ExpandDataFileName(item->GetAttribute("TextureFile")));
+		const char *fn = ExpandDataFileName(item->GetAttribute("TextureFile"));
+		organ->SetTextureFileName(fn);
+		delete[] fn;
 	}
 
 	double array[3];
+	item->GetVectorAttribute("Scale", 3, array);
+	organ->SetScale(array);
 	item->GetVectorAttribute("Position", 3, array);
 	organ->SetPosition(array[0], array[1], array[2]);
 	item->GetVectorAttribute("Orientation", 3, array);
 	organ->SetOrientation(array[0], array[1], array[2]);
-
-	double scale;
-	item->GetScalarAttribute("Scale", scale);
-	organ->SetScale(scale);
 
 	//Deformation Model
 	vtkXMLDataElement * modelXML = item->LookupElementWithName("DeformationModel");
@@ -790,7 +804,7 @@ void vtkSRMLImporter::ImportHaptic()
 const char * vtkSRMLImporter::ExpandDataFileName(const char * fname)
 {
 	char * fullName;
-	fullName = new char[strlen(this->DataPath) + 1 + strlen(fname)];
+	fullName = new char[strlen(this->DataPath) + 2 + strlen(fname)];
 	fullName[0] = 0;
 	strcat(fullName, this->DataPath);
 	size_t len = strlen(fullName);

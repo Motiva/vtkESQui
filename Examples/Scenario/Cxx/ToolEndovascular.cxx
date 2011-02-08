@@ -83,7 +83,7 @@ int main(int argc, char * argv[])
 	cath->SetOrigin(0, 0, 0);
 
 	//Set tool scale (size)
-	cath->SetScale(1);
+	cath->SetScale(1.0, 1.0, 1.0);
 
 	//Assign render window for display purposes
 	cath->SetRenderWindow(renWin);

@@ -111,9 +111,9 @@ private:
 	//! Neighborhood size factor
 	int RigidityFactor;
 	//! Motion equation solver type
-	//BTX
+	
 	vtkParticleSpringSystem::MotionEquationSolverType SolverType;
-	//ETX
+	
 };
 
 #endif

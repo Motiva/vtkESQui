@@ -81,7 +81,7 @@ public:
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//BTX
+	
 	//!Tool type definition
 	enum vtkToolType{
 		Laparoscopy = 0,
@@ -89,7 +89,7 @@ public:
 		Arthroscopy = 2,
 		Camera = 3
 	};
-	//ETX
+	
 
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
@@ -111,6 +111,16 @@ public:
 	vtkSetMacro(ToolType, vtkTool::vtkToolType);
 	//!Return tool type
 	vtkGetMacro(ToolType, vtkTool::vtkToolType);
+
+	// **** Haptic Management Methods **** //
+
+	//! Set the use of haptic device
+	vtkSetMacro(UseHaptic, bool);
+	//! Get the use of haptic device
+	vtkGetMacro(UseHaptic, bool);
+
+	//!Enable/Disable haptic device use
+	vtkBooleanMacro(UseHaptic, bool);
 
 	//!Abstract initialization function
 	/*!
@@ -168,17 +178,13 @@ public:
 	*/
 	vtkIdType GetNumberOfContacts();
 
-	// **** Haptic Management Methods **** //
-
-	//! Set the use of haptic device
-	vtkSetMacro(UseHaptic, bool);
-	//! Get the use of haptic device
-	vtkGetMacro(UseHaptic, bool);
-
-	//!Enable/Disable haptic device use
-	vtkBooleanMacro(UseHaptic, bool);
+	//! Hide scenario organ.
+	virtual void Hide();
+	//! Show/Display organ.
+	virtual void Show();
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
+	
 	//BTX
 	//! Set the haptic device for the tool
 	void SetHapticDevice(vtkHaptic *haptic) {this->Haptic = haptic;}

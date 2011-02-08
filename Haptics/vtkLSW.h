@@ -46,9 +46,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkHaptic.h"
 
 class vtkLSWTool;
-//BTX
+
 class ImmSurgicalWorkstation;
-//ETX
+
 
 static const unsigned VTK_CORRECT_LSW = 1;
 static const unsigned VTK_DETECT_FAILURE_LSW = 0;

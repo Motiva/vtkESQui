@@ -62,7 +62,7 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkPiece:public vtkObject
 
 public:
 
-	//BTX
+	
 	//!Enumeration of piece types
 	enum vtkPieceType{
 		Blade = 0,
@@ -72,7 +72,7 @@ public:
 		Tube = 4,
 		Wire = 5
 	};
-	//ETX
+	
 
 	//! Type revision macro
 	vtkTypeRevisionMacro(vtkPiece, vtkObject);
@@ -95,7 +95,7 @@ public:
 	 */
 	void Update();
 
-	//BTX
+	
 	//!Set piece type
 	/*!
 	 * \sa GetType()
@@ -107,7 +107,7 @@ public:
 	 * \sa SetType(vtkPiece::vtkPieceType)
 	 */
 	vtkGetMacro(PieceType, vtkPiece::vtkPieceType);
-	//ETX
+	
 
 	//!Set piece name
 	/*!

@@ -150,7 +150,7 @@ int main(int argc, char * argv[])
 	pincers->SetLeftGrasperFileName(ExpandDataFileName("Scenario/Tools/Pincers/LeftGrasper.vtk"));
 	pincers->SetRightGrasperFileName(ExpandDataFileName("Scenario/Tools/Pincers/RightGrasper.vtk"));
 
-	pincers->SetScale(30.0);
+	pincers->SetScale(1.0, 1.0, 1.0);
 	pincers->SetPosition(-3, 0, 0);
 	pincers->SetOrientation(0, -10, 0);
 

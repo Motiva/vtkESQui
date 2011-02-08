@@ -66,7 +66,7 @@ public:
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//BTX
+	
 	//!Enumeration of piece types
 	enum vtkScenarioItemType
 	{
@@ -74,7 +74,7 @@ public:
 		Organ = 1,
 		Extra = 2
 	};
-	//ETX
+	
 
 	//!Enumeration of piece types
 	enum vtkScenarioItemStatus
@@ -90,6 +90,8 @@ public:
 	 */
 	virtual void Init() = 0;
 
+	//! Process the algorithm request (Update).
+	//virtual int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
 	//! Set the render window of the item
 	/*!
 	 * Assign the render window for the item
@@ -114,7 +116,7 @@ public:
 	 */
 	vtkGetMacro(Id, vtkIdType);
 
-	//BTX
+	
 	//! Assign the item type
 	/*!
 	 *\sa GetType()
@@ -126,7 +128,7 @@ public:
 	 *\sa SetType(vtkScenarioItemType)
 	 */
 	vtkGetMacro(Type, vtkScenarioItem::vtkScenarioItemType);
-	//ETX
+	
 	//! Assign the item state
 	/*!
 	 *\sa GetState()
@@ -155,13 +157,13 @@ public:
 	/*!
 	 *\sa GetScale()
 	 */
-	vtkSetMacro(Scale, double);
+	vtkSetVector3Macro(Scale, double);
 
 	//!Return item scale
 	/*!
 	 *\sa SetScale(double)
 	 */
-	vtkGetMacro(Scale, double);
+	vtkGetVector3Macro(Scale, double);
 
 	//! Assign simulation time step
 	/*!
@@ -210,6 +212,16 @@ public:
 
 	//! Get the object direction unit vector (WXYZ)
 	vtkGetVector3Macro(Direction, double);
+	//! Hide scenario item.
+	/*!
+	 * Must be implemented in inherited classes
+	 */
+	virtual void Hide() = 0;
+	//! Show/Display item.
+	/*!
+	 * Must be implemented in inherited classes
+	 */
+	virtual void Show() = 0;
 
 	//! Check if item is visible
 	bool IsVisible(){ return this->Status == Visible;};
@@ -251,7 +263,7 @@ protected:
 	double DeltaT;
 
 	//! Scale factor (size)
-	double Scale;
+	double Scale[3];
 
 	//!Render Window of the item
 	vtkRenderWindow * RenderWindow;

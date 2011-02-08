@@ -57,6 +57,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRendererCollection.h"
 #include "vtkTransformCollection.h"
 #include "vtkActorCollection.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
 #include "vtkAppendPolyData.h"
 #include "vtkMath.h"
 
@@ -127,47 +129,48 @@ void vtkTool::Init()
 }
 
 int vtkTool::RequestData(vtkInformation *vtkNotUsed(request),
-                                             vtkInformationVector **inputVector,
-                                             vtkInformationVector *outputVector)
+		vtkInformationVector **inputVector,
+		vtkInformationVector *outputVector)
 {
 
-  // get the info objects
-  vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-  vtkInformation *outInfo = outputVector->GetInformationObject(0);
+	// get the info objects
+	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-  // get the input and output
-  vtkPolyData *input = vtkPolyData::SafeDownCast(
-      inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	// get the input and output
+	vtkPolyData *input = vtkPolyData::SafeDownCast(
+			inInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-  vtkPolyData *output = vtkPolyData::SafeDownCast(
-      outInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *output = vtkPolyData::SafeDownCast(
+			outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-  //Update position & orientation
-  this->Velocity[0] = this->Position[0];
-  this->Velocity[1] = this->Position[1];
-  this->Velocity[2] = this->Position[2];
-  this->Acceleration[0] = this->Velocity[0];
-  this->Acceleration[1] = this->Velocity[1];
-  this->Acceleration[2] = this->Velocity[2];
+	if(this->IsHidden()) this->Hide();
+	else if(this->IsVisible()) this->Show();
 
-  //Get transformed values
-  this->GetTransform(0)->GetPosition(this->Position);
-  this->GetTransform(0)->GetOrientation(this->Orientation);
+	//Update position & orientation
+	this->Velocity[0] = this->Position[0];
+	this->Velocity[1] = this->Position[1];
+	this->Velocity[2] = this->Position[2];
+	this->Acceleration[0] = this->Velocity[0];
+	this->Acceleration[1] = this->Velocity[1];
+	this->Acceleration[2] = this->Velocity[2];
 
-  //Update object velocity
-  //Velocity will be calculated from delta(Position)/dt
-  vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
-  vtkMath::MultiplyScalar(this->Velocity, 1/this->DeltaT);
+	//Get transformed values
+	this->GetTransform(0)->GetPosition(this->Position);
+	this->GetTransform(0)->GetOrientation(this->Orientation);
 
-  //Update object acceleration
-  vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
-  vtkMath::MultiplyScalar(this->Acceleration, 1/this->DeltaT);
+	//Update object velocity
+	//Velocity will be calculated from delta(Position)/dt
+	vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
+	vtkMath::MultiplyScalar(this->Velocity, 1/this->DeltaT);
 
-  //TODO: Add torsion force
+	//Update object acceleration
+	vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
+	vtkMath::MultiplyScalar(this->Acceleration, 1/this->DeltaT);
 
-  output->ShallowCopy(input);
+	output->ShallowCopy(input);
 
-  return 1;
+	return 1;
 }
 
 //--------------------------------------------------------------------------
@@ -273,6 +276,28 @@ vtkActor * vtkTool::GetActor(vtkIdType id) {
 //--------------------------------------------------------------------------
 vtkTransform * vtkTool::GetTransform(vtkIdType id) {
 	return this->Pieces->GetPiece(id)->GetTransform();
+}
+
+//--------------------------------------------------------------------------
+void vtkTool::Hide()
+{
+	this->Status == Hidden;
+	this->Actors->InitTraversal();
+	while (vtkActor * a = this->Actors->GetNextActor())
+	{
+		a->GetProperty()->SetOpacity(0.0);
+	}
+}
+
+//--------------------------------------------------------------------------
+void vtkTool::Show()
+{
+	this->Status == Visible;
+	this->Actors->InitTraversal();
+	while (vtkActor * a = this->Actors->GetNextActor())
+	{
+		a->GetProperty()->SetOpacity(1.0);
+	}
 }
 
 //--------------------------------------------------------------------------

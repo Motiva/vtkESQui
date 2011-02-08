@@ -61,7 +61,7 @@ public:
 	vtkCollisionDetectionLibrary();
 	~vtkCollisionDetectionLibrary();
 
-	//BTX
+	
 	//! Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use
 	/*!
 	* Abstract method to be defined on each implementation class
@@ -72,7 +72,7 @@ public:
 	* Abstract method to be defined on each implementation class
 	*/
 	virtual void Init() = 0;
-	//ETX
+	
 
 	virtual vtkPolyData * GetContactSurface() = 0;
 	//! Specify the organs to be checked in the collision detection process

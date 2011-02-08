@@ -140,6 +140,7 @@ void vtkOrgan::Init()
 		this->TransformFilter->SetInput(this->GetInput());
 		this->TransformFilter->SetTransform(this->Transform);
 
+		this->Transform->Scale(this->Scale);
 		this->Transform->Translate(this->Position);
 		this->Transform->RotateX(this->Orientation[0]);
 		this->Transform->RotateY(this->Orientation[1]);
@@ -149,7 +150,7 @@ void vtkOrgan::Init()
 
 		if(this->DeformationModel)
 		{
-			this->DeformationModel->SetInputConnection(this->TransformFilter->GetOutputPort());
+			this->DeformationModel->SetInput(this->TransformFilter->GetOutput());
 			this->DeformationModel->Init();
 		}
 		else
@@ -235,6 +236,8 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
+	if(this->IsHidden()) this->Hide();
+	else if(this->IsVisible()) this->Show();
 	if(this->DeformationModel)
 	{
 		this->DeformationModel->InsertContacts(this->Contacts);
@@ -261,6 +264,7 @@ void vtkOrgan::SetDeformationModel(vtkBioMechanicalModel * bmm)
 		this->DeformationModel->Delete();
 	}
 	this->DeformationModel = bmm;
+	this->OrganType = Deformable;
 }
 
 //--------------------------------------------------------------------------
@@ -270,15 +274,17 @@ vtkBioMechanicalModel * vtkOrgan::GetDeformationModel()
 }
 
 //--------------------------------------------------------------------------
-void vtkOrgan::Cauterize(vtkIdType element)
+void vtkOrgan::Hide()
 {
-	//TODO: Fill in this method
+	this->Status == Hidden;
+	this->Actor->GetProperty()->SetOpacity(0.0);
 }
 
 //--------------------------------------------------------------------------
-void vtkOrgan::Cut(vtkIdList * ids)
+void vtkOrgan::Show()
 {
-	//TODO: Fill in this method
+	this->Status == Visible;
+	this->Actor->GetProperty()->SetOpacity(1.0);
 }
 
 //--------------------------------------------------------------------------
