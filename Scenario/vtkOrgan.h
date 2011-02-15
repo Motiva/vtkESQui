@@ -46,7 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkScenarioItem.h"
 
 #include "vtkActor.h"
-#include "vtkDataSetMapper.h"
+#include "vtkPolyDataMapper.h"
 
 #include "vtkContactCollection.h"
 #include "vtkBioMechanicalModel.h"
@@ -194,13 +194,13 @@ public:
 	/*!
 	* \sa GetMapper()
 	*/
-	vtkSetObjectMacro(Mapper, vtkDataSetMapper);
+	vtkSetObjectMacro(Mapper, vtkPolyDataMapper);
 
 	//!Return the data set mapper
 	/*!
 	* \sa SetMapper(vtkDataSetMapper *)
 	*/
-	vtkGetObjectMacro(Mapper, vtkDataSetMapper);
+	vtkGetObjectMacro(Mapper, vtkPolyDataMapper);
 	//!Function that returns simplified mesh
 	/*!
 	 * This method returns a simplified mesh for collision detection purposes
@@ -284,7 +284,7 @@ protected:
 	vtkActor * Actor;
 
 	//!Dataset mapper of the actor
-	vtkDataSetMapper * Mapper;
+	vtkPolyDataMapper * Mapper;
 
 	//!Transform filter of the organ
 	vtkTransformPolyDataFilter *TransformFilter;

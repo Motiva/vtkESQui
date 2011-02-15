@@ -128,7 +128,9 @@ void vtkOrgan::Init()
 	this->Reader = vtkXMLPolyDataReader::New();
 	this->Reader->SetFileName(this->FileName);
 	this->Reader->Update();
-	this->SetInputConnection(this->Reader->GetOutputPort());
+	vtkPolyData * data = this->Reader->GetOutput();
+	data->Print(cout);
+	this->SetInput(this->Reader->GetOutput());
 	//}
 
 	if(this->RenderWindow)
@@ -148,24 +150,25 @@ void vtkOrgan::Init()
 
 		this->TransformFilter->Update();
 
+		//Visualization
+		this->Mapper = vtkPolyDataMapper::New();
+		this->Actor = vtkActor::New();
+
 		if(this->DeformationModel)
 		{
 			this->DeformationModel->SetInput(this->TransformFilter->GetOutput());
 			this->DeformationModel->Init();
+			this->Mapper->SetInput(this->DeformationModel->GetOutput());
 		}
 		else
 		{
 			vtkWarningMacro("BioMechanical Model not defined. You must indicate the bmm...");
+			this->Mapper->SetInput(this->TransformFilter->GetOutput());
 		}
 
-		//Display stuff
-		if(!this->TextureFileName || !strcmp(this->TextureFileName, ""))
+		/*if(this->TextureFileName && strcmp(this->TextureFileName, ""))
 		{
-			//No TextureFile has been defined
-			this->Mapper->SetInput(this->GetOutput());
-		}
-		else
-		{
+			cout << this->TextureFileName << endl;
 			//Texture will be added
 			vtkTextureMapToSphere * map = vtkTextureMapToSphere::New();
 			map->SetInput(this->GetOutput());
@@ -189,6 +192,10 @@ void vtkOrgan::Init()
 			this->Actor = vtkActor::New();
 			this->Actor->SetTexture(this->Texture);
 		}
+		else
+		{
+			this->Mapper->SetInputConnection(this->GetOutputPort());
+		}*/
 
 		//Display PointIds
 		if(this->GetDebug())
@@ -276,14 +283,14 @@ vtkBioMechanicalModel * vtkOrgan::GetDeformationModel()
 //--------------------------------------------------------------------------
 void vtkOrgan::Hide()
 {
-	this->Status == Hidden;
+	this->Status = Hidden;
 	this->Actor->GetProperty()->SetOpacity(0.0);
 }
 
 //--------------------------------------------------------------------------
 void vtkOrgan::Show()
 {
-	this->Status == Visible;
+	this->Status = Visible;
 	this->Actor->GetProperty()->SetOpacity(1.0);
 }
 
