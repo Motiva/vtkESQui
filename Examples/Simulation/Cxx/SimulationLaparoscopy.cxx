@@ -64,6 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkToolPincers.h"
 #include "vtkCubeSource.h"
 #include "vtkSimulation.h"
+#include "vtkSimulationInteractorStyle.h"
 #include "vtkPSSInterface.h"
 
 namespace EsquiExampleNS{
@@ -79,22 +80,14 @@ using namespace EsquiExampleNS;
 
 //!This test perform a standard execution of the ESQUI simulation process.
 
-const char * EsquiExampleNS::ExpandDataFileName(const char * fname)
-{
-	char * fullName;
-	fullName = new char[strlen(path) + 1 + strlen(fname)];
-	fullName[0] = 0;
-	strcat(fullName, path);
-	size_t len = strlen(fullName);
-	fullName[len] = '/';
-	fullName[len+1] = 0;
-	strcat(fullName, fname);
-
-	return fullName;
-}
-
 int main(int argc, char * argv[])
 {
+
+	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/Stick.vtp";
+	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftGrasper.vtp";
+	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightGrasper.vtp";
+	const char * filename3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
+
 	/**********  Render Window Definitions  ********/
 	vtkRenderer *ren1= vtkRenderer::New();
 	ren1->SetBackground(1.0,1.0,1.0);
@@ -107,54 +100,83 @@ int main(int argc, char * argv[])
 	iren->SetRenderWindow(renWin);
 
 	/**********  Scenario Definitions  ********/
-	vtkScenario * Scenario = vtkScenario::New();
-	Scenario->SetRenderWindow(renWin);
-	vtkPolyDataReader *vtkreader1 = vtkPolyDataReader::New();
+	vtkScenario * scenario = vtkScenario::New();
+	scenario->SetRenderWindow(renWin);
+	/*vtkPolyDataReader *vtkreader1 = vtkPolyDataReader::New();
 	vtkreader1->SetFileName(ExpandDataFileName("Scenario/Misc/Marco.vtk"));
 	vtkPolyDataMapper *vtkmapper1 = vtkPolyDataMapper::New();
 	vtkmapper1->SetInput(vtkreader1->GetOutput());
 	vtkActor *vtkactor1 = vtkActor::New();
 	vtkactor1->SetMapper(vtkmapper1);
-	ren1->AddActor(vtkactor1);
-	
+	ren1->AddActor(vtkactor1);*/
+
 	/**********  Set Frame Texture  ********/
-	vtkJPEGReader *textureimage1 = vtkJPEGReader::New();
+/*	vtkJPEGReader *textureimage1 = vtkJPEGReader::New();
 	textureimage1->SetFileName(ExpandDataFileName("Scenario/Misc/Grey.jpg"));
 	vtkTexture *texture1 = vtkTexture::New();
 	texture1->SetInput(textureimage1->GetOutput());
-	vtkactor1->SetTexture(texture1);
+	vtkactor1->SetTexture(texture1);*/
 	
 	/**********  Load Deformable Model  ********/
+	//Create a Organ
 	vtkOrgan * organ = vtkOrgan::New();
-	organ->SetFileName(ExpandDataFileName("Scenario/Organs/liverTetra.vtk"));
-	organ->SetPosition(0, 0,-5);
-	organ->SetOrigin(0, 0,-5);
+	//Set organ identifier
+	organ->SetId(0);
+	organ->SetName("Sphere");
 
-	organ->GetActor()->GetProperty()->SetColor(1,0.2,0.2);
+	//Set source data filename
+	organ->SetFileName(filename3);
 
-	//Biomechanical model
-	vtkPSSInterface * model = vtkPSSInterface::New();
-	model->SetDistanceCoefficient(200);
-	model->SetDampingCoefficient(100);
-	model->SetMass(1);
-	model->SetDeltaT(0.01);
+	//Set geometric parameters
+	organ->SetPosition(0.0, 0.0, -3.0);
+	organ->SetOrientation(0.0, 0.0, 0.0);
+	organ->SetOrigin(0.0, 0.0, -3.0);
 
-	organ->SetDeformationModel(model);
-	
-	Scenario->AddOrgan(organ);
+	//Set tool scale (size)
+	organ->SetScale(1.0, 1.0, 1.0);
+
+	//Set organ type
+	organ->SetOrganType(vtkOrgan::Deformable);
+
+	//Set Deformation Model
+	vtkPSSInterface * particleSpring = vtkPSSInterface::New();
+	particleSpring->SetDeltaT(0.02);
+	particleSpring->SetGravity(0.0, 0.0, 0.0);
+
+	//Set particle-spring system specific parameters
+	particleSpring->SetSpringCoefficient(100);
+	particleSpring->SetDampingCoefficient(5);
+	particleSpring->SetDistanceCoefficient(20);
+	particleSpring->SetMass(1);
+	particleSpring->SetRigidityFactor(2);
+	particleSpring->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
+
+	organ->SetDeformationModel(particleSpring);
+
+	//Add organ to the scenario
+	scenario->AddOrgan(organ);
 
 	/********** Tools **********/
 	//Add new tool To the scenario
-	vtkToolPincers *pincers = vtkToolPincers::New();
-	pincers->SetStickFileName(ExpandDataFileName("Scenario/Tools/Pincers/Stick.vtk"));
-	pincers->SetLeftGrasperFileName(ExpandDataFileName("Scenario/Tools/Pincers/LeftGrasper.vtk"));
-	pincers->SetRightGrasperFileName(ExpandDataFileName("Scenario/Tools/Pincers/RightGrasper.vtk"));
-
-	pincers->SetScale(1.0, 1.0, 1.0);
+	//Create a Tool
+	vtkToolPincers * pincers = vtkToolPincers::New();
+	//Set tool identifier
+	pincers->SetId(0);
+	pincers->SetNumberOfPieces(3);
+	//Set source data filename
+	pincers->SetStickFileName(filename0);
+	pincers->SetLeftGrasperFileName(filename1);
+	pincers->SetRightGrasperFileName(filename2);
+	//Set geometric parameters
 	pincers->SetPosition(-3, 0, 0);
-	pincers->SetOrientation(0, -10, 0);
+	pincers->SetOrientation(0, 10, 0);
+	pincers->SetOrigin(0, 0, 4);
 
-	Scenario->AddTool(pincers);
+	//Set tool scale (size)
+	pincers->SetScale(1.0, 1.0, 1.0);
+
+	//Add tool to the scenario
+	scenario->AddTool(pincers);
 
 	/**********  Load Scene Environment  ********/
 
@@ -167,11 +189,11 @@ int main(int argc, char * argv[])
 	light->SetConeAngle(20);
 	ren1->AddLight(light);
 		
-	vtkLight *luzEntorno = vtkLight::New(); 
-	luzEntorno->SetIntensity(0.8);
-	luzEntorno->SetLightTypeToHeadlight();
-	luzEntorno->PositionalOff();
-	ren1->AddLight(luzEntorno);//#Se a�ade una luz de entorno para que no se vea completamente negro
+	vtkLight *envLight = vtkLight::New(); 
+	envLight->SetIntensity(0.8);
+	envLight->SetLightTypeToHeadlight();
+	envLight->PositionalOff();
+	ren1->AddLight(envLight);//#Se a�ade una luz de entorno para que no se vea completamente negro
 	ren1->SetAmbient(0.5,0.5,0.5);
 		
 	/**********  Camera Definitions  ********/
@@ -186,13 +208,15 @@ int main(int argc, char * argv[])
 	camera->SetViewAngle(70);
 
 	/**********  Simulation Setup  ********/
-	//vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	//SimulationManager->SetLibraryName("vtkbioeng");
-	//SimulationManager->SetScenario(Scenario);
-	//SimulationManager->Init();
+	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
+	style->SetScenario(scenario);
+	iren->SetInteractorStyle(style);
 
 	vtkSimulation * Simulation = vtkSimulation::New();
-	Simulation->SetScenario(Scenario);
+	Simulation->SetScenario(scenario);
+	Simulation->SetRenderTimerRate(0.02);
+	Simulation->SetSimulationTimerRate(0.01);
+	Simulation->SetHapticTimerRate(0.001);
 	Simulation->Init();
 
 	Simulation->Run();
@@ -202,16 +226,12 @@ int main(int argc, char * argv[])
 	// using the Delete() method.
 	//
 	//SimulationManager->Delete();
-	Scenario->Delete();
-	vtkreader1->Delete();
-	vtkmapper1->Delete();
-	vtkactor1->Delete();
-	textureimage1->Delete();
-	texture1->Delete();
 	organ->Delete();
-	light->Delete();
-	luzEntorno->Delete();
 	pincers->Delete();
+	light->Delete();
+	envLight->Delete();
+	scenario->Delete();
+	Simulation->Delete();
 	ren1->Delete();
 	renWin->Delete();
 	iren->Delete();

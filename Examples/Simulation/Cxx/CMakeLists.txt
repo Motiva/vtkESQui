@@ -8,7 +8,7 @@ SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
     vtkESQuiLap
-    vtkESQuiExample
+    SimulationLaparoscopy
     vtkESQuiSRMLExample
 )
 

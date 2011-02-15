@@ -50,6 +50,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTool.h"
 #include "vtkToolLaparoscopy.h"
 #include "vtkToolPincers.h"
+#include "vtkOrgan.h"
+#include "vtkPSSInterface.h"
 
 //!This test perform a test of the vtkToolLaparoscopy class
 
@@ -59,6 +61,7 @@ int main(int argc, char * argv[])
 	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/Stick.vtp";
 	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftGrasper.vtp";
 	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightGrasper.vtp";
+	const char * filename3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
 
 	if (argc > 3)
 	{
@@ -85,7 +88,6 @@ int main(int argc, char * argv[])
 	//Set Scenario Interactor
 	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
 	style->SetScenario(scenario);
-	style->SetDebug(1);
 	iren->SetInteractorStyle(style);
 
 	//Create a Tool
@@ -107,6 +109,45 @@ int main(int argc, char * argv[])
 
 	//Add tool to the scenario
 	scenario->AddTool(pincers);
+
+	//Create a Organ
+	vtkOrgan * organ = vtkOrgan::New();
+	//Set organ identifier
+	organ->SetId(0);
+	organ->SetName("Sphere");
+
+	//Set source data filename
+	organ->SetFileName(filename3);
+
+	//Set geometric parameters
+	organ->SetPosition(0.0, 0.0, -3.0);
+	organ->SetOrientation(0.0, 0.0, 0.0);
+	organ->SetOrigin(0.0, 0.0, -3.0);
+
+	//Set tool scale (size)
+	organ->SetScale(1.0, 1.0, 1.0);
+
+	//Set organ type
+	organ->SetOrganType(vtkOrgan::Deformable);
+
+	//Set Deformatio Model
+	vtkPSSInterface * particleSpring = vtkPSSInterface::New();
+	particleSpring->SetDeltaT(0.02);
+	particleSpring->SetGravity(0.0, 0.0, 0.0);
+
+	//Set particle-spring system specific parameters
+	particleSpring->SetSpringCoefficient(100);
+	particleSpring->SetDampingCoefficient(5);
+	particleSpring->SetDistanceCoefficient(20);
+	particleSpring->SetMass(1);
+	particleSpring->SetRigidityFactor(2);
+	particleSpring->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
+
+	organ->SetDeformationModel(particleSpring);
+
+	//Add organ to the scenario
+	scenario->AddOrgan(organ);
+
 
 	//Adjust Camera
 	vtkCamera * camera = ren1->GetActiveCamera();
