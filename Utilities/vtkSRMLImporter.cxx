@@ -499,21 +499,19 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 	organ->SetOrientation(array[0], array[1], array[2]);
 
 	//Deformation Model
-	vtkXMLDataElement * modelXML = item->LookupElementWithName("DeformationModel");
-	if(modelXML)
+	const char * name = item->GetAttribute("Type");
+	if (!strcmp(name, "Static"))
 	{
-		organ->SetDeformationModelName(modelXML->GetAttribute("Name"));
-
-		vtkBioMechanicalModel * model;
-		const char * name = modelXML->GetAttribute("Name");
-		if (!strcmp(name, "Static"))
+		//Static organ
+		organ->SetOrganType(vtkOrgan::Static);
+	}
+	else
+	{
+		vtkXMLDataElement * modelXML = item->LookupElementWithName("DeformationModel");
+		if(modelXML)
 		{
-			//Static organ
-			organ->SetOrganType(vtkOrgan::Static);
-		}
-		else
-		{
-			organ->SetOrganType(vtkOrgan::Deformable);
+			vtkBioMechanicalModel * model;
+			organ->SetDeformationModelName(modelXML->GetAttribute("Name"));
 
 			if (!strcmp(name, "ParticleSpring"))
 			{

@@ -61,6 +61,7 @@ vtkSRMLImporter SRMLImporter
 SRMLImporter SetDataPath $path
 SRMLImporter SetFileName $name
 SRMLImporter SetSimulation Simulation
+SRMLImporter SetDebug 1
 SRMLImporter Read
 
 puts "Simulation has been correctly imported..."

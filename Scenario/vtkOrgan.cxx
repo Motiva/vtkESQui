@@ -128,8 +128,7 @@ void vtkOrgan::Init()
 	this->Reader = vtkXMLPolyDataReader::New();
 	this->Reader->SetFileName(this->FileName);
 	this->Reader->Update();
-	vtkPolyData * data = this->Reader->GetOutput();
-	data->Print(cout);
+	//vtkPolyData * data = this->Reader->GetOutput();
 	this->SetInput(this->Reader->GetOutput());
 	//}
 
@@ -154,7 +153,7 @@ void vtkOrgan::Init()
 		this->Mapper = vtkPolyDataMapper::New();
 		this->Actor = vtkActor::New();
 
-		if(this->DeformationModel)
+		if(this->Deformable && this->DeformationModel)
 		{
 			this->DeformationModel->SetInput(this->TransformFilter->GetOutput());
 			this->DeformationModel->Init();
@@ -217,7 +216,7 @@ void vtkOrgan::Init()
 
 			vtkActor2D * labelActor = vtkActor2D::New();
 			labelActor->SetMapper(labelMapper);
-			//this->Renderer->AddActor(pointActor);
+
 			this->Renderer->AddActor(labelActor);
 
 			//TODO: Remove "returning AbortExecute of 0"
@@ -243,9 +242,14 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
+	cout << "vtkOrgan::Update()\n";
+
 	if(this->IsHidden()) this->Hide();
 	else if(this->IsVisible()) this->Show();
-	if(this->DeformationModel)
+
+	this->TransformFilter->Update();
+
+	if(this->Deformable && this->DeformationModel)
 	{
 		this->DeformationModel->InsertContacts(this->Contacts);
 		this->DeformationModel->Update();
