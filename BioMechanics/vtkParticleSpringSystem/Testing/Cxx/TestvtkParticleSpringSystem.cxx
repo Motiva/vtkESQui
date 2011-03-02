@@ -120,10 +120,10 @@ int main(int argc, char * argv[])
 
 	vtkParticleSpringSystem* ParticleSpringSystem = vtkParticleSpringSystem::New();
 	ParticleSpringSystem->SetInput(mesh);
-	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::VelocityVerlet);
-	ParticleSpringSystem->SetSpringCoefficient(150);
+	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
+	ParticleSpringSystem->SetSpringCoefficient(250);
 	ParticleSpringSystem->SetDistanceCoefficient(10);
-	ParticleSpringSystem->SetDampingCoefficient(5);//Friction
+	ParticleSpringSystem->SetDampingCoefficient(2);//Friction
 	ParticleSpringSystem->SetMass(.5);
 	ParticleSpringSystem->SetDeltaT(0.001);//10ms
 	ParticleSpringSystem->SetRigidityFactor(2);

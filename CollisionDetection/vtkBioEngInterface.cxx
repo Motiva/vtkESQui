@@ -184,6 +184,8 @@ void vtkBioEngInterface::Update()
 						//double * cp = contactData->GetPoints()->GetPoint(i);
 						vtkIdType closestPoint =  0;
 
+						//if(numberOfContacts > 0) cout << organPolyData->GetNumberOfPoints() << " : " << organPolyData->GetNumberOfPolys() << endl;
+
 						//for each point of the 2nd item a contact will be created
 						for(int j=0;j<organPoints->GetNumberOfPoints(); j++)
 						{

@@ -242,8 +242,6 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	cout << "vtkOrgan::Update()\n";
-
 	if(this->IsHidden()) this->Hide();
 	else if(this->IsVisible()) this->Show();
 

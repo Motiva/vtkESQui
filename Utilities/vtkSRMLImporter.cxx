@@ -511,13 +511,14 @@ void vtkSRMLImporter::SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item)
 		if(modelXML)
 		{
 			vtkBioMechanicalModel * model;
-			organ->SetDeformationModelName(modelXML->GetAttribute("Name"));
+			const char * modelName = modelXML->GetAttribute("Name");
+			organ->SetDeformationModelName(modelName);
 
-			if (!strcmp(name, "ParticleSpring"))
+			if (!strcmp(modelName, "ParticleSpring"))
 			{
 				model = vtkPSSInterface::New();
 			}
-			model->SetName(modelXML->GetAttribute("Name"));
+			model->SetName(modelName);
 
 			this->SetDeformationModelData(model ,modelXML);
 			organ->SetDeformationModel(model);

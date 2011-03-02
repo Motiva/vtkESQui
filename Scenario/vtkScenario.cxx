@@ -296,7 +296,6 @@ void vtkScenario::Init()
 //----------------------------------------------------------------------------
 void vtkScenario::Update()
 {
-	cout << "vtkScenario::Update()\n";
 	//Update organs & tools after collision detection has been performed
 	if(this->Contacts && this->Contacts > 0)
 	{

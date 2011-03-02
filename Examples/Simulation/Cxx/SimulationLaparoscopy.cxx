@@ -140,7 +140,7 @@ int main(int argc, char * argv[])
 
 	//Set Deformation Model
 	vtkPSSInterface * particleSpring = vtkPSSInterface::New();
-	particleSpring->SetDeltaT(0.02);
+	particleSpring->SetDeltaT(0.01);
 	particleSpring->SetGravity(0.0, 0.0, 0.0);
 
 	//Set particle-spring system specific parameters
@@ -174,6 +174,7 @@ int main(int argc, char * argv[])
 
 	//Set tool scale (size)
 	pincers->SetScale(1.0, 1.0, 1.0);
+	pincers->SetDeltaT(0.01);
 
 	//Add tool to the scenario
 	scenario->AddTool(pincers);
@@ -198,8 +199,8 @@ int main(int argc, char * argv[])
 		
 	/**********  Camera Definitions  ********/
 	vtkCamera * camera = ren1->GetActiveCamera();
-	camera->SetPosition(0, 0, 0);
-	camera->SetFocalPoint(0, 0, -12);
+	camera->SetPosition(0, 0, 2);
+	camera->SetFocalPoint(0, 0, -6);
 	camera->Yaw(0);
 	camera->Elevation(20);
 	camera->Pitch(-20);

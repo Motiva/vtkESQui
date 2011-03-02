@@ -87,6 +87,7 @@ int main(int argc, char * argv[])
 
 	//Set Scenario Interactor
 	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
+	style->DebugOn();
 	style->SetScenario(scenario);
 	iren->SetInteractorStyle(style);
 
@@ -147,7 +148,6 @@ int main(int argc, char * argv[])
 
 	//Add organ to the scenario
 	scenario->AddOrgan(organ);
-
 
 	//Adjust Camera
 	vtkCamera * camera = ren1->GetActiveCamera();
