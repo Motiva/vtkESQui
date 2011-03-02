@@ -87,6 +87,9 @@ int main(int argc, char * argv[])
 	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftGrasper.vtp";
 	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightGrasper.vtp";
 	const char * filename3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
+	const char * filename3t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg";
+	const char * filename4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp";
+	const char * filename4t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomachtexture.jpg";
 
 	/**********  Render Window Definitions  ********/
 	vtkRenderer *ren1= vtkRenderer::New();
@@ -102,21 +105,7 @@ int main(int argc, char * argv[])
 	/**********  Scenario Definitions  ********/
 	vtkScenario * scenario = vtkScenario::New();
 	scenario->SetRenderWindow(renWin);
-	/*vtkPolyDataReader *vtkreader1 = vtkPolyDataReader::New();
-	vtkreader1->SetFileName(ExpandDataFileName("Scenario/Misc/Marco.vtk"));
-	vtkPolyDataMapper *vtkmapper1 = vtkPolyDataMapper::New();
-	vtkmapper1->SetInput(vtkreader1->GetOutput());
-	vtkActor *vtkactor1 = vtkActor::New();
-	vtkactor1->SetMapper(vtkmapper1);
-	ren1->AddActor(vtkactor1);*/
 
-	/**********  Set Frame Texture  ********/
-/*	vtkJPEGReader *textureimage1 = vtkJPEGReader::New();
-	textureimage1->SetFileName(ExpandDataFileName("Scenario/Misc/Grey.jpg"));
-	vtkTexture *texture1 = vtkTexture::New();
-	texture1->SetInput(textureimage1->GetOutput());
-	vtkactor1->SetTexture(texture1);*/
-	
 	/**********  Load Deformable Model  ********/
 	//Create a Organ
 	vtkOrgan * organ = vtkOrgan::New();
@@ -126,6 +115,7 @@ int main(int argc, char * argv[])
 
 	//Set source data filename
 	organ->SetFileName(filename3);
+	organ->SetTextureFileName(filename3t);
 
 	//Set geometric parameters
 	organ->SetPosition(0.0, 0.0, -3.0);
@@ -156,45 +146,105 @@ int main(int argc, char * argv[])
 	//Add organ to the scenario
 	scenario->AddOrgan(organ);
 
+	//Create a cavity organ
+	vtkOrgan * cavity = vtkOrgan::New();
+	//Set organ identifier
+	cavity->SetId(1);
+	cavity->SetName("Cavity");
+
+	//Set source data filename
+	cavity->SetFileName(filename4);
+	cavity->SetTextureFileName(filename4t);
+
+	//Set geometric parameters
+	cavity->SetPosition(0.0, 0.0, 0.0);
+	cavity->SetOrientation(0.0, 0.0, 0.0);
+	cavity->SetOrigin(0.0, 0.0, 0.0);
+
+	//Set tool scale (size)
+	cavity->SetScale(1.0, 1.0, 1.0);
+
+	//Set organ type
+	cavity->SetOrganType(vtkOrgan::Deformable);
+
+	//Set Deformation Model
+	vtkPSSInterface * ps1 = vtkPSSInterface::New();
+	ps1->SetDeltaT(0.01);
+	ps1->SetGravity(0.0, 0.0, 0.0);
+
+	//Set particle-spring system specific parameters
+	ps1->SetSpringCoefficient(100);
+	ps1->SetDampingCoefficient(5);
+	ps1->SetDistanceCoefficient(20);
+	ps1->SetMass(1);
+	ps1->SetRigidityFactor(2);
+	ps1->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
+
+	cavity->SetDeformationModel(ps1);
+
+	//Add organ to the scenario
+	scenario->AddOrgan(cavity);
+
 	/********** Tools **********/
 	//Add new tool To the scenario
 	//Create a Tool
-	vtkToolPincers * pincers = vtkToolPincers::New();
+	vtkToolPincers * leftPincers = vtkToolPincers::New();
 	//Set tool identifier
-	pincers->SetId(0);
-	pincers->SetNumberOfPieces(3);
+	leftPincers->SetId(0);
+	leftPincers->SetNumberOfPieces(3);
 	//Set source data filename
-	pincers->SetStickFileName(filename0);
-	pincers->SetLeftGrasperFileName(filename1);
-	pincers->SetRightGrasperFileName(filename2);
+	leftPincers->SetStickFileName(filename0);
+	leftPincers->SetLeftGrasperFileName(filename1);
+	leftPincers->SetRightGrasperFileName(filename2);
 	//Set geometric parameters
-	pincers->SetPosition(-3, 0, 0);
-	pincers->SetOrientation(0, 10, 0);
-	pincers->SetOrigin(0, 0, 4);
+	leftPincers->SetPosition(-3, 0, 0);
+	leftPincers->SetOrientation(0, 10, 0);
+	leftPincers->SetOrigin(0, 0, 4);
 
 	//Set tool scale (size)
-	pincers->SetScale(1.0, 1.0, 1.0);
-	pincers->SetDeltaT(0.01);
+	leftPincers->SetScale(1.0, 1.0, 1.0);
+	leftPincers->SetDeltaT(0.01);
 
 	//Add tool to the scenario
-	scenario->AddTool(pincers);
+	scenario->AddTool(leftPincers);
+
+	//Create a Tool
+	vtkToolPincers * rightPincers = vtkToolPincers::New();
+	//Set tool identifier
+	rightPincers->SetId(1);
+	rightPincers->SetNumberOfPieces(3);
+	//Set source data filename
+	rightPincers->SetStickFileName(filename0);
+	rightPincers->SetLeftGrasperFileName(filename1);
+	rightPincers->SetRightGrasperFileName(filename2);
+	//Set geometric parameters
+	rightPincers->SetPosition(3, 0, 0);
+	rightPincers->SetOrientation(0, -10, 0);
+	rightPincers->SetOrigin(0, 0, 4);
+
+	//Set tool scale (size)
+	rightPincers->SetScale(1.0, 1.0, 1.0);
+	rightPincers->SetDeltaT(0.01);
+
+	//Add tool to the scenario
+	scenario->AddTool(rightPincers);
 
 	/**********  Load Scene Environment  ********/
 
 	/********** Lights  **********/
 	ren1->GetLights()->InitTraversal();
-	vtkLight *light = vtkLight::New();
-	light->SetLightTypeToHeadlight();//#La luz se situa encima de la camara
-	light->PositionalOn();//# Ademas es posicional(se mueve con ella y actua a modo de linterna)
-	light->SetIntensity(0.5);
-	light->SetConeAngle(20);
-	ren1->AddLight(light);
+	vtkLight *headLight = vtkLight::New();
+	headLight->SetLightTypeToHeadlight();
+	headLight->PositionalOn();
+	headLight->SetIntensity(0.5);
+	headLight->SetConeAngle(20);
+	ren1->AddLight(headLight);
 		
-	vtkLight *envLight = vtkLight::New(); 
-	envLight->SetIntensity(0.8);
-	envLight->SetLightTypeToHeadlight();
-	envLight->PositionalOff();
-	ren1->AddLight(envLight);//#Se a�ade una luz de entorno para que no se vea completamente negro
+	vtkLight *ambientLight = vtkLight::New(); 
+	ambientLight->SetIntensity(0.8);
+	ambientLight->SetLightTypeToHeadlight();
+	ambientLight->PositionalOff();
+	ren1->AddLight(ambientLight);
 	ren1->SetAmbient(0.5,0.5,0.5);
 		
 	/**********  Camera Definitions  ********/
@@ -203,7 +253,7 @@ int main(int argc, char * argv[])
 	camera->SetFocalPoint(0, 0, -6);
 	camera->Yaw(0);
 	camera->Elevation(20);
-	camera->Pitch(-20);
+	camera->Pitch(-15);
 	camera->Dolly(1);
 	camera->ParallelProjectionOff();
 	camera->SetViewAngle(70);
@@ -213,26 +263,27 @@ int main(int argc, char * argv[])
 	style->SetScenario(scenario);
 	iren->SetInteractorStyle(style);
 
-	vtkSimulation * Simulation = vtkSimulation::New();
-	Simulation->SetScenario(scenario);
-	Simulation->SetRenderTimerRate(0.02);
-	Simulation->SetSimulationTimerRate(0.01);
-	Simulation->SetHapticTimerRate(0.001);
-	Simulation->Init();
+	vtkSimulation * simulation = vtkSimulation::New();
+	simulation->SetScenario(scenario);
+	simulation->SetRenderTimerRate(0.02);
+	simulation->SetSimulationTimerRate(0.01);
+	simulation->SetHapticTimerRate(0.001);
+	simulation->Init();
 
-	Simulation->Run();
+	simulation->Run();
 
 	//
 	// Free up any objects we created. All instances in VTK are deleted by
 	// using the Delete() method.
 	//
-	//SimulationManager->Delete();
 	organ->Delete();
-	pincers->Delete();
-	light->Delete();
-	envLight->Delete();
+	cavity->Delete();
+	leftPincers->Delete();
+	rightPincers->Delete();
+	headLight->Delete();
+	ambientLight->Delete();
 	scenario->Delete();
-	Simulation->Delete();
+	simulation->Delete();
 	ren1->Delete();
 	renWin->Delete();
 	iren->Delete();

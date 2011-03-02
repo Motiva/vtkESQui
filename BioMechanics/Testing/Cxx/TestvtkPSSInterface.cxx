@@ -142,7 +142,7 @@ int main(int argc, char * argv[])
 	double bounds[6];
 	mesh->GetBounds(bounds);
 
-	double p[3] = {0, bounds[2], 0};
+	double p[3] = {bounds[0], 0, 0};
 
 	locator->SetDataSet(mesh);
 
@@ -167,10 +167,11 @@ int main(int argc, char * argv[])
 		directions->InsertNextTuple(dir);
 		vtkIdType id = list->GetId(i);
 
+		cout << id << endl;
 		//Insert contact info
 		vtkContact * contact = vtkContact::New();
-		contact->SetItemId(0, 1);
 		contact->SetItemId(0, 0);
+		contact->SetItemId(1, 0);
 
 		//Organ cell point
 		contact->SetPointId(0, id);
