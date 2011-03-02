@@ -134,7 +134,7 @@ void vtkOrgan::Init()
 
 	if(this->RenderWindow)
 	{
-		this->Renderer= this->RenderWindow->GetRenderers()->GetFirstRenderer();
+		this->Renderer = this->RenderWindow->GetRenderers()->GetFirstRenderer();
 
 		this->Transform = vtkTransform::New();
 		this->TransformFilter = vtkTransformPolyDataFilter::New();
@@ -149,35 +149,33 @@ void vtkOrgan::Init()
 
 		this->TransformFilter->Update();
 
-		//Visualization
-		this->Mapper = vtkPolyDataMapper::New();
-		this->Actor = vtkActor::New();
-
+		vtkPolyData * mapperInput;
 		if(this->Deformable && this->DeformationModel)
 		{
 			this->DeformationModel->SetInput(this->TransformFilter->GetOutput());
 			this->DeformationModel->Init();
-			this->Mapper->SetInput(this->DeformationModel->GetOutput());
+			mapperInput = this->DeformationModel->GetOutput();
 		}
 		else
 		{
-			vtkWarningMacro("BioMechanical Model not defined. You must indicate the bmm...");
-			this->Mapper->SetInput(this->TransformFilter->GetOutput());
+			mapperInput = this->TransformFilter->GetOutput();
 		}
 
-		/*if(this->TextureFileName && strcmp(this->TextureFileName, ""))
+		//Visualization
+		this->Mapper = vtkPolyDataMapper::New();
+		this->Actor = vtkActor::New();
+
+		if(this->TextureFileName && strcmp(this->TextureFileName, ""))
 		{
-			cout << this->TextureFileName << endl;
 			//Texture will be added
 			vtkTextureMapToSphere * map = vtkTextureMapToSphere::New();
-			map->SetInput(this->GetOutput());
+			map->SetInput(mapperInput);
 			map->PreventSeamOn();
 
 			vtkTransformTextureCoords * xform = vtkTransformTextureCoords::New();
 			xform->SetInputConnection(map->GetOutputPort());
 			xform->SetScale(1, 1, 1);
 
-			this->Mapper = vtkDataSetMapper::New();
 			this->Mapper->SetInputConnection(xform->GetOutputPort());
 
 			vtkJPEGReader * jpegReader = vtkJPEGReader::New();
@@ -193,8 +191,8 @@ void vtkOrgan::Init()
 		}
 		else
 		{
-			this->Mapper->SetInputConnection(this->GetOutputPort());
-		}*/
+			this->Mapper->SetInput(mapperInput);
+		}
 
 		//Display PointIds
 		if(this->GetDebug())
@@ -244,6 +242,12 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 
 	if(this->IsHidden()) this->Hide();
 	else if(this->IsVisible()) this->Show();
+
+	this->Transform->Scale(this->Scale);
+	this->Transform->Translate(this->Position);
+	this->Transform->RotateX(this->Orientation[0]);
+	this->Transform->RotateY(this->Orientation[1]);
+	this->Transform->RotateZ(this->Orientation[2]);
 
 	this->TransformFilter->Update();
 

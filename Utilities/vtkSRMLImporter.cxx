@@ -621,7 +621,7 @@ void vtkSRMLImporter::SetDeformationModelData(vtkBioMechanicalModel * model, vtk
 				BC->GetScalarAttribute("Value", value);
 				condition->SetValue(value);
 
-				//Insert condition into biomechanical model
+				//Insert condition into deformation model
 				//particleSpring->InsertNextBoundaryCondition(condition);
 			}
 		}

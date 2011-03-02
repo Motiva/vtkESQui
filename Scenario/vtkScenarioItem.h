@@ -223,6 +223,9 @@ public:
 	 */
 	virtual void Show() = 0;
 
+	//TODO: Define Disable virtual method
+	//virtual void Disable() = 0;
+
 	//! Check if item is visible
 	bool IsVisible(){ return this->Status == Visible;};
 
