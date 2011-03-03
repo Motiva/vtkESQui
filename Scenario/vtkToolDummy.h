@@ -39,8 +39,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkToolPincers_h
-#define __vtkToolPincers_h
+#ifndef __vtkToolDummy_h
+#define __vtkToolDummy_h
 
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolLaparoscopy.h"
@@ -58,11 +58,11 @@ public:
 	//! Type revision macro
 	vtkTypeRevisionMacro(vtkToolDummy,vtkToolLaparoscopy);
 
-	//!Create new vtkToolGPincers object
+	//!Create new vtkToolDummy object
 	static vtkToolDummy *New();
 
 	//!Return class name
-	const char *GetClassName() { return "vtkToolGPincers"; }
+	const char *GetClassName() { return "vtkToolDummy"; }
 
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
@@ -110,13 +110,13 @@ public:
 	 */
 	void SetPolyData(vtkIdType id, vtkPolyData* polyData);
 
-	//! Sets the pincers yaw angle
+	//! Sets the yaw angle
 	void Yaw(double angle);
 
-	//! Sets the pincers pitch angle
+	//! Sets the pitch angle
 	void Pitch(double angle);
 
-	//! Sets the pincers roll angle
+	//! Sets the roll angle
 	void Roll(double angle);
 
 protected:	

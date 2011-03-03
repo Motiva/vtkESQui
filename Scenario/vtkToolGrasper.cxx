@@ -40,7 +40,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 
-#include "vtkToolPincers.h"
+#include "vtkToolGrasper.h"
 
 #include "vtkObjectFactory.h"
 #include "vtkTransformCollection.h"
@@ -51,20 +51,20 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkContact.h"
 #include "vtkContactCollection.h"
 
-vtkCxxRevisionMacro(vtkToolPincers, "$Revision: 0.1 $");
-vtkStandardNewMacro(vtkToolPincers);
+vtkCxxRevisionMacro(vtkToolGrasper, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkToolGrasper);
 
 //----------------------------------------------------------------------------
-vtkToolPincers::vtkToolPincers()
+vtkToolGrasper::vtkToolGrasper()
 {
 	this->Opening = 0;
 	this->StickFileName = NULL;
-	this->LeftGrasperFileName = NULL;
-	this->RightGrasperFileName = NULL;
+	this->LeftLeverFileName = NULL;
+	this->RightLeverFileName = NULL;
 }
 
 //----------------------------------------------------------------------------
-vtkToolPincers::~vtkToolPincers() 
+vtkToolGrasper::~vtkToolGrasper() 
 {
 	for (vtkIdType id = 0; id < this->GetNumberOfPieces() ; id++)
 	{
@@ -73,7 +73,7 @@ vtkToolPincers::~vtkToolPincers()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::Init() { 
+void vtkToolGrasper::Init() { 
 	
 	//Physical pieces Tool Construction
 	vtkPiece * piece;
@@ -89,8 +89,8 @@ void vtkToolPincers::Init() {
 		}
 		else {
 			piece->SetPieceType(vtkPiece::Grasper);
-			if(id==1) piece->SetFileName(this->LeftGrasperFileName);
-			else piece->SetFileName(this->RightGrasperFileName);
+			if(id==1) piece->SetFileName(this->LeftLeverFileName);
+			else piece->SetFileName(this->RightLeverFileName);
 		}
 		piece->Init();
 		this->Pieces->AddPiece(piece);
@@ -103,7 +103,7 @@ void vtkToolPincers::Init() {
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::Update()
+void vtkToolGrasper::Update()
 {
 	this->Superclass::Update();
 
@@ -166,75 +166,75 @@ void vtkToolPincers::Update()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::Open(){
+void vtkToolGrasper::Open(){
 	if(this->IsClosed()) {
 		this->SetOpening(1);
 	}
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::Close(){
+void vtkToolGrasper::Close(){
 	if(!this->IsClosed()) {
 		this->SetOpening(0);
 	}
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::SetOpening(double opening) {
+void vtkToolGrasper::SetOpening(double opening) {
 	double step = opening - this->Opening;
 	int angle = 30;
-	this->GetLeftGrasper()->GetTransform()->RotateX(-angle*step);
-	this->GetRightGrasper()->GetTransform()->RotateX(angle*step);
+	this->GetLeftLever()->GetTransform()->RotateX(-angle*step);
+	this->GetRightLever()->GetTransform()->RotateX(angle*step);
 	this->Opening = opening;
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::SetDepth(double position)
+void vtkToolGrasper::SetDepth(double position)
 {
-	//Pincers are clampled before being translated
+	//Grasper is clampled before being translated
 	double opening = this->Opening;
 	this->SetOpening(0);
 	Superclass::SetDepth(position);
-	//Pincers' opening state is restored
+	//Grasper' opening state is restored
 	this->SetOpening(opening);
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::RotateX(double angle)
+void vtkToolGrasper::RotateX(double angle)
 {
-	//Pincers are clampled before being rotated
+	//Grasper is clampled before being rotated
 	double opening = this->Opening;
 	this->SetOpening(0);
 	Superclass::RotateX(angle);
-	//Pincers' opening state is restored
+	//Grasper' opening state is restored
 	this->SetOpening(opening);
 
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::RotateY(double angle)
+void vtkToolGrasper::RotateY(double angle)
 {
-	//Pincers are clampled before being rotated
+	//Grasper is clampled before being rotated
 	double opening = this->Opening;
 	this->SetOpening(0);
 	Superclass::RotateY(angle);
-	//Pincers' opening state is restored
+	//Grasper' opening state is restored
 	this->SetOpening(opening);
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::RotateZ(double angle)
+void vtkToolGrasper::RotateZ(double angle)
 {
-	//Pincers are clampled before being rotated
+	//Grasper is clampled before being rotated
 	double opening = this->Opening;
 	this->SetOpening(0);
 	Superclass::RotateZ(angle);
-	//Pincers' opening state is restored
+	//Grasper' opening state is restored
 	this->SetOpening(opening);
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::Yaw(double angle)
+void vtkToolGrasper::Yaw(double angle)
 {
 	double step = angle - this->YawAngle;
 	if(step != 0)
@@ -245,7 +245,7 @@ void vtkToolPincers::Yaw(double angle)
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::Pitch(double angle)
+void vtkToolGrasper::Pitch(double angle)
 {
 	double step = angle - this->PitchAngle;
 	if(step != 0)
@@ -256,7 +256,7 @@ void vtkToolPincers::Pitch(double angle)
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::Roll(double angle)
+void vtkToolGrasper::Roll(double angle)
 {
 	double step = angle - this->RollAngle;
 	if(step != 0)
@@ -267,6 +267,6 @@ void vtkToolPincers::Roll(double angle)
 }
 
 //----------------------------------------------------------------------------
-void vtkToolPincers::PrintSelf(ostream& os,vtkIndent indent) {
+void vtkToolGrasper::PrintSelf(ostream& os,vtkIndent indent) {
 	this->Superclass::PrintSelf(os,indent);
 }

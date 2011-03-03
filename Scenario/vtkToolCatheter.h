@@ -39,8 +39,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkToolPincers_h
-#define __vtkToolPincers_h
+#ifndef __vtkToolCatheter_h
+#define __vtkToolCatheter_h
 
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolEndovascular.h"
@@ -58,11 +58,11 @@ public:
 	//! Type revision macro
 	vtkTypeRevisionMacro(vtkToolCatheter,vtkToolEndovascular);
 
-	//!Create new vtkToolGPincers object
+	//!Create new vtkToolCatheter object
 	static vtkToolCatheter *New();
 
 	//!Return class name
-	const char *GetClassName() { return "vtkToolGPincers"; }
+	const char *GetClassName() { return "vtkToolCatheter"; }
 
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
@@ -91,13 +91,13 @@ public:
 	 */
 	void SetPolyData(vtkIdType id, vtkPolyData* polyData);
 
-	//! Sets the pincers yaw angle
+	//! Sets the catheter yaw angle
 	void Yaw(double angle);
 
-	//! Sets the pincers pitch angle
+	//! Sets the catheter pitch angle
 	void Pitch(double angle);
 
-	//! Sets the pincers roll angle
+	//! Sets the catheter roll angle
 	void Roll(double angle);
 
 protected:	

@@ -66,7 +66,7 @@ public:
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	
+
 	//!Enumeration of piece types
 	enum vtkScenarioItemType
 	{
@@ -74,7 +74,7 @@ public:
 		Organ = 1,
 		Extra = 2
 	};
-	
+
 
 	//!Enumeration of piece types
 	enum vtkScenarioItemStatus
@@ -116,7 +116,7 @@ public:
 	 */
 	vtkGetMacro(Id, vtkIdType);
 
-	
+
 	//! Assign the item type
 	/*!
 	 *\sa GetType()
@@ -128,7 +128,7 @@ public:
 	 *\sa SetType(vtkScenarioItemType)
 	 */
 	vtkGetMacro(Type, vtkScenarioItem::vtkScenarioItemType);
-	
+
 	//! Assign the item state
 	/*!
 	 *\sa GetState()
@@ -212,14 +212,64 @@ public:
 
 	//! Get the object direction unit vector (WXYZ)
 	vtkGetVector3Macro(Direction, double);
+
+	// **** Geometrical Functions **** //
+	//! Implements the translation of the item (Local coordinate system)
+	/*!
+		The X & Y parameters contains the relative movement in the horizontal and vertical axes respectively
+		\param x x position of the item
+		\param y y position of the item
+		\param z z position of the item
+	 */
+	virtual void Translate(double x, double y, double z) = 0;
+
+	//! Implements the translation of the item (Local coordinate system)
+	/*!
+			\param vector position vector of the translation
+	 */
+	virtual void Translate(double * vector) = 0;
+
+	//!Set item back to Origin for rotation translation
+	//void TranslateToOrigin();
+
+	//!Restore item position from origin
+	//void TranslateFromOrigin();
+
+	//! Implements the lateral movements of the item  (Local coordinate system)
+	/*!
+		The X parameter contains the relative movement in the horizontal axes
+		\param x x orientation angle
+		Note: this function must be implemented in inheriting classes
+	 */
+	virtual void RotateX(double x) = 0;
+
+	//! Implements the lateral movements of the item  (Local coordinate system)
+	/*!
+		The Y parameter contains the relative movement in the vertical axes
+		\param y y orientation angle
+		Note: this function must be implemented in inheriting classes
+	 */
+	virtual void RotateY(double y) = 0;
+
+	//! Rotate the item on its own axes  (Local coordinate system)
+	/*!
+		This function rotate the item on its own axis the value of an angle given
+		by the "Rotation" variable the rotation is produced acting on the actors who compose the item.
+		\param rotation rotation angle (radians)
+		Note: this function must be implemented in inheriting classes
+	 */
+	virtual void RotateZ(double rotation) = 0;
+
 	//! Hide scenario item.
 	/*!
 	 * Must be implemented in inherited classes
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Hide() = 0;
 	//! Show/Display item.
 	/*!
 	 * Must be implemented in inherited classes
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Show() = 0;
 

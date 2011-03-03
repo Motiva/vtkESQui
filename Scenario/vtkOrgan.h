@@ -167,8 +167,6 @@ public:
 	//!Set On/Off organ as hooked
 	vtkBooleanMacro(Hooked, bool);
 
-
-
 	//!Initialize mesh data
 	/*!
 	* The following parameters should be set before calling this function:
@@ -176,6 +174,43 @@ public:
 	*/
 	virtual void Init();
 
+	// **** Geometrical Functions **** //
+	//! Implements the translation of the organ (Local coordinate system)
+	/*!
+		The X & Y parameters contains the relative movement in the horizontal and vertical axes respectively
+		\param x x position of the organ
+		\param y y position of the organ
+		\param z z position of the organ
+	 */
+	virtual void Translate(double x, double y, double z);
+
+	//! Implements the translation of the organ (Local coordinate system)
+	/*!
+			\param vector position vector of the translation
+	 */
+	virtual void Translate(double * vector);
+
+	//! Implements the lateral movements of the organ  (Local coordinate system)
+	/*!
+		The X parameter contains the relative movement in the horizontal axes
+		\param x x orientation angle
+	 */
+	virtual void RotateX(double x);
+
+	//! Implements the lateral movements of the organ  (Local coordinate system)
+	/*!
+		The Y parameter contains the relative movement in the vertical axes
+		\param y y orientation angle
+	 */
+	virtual void RotateY(double y);
+
+	//! Rotate the organ on its own axes  (Local coordinate system)
+	/*!
+		This function rotate the organ on its own axis the value of an angle given
+		by the "Rotation" variable the rotation is produced acting on the actors who compose the organ.
+		\param rotation rotation angle (radians)
+	 */
+	virtual void RotateZ(double rotation);
 	//------- Rendering purposes ----------//
 
 	//!Set the actor of the organ
@@ -274,7 +309,7 @@ protected:
 	vtkContactCollection * Contacts;
 
 	//!Force estimation
-	double ForceFactor;     
+	double ForceFactor;
 
 	//!Organ is hooked
 	bool Hooked;

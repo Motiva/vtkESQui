@@ -27,8 +27,8 @@ proc scene {} {
 #catch {::vtk::load_component vtkesquiHapticsTCL}
 
 set filename0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/Stick.vtp"
-set filename1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftGrasper.vtp"
-set filename2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightGrasper.vtp"
+set filename1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftLever.vtp"
+set filename2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightLever.vtp"
 set filename3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
 set filename3t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg"
 set filename4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
