@@ -55,9 +55,15 @@ proc scene {} {
 #catch {package require vtkesquiHaptics}
 #catch {::vtk::load_component vtkesquiHapticsTCL}
 
+<<<<<<< HEAD
 set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp"
 set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp"
 #set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/RightLever.vtp"
+=======
+set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp"
+set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp"
+set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp"
+>>>>>>> dacebefb6fc37c216d017153235d9d42e85b3ad8
 set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
 set fn3t0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg"
 set fn3t1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg"
@@ -187,6 +193,7 @@ scenario AddOrgan ball2
 ### Tools ###
 #Add new tool To the scenario
 #Create a Tool
+<<<<<<< HEAD
 vtkToolProbe leftProbe
 #Set tool identifier
 leftProbe SetId 0
@@ -225,6 +232,48 @@ rightProbe SetDeltaT 0.01
 
 #Add tool to the scenario
 scenario AddTool rightProbe
+=======
+vtkToolGrasper leftGrasper
+#Set tool identifier
+leftGrasper SetId 0
+leftGrasper SetNumberOfPieces 3
+#Set source data filename
+leftGrasper SetStickFileName $fn0
+leftGrasper SetLeftLeverFileName $fn1
+leftGrasper SetRightLeverFileName $fn2
+#Set geometric parameters
+leftGrasper SetPosition -3 0 0
+leftGrasper SetOrientation 0 10 0
+leftGrasper SetOrigin 0 0 4
+
+#Set tool scale  size
+leftGrasper SetScale 1.0 1.0 1.0
+leftGrasper SetDeltaT 0.01
+
+#Add tool to the scenario
+scenario AddTool leftGrasper
+
+#Create a Tool
+vtkToolGrasper rightGrasper
+#Set tool identifier
+rightGrasper SetId 1
+rightGrasper SetNumberOfPieces 3
+#Set source data filename
+rightGrasper SetStickFileName $fn0
+rightGrasper SetLeftLeverFileName $fn1
+rightGrasper SetRightLeverFileName $fn2
+#Set geometric parameters
+rightGrasper SetPosition 3 0 0
+rightGrasper SetOrientation 0 -10 0
+rightGrasper SetOrigin 0 0 4
+
+#Set tool scale  size
+rightGrasper SetScale 1.0 1.0 1.0
+rightGrasper SetDeltaT 0.01
+
+#Add tool to the scenario
+scenario AddTool rightGrasper
+>>>>>>> dacebefb6fc37c216d017153235d9d42e85b3ad8
 
 ###  Load Scene Environment  ###
 
