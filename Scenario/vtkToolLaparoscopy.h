@@ -76,6 +76,18 @@ public:
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//!Tool type definition
+	enum vtkToolLaparoscopyModel{
+		Probe = 0,
+		Grasper = 1,
+		Scissors = 2,
+		Hook = 3
+	};
+
+	//!Set tool model
+	vtkSetMacro(ToolModel, vtkToolLaparoscopy::vtkToolLaparoscopyModel);
+	//!Return tool model
+	vtkGetMacro(ToolModel, vtkToolLaparoscopy::vtkToolLaparoscopyModel);
 
 	//!Abstract initialization function
 	/*!
@@ -178,6 +190,9 @@ protected:
 
 	vtkToolLaparoscopy();
 	~vtkToolLaparoscopy();
+
+	//! Tool Type
+	vtkToolLaparoscopyModel ToolModel;
 
 	//! Force Feedabck unit vector
 	double ForceFeedback[3];

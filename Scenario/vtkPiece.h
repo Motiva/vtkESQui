@@ -66,11 +66,12 @@ public:
 	//!Enumeration of piece types
 	enum vtkPieceType{
 		Blade = 0,
-		Grasper = 1,
+		Lever = 1,
 		Stick = 2,
-		Ball = 3,
-		Tube = 4,
-		Wire = 5
+		Tip = 3,
+		Ball = 4,
+		Tube = 5,
+		Wire = 6
 	};
 	
 

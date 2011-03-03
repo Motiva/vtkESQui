@@ -58,6 +58,7 @@ vtkStandardNewMacro(vtkToolGrasper);
 vtkToolGrasper::vtkToolGrasper()
 {
 	this->Opening = 0;
+	this->NumberOfPieces = 3;
 	this->StickFileName = NULL;
 	this->LeftLeverFileName = NULL;
 	this->RightLeverFileName = NULL;
@@ -75,7 +76,7 @@ vtkToolGrasper::~vtkToolGrasper()
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Init() { 
 	
-	//Physical pieces Tool Construction
+	//Physical pieces construction
 	vtkPiece * piece;
 
 	for (vtkIdType id = 0; id < this->NumberOfPieces ; id++)
@@ -88,7 +89,7 @@ void vtkToolGrasper::Init() {
 			piece->SetFileName(this->StickFileName);
 		}
 		else {
-			piece->SetPieceType(vtkPiece::Grasper);
+			piece->SetPieceType(vtkPiece::Lever);
 			if(id==1) piece->SetFileName(this->LeftLeverFileName);
 			else piece->SetFileName(this->RightLeverFileName);
 		}

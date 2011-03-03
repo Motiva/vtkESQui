@@ -80,7 +80,6 @@ public:
 
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
-
 	
 	//!Tool type definition
 	enum vtkToolType{
@@ -90,6 +89,10 @@ public:
 		Camera = 3
 	};
 	
+	//!Set tool type
+	vtkSetMacro(ToolType, vtkTool::vtkToolType);
+	//!Return tool type
+	vtkGetMacro(ToolType, vtkTool::vtkToolType);
 
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
@@ -106,11 +109,6 @@ public:
 	* id Identifier of the tool piece
 	*/
 	vtkPiece * GetPiece(vtkIdType id);
-
-	//!Set tool type
-	vtkSetMacro(ToolType, vtkTool::vtkToolType);
-	//!Return tool type
-	vtkGetMacro(ToolType, vtkTool::vtkToolType);
 
 	// **** Haptic Management Methods **** //
 
