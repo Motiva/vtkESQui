@@ -25,8 +25,6 @@ proc scene {} {
 
 #catch {package require vtkesquiHaptics}
 #catch {::vtk::load_component vtkesquiHapticsTCL}
-
-<<<<<<< HEAD
 set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp"
 set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp"
 set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp"
@@ -34,15 +32,6 @@ set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp
 set fn3t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg"
 set fn4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
 set fn4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomachtexture.jpg"
-=======
-set filename0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/Stick.vtp"
-set filename1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftLever.vtp"
-set filename2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightLever.vtp"
-set filename3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
-set filename3t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg"
-set filename4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
-set filename4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomachtexture.jpg"
->>>>>>> dacebefb6fc37c216d017153235d9d42e85b3ad8
 
 ###  Render Window Definitions  ###
 vtkRenderer ren1
