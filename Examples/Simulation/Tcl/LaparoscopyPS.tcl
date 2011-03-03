@@ -14,27 +14,27 @@ puts "vtkESQui loaded.\n"
 
 global id; set id 0
 global ids; set ids {1 2 3}
+global round; set id 0
+global rounds; set ids {1 2 3}
 global alpha; set alpha 0
-global timeout; set timeout 20000
+global timeout; set timeout 5000
 
 # idle loop
 proc sleep {} {	
 	global timeout
+	scene
 	movement
-	after $timeout scene
 }
 
 proc movement {} {
 	global id ids alpha
 	#puts "move"
 	set organ [scenario GetOrgan [lindex $ids $id]]
-	set p [$organ GetPosition]
-	puts "alpha: $alpha"
 	incr alpha 5
 	set rad [expr $alpha * 0.01745311]
-	set x [expr sin ($rad)]
-	set y [expr cos ($rad)]
-	#$organ SetPosition $x $y -5.0
+	set x [expr 0.1 * sin ($rad)]
+	set y [expr 0.1 * cos ($rad)]
+	$organ Translate 0.0 $x $y
 	after 100 movement
 }
 
@@ -42,24 +42,22 @@ proc movement {} {
 proc scene {} {
 	global timeout id ids
 	#puts "Timeout..."
-	#puts "ID: $id"
-	#puts [lindex $ids $id]
+	incr id
+	set id [expr $id % 3]
 	foreach j $ids {
 		[scenario GetOrgan $j] Hide
 	}
 	set organ [scenario GetOrgan [lindex $ids $id]]
 	$organ Show
-	incr id
-	set id [expr $id % 3]
 	after $timeout scene
 }
 
 #catch {package require vtkesquiHaptics}
 #catch {::vtk::load_component vtkesquiHapticsTCL}
 
-set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/Stick.vtp"
-set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftGrasper.vtp"
-set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightGrasper.vtp"
+set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp"
+set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp"
+set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp"
 set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
 set fn3t0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg"
 set fn3t1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg"
@@ -133,9 +131,9 @@ ball SetFileName $fn3
 ball SetTextureFileName $fn3t1
 
 #Set geometric parameters
-ball SetPosition 0.0 0.0 -5.0
+ball SetPosition 0.0 0.0 -4.0
 ball SetOrientation 0.0 -90.0 0.0
-ball SetOrigin 0.0 0.0 -3.0
+ball SetOrigin 0.0 0.0 -4.0
 
 #Set tool scale  size
 ball SetScale 0.5 0.5 0.5
@@ -154,9 +152,9 @@ ball1 SetFileName $fn3
 ball1 SetTextureFileName $fn3t2
 
 #Set geometric parameters
-ball1 SetPosition -3.0 0.0 -5.0
+ball1 SetPosition -3.0 0.0 -3.0
 ball1 SetOrientation 0.0 -90.0 0.0
-ball1 SetOrigin -3.0 0.0 -5.0
+ball1 SetOrigin -3.0 0.0 -3.0
 
 #Set tool scale  size
 ball1 SetScale 0.5 0.5 0.5
@@ -175,9 +173,9 @@ ball2 SetFileName $fn3
 ball2 SetTextureFileName $fn3t0
 
 #Set geometric parameters
-ball2 SetPosition 3.0 0.0 -5.0
+ball2 SetPosition 3.0 0.0 -3.0
 ball2 SetOrientation 0.0 -90.0 0.0
-ball2 SetOrigin 3.0 0.0 -5.0
+ball2 SetOrigin 3.0 0.0 -3.0
 
 #Set tool scale  size
 ball2 SetScale 0.5 0.5 0.5
@@ -189,46 +187,46 @@ scenario AddOrgan ball2
 ### Tools ###
 #Add new tool To the scenario
 #Create a Tool
-vtkToolPincers leftPincers
+vtkToolGrasper leftGrasper
 #Set tool identifier
-leftPincers SetId 0
-leftPincers SetNumberOfPieces 3
+leftGrasper SetId 0
+leftGrasper SetNumberOfPieces 3
 #Set source data filename
-leftPincers SetStickFileName $fn0
-leftPincers SetLeftGrasperFileName $fn1
-leftPincers SetRightGrasperFileName $fn2
+leftGrasper SetStickFileName $fn0
+leftGrasper SetLeftLeverFileName $fn1
+leftGrasper SetRightLeverFileName $fn2
 #Set geometric parameters
-leftPincers SetPosition -3 0 0
-leftPincers SetOrientation 0 10 0
-leftPincers SetOrigin 0 0 4
+leftGrasper SetPosition -3 0 0
+leftGrasper SetOrientation 0 10 0
+leftGrasper SetOrigin 0 0 4
 
 #Set tool scale  size
-leftPincers SetScale 1.0 1.0 1.0
-leftPincers SetDeltaT 0.01
+leftGrasper SetScale 1.0 1.0 1.0
+leftGrasper SetDeltaT 0.01
 
 #Add tool to the scenario
-scenario AddTool leftPincers
+scenario AddTool leftGrasper
 
 #Create a Tool
-vtkToolPincers rightPincers
+vtkToolGrasper rightGrasper
 #Set tool identifier
-rightPincers SetId 1
-rightPincers SetNumberOfPieces 3
+rightGrasper SetId 1
+rightGrasper SetNumberOfPieces 3
 #Set source data filename
-rightPincers SetStickFileName $fn0
-rightPincers SetLeftGrasperFileName $fn1
-rightPincers SetRightGrasperFileName $fn2
+rightGrasper SetStickFileName $fn0
+rightGrasper SetLeftLeverFileName $fn1
+rightGrasper SetRightLeverFileName $fn2
 #Set geometric parameters
-rightPincers SetPosition 3 0 0
-rightPincers SetOrientation 0 -10 0
-rightPincers SetOrigin 0 0 4
+rightGrasper SetPosition 3 0 0
+rightGrasper SetOrientation 0 -10 0
+rightGrasper SetOrigin 0 0 4
 
 #Set tool scale  size
-rightPincers SetScale 1.0 1.0 1.0
-rightPincers SetDeltaT 0.01
+rightGrasper SetScale 1.0 1.0 1.0
+rightGrasper SetDeltaT 0.01
 
 #Add tool to the scenario
-scenario AddTool rightPincers
+scenario AddTool rightGrasper
 
 ###  Load Scene Environment  ###
 

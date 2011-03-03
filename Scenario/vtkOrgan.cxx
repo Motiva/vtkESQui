@@ -61,8 +61,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkProperty.h"
 #include "vtkActor2D.h"
 #include "vtkSelectVisiblePoints.h"
-
 #include "vtkLabeledDataMapper.h"
+#include "vtkMath.h"
 
 #include "vtkBioMechanicalModel.h"
 #include "vtkContact.h"
@@ -121,6 +121,23 @@ vtkOrgan::~vtkOrgan()
 }
 
 //--------------------------------------------------------------------------
+void vtkOrgan::SetDeformationModel(vtkBioMechanicalModel * bmm)
+{
+	if(this->DeformationModel)
+	{
+		this->DeformationModel->Delete();
+	}
+	this->DeformationModel = bmm;
+	this->OrganType = Deformable;
+}
+
+//--------------------------------------------------------------------------
+vtkBioMechanicalModel * vtkOrgan::GetDeformationModel()
+{
+	return this->DeformationModel;
+}
+
+//--------------------------------------------------------------------------
 void vtkOrgan::Init()
 {	
 	//if(!this->Input)
@@ -141,11 +158,11 @@ void vtkOrgan::Init()
 		this->TransformFilter->SetInput(this->GetInput());
 		this->TransformFilter->SetTransform(this->Transform);
 
-		this->Transform->Scale(this->Scale);
 		this->Transform->Translate(this->Position);
 		this->Transform->RotateX(this->Orientation[0]);
 		this->Transform->RotateY(this->Orientation[1]);
 		this->Transform->RotateZ(this->Orientation[2]);
+		this->Transform->Scale(this->Scale);
 
 		this->TransformFilter->Update();
 
@@ -243,11 +260,26 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 	if(this->IsHidden()) this->Hide();
 	else if(this->IsVisible()) this->Show();
 
-	this->Transform->Scale(this->Scale);
-	this->Transform->Translate(this->Position);
-	this->Transform->RotateX(this->Orientation[0]);
-	this->Transform->RotateY(this->Orientation[1]);
-	this->Transform->RotateZ(this->Orientation[2]);
+	//Update position & orientation
+	this->Velocity[0] = this->Position[0];
+	this->Velocity[1] = this->Position[1];
+	this->Velocity[2] = this->Position[2];
+	this->Acceleration[0] = this->Velocity[0];
+	this->Acceleration[1] = this->Velocity[1];
+	this->Acceleration[2] = this->Velocity[2];
+
+	//Get transformed values
+	this->Transform->GetPosition(this->Position);
+	this->Transform->GetOrientation(this->Orientation);
+
+	//Update object velocity
+	//Velocity will be calculated from delta(Position)/dt
+	vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
+	vtkMath::MultiplyScalar(this->Velocity, 1/this->DeltaT);
+
+	//Update object acceleration
+	vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
+	vtkMath::MultiplyScalar(this->Acceleration, 1/this->DeltaT);
 
 	this->TransformFilter->Update();
 
@@ -270,22 +302,49 @@ int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
 }
 
 //--------------------------------------------------------------------------
-void vtkOrgan::SetDeformationModel(vtkBioMechanicalModel * bmm)
+void vtkOrgan::Translate(double * vector)
 {
-	if(this->DeformationModel)
-	{
-		this->DeformationModel->Delete();
-	}
-	this->DeformationModel = bmm;
-	this->OrganType = Deformable;
+	this->Translate(vector[0], vector[1], vector[2]);
 }
 
 //--------------------------------------------------------------------------
-vtkBioMechanicalModel * vtkOrgan::GetDeformationModel()
-{
-	return this->DeformationModel;
+void vtkOrgan::Translate(double x, double y, double z) {
+	this->Transform->Translate(x, y, z);
 }
 
+/*//--------------------------------------------------------------------------
+void vtkOrgan::TranslateToOrigin()
+{
+	//Set back to the origin for translation/rotation
+	this->Translate(this->Origin);
+	this->RotateZ(-this->Orientation[2]);
+}
+
+//--------------------------------------------------------------------------
+void vtkOrgan::TranslateFromOrigin()
+{
+	//Set back to previous position
+	this->RotateZ(this->Orientation[2]);
+	vtkMath::MultiplyScalar(this->Origin, -1);
+	this->Translate(this->Origin);
+	vtkMath::MultiplyScalar(this->Origin, -1);
+}*/
+
+//--------------------------------------------------------------------------
+void vtkOrgan::RotateX(double x) {
+	this->Transform->RotateX(x);
+}
+
+//--------------------------------------------------------------------------
+void vtkOrgan::RotateY(double y) {
+	this->Transform->RotateY(y);
+}
+
+//--------------------------------------------------------------------------
+void vtkOrgan::RotateZ(double z)
+{
+	this->Transform->RotateZ(z);
+}
 //--------------------------------------------------------------------------
 void vtkOrgan::Hide()
 {

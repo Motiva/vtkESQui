@@ -61,7 +61,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkToolCollection.h"
 #include "vtkPiece.h"
 #include "vtkPieceCollection.h"
-#include "vtkToolPincers.h"
+#include "vtkToolGrasper.h"
 #include "vtkOrgan.h"
 #include "vtkOrganCollection.h"
 #include "vtkPSSInterface.h"
@@ -369,10 +369,10 @@ void vtkSRMLImporter::ImportTools()
 		item = tools->GetNestedElement(i);
 		const char * type = item->GetAttribute("Type");
 
-		if(strcmp(type, "Pincers") == 0)
+		if(strcmp(type, "Grasper") == 0)
 		{
-			vtkToolPincers * tool = vtkToolPincers::New();
-			this->SetToolPincersData(tool, item);
+			vtkToolGrasper * tool = vtkToolGrasper::New();
+			this->SetToolGrasperData(tool, item);
 			this->Scenario->AddTool(tool);
 		}
 
@@ -419,7 +419,7 @@ void vtkSRMLImporter::SetToolData(vtkTool * tool, vtkXMLDataElement * item)
 }
 
 //----------------------------------------------------------------------------
-void vtkSRMLImporter::SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElement * item)
+void vtkSRMLImporter::SetToolGrasperData(vtkToolGrasper * tool, vtkXMLDataElement * item)
 {
 	//Set common tool data
 	this->SetToolData(tool, item);
@@ -427,7 +427,7 @@ void vtkSRMLImporter::SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElemen
 	//Set tool type
 	tool->SetToolType(vtkTool::Laparoscopy);
 
-	//Set specific vtkToolPincers parameters
+	//Set specific vtkToolGrasper parameters
 	for (int j=0; j<tool->GetNumberOfPieces();j++)
 	{
 		vtkXMLDataElement * child;
@@ -436,8 +436,8 @@ void vtkSRMLImporter::SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElemen
 		child->GetScalarAttribute("Id", id);
 		const char *fn = ExpandDataFileName(child->GetAttribute("FileName"));
 		if(id==0) tool->SetStickFileName(fn);
-		else if(id==1) tool->SetLeftGrasperFileName(fn);
-		else if(id==2) tool->SetRightGrasperFileName(fn);
+		else if(id==1) tool->SetLeftLeverFileName(fn);
+		else if(id==2) tool->SetRightLeverFileName(fn);
 		delete[] fn;
 	}
 }

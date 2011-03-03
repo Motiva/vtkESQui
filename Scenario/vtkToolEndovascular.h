@@ -145,19 +145,19 @@ public:
 
 	//! Rotate the tool in degrees from current orientation about the X axis using the right hand rule.
 	/*!
-	* Standard laparoscopic tool X-axis rotation. Mobile pieces are processed in implementation classes (vtkToolPincers, vtkToolScissors, etc...)
+	* Standard laparoscopic tool X-axis rotation. Mobile pieces are processed in implementation classes
 	*/
 	virtual void RotateX(double angle);
 
 	//! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
 	/*!
-	* Standard laparoscopic tool Y-axis rotation. Mobile pieces are processed in implementation classes (vtkToolPincers, vtkToolScissors, etc...)
+	* Standard laparoscopic tool Y-axis rotation. Mobile pieces are processed in implementation classes
 	*/
 	virtual void RotateY(double angle);
 
 	//! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
 	/*!
-	* Standard laparoscopic tool Z-axis rotation. Mobile pieces are processed in implementation classes (vtkToolPincers, vtkToolScissors, etc...)
+	* Standard laparoscopic tool Z-axis rotation. Mobile pieces are processed in implementation classes
 	*/
 	virtual void RotateZ(double angle);
 

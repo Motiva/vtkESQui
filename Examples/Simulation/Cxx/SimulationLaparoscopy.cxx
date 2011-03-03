@@ -61,7 +61,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTexture.h"
 #include "vtkLight.h"
 #include "vtkLightCollection.h"
-#include "vtkToolPincers.h"
+#include "vtkToolGrasper.h"
 #include "vtkCubeSource.h"
 #include "vtkSimulation.h"
 #include "vtkSimulationInteractorStyle.h"
@@ -83,9 +83,9 @@ using namespace EsquiExampleNS;
 int main(int argc, char * argv[])
 {
 
-	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/Stick.vtp";
-	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftGrasper.vtp";
-	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightGrasper.vtp";
+	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp";
+	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
+	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
 	const char * filename3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
 	const char * filename3t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg";
 	const char * filename4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp";
@@ -188,46 +188,46 @@ int main(int argc, char * argv[])
 	/********** Tools **********/
 	//Add new tool To the scenario
 	//Create a Tool
-	vtkToolPincers * leftPincers = vtkToolPincers::New();
+	vtkToolGrasper * leftGrasper = vtkToolGrasper::New();
 	//Set tool identifier
-	leftPincers->SetId(0);
-	leftPincers->SetNumberOfPieces(3);
+	leftGrasper->SetId(0);
+	leftGrasper->SetNumberOfPieces(3);
 	//Set source data filename
-	leftPincers->SetStickFileName(filename0);
-	leftPincers->SetLeftGrasperFileName(filename1);
-	leftPincers->SetRightGrasperFileName(filename2);
+	leftGrasper->SetStickFileName(filename0);
+	leftGrasper->SetLeftLeverFileName(filename1);
+	leftGrasper->SetRightLeverFileName(filename2);
 	//Set geometric parameters
-	leftPincers->SetPosition(-3, 0, 0);
-	leftPincers->SetOrientation(0, 10, 0);
-	leftPincers->SetOrigin(0, 0, 4);
+	leftGrasper->SetPosition(-3, 0, 0);
+	leftGrasper->SetOrientation(0, 10, 0);
+	leftGrasper->SetOrigin(0, 0, 4);
 
 	//Set tool scale (size)
-	leftPincers->SetScale(1.0, 1.0, 1.0);
-	leftPincers->SetDeltaT(0.01);
+	leftGrasper->SetScale(1.0, 1.0, 1.0);
+	leftGrasper->SetDeltaT(0.01);
 
 	//Add tool to the scenario
-	scenario->AddTool(leftPincers);
+	scenario->AddTool(leftGrasper);
 
 	//Create a Tool
-	vtkToolPincers * rightPincers = vtkToolPincers::New();
+	vtkToolGrasper * rightGrasper = vtkToolGrasper::New();
 	//Set tool identifier
-	rightPincers->SetId(1);
-	rightPincers->SetNumberOfPieces(3);
+	rightGrasper->SetId(1);
+	rightGrasper->SetNumberOfPieces(3);
 	//Set source data filename
-	rightPincers->SetStickFileName(filename0);
-	rightPincers->SetLeftGrasperFileName(filename1);
-	rightPincers->SetRightGrasperFileName(filename2);
+	rightGrasper->SetStickFileName(filename0);
+	rightGrasper->SetLeftLeverFileName(filename1);
+	rightGrasper->SetRightLeverFileName(filename2);
 	//Set geometric parameters
-	rightPincers->SetPosition(3, 0, 0);
-	rightPincers->SetOrientation(0, -10, 0);
-	rightPincers->SetOrigin(0, 0, 4);
+	rightGrasper->SetPosition(3, 0, 0);
+	rightGrasper->SetOrientation(0, -10, 0);
+	rightGrasper->SetOrigin(0, 0, 4);
 
 	//Set tool scale (size)
-	rightPincers->SetScale(1.0, 1.0, 1.0);
-	rightPincers->SetDeltaT(0.01);
+	rightGrasper->SetScale(1.0, 1.0, 1.0);
+	rightGrasper->SetDeltaT(0.01);
 
 	//Add tool to the scenario
-	scenario->AddTool(rightPincers);
+	scenario->AddTool(rightGrasper);
 
 	/**********  Load Scene Environment  ********/
 
@@ -278,8 +278,8 @@ int main(int argc, char * argv[])
 	//
 	organ->Delete();
 	cavity->Delete();
-	leftPincers->Delete();
-	rightPincers->Delete();
+	leftGrasper->Delete();
+	rightGrasper->Delete();
 	headLight->Delete();
 	ambientLight->Delete();
 	scenario->Delete();

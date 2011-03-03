@@ -18,7 +18,7 @@ vtkToolCollection.cxx
 vtkToolEndovascular.cxx
 vtkToolCatheter.cxx
 vtkToolLaparoscopy.cxx
-vtkToolPincers.cxx
+vtkToolGrasper.cxx
 vtkToolScissors.cxx
 vtkToolDummy.cxx
 vtkPiece.cxx

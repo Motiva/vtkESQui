@@ -39,32 +39,32 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkToolGPincers_h
-#define __vtkToolGPincers_h
+#ifndef __vtkToolGrasper_h
+#define __vtkToolGrasper_h
 
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolLaparoscopy.h"
 
-//! Implementation class of pincers
+//! Implementation class of grasper
 /*!
-	vtkToolPincers is the class that implements the pincers tool, inside the scene.
+	vtkToolGrasper is the class that implements the grasper tool, inside the scene.
 	Contains methods for position control of the tool in the scene and collision detection.
-	Pincers are composed of 3 pieces: 1 stick and 2 graspers (vtkPiece)
+	Grasper are composed of 3 pieces: 1 stick and 2 graspers (vtkPiece)
 	Inherits vtkToolLaparascopy class
 */
 
-class VTK_ESQUI_SCENARIO_EXPORT vtkToolPincers: public vtkToolLaparoscopy
+class VTK_ESQUI_SCENARIO_EXPORT vtkToolGrasper: public vtkToolLaparoscopy
 {
 public:
 
 	//!Type revision macro
-	vtkTypeRevisionMacro(vtkToolPincers,vtkToolLaparoscopy);
+	vtkTypeRevisionMacro(vtkToolGrasper,vtkToolLaparoscopy);
 
-	//!Create new vtkToolPincers object
-	static vtkToolPincers *New();
+	//!Create new vtkToolGrasper object
+	static vtkToolGrasper *New();
 
 	//!Return class name
-	const char *GetClassName() { return "vtkToolGPincers"; }
+	const char *GetClassName() { return "vtkToolGrasper"; }
 
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
@@ -73,8 +73,8 @@ public:
 	//!Tool tyoe definition
 	enum vtkPieceType{
 		Stick = 0,
-		LeftGrasper = 1,
-		RightGrasper = 2
+		LeftLever = 1,
+		RightLever = 2
 	};
 	
 
@@ -106,25 +106,25 @@ public:
 	/*!
 	 * Specify the path of the file that contains the grasper piece polydata
 	 */
-	vtkSetStringMacro(LeftGrasperFileName);
+	vtkSetStringMacro(LeftLeverFileName);
 
 	//!Return the left grasper polydata file name
 	/*!
 	* Path of the file that contains the grasper piece polydata
 	*/
-	vtkGetStringMacro(LeftGrasperFileName);
+	vtkGetStringMacro(LeftLeverFileName);
 
 	//!Set grasper polydata filename
 	/*!
 	 * Specify the path of the file that contains the grasper piece polydata
 	 */
-	vtkSetStringMacro(RightGrasperFileName);
+	vtkSetStringMacro(RightLeverFileName);
 
 	//!Return the left grasper polydata file name
 	/*!
 	 * Path of the file that contains the grasper piece polydata
 	 */
-	vtkGetStringMacro(RightGrasperFileName);
+	vtkGetStringMacro(RightLeverFileName);
 
 	//! Set the tool's aperture according with the value given in the "Aperture" parameter
 	/*!
@@ -136,14 +136,14 @@ public:
 	//!Get pincer opening
 	vtkGetMacro(Opening, double);
 
-	//! Open the pincers moving piece actors
+	//! Open the grasper moving piece actors
 	/*!
 		Piece actors are transformed to perform tool opening
 		Bounding boxes are recalculated.
 	*/
 	void Open();
 
-	//! Close the pincers moving piece actors
+	//! Close the grasper moving piece actors
 	/*!
 		Piece actors are transformed to perform tool closing
 		Bounding boxes are recalculated.
@@ -153,49 +153,49 @@ public:
 	//!Return whether the grasper is closed or not
 	bool IsClosed(){return (this->Opening <= 0.);}
 
-	//! Sets the pincers' depth in its own coordinate system
+	//! Sets the grasper' depth in its own coordinate system
 	void SetDepth(double position);
 
-	//! Rotate the pincers in degrees from current orientation about the X axis using the right hand rule.
+	//! Rotate the grasper in degrees from current orientation about the X axis using the right hand rule.
 	/*!
-	 * Pincers specific X-axis rotation.
+	 * Grasper specific X-axis rotation.
 	 */
 	void RotateX(double angle);
 
-	//! Rotate the pincers in degrees from current orientation about the Y axis using the right hand rule.
+	//! Rotate the grasper in degrees from current orientation about the Y axis using the right hand rule.
 	/*!
-	 * Pincers specific X-axis rotation.
+	 * Grasper specific X-axis rotation.
 	 */
 	void RotateY(double angle);
 
-	//! Rotate the pincers in degrees from current orientation about the Y axis using the right hand rule.
+	//! Rotate the grasper in degrees from current orientation about the Y axis using the right hand rule.
 	/*!
-	 * Pincers specific X-axis rotation.
+	 * Grasper specific X-axis rotation.
 	 */
 	void RotateZ(double angle);
 
-	//! Sets the pincers yaw angle
+	//! Sets the grasper yaw angle
 	void Yaw(double angle);
 
-	//! Sets the pincers pitch angle
+	//! Sets the grasper pitch angle
 	void Pitch(double angle);
 
-	//! Sets the pincers roll angle
+	//! Sets the grasper roll angle
 	void Roll(double angle);
 
 protected:	
 
-	vtkToolPincers();
-	~vtkToolPincers();
+	vtkToolGrasper();
+	~vtkToolGrasper();
 
 private:
 
-	vtkToolPincers (const vtkToolPincers &); //Not Implemented
-	void operator =(const vtkToolPincers &); //Not Implemented
+	vtkToolGrasper (const vtkToolGrasper &); //Not Implemented
+	void operator =(const vtkToolGrasper &); //Not Implemented
 
 	char * StickFileName;
-	char * LeftGrasperFileName;
-	char * RightGrasperFileName;
+	char * LeftLeverFileName;
+	char * RightLeverFileName;
 
 	//! Tool pieces opening
 	double Opening;
@@ -203,19 +203,19 @@ private:
 	/*!
 	 * Return the vtkPiece object of the stick
 	 */
-	vtkPiece * GetStick(){return this->GetPiece(vtkToolPincers::Stick);};
+	vtkPiece * GetStick(){return this->GetPiece(vtkToolGrasper::Stick);};
 
-	//!Return the left grasper piece
+	//!Return the left lever piece
 	/*!
-	 * Return the vtkPiece object of the left grasper at the specified id
+	 * Return the vtkPiece object of the left lever at the specified id
 	 */
-	vtkPiece * GetLeftGrasper(){return this->GetPiece(vtkToolPincers::LeftGrasper);};
+	vtkPiece * GetLeftLever(){return this->GetPiece(vtkToolGrasper::LeftLever);};
 	
-	//!Return the right grasper piece
+	//!Return the right lever piece
 	/*!
-	 * Return the vtkPiece object of the right grasper
+	 * Return the vtkPiece object of the right lever
 	 */
-	vtkPiece * GetRightGrasper(){return this->GetPiece(vtkToolPincers::RightGrasper);};
+	vtkPiece * GetRightLever(){return this->GetPiece(vtkToolGrasper::RightLever);};
 
 };
 #endif

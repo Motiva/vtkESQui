@@ -238,33 +238,33 @@ protected:
 	\param y y position of the tool
 	\param z z position of the tool
 	*/
-	void Translate(double x, double y, double z);
+	virtual void Translate(double x, double y, double z);
 
 	//! Implements the translation of the tool (Local coordinate system)
 	/*!
 		\param vector position vector of the translation
 	 */
-	void Translate(double * vector);
+	virtual void Translate(double * vector);
 
 	//!Set tool back to Origin for rotation translation
-	void TranslateToOrigin();
+	virtual void TranslateToOrigin();
 
 	//!Restore tool position from origin
-	void TranslateFromOrigin();
+	virtual void TranslateFromOrigin();
 
 	//! Implements the lateral movements of the tool  (Local coordinate system)
 	/*!
 	The X parameter contains the relative movement in the horizontal axes
 	\param x x orientation angle
 	*/
-	void RotateX(double x);
+	virtual void RotateX(double x);
 
 	//! Implements the lateral movements of the tool  (Local coordinate system)
 	/*!
 	The Y parameter contains the relative movement in the vertical axes
 	\param y y orientation angle
 	*/
-	void RotateY(double y);
+	virtual void RotateY(double y);
 
 	//! Rotate the tool on its own axes  (Local coordinate system)
 	/*!
@@ -272,7 +272,7 @@ protected:
 	by the "Rotation" variable the rotation is produced acting on the actors who compose the tool.
 	\param rotation rotation angle (radians)
 	*/
-	void RotateZ(double rotation);
+	virtual void RotateZ(double rotation);
 
 private:
 	vtkTool (const vtkTool &);

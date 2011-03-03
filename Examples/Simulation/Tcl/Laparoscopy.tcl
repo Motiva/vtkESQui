@@ -26,13 +26,13 @@ proc scene {} {
 #catch {package require vtkesquiHaptics}
 #catch {::vtk::load_component vtkesquiHapticsTCL}
 
-set filename0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/Stick.vtp"
-set filename1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftGrasper.vtp"
-set filename2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightGrasper.vtp"
-set filename3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
-set filename3t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg"
-set filename4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
-set filename4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomachtexture.jpg"
+set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp"
+set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp"
+set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp"
+set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
+set fn3t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg"
+set fn4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
+set fn4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomachtexture.jpg"
 
 ###  Render Window Definitions  ###
 vtkRenderer ren1
@@ -57,8 +57,8 @@ organ SetId 0
 organ SetName "Sphere"
 
 #Set source data filename
-organ SetFileName $filename3
-organ SetTextureFileName $filename3t
+organ SetFileName $fn3
+organ SetTextureFileName $fn3t
 
 #Set geometric parameters
 organ SetPosition 0.0 0.0 -3.0
@@ -96,8 +96,8 @@ cavity SetId 1
 cavity SetName "Cavity"
 
 #Set source data filename
-cavity SetFileName $filename4
-cavity SetTextureFileName $filename4t
+cavity SetFileName $fn4
+cavity SetTextureFileName $fn4t
 
 #Set geometric parameters
 cavity SetPosition 0.0 0.0 0.0
@@ -131,46 +131,46 @@ scenario AddOrgan cavity
 ### Tools ###
 #Add new tool To the scenario
 #Create a Tool
-vtkToolPincers leftPincers
+vtkToolGrasper leftGrasper
 #Set tool identifier
-leftPincers SetId 0
-leftPincers SetNumberOfPieces 3
+leftGrasper SetId 0
+leftGrasper SetNumberOfPieces 3
 #Set source data filename
-leftPincers SetStickFileName $filename0
-leftPincers SetLeftGrasperFileName $filename1
-leftPincers SetRightGrasperFileName $filename2
+leftGrasper SetStickFileName $fn0
+leftGrasper SetLeftLeverFileName $fn1
+leftGrasper SetRightLeverFileName $fn2
 #Set geometric parameters
-leftPincers SetPosition -3 0 0
-leftPincers SetOrientation 0 10 0
-leftPincers SetOrigin 0 0 4
+leftGrasper SetPosition -3 0 0
+leftGrasper SetOrientation 0 10 0
+leftGrasper SetOrigin 0 0 4
 
 #Set tool scale  size
-leftPincers SetScale 1.0 1.0 1.0
-leftPincers SetDeltaT 0.01
+leftGrasper SetScale 1.0 1.0 1.0
+leftGrasper SetDeltaT 0.01
 
 #Add tool to the scenario
-scenario AddTool leftPincers
+scenario AddTool leftGrasper
 
 #Create a Tool
-vtkToolPincers rightPincers
+vtkToolGrasper rightGrasper
 #Set tool identifier
-rightPincers SetId 1
-rightPincers SetNumberOfPieces 3
+rightGrasper SetId 1
+rightGrasper SetNumberOfPieces 3
 #Set source data filename
-rightPincers SetStickFileName $filename0
-rightPincers SetLeftGrasperFileName $filename1
-rightPincers SetRightGrasperFileName $filename2
+rightGrasper SetStickFileName $fn0
+rightGrasper SetLeftLeverFileName $fn1
+rightGrasper SetRightLeverFileName $fn2
 #Set geometric parameters
-rightPincers SetPosition 3 0 0
-rightPincers SetOrientation 0 -10 0
-rightPincers SetOrigin 0 0 4
+rightGrasper SetPosition 3 0 0
+rightGrasper SetOrientation 0 -10 0
+rightGrasper SetOrigin 0 0 4
 
 #Set tool scale  size
-rightPincers SetScale 1.0 1.0 1.0
-rightPincers SetDeltaT 0.01
+rightGrasper SetScale 1.0 1.0 1.0
+rightGrasper SetDeltaT 0.01
 
 #Add tool to the scenario
-scenario AddTool rightPincers
+scenario AddTool rightGrasper
 
 ###  Load Scene Environment  ###
 

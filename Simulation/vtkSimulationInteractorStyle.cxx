@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 #include "vtkTool.h"
-#include "vtkToolPincers.h"
+#include "vtkToolGrasper.h"
 
 vtkCxxRevisionMacro(vtkSimulationInteractorStyle, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkSimulationInteractorStyle);
@@ -81,7 +81,7 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 	vtkTool * t = this->Scenario->GetTool(this->ActiveToolId);
 
 	//TODO: Make this method generic for any tool
-	vtkToolPincers * tool = vtkToolPincers::SafeDownCast(t);
+	vtkToolGrasper * tool = vtkToolGrasper::SafeDownCast(t);
 
 	//handle a "normal" key
 	if(key.compare("c") == 0)
@@ -186,7 +186,7 @@ void vtkSimulationInteractorStyle::OnMouseMove()
 		int y = this->Scale*(pick[1] - this->PreviousPosition[1]);
 
 		vtkTool * t = this->Scenario->GetTool(this->ActiveToolId);
-		vtkToolPincers * tool = vtkToolPincers::SafeDownCast(t);
+		vtkToolGrasper * tool = vtkToolGrasper::SafeDownCast(t);
 
 		if(this->LeftButtonPressed)
 		{

@@ -281,7 +281,7 @@ vtkTransform * vtkTool::GetTransform(vtkIdType id) {
 //--------------------------------------------------------------------------
 void vtkTool::Hide()
 {
-	this->Status == Hidden;
+	this->Status = Hidden;
 	this->Actors->InitTraversal();
 	while (vtkActor * a = this->Actors->GetNextActor())
 	{
@@ -292,7 +292,7 @@ void vtkTool::Hide()
 //--------------------------------------------------------------------------
 void vtkTool::Show()
 {
-	this->Status == Visible;
+	this->Status = Visible;
 	this->Actors->InitTraversal();
 	while (vtkActor * a = this->Actors->GetNextActor())
 	{

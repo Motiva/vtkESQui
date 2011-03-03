@@ -59,7 +59,7 @@ class vtkLight;
 class vtkActor;
 
 class vtkTool;
-class vtkToolPincers;
+class vtkToolGrasper;
 class vtkOrgan;
 class vtkBioMechanicalModel;
 
@@ -203,12 +203,12 @@ private:
 	 * \param item parsed XMLDataElement that contains element info
 	 */
 	void SetToolData(vtkTool * tool, vtkXMLDataElement * item);
-	//! Set specific laparoscopic pincers values
+	//! Set specific laparoscopic grasper values
 	/*!
-	 * \param tool pincers tool object
+	 * \param tool grasper tool object
 	 * \param item parsed XMLDataElement that contains element info
 	 */
-	void SetToolPincersData(vtkToolPincers * tool, vtkXMLDataElement * item);
+	void SetToolGrasperData(vtkToolGrasper * tool, vtkXMLDataElement * item);
 	//! Set specific organ values
 	/*!
 	 * \param organ organ object

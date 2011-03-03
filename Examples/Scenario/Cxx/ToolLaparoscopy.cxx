@@ -48,16 +48,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkScenario.h"
 #include "vtkTool.h"
 #include "vtkToolLaparoscopy.h"
-#include "vtkToolPincers.h"
+#include "vtkToolGrasper.h"
 
 //!This test perform a test of the vtkToolLaparoscopy class
 
 int main(int argc, char * argv[])
 {
 
-	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/Stick.vtp";
-	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/LeftGrasper.vtp";
-	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Pincers/RightGrasper.vtp";
+	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp";
+	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
+	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
 
 	if (argc > 3)
 	{
@@ -77,25 +77,25 @@ int main(int argc, char * argv[])
 	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
 	iren->SetRenderWindow(renWin);
 
-	vtkToolPincers * pincers = vtkToolPincers::New();
+	vtkToolGrasper * grasper = vtkToolGrasper::New();
 	//Set tool identifier
-	pincers->SetId(0);
-	pincers->SetNumberOfPieces(3);
+	grasper->SetId(0);
+	grasper->SetNumberOfPieces(3);
 	//Set source data filename
-	pincers->SetStickFileName(filename0);
-	pincers->SetLeftGrasperFileName(filename1);
-	pincers->SetRightGrasperFileName(filename2);
+	grasper->SetStickFileName(filename0);
+	grasper->SetLeftLeverFileName(filename1);
+	grasper->SetRightLeverFileName(filename2);
 	//Set geometric parameters
-	pincers->SetPosition(3, 0, 0);
-	pincers->SetOrientation(0, -10, 0);
-	pincers->SetOrigin(0, 0, 4);
+	grasper->SetPosition(3, 0, 0);
+	grasper->SetOrientation(0, -10, 0);
+	grasper->SetOrigin(0, 0, 4);
 
 	//Set tool scale (size)
-	pincers->SetScale(1.0, 1.0, 1.0);
+	grasper->SetScale(1.0, 1.0, 1.0);
 
 	//Assign render window for display purposes
-	pincers->SetRenderWindow(renWin);
-	pincers->Init();
+	grasper->SetRenderWindow(renWin);
+	grasper->Init();
 
 	//Adjust Camera
 	vtkCamera * camera = ren1->GetActiveCamera();
