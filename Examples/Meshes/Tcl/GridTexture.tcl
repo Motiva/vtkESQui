@@ -20,7 +20,7 @@ vtkDataSetMapper mapper
 mapper SetInputConnection [ xform GetOutputPort]
 
 vtkJPEGReader jpegReader
-jpegReader SetFileName "$path/Scenario/Organs/Textures/stomachtexture.jpg"
+jpegReader SetFileName "$path/Scenario/Textures/stomach.jpg"
 
 vtkTexture texture
 texture SetInputConnection [ jpegReader GetOutputPort ]

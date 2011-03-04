@@ -63,7 +63,7 @@ set fn3t0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/left
 set fn3t1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg"
 set fn3t2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/bothball.jpg"
 set fn4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
-set fn4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomachtexture.jpg"
+set fn4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg"
 
 ###  Render Window Definitions  ###
 vtkRenderer ren1
