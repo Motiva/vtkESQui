@@ -19,10 +19,7 @@ vtkToolEndovascular.cxx
 vtkToolCatheter.cxx
 vtkToolLaparoscopy.cxx
 vtkToolGrasper.cxx
-<<<<<<< HEAD
 vtkToolProbe.cxx
-=======
->>>>>>> dacebefb6fc37c216d017153235d9d42e85b3ad8
 vtkToolScissors.cxx
 vtkToolDummy.cxx
 vtkPiece.cxx

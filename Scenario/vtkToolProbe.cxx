@@ -57,9 +57,10 @@ vtkStandardNewMacro(vtkToolProbe);
 //----------------------------------------------------------------------------
 vtkToolProbe::vtkToolProbe()
 {
+	this->ToolModel = Probe;
+	this->NumberOfPieces = 2;
 	this->StickFileName = NULL;
 	this->TipFileName = NULL;
-	this->NumberOfPieces = 2;
 }
 
 //----------------------------------------------------------------------------

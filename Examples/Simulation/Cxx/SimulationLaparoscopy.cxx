@@ -49,10 +49,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInteractorStyleTrackballCamera.h"
 
 #include "vtkScenario.h"
-#include "vtkTool.h"
 #include "vtkToolCollection.h"
-#include "vtkOrgan.h"
+#include "vtkTool.h"
+#include "vtkToolGrasper.h"
+#include "vtkToolProbe.h"
 #include "vtkOrganCollection.h"
+#include "vtkOrgan.h"
 #include "vtkPolyDataReader.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkDataSetMapper.h"
@@ -61,7 +63,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTexture.h"
 #include "vtkLight.h"
 #include "vtkLightCollection.h"
-#include "vtkToolGrasper.h"
 #include "vtkCubeSource.h"
 #include "vtkSimulation.h"
 #include "vtkSimulationInteractorStyle.h"
@@ -83,13 +84,15 @@ using namespace EsquiExampleNS;
 int main(int argc, char * argv[])
 {
 
-	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp";
-	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
-	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
-	const char * filename3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
-	const char * filename3t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg";
-	const char * filename4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp";
-	const char * filename4t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomachtexture.jpg";
+	const char * fn0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp";
+	const char * fn1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
+	const char * fn2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
+	const char * fn3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
+	const char * fn3t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscletexture.jpg";
+	const char * fn4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp";
+	const char * fn4t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomachtexture.jpg";
+	const char * fn5 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp";
+	const char * fn6 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp";
 
 	/**********  Render Window Definitions  ********/
 	vtkRenderer *ren1= vtkRenderer::New();
@@ -113,9 +116,9 @@ int main(int argc, char * argv[])
 	organ->SetId(0);
 	organ->SetName("Sphere");
 
-	//Set source data filename
-	organ->SetFileName(filename3);
-	organ->SetTextureFileName(filename3t);
+	//Set source data fn
+	organ->SetFileName(fn3);
+	organ->SetTextureFileName(fn3t);
 
 	//Set geometric parameters
 	organ->SetPosition(0.0, 0.0, -3.0);
@@ -152,9 +155,9 @@ int main(int argc, char * argv[])
 	cavity->SetId(1);
 	cavity->SetName("Cavity");
 
-	//Set source data filename
-	cavity->SetFileName(filename4);
-	cavity->SetTextureFileName(filename4t);
+	//Set source data fn
+	cavity->SetFileName(fn4);
+	cavity->SetTextureFileName(fn4t);
 
 	//Set geometric parameters
 	cavity->SetPosition(0.0, 0.0, 0.0);
@@ -192,10 +195,10 @@ int main(int argc, char * argv[])
 	//Set tool identifier
 	leftGrasper->SetId(0);
 	leftGrasper->SetNumberOfPieces(3);
-	//Set source data filename
-	leftGrasper->SetStickFileName(filename0);
-	leftGrasper->SetLeftLeverFileName(filename1);
-	leftGrasper->SetRightLeverFileName(filename2);
+	//Set source data fn
+	leftGrasper->SetStickFileName(fn0);
+	leftGrasper->SetLeftLeverFileName(fn1);
+	leftGrasper->SetRightLeverFileName(fn2);
 	//Set geometric parameters
 	leftGrasper->SetPosition(-3, 0, 0);
 	leftGrasper->SetOrientation(0, 10, 0);
@@ -209,25 +212,24 @@ int main(int argc, char * argv[])
 	scenario->AddTool(leftGrasper);
 
 	//Create a Tool
-	vtkToolGrasper * rightGrasper = vtkToolGrasper::New();
+	vtkToolProbe * rigthtProbe = vtkToolProbe::New();
 	//Set tool identifier
-	rightGrasper->SetId(1);
-	rightGrasper->SetNumberOfPieces(3);
-	//Set source data filename
-	rightGrasper->SetStickFileName(filename0);
-	rightGrasper->SetLeftLeverFileName(filename1);
-	rightGrasper->SetRightLeverFileName(filename2);
+	rigthtProbe->SetId(1);
+	rigthtProbe->SetNumberOfPieces(2);
+	//Set source data fn
+	rigthtProbe->SetStickFileName(fn5);
+	rigthtProbe->SetTipFileName(fn6);
 	//Set geometric parameters
-	rightGrasper->SetPosition(3, 0, 0);
-	rightGrasper->SetOrientation(0, -10, 0);
-	rightGrasper->SetOrigin(0, 0, 4);
+	rigthtProbe->SetPosition(3, 0, 0);
+	rigthtProbe->SetOrientation(0, -10, 0);
+	rigthtProbe->SetOrigin(0, 0, 4);
 
 	//Set tool scale (size)
-	rightGrasper->SetScale(1.0, 1.0, 1.0);
-	rightGrasper->SetDeltaT(0.01);
+	rigthtProbe->SetScale(1.0, 1.0, 1.0);
+	rigthtProbe->SetDeltaT(0.01);
 
 	//Add tool to the scenario
-	scenario->AddTool(rightGrasper);
+	scenario->AddTool(rigthtProbe);
 
 	/**********  Load Scene Environment  ********/
 
@@ -279,7 +281,7 @@ int main(int argc, char * argv[])
 	organ->Delete();
 	cavity->Delete();
 	leftGrasper->Delete();
-	rightGrasper->Delete();
+	rigthtProbe->Delete();
 	headLight->Delete();
 	ambientLight->Delete();
 	scenario->Delete();

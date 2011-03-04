@@ -56,6 +56,7 @@ vtkStandardNewMacro(vtkToolScissors);
 
 //--------------------------------------------------------------------------
 vtkToolScissors::vtkToolScissors(){
+	this->ToolModel = Scissors;
 	this->Opening = 0;
 	this->NumberOfPieces = 3;
 	this->StickFileName = NULL;

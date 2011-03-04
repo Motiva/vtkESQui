@@ -57,6 +57,7 @@ vtkStandardNewMacro(vtkToolGrasper);
 //----------------------------------------------------------------------------
 vtkToolGrasper::vtkToolGrasper()
 {
+	this->ToolModel = Grasper;
 	this->Opening = 0;
 	this->NumberOfPieces = 3;
 	this->StickFileName = NULL;
