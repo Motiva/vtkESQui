@@ -54,6 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkPolyData;
 class vtkXMLPolyDataReader;
 class vtkTransformPolyDataFilter;
+class vtkTexture;
 
 //!This class defines an standard vtkTool piece
 
@@ -135,6 +136,18 @@ public:
 	 */
 	vtkGetStringMacro(FileName);
 
+	//!Set texture filename
+	/*!
+	* \sa GetTextureFileName()
+	*/
+	vtkSetStringMacro(TextureFileName);
+
+	//!Return texture filename
+	/*!
+	* \sa SetTextureFileName(const char* name);
+	*/
+	vtkGetStringMacro(TextureFileName);
+
 	//!Set piece identifier
 	/*!
 	 * \sa GetId()
@@ -197,6 +210,12 @@ public:
 	 */
 	vtkGetObjectMacro(Actor, vtkActor);
 
+	//!Set piece color
+	vtkSetVector3Macro(Color, double);
+
+	//!Get piece color
+	vtkGetVector3Macro(Color, double);
+
 	//!Print class values
 	void PrintSelf(ostream& os,vtkIndent indent);
 
@@ -222,11 +241,20 @@ private:
 	//!File path to polydata VTK file
 	char * FileName;
 
+	//!File path to polydata VTK file
+	char * TextureFileName;
+
+	//!Piece color
+	double Color[3];
+
 	//!Polydata reader
 	vtkXMLPolyDataReader * Reader;
 
 	//!Polydata of the piece
 	vtkPolyData * PolyData;
+
+	//!Texture
+	vtkTexture * Texture;
 
 	//!Render Window of the item
 	vtkRenderWindow *RenderWindow;

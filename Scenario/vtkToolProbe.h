@@ -70,7 +70,7 @@ public:
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	
-	//!Tool tyoe definition
+	//!Tool type definition
 	enum vtkPieceType{
 		Stick = 0,
 		Tip = 1,
@@ -113,6 +113,30 @@ public:
 	*/
 	vtkGetStringMacro(TipFileName);
 
+	//!Set stick texture filename
+	/*!
+	 * Specify the path of the file that contains the stick piece texture
+	 */
+	vtkSetStringMacro(StickTextureFileName);
+
+	//!Return the stick texture file name
+	/*!
+	 * Path of the file that contains the stick piece texture
+	 */
+	vtkGetStringMacro(StickTextureFileName);
+
+	//!Set tip texture filename
+	/*!
+	 * Specify the path of the file that contains the tip piece texture
+	 */
+	vtkSetStringMacro(TipTextureFileName);
+
+	//!Return the tip texture file name
+	/*!
+	 * Path of the file that contains the tip piece texture
+	 */
+	vtkGetStringMacro(TipTextureFileName);
+
 	//! Sets the probe yaw angle
 	void Yaw(double angle);
 
@@ -134,6 +158,9 @@ private:
 
 	char * StickFileName;
 	char * TipFileName;
+
+	char * StickTextureFileName;
+	char * TipTextureFileName;
 
 	//!Return the stick piece
 	/*!

@@ -56,7 +56,9 @@ proc scene {} {
 #catch {::vtk::load_component vtkesquiHapticsTCL}
 
 set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp"
+set fn0t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg"
 set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp"
+set fn1t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/aluminium.jpg"
 #set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/RightLever.vtp"
 set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
 set fn3t0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg"
@@ -190,10 +192,14 @@ scenario AddOrgan ball2
 vtkToolProbe leftProbe
 #Set tool identifier
 leftProbe SetId 0
-leftProbe SetNumberOfPieces 3
 #Set source data filename
 leftProbe SetStickFileName $fn0
 leftProbe SetTipFileName $fn1
+#Set texture filename
+leftProbe SetStickTextureFileName $fn0t
+leftProbe SetTipTextureFileName $fn1t
+#Set tip color
+leftProbe SetColor 1 1.0 0.0 0.0
 #Set geometric parameters
 leftProbe SetPosition -3 0 0
 leftProbe SetOrientation 0 10 0
@@ -210,10 +216,14 @@ scenario AddTool leftProbe
 vtkToolProbe rightProbe
 #Set tool identifier
 rightProbe SetId 1
-rightProbe SetNumberOfPieces 3
 #Set source data filename
 rightProbe SetStickFileName $fn0
 rightProbe SetTipFileName $fn1
+#Set texture filename
+rightProbe SetStickTextureFileName $fn0t
+rightProbe SetTipTextureFileName $fn1t
+#Set tip color
+rightProbe SetColor 1 0.0 1.0 0.0
 #Set geometric parameters
 rightProbe SetPosition 3 0 0
 rightProbe SetOrientation 0 -10 0

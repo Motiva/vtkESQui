@@ -98,33 +98,69 @@ public:
 
 	//!Return the stick polydata file name
 	/*!
-	 * Path of the file that contains the grasper piece polydata
+	 * Path of the file that contains the lever piece polydata
 	 */
 	vtkGetStringMacro(StickFileName);
 
-	//!Set grasper polydata filename
+	//!Set lever polydata filename
 	/*!
-	 * Specify the path of the file that contains the grasper piece polydata
+	 * Specify the path of the file that contains the lever piece polydata
 	 */
 	vtkSetStringMacro(LeftLeverFileName);
 
-	//!Return the left grasper polydata file name
+	//!Return the left lever polydata file name
 	/*!
-	* Path of the file that contains the grasper piece polydata
+	* Path of the file that contains the lever piece polydata
 	*/
 	vtkGetStringMacro(LeftLeverFileName);
 
-	//!Set grasper polydata filename
+	//!Set lever polydata filename
 	/*!
-	 * Specify the path of the file that contains the grasper piece polydata
+	 * Specify the path of the file that contains the lever piece polydata
 	 */
 	vtkSetStringMacro(RightLeverFileName);
 
-	//!Return the left grasper polydata file name
+	//!Return the left lever polydata file name
 	/*!
-	 * Path of the file that contains the grasper piece polydata
+	 * Path of the file that contains the lever piece polydata
 	 */
 	vtkGetStringMacro(RightLeverFileName);
+
+	//!Set stick texture filename
+	/*!
+	* Specify the path of the file that contains the stick piece texture
+	*/
+	vtkSetStringMacro(StickTextureFileName);
+
+	//!Return the stick texture file name
+	/*!
+	 * Path of the file that contains the lever piece texture
+	 */
+	vtkGetStringMacro(StickTextureFileName);
+
+	//!Set left lever texture filename
+	/*!
+	 * Specify the path of the file that contains the lever piece texture
+	 */
+	vtkSetStringMacro(LeftLeverTextureFileName);
+
+	//!Return the left lever texture file name
+	/*!
+	* Path of the file that contains the lever piece texture
+	*/
+	vtkGetStringMacro(LeftLeverTextureFileName);
+
+	//!Set left lever texture filename
+	/*!
+	 * Specify the path of the file that contains the lever piece texture
+	 */
+	vtkSetStringMacro(RightLeverTextureFileName);
+
+	//!Return the left lever texture file name
+	/*!
+	 * Path of the file that contains the lever piece texture
+	 */
+	vtkGetStringMacro(RightLeverTextureFileName);
 
 	//! Set the tool's aperture according with the value given in the "Aperture" parameter
 	/*!
@@ -196,6 +232,10 @@ private:
 	char * StickFileName;
 	char * LeftLeverFileName;
 	char * RightLeverFileName;
+
+	char * StickTextureFileName;
+	char * LeftLeverTextureFileName;
+	char * RightLeverTextureFileName;
 
 	//! Tool pieces opening
 	double Opening;

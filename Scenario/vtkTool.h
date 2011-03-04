@@ -57,6 +57,7 @@ class vtkTransformPolyDataFilter;
 class vtkAppendPolyData;
 class vtkActor;
 class vtkActorCollection;
+class vtkDoubleArray;
 
 class vtkPiece;
 class vtkPieceCollection;
@@ -94,6 +95,12 @@ public:
 	//!Return tool type
 	vtkGetMacro(ToolType, vtkTool::vtkToolType);
 
+	//!Abstract initialization function
+	/*!
+	* This method initializes the tool physical values, scale, position, etc...
+	*/
+	virtual void Init();
+
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
@@ -120,29 +127,12 @@ public:
 	//!Enable/Disable haptic device use
 	vtkBooleanMacro(UseHaptic, bool);
 
-	//!Abstract initialization function
-	/*!
-	* This method initializes the tool physical values, scale, position, etc...
-	*/
-	virtual void Init();
-
-	//!Abstract update function
-	/*!
-	* This method updates the tool physical values, scale, position, etc...
-	*/
-	//virtual void Update();
-	//!function that returns transformed polydata
-	/*!
-	* This method returns the transformed polydata for collision detection purposes
-	*/
-	//virtual vtkPolyData * GetOutput();
-
 	// **** Graphical Purposes Methods **** //
 	//! Return the actors collection of the tool
 	/*!
 	Return a pointer to the object who stores all tool's actors
 	*/
-	vtkActorCollection* GetActorCollection();
+	vtkActorCollection* GetActors();
 
 	//! Return the actor of the specified piece
 	/*!
@@ -155,6 +145,29 @@ public:
 	* \param id Identifier of the piece
 	*/
 	vtkTransform * GetTransform(vtkIdType id);
+
+	//! Set the color of the specified piece
+	/*!
+	 * \param id Identifier of the piece
+	 * \param r red component
+	 * \param g green component
+	 * \param b blue component
+	 */
+	void SetColor(vtkIdType id, double r, double g, double b);
+
+	//! Return the colors collection of the tool
+	/*!
+		Return a pointer to the object who stores all piece's colors
+	 */
+	vtkDoubleArray * GetColors();
+
+	//! Return the color of the specified piece
+	/*!
+	 * \param id Identifier of the piece
+	 */
+	double * GetColor(vtkIdType id);
+
+
 
 	// **** Simulation Manager Methods **** //
 	//!Remove all contacts from the collection
@@ -213,6 +226,9 @@ protected:
 
 	//!Collection of tool pieces
 	vtkPieceCollection * Pieces;
+
+	//!Array of tool pieces colors
+	vtkDoubleArray * Colors;
 
 	//**** Graphical Purposes objects ****//
 

@@ -63,6 +63,9 @@ vtkToolGrasper::vtkToolGrasper()
 	this->StickFileName = NULL;
 	this->LeftLeverFileName = NULL;
 	this->RightLeverFileName = NULL;
+	this->StickTextureFileName = NULL;
+	this->LeftLeverTextureFileName = NULL;
+	this->RightLeverTextureFileName = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -88,11 +91,18 @@ void vtkToolGrasper::Init() {
 		if(id == 0) {
 			piece->SetPieceType(vtkPiece::Stick);
 			piece->SetFileName(this->StickFileName);
+			if(this->StickTextureFileName) piece->SetTextureFileName(this->StickTextureFileName);
 		}
 		else {
 			piece->SetPieceType(vtkPiece::Lever);
-			if(id==1) piece->SetFileName(this->LeftLeverFileName);
-			else piece->SetFileName(this->RightLeverFileName);
+			if(id==1){
+				piece->SetFileName(this->LeftLeverFileName);
+				if(this->LeftLeverTextureFileName) piece->SetTextureFileName(this->LeftLeverTextureFileName);
+			}
+			else {
+				piece->SetFileName(this->RightLeverFileName);
+				if(this->RightLeverTextureFileName) piece->SetTextureFileName(this->RightLeverTextureFileName);
+			}
 		}
 		piece->Init();
 		this->Pieces->AddPiece(piece);

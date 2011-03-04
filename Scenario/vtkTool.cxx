@@ -58,6 +58,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTransformCollection.h"
 #include "vtkActorCollection.h"
 #include "vtkActor.h"
+#include "vtkDoubleArray.h"
 #include "vtkProperty.h"
 #include "vtkAppendPolyData.h"
 #include "vtkMath.h"
@@ -82,6 +83,10 @@ vtkTool::vtkTool() {
 	this->Transforms = vtkTransformCollection::New();
 	this->Pieces = vtkPieceCollection::New();
 	this->Contacts =vtkContactCollection::New();
+	this->Colors = vtkDoubleArray::New();
+	this->Colors->SetNumberOfComponents(3);
+	this->Colors->SetNumberOfTuples(10);//Allocate memory for pieces
+	for(int i=0;i<10;i++) this->Colors->SetTuple3(i, 1.0, 1.0, 1.0);
 }
 
 //--------------------------------------------------------------------------
@@ -91,6 +96,7 @@ vtkTool::~vtkTool() {
 	this->Transforms->Delete();
 	this->Pieces->Delete();
 	this->Contacts->Delete();
+	this->Colors->Delete();
 
 }
 
@@ -99,9 +105,14 @@ void vtkTool::Init()
 {
 	vtkPiece * piece;
 	vtkTransform * pieceTransform;
+
+	this->Colors->Resize(this->Pieces->GetNumberOfPieces());
+
 	for(vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces() ; id++)
 	{
 		piece = this->GetPiece(id);
+		piece->SetColor(this->Colors->GetTuple3(id));
+		double * c = this->Colors->GetTuple3(id);
 		pieceTransform = piece->GetTransform();
 
 		pieceTransform->PreMultiply();
@@ -264,7 +275,7 @@ vtkIdType vtkTool::GetNumberOfContacts(){
 }
 
 //--------------------------------------------------------------------------
-vtkActorCollection* vtkTool::GetActorCollection() {
+vtkActorCollection* vtkTool::GetActors() {
 	return this->Actors;
 }
 
@@ -277,6 +288,22 @@ vtkActor * vtkTool::GetActor(vtkIdType id) {
 vtkTransform * vtkTool::GetTransform(vtkIdType id) {
 	return this->Pieces->GetPiece(id)->GetTransform();
 }
+
+//--------------------------------------------------------------------------
+void vtkTool::SetColor(vtkIdType id, double r,double g,double b) {
+	this->Colors->SetTuple3(id, r, g, b);
+}
+
+//--------------------------------------------------------------------------
+vtkDoubleArray* vtkTool::GetColors() {
+	return this->Colors;
+}
+
+//--------------------------------------------------------------------------
+double * vtkTool::GetColor(vtkIdType id) {
+	return this->Colors->GetTuple3(id);
+}
+
 
 //--------------------------------------------------------------------------
 void vtkTool::Hide()

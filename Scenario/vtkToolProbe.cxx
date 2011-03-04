@@ -61,6 +61,8 @@ vtkToolProbe::vtkToolProbe()
 	this->NumberOfPieces = 2;
 	this->StickFileName = NULL;
 	this->TipFileName = NULL;
+	this->StickTextureFileName = NULL;
+	this->TipTextureFileName = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -86,10 +88,13 @@ void vtkToolProbe::Init() {
 		if(id == 0) {
 			piece->SetPieceType(vtkPiece::Stick);
 			piece->SetFileName(this->StickFileName);
+			if(this->StickTextureFileName) piece->SetTextureFileName(this->StickTextureFileName);
 		}
 		else {
 			piece->SetPieceType(vtkPiece::Tip);
 			piece->SetFileName(this->TipFileName);
+			if(this->TipTextureFileName) piece->SetTextureFileName(this->TipTextureFileName);
+
 		}
 		piece->Init();
 		this->Pieces->AddPiece(piece);

@@ -42,10 +42,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkPiece.h"
 
 #include "vtkObjectFactory.h"
+#include "vtkJPEGReader.h"
 #include "vtkXMLPolyDataReader.h"
 #include "vtkPolyData.h"
 #include "vtkTransform.h"
 #include "vtkTransformPolyDataFilter.h"
+#include "vtkTransformTextureCoords.h"
+#include "vtkTransformPolyDataFilter.h"
+#include "vtkTexture.h"
+#include "vtkTextureMapToSphere.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkDataSetMapper.h"
@@ -63,6 +68,7 @@ vtkPiece::vtkPiece()
 	this->RenderWindow = NULL;
 	this->Name = NULL;
 	this->FileName = NULL;
+	this->TextureFileName = NULL;
 	this->PieceType = vtkPiece::Stick;
 	this->Id = -1;
 	this->Reader = NULL;
@@ -71,6 +77,7 @@ vtkPiece::vtkPiece()
 	this->Transform = NULL;
 	this->Actor = NULL;
 	this->Mapper = NULL;
+	this->Color[0] = this->Color[1] = this->Color[2] = 1.0;
 
 }
 
@@ -106,9 +113,39 @@ void vtkPiece::Init()
 		this->TransformFilter->SetInput(this->PolyData);
 		this->TransformFilter->SetTransform(this->Transform);
 		this->TransformFilter->Update();
+
 		this->Mapper = vtkDataSetMapper::New();
-		this->Mapper->SetInput(this->TransformFilter->GetOutput());
 		this->Actor = vtkActor::New();
+
+		if(this->TextureFileName && strcmp(this->TextureFileName, ""))
+		{
+			//Texture will be added
+			vtkTextureMapToSphere * map = vtkTextureMapToSphere::New();
+			map->SetInput(this->TransformFilter->GetOutput());
+			map->PreventSeamOn();
+
+			vtkTransformTextureCoords * xform = vtkTransformTextureCoords::New();
+			xform->SetInputConnection(map->GetOutputPort());
+			xform->SetScale(1, 1, 1);
+
+			this->Mapper->SetInputConnection(xform->GetOutputPort());
+
+			vtkJPEGReader * jpegReader = vtkJPEGReader::New();
+			jpegReader->SetFileName(this->TextureFileName);
+			jpegReader->Update();
+
+			this->Texture = vtkTexture::New();
+			this->Texture->SetInputConnection(jpegReader->GetOutputPort());
+			this->Texture->InterpolateOn();
+
+			this->Actor = vtkActor::New();
+			this->Actor->SetTexture(this->Texture);
+		}
+		else
+		{
+			this->Mapper->SetInput(this->TransformFilter->GetOutput());
+		}
+
 		this->Actor->SetMapper(this->Mapper);
 
 		this->Renderer->AddActor(this->Actor);
@@ -119,6 +156,7 @@ void vtkPiece::Init()
 //--------------------------------------------------------------------------
 void vtkPiece::Update()
 {
+	this->Actor->GetProperty()->SetColor(this->Color);
 }
 //--------------------------------------------------------------------------
 vtkPolyData * vtkPiece::GetOutput()
