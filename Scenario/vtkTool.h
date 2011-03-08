@@ -193,6 +193,8 @@ public:
 	virtual void Hide();
 	//! Show/Display organ.
 	virtual void Show();
+	//! Disable organ.
+	virtual void Disable();
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	

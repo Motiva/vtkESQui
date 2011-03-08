@@ -24,6 +24,7 @@ proc sleep {} {
 	global timeout
 	scene
 	movement
+	after 100 collision
 }
 
 proc movement {} {
@@ -35,7 +36,7 @@ proc movement {} {
 	set x [expr 0.1 * sin ($rad)]
 	set y [expr 0.1 * cos ($rad)]
 	$organ Translate 0.0 $x $y
-	after 100 movement
+	after 20 movement
 }
 
 # Modify scenario
@@ -45,11 +46,46 @@ proc scene {} {
 	incr id
 	set id [expr $id % 3]
 	foreach j $ids {
-		[scenario GetOrgan $j] Hide
+		set o [scenario GetOrgan $j]
+		if {[expr [$o IsDisabled]] == 0} {
+			$o Hide
+		}
 	}
 	set organ [scenario GetOrgan [lindex $ids $id]]
 	$organ Show
 	after $timeout scene
+}
+
+proc collision {} {
+	set contacts [scenario GetContacts]
+	set n [$contacts GetNumberOfItems]
+	if {$n > 0} {
+		#puts "new $n contacts"
+		for {set i 0} {$i < $n} {incr i} {
+			set c [$contacts GetContact $i]
+			set toolId [$c GetItemId 0]
+			set organId [$c GetItemId 1]
+			#puts "tool: $toolId, organ: $organId"
+			if {$organId > 0 } {
+				set o [scenario GetOrgan $organId]
+				set oname [$o GetName]
+				#puts $oname
+				if { [string compare $oname "LeftBall"] == 0} {
+					#LeftBall -> Left Tool
+					if {$toolId == 0} {
+						puts "l-l contact"
+					}
+				} elseif { [string compare $oname "RightBall"] == 0} {
+					#RightBall -> Right Tool
+					if {$toolId == 1} {
+						puts "r-r contact"
+					}
+				}
+				
+			}
+		}
+	}
+	after 20 collision
 }
 
 #catch {package require vtkesquiHaptics}
@@ -130,7 +166,7 @@ ball SetName "LeftBall"
 
 #Set source data filename
 ball SetFileName $fn3
-ball SetTextureFileName $fn3t1
+ball SetTextureFileName $fn3t0
 
 #Set geometric parameters
 ball SetPosition 0.0 0.0 -4.0
@@ -146,12 +182,12 @@ scenario AddOrgan ball
 #Create a Organ
 vtkOrgan ball1
 #Set organ identifier
-ball1 SetId 1
+ball1 SetId 2
 ball1 SetName "RightBall"
 
 #Set source data filename
 ball1 SetFileName $fn3
-ball1 SetTextureFileName $fn3t2
+ball1 SetTextureFileName $fn3t1
 
 #Set geometric parameters
 ball1 SetPosition -3.0 0.0 -3.0
@@ -167,12 +203,12 @@ scenario AddOrgan ball1
 #Create a Organ
 vtkOrgan ball2
 #Set organ identifier
-ball2 SetId 1
+ball2 SetId 3
 ball2 SetName "BothBall"
 
 #Set source data filename
 ball2 SetFileName $fn3
-ball2 SetTextureFileName $fn3t0
+ball2 SetTextureFileName $fn3t2
 
 #Set geometric parameters
 ball2 SetPosition 3.0 0.0 -3.0
@@ -184,7 +220,6 @@ ball2 SetScale 0.5 0.5 0.5
 
 #Add organ to the scenario
 scenario AddOrgan ball2
-
 
 ### Tools ###
 #Add new tool To the scenario
@@ -199,7 +234,7 @@ leftProbe SetTipFileName $fn1
 leftProbe SetStickTextureFileName $fn0t
 leftProbe SetTipTextureFileName $fn1t
 #Set tip color
-leftProbe SetColor 1 1.0 0.0 0.0
+leftProbe SetColor 1 0.0 1.0 0.0
 #Set geometric parameters
 leftProbe SetPosition -3 0 0
 leftProbe SetOrientation 0 10 0
@@ -223,7 +258,7 @@ rightProbe SetTipFileName $fn1
 rightProbe SetStickTextureFileName $fn0t
 rightProbe SetTipTextureFileName $fn1t
 #Set tip color
-rightProbe SetColor 1 0.0 1.0 0.0
+rightProbe SetColor 1 1.0 0.0 0.0
 #Set geometric parameters
 rightProbe SetPosition 3 0 0
 rightProbe SetOrientation 0 -10 0
@@ -245,7 +280,7 @@ vtkLight headLight
 headLight SetLightTypeToHeadlight
 headLight PositionalOn
 headLight SetIntensity 0.5
-headLight SetConeAngle 20
+headLight SetConeAngle 40
 ren1 AddLight headLight
 	
 vtkLight ambientLight 

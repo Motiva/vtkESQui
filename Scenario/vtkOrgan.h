@@ -80,21 +80,36 @@ public:
 		Deformable = 1
 	};
 	
+	//!Initialize mesh data
+	/*!
+	* The following parameters should be set before calling this function:
+	* - Id
+	* - Name
+	* - FileName
+	* - Position
+	* - Orientation
+	* - Origin
+	* - Scale
+	* Optional parameters:
+	* - TextureFileName
+	* - OrganType
+	* - DeformationModel
+	*/
+	virtual void Init();
 
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-	//!Set the Biomechanical Model of the organ
+	//!Set the deformation model of the organ
 	/*!
-	* \param model biomechanical model of the organ
+	* \param model deformation model of the organ
 	*/
 	void SetDeformationModel(vtkBioMechanicalModel * model);
 
-
-	//!Get the Biomechanical Model of the organ
+	//!Get the deformation model of the organ
 	/*!
-	* \return biomechanical model of the organ
-	* \sa SetBioMechModel(vtkBioMechanicalModel * model)
+	* \return deformation model of the organ
+	* \sa SetDeformationModel(vtkBioMechanicalModel * model)
 	*/
 	vtkBioMechanicalModel * GetDeformationModel();
 
@@ -167,14 +182,8 @@ public:
 	//!Set On/Off organ as hooked
 	vtkBooleanMacro(Hooked, bool);
 
-	//!Initialize mesh data
-	/*!
-	* The following parameters should be set before calling this function:
-	* Biomechanical Model
-	*/
-	virtual void Init();
-
 	// **** Geometrical Functions **** //
+
 	//! Implements the translation of the organ (Local coordinate system)
 	/*!
 		The X & Y parameters contains the relative movement in the horizontal and vertical axes respectively
@@ -211,6 +220,7 @@ public:
 		\param rotation rotation angle (radians)
 	 */
 	virtual void RotateZ(double rotation);
+
 	//------- Rendering purposes ----------//
 
 	//!Set the actor of the organ
@@ -236,11 +246,6 @@ public:
 	* \sa SetMapper(vtkDataSetMapper *)
 	*/
 	vtkGetObjectMacro(Mapper, vtkPolyDataMapper);
-	//!Function that returns simplified mesh
-	/*!
-	 * This method returns a simplified mesh for collision detection purposes
-	 */
-	//vtkGetObjectMacro(SimpleMesh, vtkPolyData);
 
 	//------- Biomechanical model interface methods -------//
 
@@ -274,6 +279,8 @@ public:
 	virtual void Hide();
 	//! Show/Display organ.
 	virtual void Show();
+	//! Disable organ.
+	virtual void Disable();
 
 	//*****   p r o t e c t e d   m e m b e r s
 protected:

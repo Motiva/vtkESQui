@@ -130,7 +130,6 @@ void vtkTool::Init()
 
 	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
 	{
-		this->GetPiece(id)->Update();
 		this->AppendFilter->AddInput(this->GetPiece(id)->GetOutput());
 	}
 
@@ -157,6 +156,12 @@ int vtkTool::RequestData(vtkInformation *vtkNotUsed(request),
 
 	if(this->IsHidden()) this->Hide();
 	else if(this->IsVisible()) this->Show();
+
+	//Tool pieces need to be updated
+	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
+	{
+		this->GetPiece(id)->Update();
+	}
 
 	//Update position & orientation
 	this->Velocity[0] = this->Position[0];
@@ -324,6 +329,17 @@ void vtkTool::Show()
 	while (vtkActor * a = this->Actors->GetNextActor())
 	{
 		a->GetProperty()->SetOpacity(1.0);
+	}
+}
+
+//--------------------------------------------------------------------------
+void vtkTool::Disable()
+{
+	this->Status = Disabled;
+	this->Actors->InitTraversal();
+	while (vtkActor * a = this->Actors->GetNextActor())
+	{
+		a->GetProperty()->SetOpacity(0.0);
 	}
 }
 

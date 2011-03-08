@@ -76,7 +76,7 @@ public:
 	};
 
 
-	//!Enumeration of piece types
+	//!Enumeration of item status
 	enum vtkScenarioItemStatus
 	{
 		Visible = 0,
@@ -273,16 +273,38 @@ public:
 	 */
 	virtual void Show() = 0;
 
-	//TODO: Define Disable virtual method
-	//virtual void Disable() = 0;
+	//! Disable item.
+	/*!
+	 * Must be implemented in inherited classes
+	 * Note: this function must be implemented in inheriting classes
+	 */
+	virtual void Disable() = 0;
 
 	//! Check if item is visible
+	/*!
+	 * When an item is disabled it will:
+	 * - be visible.
+	 * - be computed in collision detection.
+	 * - be used in simulation.
+	 */
 	bool IsVisible(){ return this->Status == Visible;};
 
 	//! Check if item is hidden
+	/*!
+	 * When an item is disabled it will NOT:
+	 * - be visible.
+	 * - be computed in collision detection.
+	 * It will be used in simulation.
+	 */
 	bool IsHidden(){ return this->Status == Hidden;};
 
-	//! Check if item is disabled
+	//! Check if item is disabled.
+	/*!
+	 * When an item is disabled it will NOT:
+	 * - be visible.
+	 * - be computed in collision detection.
+	 * - be used in simulation.
+	 */
 	bool IsDisabled(){ return this->Status == Disabled;};
 
 protected:

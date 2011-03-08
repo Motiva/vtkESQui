@@ -353,6 +353,13 @@ void vtkOrgan::Hide()
 }
 
 //--------------------------------------------------------------------------
+void vtkOrgan::Disable()
+{
+	this->Status = Disabled;
+	this->Actor->GetProperty()->SetOpacity(0.0);
+}
+
+//--------------------------------------------------------------------------
 void vtkOrgan::Show()
 {
 	this->Status = Visible;

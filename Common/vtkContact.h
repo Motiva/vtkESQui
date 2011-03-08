@@ -178,6 +178,10 @@ private:
 
 	// Identificadores de cada uno de los objetos colisionados
 	//! Collided items ids
+	/*! The identifiers will be stored according to the following sequence
+	 * 0 -> toolId
+	 * 1 -> organId
+	 */
 	vtkIdList * ItemIds;
 
 	// Posición donde se debe mover el vertice para sacarlo de la herramienta
