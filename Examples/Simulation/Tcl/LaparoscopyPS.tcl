@@ -14,13 +14,14 @@ puts "vtkESQui loaded.\n"
 
 global id; set id 0
 global ids; set ids {1 2 3}
-global round; set id 0
+global roundid; set roundid 0
 global rounds; set ids {1 2 3}
+global roundtime; set roundtime 60000
 global alpha; set alpha 0
 global timeout; set timeout 5000
 
 # idle loop
-proc sleep {} {	
+proc run {} {	
 	global timeout
 	scene
 	movement
@@ -29,7 +30,6 @@ proc sleep {} {
 
 proc movement {} {
 	global id ids alpha
-	#puts "move"
 	set organ [scenario GetOrgan [lindex $ids $id]]
 	incr alpha 5
 	set rad [expr $alpha * 0.01745311]
@@ -42,49 +42,60 @@ proc movement {} {
 # Modify scenario
 proc scene {} {
 	global timeout id ids
-	#puts "Timeout..."
 	incr id
 	set id [expr $id % 3]
 	foreach j $ids {
 		set o [scenario GetOrgan $j]
 		if {[expr [$o IsDisabled]] == 0} {
-			$o Hide
+			if {[expr [lindex $ids $id]] == $j} {
+				#Show ball
+				$o Show
+			} else {
+				#Hide ball
+				$o Hide
+			}
 		}
 	}
-	set organ [scenario GetOrgan [lindex $ids $id]]
-	$organ Show
-	after $timeout scene
+	if {[expr [ [scenario GetOrgan [lindex $ids $id]] IsDisabled ] ] == 1} {
+		#If ball is disabled jump to next step immediately 
+		after 10 scene
+	} else { 
+		after $timeout scene 
+	}
 }
 
 proc collision {} {
 	set contacts [scenario GetContacts]
 	set n [$contacts GetNumberOfItems]
+	set left 0
+	set right 0
 	if {$n > 0} {
-		#puts "new $n contacts"
 		for {set i 0} {$i < $n} {incr i} {
 			set c [$contacts GetContact $i]
 			set toolId [$c GetItemId 0]
 			set organId [$c GetItemId 1]
-			#puts "tool: $toolId, organ: $organId"
 			if {$organId > 0 } {
 				set o [scenario GetOrgan $organId]
 				set oname [$o GetName]
-				#puts $oname
 				if { [string compare $oname "LeftBall"] == 0} {
 					#LeftBall -> Left Tool
-					if {$toolId == 0} {
-						puts "l-l contact"
-					}
+					if {$toolId == 0} { $o Disable }
 				} elseif { [string compare $oname "RightBall"] == 0} {
 					#RightBall -> Right Tool
-					if {$toolId == 1} {
-						puts "r-r contact"
-					}
+					if {$toolId == 1} { $o Disable }
+				} else {
+					#BothBall -> Right & Left Tool
+					if { $toolId == 0 } then { set left 1 }
+					if { $toolId == 1 } then { set right 1 }
+					#Both tools contacted
+					if {$left == 1 && $right == 1 
+					} then { $o Disable }
 				}
-				
 			}
 		}
 	}
+	set left 0
+	set right 0
 	after 20 collision
 }
 
@@ -321,7 +332,7 @@ iren Initialize
 # prevent the tk window from showing up then start the event loop
 wm withdraw .
 
-sleep
+run
 
 simulation Run
 
