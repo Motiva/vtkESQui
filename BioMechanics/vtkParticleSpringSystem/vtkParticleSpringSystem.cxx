@@ -40,13 +40,17 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->SolverType = vtkParticleSpringSystem::VelocityVerlet;
 	this->ContactIds = NULL;
 	this->ContactDisplacements = NULL;
+	this->Particles = NULL;
+	this->Springs = NULL;
 }
 
 //----------------------------------------------------------------------------
 vtkParticleSpringSystem::~vtkParticleSpringSystem()
 {
-	this->Particles->Delete();
-	this->Springs->Delete();
+	if(this->Particles) this->Particles->Delete();
+	if(this->Springs) this->Springs->Delete();
+	if(this->ContactIds) this->ContactIds->Delete();
+	if(this->ContactDisplacements) this->ContactDisplacements->Delete();
 }
 
 //----------------------------------------------------------------------------

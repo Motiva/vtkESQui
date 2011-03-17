@@ -37,6 +37,7 @@
 									<listOptionValue builtIn="false" value="/usr/local/include/dolfin/common"/>
 									<listOptionValue builtIn="false" value="/usr/local/include/dolfin/mesh"/>
 									<listOptionValue builtIn="false" value="/home/jballesteros/Workspace/src/VTK/Hybrid"/>
+									<listOptionValue builtIn="false" value="/home/jballesteros/Workspace/src/VTK/VolumeRendering"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1435463089" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
