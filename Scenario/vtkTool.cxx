@@ -92,9 +92,16 @@ vtkTool::vtkTool() {
 //--------------------------------------------------------------------------
 vtkTool::~vtkTool() {
 
+	for (vtkIdType id = 0; id < this->GetNumberOfPieces() ; id++)
+	{
+		vtkPiece * p = this->GetPiece(id);
+		if (p) p->Delete();
+	}
+
+	this->Pieces->RemoveAllItems();
+	this->Pieces->Delete();
 	this->Actors->Delete();
 	this->Transforms->Delete();
-	this->Pieces->Delete();
 	this->Contacts->Delete();
 	this->Colors->Delete();
 

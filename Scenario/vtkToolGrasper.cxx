@@ -71,10 +71,6 @@ vtkToolGrasper::vtkToolGrasper()
 //----------------------------------------------------------------------------
 vtkToolGrasper::~vtkToolGrasper() 
 {
-	for (vtkIdType id = 0; id < this->GetNumberOfPieces() ; id++)
-	{
-		this->GetPiece(id)->Delete();
-	}
 }
 
 //----------------------------------------------------------------------------

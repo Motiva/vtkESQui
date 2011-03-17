@@ -66,14 +66,6 @@ vtkToolScissors::vtkToolScissors(){
 
 //--------------------------------------------------------------------------
 vtkToolScissors::~vtkToolScissors(){
-
-	for (vtkIdType id = 0; id < 3 ; id++)
-	{
-		this->GetPiece(id)->Delete();
-	}
-
-	this->Pieces->RemoveAllItems();
-	this->Pieces->Delete();
 }
 //--------------------------------------------------------------------------
 void vtkToolScissors::Init(){
