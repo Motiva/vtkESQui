@@ -9,6 +9,7 @@ SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 SET(Kit_SRCS
     vtkESQuiLap
     SimulationLaparoscopy
+    SimulationLaparoscopyVR
     vtkESQuiSRMLExample
 )
 
@@ -27,6 +28,7 @@ SET(KIT_LIBS
     ${PROJECT_NAME}Simulation
     ${PROJECT_NAME}Common
     vtkRendering
+    vtkVolumeRendering
 	vtkGraphics 
 	vtkCommon
 	vtkHybrid
@@ -39,6 +41,7 @@ SET(KIT_TCL_LIBS
     ${PROJECT_NAME}SimulationTCL
     ${PROJECT_NAME}CommonTCL
     vtkRenderingTCL
+    vtkVolumeRenderingTCL
     vtkGraphicsTCL
 	vtkCommonTCL
 	vtkHybridTCL

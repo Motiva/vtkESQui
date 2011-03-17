@@ -164,6 +164,13 @@ ps1 SetMass 1
 ps1 SetRigidityFactor 2
 #ps1 SetSolverType vtkParticleSpringSystem::RungeKutta4
 
+#Set boundary conditions
+set boundary {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239}
+foreach j $boundary {
+	#ps1 Set
+	puts "$j"
+}
+
 cavity SetDeformationModel ps1
 
 #Add organ to the scenario

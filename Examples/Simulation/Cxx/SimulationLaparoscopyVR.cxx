@@ -47,14 +47,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkProperty.h"
 #include "vtkRenderer.h"
 #include "vtkInteractorStyleTrackballCamera.h"
-
-#include "vtkScenario.h"
-#include "vtkToolCollection.h"
-#include "vtkTool.h"
-#include "vtkToolGrasper.h"
-#include "vtkToolProbe.h"
-#include "vtkOrganCollection.h"
-#include "vtkOrgan.h"
 #include "vtkPolyDataReader.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkDataSetMapper.h"
@@ -63,7 +55,22 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTexture.h"
 #include "vtkLight.h"
 #include "vtkLightCollection.h"
-#include "vtkCubeSource.h"
+#include "vtkStructuredPointsReader.h"
+#include "vtkStructuredPoints.h"
+#include "vtkSmartVolumeMapper.h"
+#include "vtkVolume.h"
+#include "vtkVolumeProperty.h"
+#include "vtkColorTransferFunction.h"
+#include "vtkPiecewiseFunction.h"
+#include "vtkSmartPointer.h"
+
+#include "vtkScenario.h"
+#include "vtkToolCollection.h"
+#include "vtkTool.h"
+#include "vtkToolGrasper.h"
+#include "vtkToolProbe.h"
+#include "vtkOrganCollection.h"
+#include "vtkOrgan.h"
 #include "vtkSimulation.h"
 #include "vtkSimulationInteractorStyle.h"
 #include "vtkPSSInterface.h"
@@ -93,10 +100,11 @@ int main(int argc, char * argv[])
 	const char * fn4t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg";
 	const char * fn5 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp";
 	const char * fn6 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp";
+	const char * fn10 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/DICOM/AbdVessels/AbdVessels.vtk";
 
 	/**********  Render Window Definitions  ********/
 	vtkRenderer *ren1= vtkRenderer::New();
-	ren1->SetBackground(1.0,1.0,1.0);
+	ren1->SetBackground(0.0, 0.0, 0.0);
 	
 	vtkRenderWindow *renWin = vtkRenderWindow::New();
 	renWin->AddRenderer(ren1);
@@ -147,46 +155,7 @@ int main(int argc, char * argv[])
 	organ->SetDeformationModel(particleSpring);
 
 	//Add organ to the scenario
-	scenario->AddOrgan(organ);
-
-	//Create a cavity organ
-	vtkOrgan * cavity = vtkOrgan::New();
-	//Set organ identifier
-	cavity->SetId(1);
-	cavity->SetName("Cavity");
-
-	//Set source data fn
-	cavity->SetFileName(fn4);
-	cavity->SetTextureFileName(fn4t);
-
-	//Set geometric parameters
-	cavity->SetPosition(0.0, 0.0, 0.0);
-	cavity->SetOrientation(0.0, 0.0, 0.0);
-	cavity->SetOrigin(0.0, 0.0, 0.0);
-
-	//Set tool scale (size)
-	cavity->SetScale(1.0, 1.0, 1.0);
-
-	//Set organ type
-	cavity->SetOrganType(vtkOrgan::Deformable);
-
-	//Set Deformation Model
-	vtkPSSInterface * ps1 = vtkPSSInterface::New();
-	ps1->SetDeltaT(0.01);
-	ps1->SetGravity(0.0, 0.0, 0.0);
-
-	//Set particle-spring system specific parameters
-	ps1->SetSpringCoefficient(100);
-	ps1->SetDampingCoefficient(5);
-	ps1->SetDistanceCoefficient(20);
-	ps1->SetMass(1);
-	ps1->SetRigidityFactor(2);
-	ps1->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
-
-	cavity->SetDeformationModel(ps1);
-
-	//Add organ to the scenario
-	scenario->AddOrgan(cavity);
+	//scenario->AddOrgan(organ);
 
 	/********** Load Tools **********/
 	//Add new tool To the scenario
@@ -209,7 +178,7 @@ int main(int argc, char * argv[])
 	leftGrasper->SetDeltaT(0.01);
 
 	//Add tool to the scenario
-	scenario->AddTool(leftGrasper);
+	//scenario->AddTool(leftGrasper);
 
 	//Create a Tool
 	vtkToolProbe * rigthtProbe = vtkToolProbe::New();
@@ -229,7 +198,43 @@ int main(int argc, char * argv[])
 	rigthtProbe->SetDeltaT(0.01);
 
 	//Add tool to the scenario
-	scenario->AddTool(rigthtProbe);
+	//scenario->AddTool(rigthtProbe);
+
+	/********** Load Volume **********/
+	vtkStructuredPointsReader * reader = vtkStructuredPointsReader::New();
+	reader->SetFileName(fn10);
+	reader->Update();
+
+	vtkVolume * volume = vtkVolume::New();
+	vtkSmartVolumeMapper * volmapper = vtkSmartVolumeMapper::New();
+	volmapper->SetInput(reader->GetOutput());
+
+	//Set color transfer function
+	//Create Default Color transfer function
+	vtkSmartPointer<vtkColorTransferFunction> colorFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+	colorFunction->AddRGBSegment(0.0, 1.0, 1.0, 1.0, 255.0, 1.0, 1.0, 1.0 );
+
+	// The opacity transfer function is used to control the opacity
+	// of different tissue types.
+	int opacityLevel = 2048;
+	int opacityWindow = 4096;
+	vtkSmartPointer<vtkPiecewiseFunction> opacityFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	opacityFunction->AddSegment( opacityLevel - 0.5*opacityWindow, 0.0,
+			opacityLevel + 0.5*opacityWindow, 0.2 );
+	//mapper->SetBlendModeToMaximumIntensity();
+
+	//Create the volume property
+	vtkSmartPointer<vtkVolumeProperty> property = vtkSmartPointer<vtkVolumeProperty>::New();
+	property->SetIndependentComponents(1);
+	property->SetColor(colorFunction);
+	property->SetScalarOpacity(opacityFunction);
+	property->SetInterpolationTypeToLinear();
+
+	volume->SetProperty(property);
+	volume->SetMapper(volmapper);
+	volume->RotateX(-90);
+
+	ren1->AddVolume(volume);
 
 	/**********  Load Scene Environment  ********/
 
@@ -241,16 +246,16 @@ int main(int argc, char * argv[])
 	headLight->SetIntensity(0.5);
 	headLight->SetConeAngle(20);
 	ren1->AddLight(headLight);
-		
+
 	vtkLight *ambientLight = vtkLight::New(); 
 	ambientLight->SetIntensity(0.8);
 	ambientLight->SetLightTypeToHeadlight();
 	ambientLight->PositionalOff();
 	ren1->AddLight(ambientLight);
 	ren1->SetAmbient(0.5,0.5,0.5);
-		
+
 	/**********  Camera Definitions  ********/
-	vtkCamera * camera = ren1->GetActiveCamera();
+	/*vtkCamera * camera = ren1->GetActiveCamera();
 	camera->SetPosition(0, 0, 2);
 	camera->SetFocalPoint(0, 0, -6);
 	camera->Yaw(0);
@@ -258,12 +263,12 @@ int main(int argc, char * argv[])
 	camera->Pitch(-15);
 	camera->Dolly(1);
 	camera->ParallelProjectionOff();
-	camera->SetViewAngle(70);
+	camera->SetViewAngle(70);*/
 
 	/**********  Simulation Setup  ********/
 	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
 	style->SetScenario(scenario);
-	iren->SetInteractorStyle(style);
+	//iren->SetInteractorStyle(style);
 
 	vtkSimulation * simulation = vtkSimulation::New();
 	simulation->SetScenario(scenario);
@@ -278,8 +283,7 @@ int main(int argc, char * argv[])
 	// Free up any objects we created. All instances in VTK are deleted by
 	// using the Delete() method.
 	//
-	organ->Delete();
-	cavity->Delete();
+	organ->Delete();;
 	leftGrasper->Delete();
 	rigthtProbe->Delete();
 	headLight->Delete();
