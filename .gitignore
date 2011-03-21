@@ -4,6 +4,9 @@ Debug/
 # Doxygen folder
 Doxygen
 
+# CVS folders
+CVS
+
 # Eclipse files
 .cproject
 .project
