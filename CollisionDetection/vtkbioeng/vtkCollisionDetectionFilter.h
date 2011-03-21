@@ -3,7 +3,7 @@
   Program:   Visualization Toolkit
   Module:    vtkCollisionDetectionFilter.h
   Language:  C++
-  RCS:   $Id: vtkCollisionDetectionFilter.h,v 1.2 2009/09/07 12:36:04 glawlor Exp $
+  RCS:   $Id: vtkCollisionDetectionFilter.h,v 1.1 2006/11/20 15:19:43 glawlor Exp $
 
   Copyright (c) 2003 and onwards, Goodwin Lawlor
   All rights reserved.
@@ -60,14 +60,14 @@ public:
   vtkTypeRevisionMacro(vtkCollisionDetectionFilter, vtkPolyDataAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent);
 
-
+//BTX
   enum CollisionModes
   {
     VTK_ALL_CONTACTS = 0,
     VTK_FIRST_CONTACT = 1,
     VTK_HALF_CONTACTS = 2 
   };
-
+//ETX
 
   // Description:
   // Set the collision mode to VTK_ALL_CONTACTS to find all the contacting cell pairs with
@@ -199,7 +199,7 @@ private:
   void operator=(const vtkCollisionDetectionFilter&);  // Not implemented.
 };
 
-
+//BTX
 
 inline const char *vtkCollisionDetectionFilter::GetCollisionModeAsString(void)
 {
@@ -217,5 +217,5 @@ inline const char *vtkCollisionDetectionFilter::GetCollisionModeAsString(void)
     }
 }
 
-
+//ETX
 #endif

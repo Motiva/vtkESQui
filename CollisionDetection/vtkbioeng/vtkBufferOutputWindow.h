@@ -32,7 +32,7 @@ public:
 
   static vtkBufferOutputWindow* New();
   
-
+//BTX
   enum TextType
   {
       TEXT,
@@ -41,7 +41,7 @@ public:
       GENERIC_WARNING_TEXT,
       DEBUG_TEXT
   };
-
+//ETX
 
   // Description:
   // Get the last text type: 0 = TEXT; 1 = WARNING_TEXT; 2 = ERROR_TEXT; 

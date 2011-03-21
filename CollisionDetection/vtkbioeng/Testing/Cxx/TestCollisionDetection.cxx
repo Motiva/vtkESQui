@@ -106,8 +106,8 @@ int main()
    vtkTextActor *txt = vtkTextActor::New();
 
    vtkRenderer *ren = vtkRenderer::New();
-   //ren->AddActor(actor1);
-   //ren->AddActor(actor2);
+   ren->AddActor(actor1);
+   ren->AddActor(actor2);
    ren->AddActor(actor3);
    ren->AddActor(txt);
    ren->SetBackground(0.5,0.5,0.5);
