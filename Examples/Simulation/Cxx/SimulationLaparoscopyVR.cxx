@@ -60,6 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkSmartVolumeMapper.h"
 #include "vtkVolume.h"
 #include "vtkVolumeProperty.h"
+#include "vtkExtractVOI.h"
 #include "vtkColorTransferFunction.h"
 #include "vtkPiecewiseFunction.h"
 #include "vtkSmartPointer.h"
@@ -100,7 +101,7 @@ int main(int argc, char * argv[])
 	const char * fn4t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg";
 	const char * fn5 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp";
 	const char * fn6 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp";
-	const char * fn10 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/DICOM/AbdVessels/AbdVessels.vtk";
+	const char * fn10 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/DICOM/AbdVessels/AbdVesselsClip.vtk";
 
 	/**********  Render Window Definitions  ********/
 	vtkRenderer *ren1= vtkRenderer::New();
@@ -181,54 +182,100 @@ int main(int argc, char * argv[])
 	//scenario->AddTool(leftGrasper);
 
 	//Create a Tool
-	vtkToolProbe * rigthtProbe = vtkToolProbe::New();
+	vtkToolProbe * rightProbe = vtkToolProbe::New();
 	//Set tool identifier
-	rigthtProbe->SetId(1);
-	rigthtProbe->SetNumberOfPieces(2);
+	rightProbe->SetId(1);
+	rightProbe->SetNumberOfPieces(2);
 	//Set source data fn
-	rigthtProbe->SetStickFileName(fn5);
-	rigthtProbe->SetTipFileName(fn6);
+	rightProbe->SetStickFileName(fn5);
+	rightProbe->SetTipFileName(fn6);
 	//Set geometric parameters
-	rigthtProbe->SetPosition(3, 0, 0);
-	rigthtProbe->SetOrientation(0, -10, 0);
-	rigthtProbe->SetOrigin(0, 0, 4);
+	rightProbe->SetPosition(3, 0, 0);
+	rightProbe->SetOrientation(0, -10, 0);
+	rightProbe->SetOrigin(0, 0, 4);
 
 	//Set tool scale (size)
-	rigthtProbe->SetScale(1.0, 1.0, 1.0);
-	rigthtProbe->SetDeltaT(0.01);
+	rightProbe->SetScale(1.0, 1.0, 1.0);
+	rightProbe->SetDeltaT(0.01);
 
 	//Add tool to the scenario
-	//scenario->AddTool(rigthtProbe);
+	scenario->AddTool(rightProbe);
 
 	/********** Load Volume **********/
 	vtkStructuredPointsReader * reader = vtkStructuredPointsReader::New();
 	reader->SetFileName(fn10);
 	reader->Update();
 
+	vtkImageData * image = reader->GetOutput();
+	image->Print(cout);
+
+	vtkExtractVOI * extract = vtkExtractVOI::New();
+	extract->SetInput(image);
+	extract->SetVOI(image->GetExtent());
+	extract->SetSampleRate(2,2,2);
+	extract->Update();
+	vtkImageData * i = extract->GetOutput();
+	i->Print(cout);
+
 	vtkVolume * volume = vtkVolume::New();
 	vtkSmartVolumeMapper * volmapper = vtkSmartVolumeMapper::New();
-	volmapper->SetInput(reader->GetOutput());
+	volmapper->SetInput(i);
 
 	//Set color transfer function
 	//Create Default Color transfer function
 	vtkSmartPointer<vtkColorTransferFunction> colorFunction = vtkSmartPointer<vtkColorTransferFunction>::New();
+	vtkSmartPointer<vtkPiecewiseFunction> opacityFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	vtkSmartPointer<vtkPiecewiseFunction> gradientFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
+
+	//Grey Scale
+	/*
 	colorFunction->AddRGBSegment(0.0, 1.0, 1.0, 1.0, 255.0, 1.0, 1.0, 1.0 );
 
 	// The opacity transfer function is used to control the opacity
 	// of different tissue types.
 	int opacityLevel = 2048;
 	int opacityWindow = 4096;
-	vtkSmartPointer<vtkPiecewiseFunction> opacityFunction = vtkSmartPointer<vtkPiecewiseFunction>::New();
 	opacityFunction->AddSegment( opacityLevel - 0.5*opacityWindow, 0.0,
 			opacityLevel + 0.5*opacityWindow, 0.2 );
 	//mapper->SetBlendModeToMaximumIntensity();
+	 */
+	double * r = i->GetScalarRange();
+
+	int minT = r[0];
+	int lowT = 90;
+	int highT = 1150;
+	int maxT = r[1];
+
+	colorFunction->AddRGBPoint(minT, 0, 0, 0);//, 0.5, 0.0 );
+	colorFunction->AddRGBPoint(lowT, 0.73, 0.25, 0.30);//, 0.5, .61 );
+	colorFunction->AddRGBPoint(highT, 0.9, 0.8, 0.5);//, .5, 0.0 );
+	colorFunction->AddRGBPoint(maxT, 1.0, 1.0, 1.0);//, .5, 0.0 );
+
+	opacityFunction->AddPoint(minT, 0.0);
+	opacityFunction->AddPoint(lowT, 0.0);
+	opacityFunction->AddPoint(highT, 0.1);
+	opacityFunction->AddPoint(1150, 0.1);
+	opacityFunction->AddPoint(maxT, 0.9);
+
+	gradientFunction->AddPoint(0,   0.0);
+	gradientFunction->AddPoint(90,  0.5);
+	gradientFunction->AddPoint(100, 1.0);
+
+	volmapper->SetBlendModeToComposite();
 
 	//Create the volume property
 	vtkSmartPointer<vtkVolumeProperty> property = vtkSmartPointer<vtkVolumeProperty>::New();
 	property->SetIndependentComponents(1);
 	property->SetColor(colorFunction);
 	property->SetScalarOpacity(opacityFunction);
+	property->SetGradientOpacity(gradientFunction);
 	property->SetInterpolationTypeToLinear();
+	property->ShadeOn();
+	property->SetAmbient(0.4);
+	property->SetDiffuse(0.6);
+	property->SetSpecular(0.2);
+	property->SetSpecularPower(10);
+	property->SetScalarOpacityUnitDistance(0.8919);
 
 	volume->SetProperty(property);
 	volume->SetMapper(volmapper);
@@ -244,18 +291,18 @@ int main(int argc, char * argv[])
 	headLight->SetLightTypeToHeadlight();
 	headLight->PositionalOn();
 	headLight->SetIntensity(0.5);
-	headLight->SetConeAngle(20);
+	headLight->SetConeAngle(30);
 	ren1->AddLight(headLight);
 
 	vtkLight *ambientLight = vtkLight::New(); 
 	ambientLight->SetIntensity(0.8);
-	ambientLight->SetLightTypeToHeadlight();
+	ambientLight->SetLightTypeToSceneLight();
 	ambientLight->PositionalOff();
 	ren1->AddLight(ambientLight);
 	ren1->SetAmbient(0.5,0.5,0.5);
 
 	/**********  Camera Definitions  ********/
-	/*vtkCamera * camera = ren1->GetActiveCamera();
+	vtkCamera * camera = ren1->GetActiveCamera();
 	camera->SetPosition(0, 0, 2);
 	camera->SetFocalPoint(0, 0, -6);
 	camera->Yaw(0);
@@ -263,12 +310,12 @@ int main(int argc, char * argv[])
 	camera->Pitch(-15);
 	camera->Dolly(1);
 	camera->ParallelProjectionOff();
-	camera->SetViewAngle(70);*/
+	camera->SetViewAngle(70);
 
 	/**********  Simulation Setup  ********/
 	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
 	style->SetScenario(scenario);
-	//iren->SetInteractorStyle(style);
+	iren->SetInteractorStyle(style);
 
 	vtkSimulation * simulation = vtkSimulation::New();
 	simulation->SetScenario(scenario);
@@ -285,7 +332,7 @@ int main(int argc, char * argv[])
 	//
 	organ->Delete();;
 	leftGrasper->Delete();
-	rigthtProbe->Delete();
+	rightProbe->Delete();
 	headLight->Delete();
 	ambientLight->Delete();
 	scenario->Delete();
