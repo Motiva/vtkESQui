@@ -1,8 +1,8 @@
 # Debug folder
-Debug/
+Debug
 
-# Doxygen folder
-Doxygen
+# Doxygen html folder
+Doxygen/html
 
 # CVS folders
 CVS
