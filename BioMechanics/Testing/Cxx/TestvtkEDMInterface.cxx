@@ -4,7 +4,6 @@
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkPolyDataWriter.h"
-#include "vtkDataSetMapper.h"
 #include "vtkPoints.h"
 #include "vtkCellArray.h"
 #include "vtkIdList.h"
@@ -15,6 +14,7 @@
 #include "vtkPolyData.h"
 #include "vtkPolyDataWriter.h"
 #include "vtkXMLPolyDataReader.h"
+#include "vtkSphereSource.h"
 
 #include "vtkTimerLog.h"
 #include "vtkDoubleArray.h"
@@ -25,7 +25,7 @@
 
 #include "vtkCommand.h"
 
-#include "vtkPSSInterface.h"
+#include "vtkEDMInterface.h"
 
 
 class vtkTimerCallback : public vtkCommand
@@ -54,11 +54,13 @@ public:
 			{
 				vtkTimerLog * timer = vtkTimerLog::New();
 				timer->StartTimer();
-				this->BMM->Modified();
-				this->BMM->Update();
+				int n = this->DeformationModel->GetNumberOfIterations();
+				this->DeformationModel->SetNumberOfIterations(n+1);
+				//this->DeformationModel->Modified();
+				this->DeformationModel->Update();
 				timer->StopTimer();
 
-				//std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
+				std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
 
 			}
 			else if (tid == this->RenderTimerId)
@@ -87,9 +89,9 @@ public:
 		this->RenderTimerId = tid;
 	}
 
-	void SetBMM(vtkPSSInterface * bmm)
+	void SetDeformationModel(vtkEDMInterface * DeformationModel)
 	{
-		this->BMM = bmm;
+		this->DeformationModel = DeformationModel;
 	}
 
 	void SetContactIds(vtkIdList * list)
@@ -103,7 +105,7 @@ private:
 
 	vtkIdList * List;
 
-	vtkPSSInterface * BMM;
+	vtkEDMInterface * DeformationModel;
 };
 
 int main(int argc, char * argv[])
@@ -115,25 +117,26 @@ int main(int argc, char * argv[])
 		filename = argv[1];
 	}
 
-	vtkXMLPolyDataReader * reader = vtkXMLPolyDataReader::New();
-	reader->SetFileName(filename);
-	reader->Update();
+	//vtkXMLPolyDataReader * reader = vtkXMLPolyDataReader::New();
+	//reader->SetFileName(filename);
+	//reader->Update();
 
-	vtkPolyData * mesh = reader->GetOutput();
+	//vtkPolyData * mesh = reader->GetOutput();
+
+	vtkSmartPointer<vtkSphereSource> sphereSource =
+			vtkSmartPointer<vtkSphereSource>::New();
+	sphereSource->SetRadius(20);
+	sphereSource->SetPhiResolution(20);
+	sphereSource->SetThetaResolution(20);
+	vtkSmartPointer<vtkPolyData> mesh = sphereSource->GetOutput();
+	sphereSource->Update();
 
 	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
 	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
 
-	vtkPSSInterface* ParticleSpringSystem = vtkPSSInterface::New();
-	ParticleSpringSystem->SetInput(mesh);
-	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::VelocityVerlet);
-	ParticleSpringSystem->SetSpringCoefficient(150);
-	ParticleSpringSystem->SetDistanceCoefficient(10);
-	ParticleSpringSystem->SetDampingCoefficient(5);//Friction
-	ParticleSpringSystem->SetMass(.5);
-	ParticleSpringSystem->SetDeltaT(0.001);//10ms
-	ParticleSpringSystem->SetRigidityFactor(2);
-	ParticleSpringSystem->Init();
+	vtkEDMInterface* EDM = vtkEDMInterface::New();
+	EDM->SetInput(mesh);
+	EDM->Init();
 
 	vtkRenderer * renderer = vtkRenderer::New();
 
@@ -151,14 +154,14 @@ int main(int argc, char * argv[])
 	directions->SetNumberOfComponents(3);
 
 	//list->InsertNextId(0);
-	locator->FindClosestNPoints(3, p, list);
+	locator->FindClosestNPoints(10, p, list);
 
 	//Set Contacts
 	vtkContactCollection * contacts = vtkContactCollection::New();
 
 	double dir[3];
-	dir[0] = 0.2;//-0.1;
-	dir[1] = 0.05;
+	dir[0] = 5;//-0.1;
+	dir[1] = 0.1;
 	dir[2] = 0;//0.05;
 
 	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
@@ -184,7 +187,7 @@ int main(int argc, char * argv[])
 	}
 
 	//Set a fictional force
-	ParticleSpringSystem->InsertContacts(contacts);
+	EDM->InsertContacts(contacts);
 
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
 	renWin->SetSize(500,500);
@@ -200,11 +203,11 @@ int main(int argc, char * argv[])
 	vtkActor * actor = vtkActor::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetColor(0,1,0);
-	actor->GetProperty()->SetOpacity(0.5);
+	actor->GetProperty()->SetOpacity(0.3);
 
 	vtkPolyDataMapper * mapper2 = vtkPolyDataMapper::New();
-	mapper2->SetInput(ParticleSpringSystem->GetOutput());
-	//mapper2->ScalarVisibilityOff();
+	mapper2->SetInput(EDM->GetOutput());
+	mapper2->ScalarVisibilityOff();
 
 	vtkActor * actor2 = vtkActor::New();
 	actor2->SetMapper(mapper2);
@@ -227,9 +230,9 @@ int main(int argc, char * argv[])
 	iren->AddObserver(vtkCommand::TimerEvent, cb);
 	int tid;
 
-	cb->SetBMM(ParticleSpringSystem);
+	cb->SetDeformationModel(EDM);
 
-	//Create a faster timer for BMM update
+	//Create a faster timer for DeformationModel update
 	tid = iren->CreateRepeatingTimer(10);
 	cb->SetFasterTimerId(tid);
 
@@ -241,7 +244,7 @@ int main(int argc, char * argv[])
 
 	iren->Start();
 
-	ParticleSpringSystem->Delete();
+	EDM->Delete();
 	mapper->Delete();
 	actor->Delete();
 	mapper2->Delete();

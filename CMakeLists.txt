@@ -185,6 +185,7 @@ ENDIF (VTK_WRAP_PYTHON)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkParticleSpringSystem)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkFEMSystem)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkExplicitDeformableModel)
+  INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkExplicitDeformableModel/Filters)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/CollisionDetection)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/CollisionDetection/vtkbioeng)
   

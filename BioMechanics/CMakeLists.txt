@@ -11,9 +11,9 @@ SET(UKIT BioMechanics)  #Uppercase Kit Name
 SET (Kit_SRCS 
 vtkBioMechanicalModel.cxx
 vtkPSSInterface.cxx
+vtkEDMInterface.cxx
 vtkBoundaryCondition.cxx
 vtkBoundaryConditionCollection.cxx
-#vtkRDMInterface.cxx
 )
 
 SET_SOURCE_FILES_PROPERTIES(
@@ -31,6 +31,7 @@ SET(KIT_LIBS ${PROJECT_NAME}Common
 vtkCommon
 vtkFiltering
 vtkParticleSpringSystem
+vtkExplicitDeformableModel
 )
 
 # Set your list of TCL libraries here.

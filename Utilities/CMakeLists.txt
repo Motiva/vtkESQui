@@ -22,7 +22,6 @@ ${PROJECT_NAME}CollisionDetection
 vtkCommon 
 vtkRendering
 vtkHybrid
-vtkParticleSpringSystem
 vtkBioeng
 )
 
