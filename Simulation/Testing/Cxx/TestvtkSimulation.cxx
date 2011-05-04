@@ -39,7 +39,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include <iostream>
+
+#include "vtkSmartPointer.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 #include "vtkCamera.h"
@@ -48,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRenderer.h"
 #include "vtkInteractorStyleTrackballCamera.h"
 
+#include "vtkScenario.h"
 #include "vtkSimulation.h"
 #include "vtkMath.h"
 
@@ -61,44 +63,36 @@ using namespace std;
 
 int TestvtkSimulation(int argc, char * argv[])
 {
-	vtkRenderer *ren1= vtkRenderer::New();
+	vtkSmartPointer<vtkRenderer> ren1 =
+			vtkSmartPointer<vtkRenderer>::New();
 	ren1->SetBackground(1.0,1.0,1.0);
 
-	vtkRenderWindow *renWin = vtkRenderWindow::New();
+	vtkSmartPointer<vtkRenderWindow> renWin =
+			vtkSmartPointer<vtkRenderWindow>::New();
 	renWin->AddRenderer(ren1);
 	renWin->SetSize(840,480);
 
-	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
+	vtkSmartPointer<vtkRenderWindowInteractor> iren =
+			vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	iren->SetRenderWindow(renWin);
 
 	/**********  Scenario Definitions  ********/
-	vtkScenario * Scenario = vtkScenario::New();
+	vtkSmartPointer<vtkScenario> Scenario =
+			vtkSmartPointer<vtkScenario>::New();
 	Scenario->SetRenderWindow(renWin);
 
-	/**********  Simulation Setup  ********/
-	//vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	//SimulationManager->SetLibraryName("vtkbioeng");
-	//SimulationManager->SetScenario(Scenario);
-	//SimulationManager->Init();
-
-	vtkSimulation * Simulation = vtkSimulation::New();
-	//Simulation->SetSimulationManager(SimulationManager);
+	vtkSmartPointer<vtkSimulation> Simulation =
+			vtkSmartPointer<vtkSimulation>::New();
 	Simulation->SetInteractor(iren);
 	Simulation->SetScenario(Scenario);
-	//Simulation->Set
+	Simulation->SetHapticTimerRate(0.001);
+	Simulation->SetRenderTimerRate(0.025);
+	Simulation->SetSimulationTimerRate(0.025);
 	Simulation->Init();
 
-	Simulation->Run();
+	Simulation->Print(cout);
 
-	//
-	// Free up any objects we created. All instances in VTK are deleted by
-	// using the Delete() method.
-	//
-	//SimulationManager->Delete();
-	Scenario->Delete();
-	ren1->Delete();
-	renWin->Delete();
-	iren->Delete();
+	Simulation->Run();
 
 	return 0;
 }

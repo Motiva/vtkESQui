@@ -39,105 +39,105 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkContactCollection_h
-#define __vtkContactCollection_h
+#ifndef __vtkCollisionCollection_h
+#define __vtkCollisionCollection_h
 
 #include "vtkESQuiCommonWin32Header.h"
 #include "vtkCollection.h"
 
-class vtkContact;
+class vtkCollision;
 
-//! Implementation of a collection of contacts
-class VTK_ESQUI_COMMON_EXPORT vtkContactCollection: public vtkCollection
+//! Implementation of a collection of collisions
+class VTK_ESQUI_COMMON_EXPORT vtkCollisionCollection: public vtkCollection
 {
 public:
 	//! Type revision macro
-	vtkTypeRevisionMacro(vtkContactCollection,vtkCollection);
+	vtkTypeRevisionMacro(vtkCollisionCollection,vtkCollection);
 
-	//! Create new collection of contacts
-	static vtkContactCollection *New();
+	//! Create new collection of collisions
+	static vtkCollisionCollection *New();
 
 	//! Print collection info
 	virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Perform a deep copy of the vtkContactCollection Object
+	//!Perform a deep copy of the vtkCollisionCollection Object
 	/*!
-	* \param collection collection of contacts to be copied.
+	* \param collection collection of collisions to be copied.
 	*/
-	void DeepCopy(vtkContactCollection *collection);
+	void DeepCopy(vtkCollisionCollection *collection);
 
-	//! Add a Contact to the list.
+	//! Add a Collision to the list.
 	/*!
-	* \param contact contact to be added to the collection
-	* \sa InsertContact(vtkIdType id, vtkContact *contact)
+	* \param collision collision to be added to the collection
+	* \sa InsertCollision(vtkIdType id, vtkCollision *collision)
 	*/
-	void InsertNextContact(vtkContact *contact);
+	void InsertNextCollision(vtkCollision *collision);
 
-	//! Replace the Contact on id position.
+	//! Replace the Collision on id position.
 	/*!
-	* \param id contact identifier on the collection
-	* \param contact contact to be added to the collection
-	* \sa InsertNextContact(vtkContact *contact)
+	* \param id collision identifier on the collection
+	* \param collision collision to be added to the collection
+	* \sa InsertNextCollision(vtkCollision *collision)
 	*/
-	void ReplaceContact(vtkIdType id, vtkContact *contact);
+	void ReplaceCollision(vtkIdType id, vtkCollision *collision);
 
-	//! Check if the contact exists within the collection
+	//! Check if the collision exists within the collection
 	/*!
-	 * A contact is found if the following params match:
+	 * A collision is found if the following params match:
 	 * - organId
 	 * - toolId
 	 * - organPointId
-	 * \param contact contact to be located in the collection
-	 * \return true if contact is already present
+	 * \param collision collision to be located in the collection
+	 * \return true if collision is already present
 	 */
-	vtkIdType ContainsContact(vtkContact * contact);
+	vtkIdType ContainsCollision(vtkCollision * collision);
 
-	//! Find contact within the collection
+	//! Find collision within the collection
 	/*!
-	 * A contact is found if the following params match:
+	 * A collision is found if the following params match:
 	 * - organId
 	 * - toolId
 	 * - organPointId
-	 * \param contact contact to be located in the collection.
+	 * \param collision collision to be located in the collection.
 	 *  \return position in the collection
 	 */
-	vtkIdType FindContact(vtkContact * contact);
+	vtkIdType FindCollision(vtkCollision * collision);
 
-	//! Return the Contact on id position.
+	//! Return the Collision on id position.
 	/*!
-	* \param id identifier of the contact that will be returned
-	* \return vtkContact object stored in the collection
+	* \param id identifier of the collision that will be returned
+	* \return vtkCollision object stored in the collection
 	*/
-	vtkContact * GetContact(vtkIdType id);
+	vtkCollision * GetCollision(vtkIdType id);
 
-	//! Return iteratively each contact
+	//! Return iteratively each collision
 	/*!
-	* \return vtkContact object stored in the collection
+	* \return vtkCollision object stored in the collection
 	*/
-	vtkContact * GetNextContact();
+	vtkCollision * GetNextCollision();
 
-	//! Remove the Contact at the id position
+	//! Remove the Collision at the id position
 	/*!
-	* This method only removes the contact from the collection.
+	* This method only removes the collision from the collection.
 	* The object itself must be deleted.
 	*/
-	void RemoveContact(vtkIdType id);
+	void RemoveCollision(vtkIdType id);
 
-	//! Remove All Contacts.
+	//! Remove All Collisions.
 	/*!
-	* This method only removes the contact from the collection.
+	* This method only removes the collision from the collection.
 	* The object itself must be deleted.
 	*/
-	void RemoveContacts();
+	void RemoveCollisions();
 
 protected:
-	vtkContactCollection() {};
-	~vtkContactCollection() {};
+	vtkCollisionCollection() {};
+	~vtkCollisionCollection() {};
 
 
 private:
-	vtkContactCollection(const vtkContactCollection&);  // Not implemented.
-	void operator=(const vtkContactCollection&);				// Not implemented.
+	vtkCollisionCollection(const vtkCollisionCollection&);  // Not implemented.
+	void operator=(const vtkCollisionCollection&);				// Not implemented.
 };
 
 

@@ -41,79 +41,198 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 
 #include "vtkToolScissors.h"
-
 #include "vtkObjectFactory.h"
-#include "vtkTransformCollection.h"
-#include "vtkActorCollection.h"
 
-#include "vtkPiece.h"
-#include "vtkPieceCollection.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
+#include "vtkScenarioElement.h"
 
 vtkCxxRevisionMacro(vtkToolScissors, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkToolScissors);
 
-//--------------------------------------------------------------------------
-vtkToolScissors::vtkToolScissors(){
+//----------------------------------------------------------------------------
+vtkToolScissors::vtkToolScissors()
+{
 	this->ToolModel = Scissors;
 	this->Opening = 0;
-	this->NumberOfPieces = 3;
-	this->StickFileName = NULL;
-	this->LeftBladeFileName = NULL;
-	this->RightBladeFileName = NULL;
 }
 
-//--------------------------------------------------------------------------
-vtkToolScissors::~vtkToolScissors(){
+//----------------------------------------------------------------------------
+vtkToolScissors::~vtkToolScissors()
+{
 }
-//--------------------------------------------------------------------------
-void vtkToolScissors::Init(){
 
-	//Physical pieces Tool Construction
-	vtkPiece * piece;
-
-	for (vtkIdType id = 0; id < this->NumberOfPieces ; id++)
-	{
-		piece = vtkPiece::New();
-		piece->SetId(id);
-		piece->SetRenderWindow(this->RenderWindow);
-		if(id == 0) {
-			piece->SetPieceType(vtkPiece::Stick);
-			piece->SetFileName(this->StickFileName);
-		}
-		else {
-			piece->SetPieceType(vtkPiece::Blade);
-			if(id==1) piece->SetFileName(this->LeftBladeFileName);
-			else piece->SetFileName(this->RightBladeFileName);
-		}
-		piece->Init();
-		this->Pieces->AddPiece(piece);
-
-		this->Actors->AddItem((vtkActor*) piece->GetActor());
-		this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
-	}
-
+//----------------------------------------------------------------------------
+void vtkToolScissors::Init()
+{
 	Superclass::Init();
-
 }
 
-//--------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkToolScissors::Update()
 {
 	this->Superclass::Update();
+
+#ifndef VTKESQUI_USE_NO_HAPTICS
+	if(UseHaptic)
+	{
+		vtkIHP * ihp = vtkIHP::SafeDownCast(this->Haptic);
+		vtkIdType id = this->GetId();
+
+		//Trocar state
+		float * state = ihp->GetTrocarState(id);
+
+		//Trocar's direction angles
+
+		//Haptic coordinate system differs  from VTK system
+		// |  Haptic  |  VTK  |
+		// |      X      |    Y    |
+		// |      Y      |    Z    |
+		// |      Z      |    X    |
+		this->Yaw(ihp->GetTrocarYaw(id));
+		this->Pitch(ihp->GetTrocarPitch(id));
+		this->Roll(ihp->GetToolRoll(id));
+
+		//Tool-in-the-trocar parameters
+
+		//Set tool's depth
+		this->SetDepth(20*ihp->GetToolDepth(id));
+
+		//Set tool's opening.
+		this->SetOpening(ihp->GetToolOpening(id));
+
+		//Display tool buttons/pedal state
+		if(ihp->GetToolButtonState(id)){
+			std::cout << "Tool("<<id<< ") Main button is pressed...\n";
+		}
+		if(ihp->GetLeftPedalState()){
+			std::cout << "Tool("<<id<< ") Left pedal is pressed...\n";
+		}
+		if(ihp->GetRightPedalState()){
+			std::cout << "Tool("<<id<< ") Right pedal is pressed...\n";
+		}
+
+		//TODO: Obtain Force from contact
+		//Set Tool Feedback Forces
+		float force [3];
+		force[0] = force[1] = force[2] = 0;
+
+		if(this->GetDepth() > 3)
+		{
+			std::cout << "Tool Depth > 3. Force Applied" << std::endl;
+			force[2] = 1;
+		}
+		else force[2] = 0;
+
+		ihp->SetToolTipForce(id, force);
+		ihp->ApplyForce(id);
+	}
+#endif
+
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::Open(){
+	if(this->IsClosed()) {
+		this->SetOpening(1);
+	}
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::Close(){
+	if(!this->IsClosed()) {
+		this->SetOpening(0);
+	}
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::SetOpening(double opening) {
 	double step = opening - this->Opening;
-	this->GetLeftBlade()->GetTransform()->RotateX(-20*step);
-	this->GetRightBlade()->GetTransform()->RotateX(20*step);
+	int angle = 30;
+	//Left Lever
+	this->GetElement(1)->RotateX(-angle*step);
+	//Right Lever
+	this->GetElement(2)->RotateX(angle*step);
+	this->Opening = opening;
 }
 
-//--------------------------------------------------------------------------
-void vtkToolScissors::PrintSelf(ostream& os,vtkIndent indent)
+//----------------------------------------------------------------------------
+void vtkToolScissors::SetDepth(double position)
 {
+	//Scissors is clampled before being translated
+	double opening = this->Opening;
+	this->SetOpening(0);
+	Superclass::SetDepth(position);
+	//Scissors' opening state is restored
+	this->SetOpening(opening);
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::RotateX(double angle)
+{
+	//Scissors is clampled before being rotated
+	double opening = this->Opening;
+	this->SetOpening(0);
+	Superclass::RotateX(angle);
+	//Scissors' opening state is restored
+	this->SetOpening(opening);
+
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::RotateY(double angle)
+{
+	//Scissors is clampled before being rotated
+	double opening = this->Opening;
+	this->SetOpening(0);
+	Superclass::RotateY(angle);
+	//Scissors' opening state is restored
+	this->SetOpening(opening);
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::RotateZ(double angle)
+{
+	//Scissors is clampled before being rotated
+	double opening = this->Opening;
+	this->SetOpening(0);
+	Superclass::RotateZ(angle);
+	//Scissors' opening state is restored
+	this->SetOpening(opening);
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::Yaw(double angle)
+{
+	double step = angle - this->YawAngle;
+	if(step != 0)
+	{
+		this->RotateY(step);
+		this->YawAngle = angle;
+	}
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::Pitch(double angle)
+{
+	double step = angle - this->PitchAngle;
+	if(step != 0)
+	{
+		this->RotateX(step);
+		this->PitchAngle = angle;
+	}
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::Roll(double angle)
+{
+	double step = angle - this->RollAngle;
+	if(step != 0)
+	{
+		this->RotateZ(step);
+		this->RollAngle = angle;
+	}
+}
+
+//----------------------------------------------------------------------------
+void vtkToolScissors::PrintSelf(ostream& os,vtkIndent indent) {
 	this->Superclass::PrintSelf(os,indent);
 }
-

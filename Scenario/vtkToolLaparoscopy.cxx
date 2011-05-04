@@ -41,13 +41,15 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkToolLaparoscopy.h"
 
-#include "vtkTransform.h"
-#include "vtkTransformCollection.h"
+#include "vtkScenarioObject.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioElementCollection.h"
 
 vtkCxxRevisionMacro(vtkToolLaparoscopy, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 vtkToolLaparoscopy::vtkToolLaparoscopy() {
+	this->ToolType =  Laparoscopy;
 	this->Depth = 0;
 	this->YawAngle = 0;
 	this->PitchAngle = 0;
@@ -64,12 +66,13 @@ vtkToolLaparoscopy::~vtkToolLaparoscopy() {
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::Init()
 {
-	//TODO:This should not be defined. Use present variable Orientation
-	this->YawAngle = this->Orientation[0];
-	this->PitchAngle = this->Orientation[1];
-	this->RollAngle = this->Orientation[2];
-
 	Superclass::Init();
+
+	//TODO:This should not be defined. Use present variable Orientation
+	double * orientation = this->GetElement(0)->GetOrientation();
+	this->YawAngle = orientation[0];
+	this->PitchAngle = orientation[1];
+	this->RollAngle = orientation[2];
 }
 
 //--------------------------------------------------------------------------
@@ -107,19 +110,19 @@ void vtkToolLaparoscopy::Push() {
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::RotateX(double angle)
 {
-	this->TranslateToOrigin();
+	this->Reset();
 	//Rotate X
 	Superclass::RotateX(angle);
-	this->TranslateFromOrigin();
+	this->Restore();
 }
 
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::RotateY(double angle)
 {
-	this->TranslateToOrigin();
+	this->Reset();
 	//Rotate Y
 	Superclass::RotateY(angle);
-	this->TranslateFromOrigin();
+	this->Restore();
 }
 
 //--------------------------------------------------------------------------
@@ -127,6 +130,7 @@ void vtkToolLaparoscopy::RotateZ(double angle)
 {
 	Superclass::RotateZ(angle);
 }
+
 
 //--------------------------------------------------------------------------
 double *  vtkToolLaparoscopy::GetContactForceValue() {

@@ -18,14 +18,14 @@ vtkStandardNewMacro(vtkBufferOutputWindow);
 vtkBufferOutputWindow::vtkBufferOutputWindow()
 {
   this->LastOutputText  =  NULL;
-  this->LastOutputTextType = NULL;
+  this->LastOutputTextType = 0;
 }
 
 vtkBufferOutputWindow::~vtkBufferOutputWindow()
 {
   delete [] this->LastOutputText;
   this->LastOutputText = NULL;
-  this->LastOutputTextType = NULL;
+  this->LastOutputTextType = 0;
 }
 
 

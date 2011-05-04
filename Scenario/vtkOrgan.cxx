@@ -45,29 +45,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkStreamingDemandDrivenPipeline.h"
 #include "vtkInformationVector.h"
 #include "vtkInformation.h"
+#include "vtkAppendPolyData.h"
 
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRendererCollection.h"
-#include "vtkDataSetMapper.h"
-#include "vtkPolyDataMapper.h"
-#include "vtkXMLPolyDataReader.h"
-#include "vtkJPEGReader.h"
-#include "vtkTransform.h"
-#include "vtkTransformTextureCoords.h"
-#include "vtkTransformPolyDataFilter.h"
-#include "vtkTexture.h"
-#include "vtkTextureMapToSphere.h"
-#include "vtkProperty.h"
-#include "vtkActor2D.h"
-#include "vtkSelectVisiblePoints.h"
-#include "vtkLabeledDataMapper.h"
-#include "vtkMath.h"
-
-#include "vtkBioMechanicalModel.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
-
+#include "vtkModel.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioElementCollection.h"
 
 vtkCxxRevisionMacro(vtkOrgan, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkOrgan);
@@ -75,308 +57,22 @@ vtkStandardNewMacro(vtkOrgan);
 //----------------------------------------------------------------------------
 vtkOrgan::vtkOrgan()
 {
-	this->Input = NULL;
-	this->DeformationModel = NULL;
-
-	//I/O Objects
-	this->FileName = NULL;
-	this->TextureFileName = NULL;
-	this->DeformationModelName = NULL;
-	this->Reader = NULL;
-
-	//Graphical Objects
-	this->RenderWindow = NULL;
-	this->TransformFilter = NULL;
-	this->Transform = NULL;
-	this->Actor = NULL;
-	this->Mapper = NULL;
-	this->Texture = NULL;
-
-	// Item type
-	this->Type = vtkScenarioItem::Organ;
-
-	//Organ Type
-	this->OrganType = Static;
-
-	this->SetNumberOfInputPorts(1);
-	this->SetNumberOfOutputPorts(1);
-
-	this->Hooked = 0;
-
-	//Initialize organ contact list
-	this->Contacts = vtkContactCollection::New();
+	this->Type = vtkScenarioObject::Organ;
 }
 
 //--------------------------------------------------------------------------
 vtkOrgan::~vtkOrgan()
 {
-	if(this->Reader) this->Reader->Delete();
-	if(this->TransformFilter) this->TransformFilter->Delete();
-	if(this->Transform) this->Transform->Delete();
-	if(this->Actor) this->Actor->Delete();
-	if(this->Mapper) this->Mapper->Delete();
-	if(this->Contacts) this->Contacts->Delete();
-	if(this->DeformationModel) this->DeformationModel->Delete();
-	if(this->Texture) this->Texture->Delete();
 }
 
 //--------------------------------------------------------------------------
-void vtkOrgan::SetDeformationModel(vtkBioMechanicalModel * bmm)
-{
-	if(this->DeformationModel)
-	{
-		this->DeformationModel->Delete();
-	}
-	this->DeformationModel = bmm;
-	this->OrganType = Deformable;
-}
-
-//--------------------------------------------------------------------------
-vtkBioMechanicalModel * vtkOrgan::GetDeformationModel()
-{
-	return this->DeformationModel;
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::Init()
-{	
-	//if(!this->Input)
-	//{
-	this->Reader = vtkXMLPolyDataReader::New();
-	this->Reader->SetFileName(this->FileName);
-	this->Reader->Update();
-	//vtkPolyData * data = this->Reader->GetOutput();
-	this->SetInput(this->Reader->GetOutput());
-	//}
-
-	if(this->RenderWindow)
-	{
-		this->Renderer = this->RenderWindow->GetRenderers()->GetFirstRenderer();
-
-		this->Transform = vtkTransform::New();
-		this->TransformFilter = vtkTransformPolyDataFilter::New();
-		this->TransformFilter->SetInput(this->GetInput());
-		this->TransformFilter->SetTransform(this->Transform);
-
-		this->Transform->Translate(this->Position);
-		this->Transform->RotateX(this->Orientation[0]);
-		this->Transform->RotateY(this->Orientation[1]);
-		this->Transform->RotateZ(this->Orientation[2]);
-		this->Transform->Scale(this->Scale);
-
-		this->TransformFilter->Update();
-
-		vtkPolyData * mapperInput;
-		if(this->Deformable && this->DeformationModel)
-		{
-			this->DeformationModel->SetInput(this->TransformFilter->GetOutput());
-			this->DeformationModel->Init();
-			mapperInput = this->DeformationModel->GetOutput();
-		}
-		else
-		{
-			mapperInput = this->TransformFilter->GetOutput();
-		}
-
-		//Visualization
-		this->Mapper = vtkPolyDataMapper::New();
-		this->Actor = vtkActor::New();
-
-		if(this->TextureFileName && strcmp(this->TextureFileName, ""))
-		{
-			//Texture will be added
-			vtkTextureMapToSphere * map = vtkTextureMapToSphere::New();
-			map->SetInput(mapperInput);
-			map->PreventSeamOn();
-
-			vtkTransformTextureCoords * xform = vtkTransformTextureCoords::New();
-			xform->SetInputConnection(map->GetOutputPort());
-			xform->SetScale(1, 1, 1);
-
-			this->Mapper->SetInputConnection(xform->GetOutputPort());
-
-			vtkJPEGReader * jpegReader = vtkJPEGReader::New();
-			jpegReader->SetFileName(this->TextureFileName);
-			jpegReader->Update();
-
-			this->Texture = vtkTexture::New();
-			this->Texture->SetInputConnection(jpegReader->GetOutputPort());
-			this->Texture->InterpolateOn();
-
-			this->Actor = vtkActor::New();
-			this->Actor->SetTexture(this->Texture);
-		}
-		else
-		{
-			this->Mapper->SetInput(mapperInput);
-		}
-
-		//Display PointIds
-		if(this->GetDebug())
-		{
-			vtkPolyDataMapper * pointMapper = vtkPolyDataMapper::New();
-			pointMapper->SetInput(this->GetOutput());
-
-			vtkActor * pointActor = vtkActor::New();
-			pointActor->GetProperty()->SetPointSize(10);
-			pointActor->GetProperty()->SetColor(1,1,.4);
-
-			vtkSelectVisiblePoints * visPoints = vtkSelectVisiblePoints::New();
-			visPoints->SetInputConnection(this->GetOutputPort());
-			visPoints->SelectInvisibleOff();
-			visPoints->SetRenderer(this->Renderer);
-
-			vtkLabeledDataMapper * labelMapper = vtkLabeledDataMapper::New();
-			labelMapper->SetInputConnection(visPoints->GetOutputPort());
-
-			vtkActor2D * labelActor = vtkActor2D::New();
-			labelActor->SetMapper(labelMapper);
-
-			this->Renderer->AddActor(labelActor);
-
-			//TODO: Remove "returning AbortExecute of 0"
-			this->SetDebug(0);
-		}
-
-		this->Actor->SetMapper(this->Mapper);
-		this->Renderer->AddActor(this->Actor);
-	}
-
-}
-
-//--------------------------------------------------------------------------
-int vtkOrgan::RequestData(vtkInformation *vtkNotUsed(request),
-		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector)
-{
-	// get the info objects
-	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	vtkInformation *outInfo = outputVector->GetInformationObject(0);
-
-	// get the input and output
-	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-	if(this->IsHidden()) this->Hide();
-	else if(this->IsVisible()) this->Show();
-
-	//Update position & orientation
-	this->Velocity[0] = this->Position[0];
-	this->Velocity[1] = this->Position[1];
-	this->Velocity[2] = this->Position[2];
-	this->Acceleration[0] = this->Velocity[0];
-	this->Acceleration[1] = this->Velocity[1];
-	this->Acceleration[2] = this->Velocity[2];
-
-	//Get transformed values
-	this->Transform->GetPosition(this->Position);
-	this->Transform->GetOrientation(this->Orientation);
-
-	//Update object velocity
-	//Velocity will be calculated from delta(Position)/dt
-	vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
-	vtkMath::MultiplyScalar(this->Velocity, 1/this->DeltaT);
-
-	//Update object acceleration
-	vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
-	vtkMath::MultiplyScalar(this->Acceleration, 1/this->DeltaT);
-
-	this->TransformFilter->Update();
-
-	if(this->Deformable && this->DeformationModel)
-	{
-		this->DeformationModel->InsertContacts(this->Contacts);
-		this->DeformationModel->Update();
-
-		output->ShallowCopy(this->DeformationModel->GetOutput());
-	}
-	else
-	{
-		output->ShallowCopy(this->TransformFilter->GetOutput());
-	}
-
-	//clean previous executions
-	this->CleanContacts();
-
-	return 1;
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::Translate(double * vector)
-{
-	this->Translate(vector[0], vector[1], vector[2]);
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::Translate(double x, double y, double z) {
-	this->Transform->Translate(x, y, z);
-}
-
-/*//--------------------------------------------------------------------------
-void vtkOrgan::TranslateToOrigin()
-{
-	//Set back to the origin for translation/rotation
-	this->Translate(this->Origin);
-	this->RotateZ(-this->Orientation[2]);
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::TranslateFromOrigin()
-{
-	//Set back to previous position
-	this->RotateZ(this->Orientation[2]);
-	vtkMath::MultiplyScalar(this->Origin, -1);
-	this->Translate(this->Origin);
-	vtkMath::MultiplyScalar(this->Origin, -1);
-}*/
-
-//--------------------------------------------------------------------------
-void vtkOrgan::RotateX(double x) {
-	this->Transform->RotateX(x);
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::RotateY(double y) {
-	this->Transform->RotateY(y);
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::RotateZ(double z)
-{
-	this->Transform->RotateZ(z);
-}
-//--------------------------------------------------------------------------
-void vtkOrgan::Hide()
-{
-	this->Status = Hidden;
-	this->Actor->GetProperty()->SetOpacity(0.0);
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::Disable()
-{
-	this->Status = Disabled;
-	this->Actor->GetProperty()->SetOpacity(0.0);
-}
-
-//--------------------------------------------------------------------------
-void vtkOrgan::Show()
-{
-	this->Status = Visible;
-	this->Actor->GetProperty()->SetOpacity(1.0);
-}
+//void vtkOrgan::Init()
+//{
+//}
 
 //--------------------------------------------------------------------------
 void vtkOrgan::PrintSelf(ostream& os,vtkIndent indent) {
-
 	this->Superclass::PrintSelf(os,indent);
-
-	os << indent << "FileName: " << this->FileName << "\n";
-	os << indent << "TextureFileName: " << this->TextureFileName << "\n";
-	if(this->DeformationModel){
-		os << indent << "DeformationModel: " << this->DeformationModel->GetClassName() << "\n";
-	}
-
 }
 
 

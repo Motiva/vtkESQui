@@ -39,8 +39,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkContact_h
-#define __vtkContact_h
+#ifndef __vtkCollision_h
+#define __vtkCollision_h
 
 #include "vtkESQuiCommonWin32Header.h"
 #include "vtkObject.h"
@@ -48,56 +48,72 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkPoints;
 class vtkIdList;
 
-//!This class acts as data container storing all the useful information of an item-item collision.
+//!This class acts as data container storing all the useful information of an element-element collision.
 /*!
- * All the information (ids, points, cells...) is stored in pairs, one for each collided item.
+ * All the information (ids, points, cells...) is stored in pairs, one for each collided element.
  */
 
-class VTK_ESQUI_COMMON_EXPORT vtkContact : public vtkObject {
+class VTK_ESQUI_COMMON_EXPORT vtkCollision : public vtkObject {
 	
 public:
 	//! Type revision macro
-	vtkTypeRevisionMacro(vtkContact,vtkObject);
+	vtkTypeRevisionMacro(vtkCollision,vtkObject);
 
-	//! Create new contact that will be used as a data container
-	static vtkContact *New();
-	//! Print contact info
+	//! Create new collision that will be used as a data container
+	static vtkCollision *New();
+	//! Print collision info
 	void PrintSelf(ostream& os, vtkIndent indent);
 	//! Return class name
-	const char *GetClassName() {return "vtkContact";};
+	const char *GetClassName() {return "vtkCollision";};
 
 	
 	//!Organ type definition
-	enum vtkContactType{
+	enum vtkCollisionType{
 		ToolOrgan = 0,
 		ToolTool = 1
 	};
 	
 
-	//!Set contact type
-	vtkSetMacro(ContactType, vtkContact::vtkContactType);
-	//!Return contact type
-	vtkGetMacro(ContactType, vtkContact::vtkContactType);
+	//!Set collision type
+	vtkSetMacro(CollisionType, vtkCollision::vtkCollisionType);
+	//!Return collision type
+	vtkGetMacro(CollisionType, vtkCollision::vtkCollisionType);
 
-	//! Set the id of the item at the i position
+	//! Set the id of the object at the i position
 	/*!
-	 * \param i item index
-	 * \param id item identifier
-	 * \sa GetItemId()
+	 * \param i object index
+	 * \param id object identifier
+	 * \sa GetObjectId()
 	 */
-	void SetItemId(int i, vtkIdType id);
+	void SetObjectId(int i, vtkIdType id);
 
-	//! Get the index of the item
+	//! Get the index of the object
 	/*!
-	 * \param item index
-	 * \return Identifying key of the item
-	 * \sa SetItemId(int i, vtkIdType id)
+	 * \param object index
+	 * \return Identifying key of the object
+	 * \sa SetObjectId(int i, vtkIdType id)
 	 */
-	vtkIdType GetItemId(int i);
-	
-	//! Set the item mesh point identifier where the collision has occurred
+	vtkIdType GetObjectId(int i);
+
+	//! Set the id of the element at the i position
 	/*!
-	 * \param i index of the item in the collection
+	 * \param i element index
+	 * \param id element identifier
+	 * \sa GetElementId()
+	 */
+	void SetElementId(int i, vtkIdType id);
+
+	//! Get the index of the element
+	/*!
+	 * \param element index
+	 * \return Identifying key of the element
+	 * \sa SetElementId(int i, vtkIdType id)
+	 */
+	vtkIdType GetElementId(int i);
+
+	//! Set the element mesh point identifier where the collision has occurred
+	/*!
+	 * \param i index of the element in the collection
 	 * \param id point id of the mesh
 	 * \sa GetPointId()
 	 */
@@ -105,7 +121,7 @@ public:
 
 	//! Get the collided point identifier
 	/*!
-	 * \param i index of the item in the collection
+	 * \param i index of the element in the collection
 	 * \return point id of the organ mesh
 	 * \sa SetPointId(int i, int id)
 	 */
@@ -113,7 +129,7 @@ public:
 	
 	//! Set the organ mesh point position of the collision
 	/*!
-	 * \param i index of the item in the collection
+	 * \param i index of the element in the collection
 	 * \param x x coordinate of the collision point
 	 * \param y y coordinate of the collision point
 	 * \param z z coordinate of the collision point
@@ -123,14 +139,14 @@ public:
 
 	//! Set the collided point position
 	/*!
-	 * \param i index of the item in the collection
+	 * \param i index of the element in the collection
 	 * \param point[] [x, y, z] coordinates vector of the collision point
 	 * \sa GetVertexPosition()
 	 */
 	void SetPoint(int i, double point[3]);
 	//! Returns collided point position
 	/*!
-	 * \param i index of the item in the collection
+	 * \param i index of the element in the collection
 	 * \return pointer to position [x, y, z] coordinates vector of the collision point
 	 * \sa SetVertexPosition(double position[3])
 	 * \sa SetVertexPosition(double x, double y, double z)
@@ -139,7 +155,7 @@ public:
 
 	//! Set the collisioned cell of the deformable model
 	/*!
-	 * \param i index of the item in the collection
+	 * \param i index of the element in the collection
 	 * \param value organ cell id
 	 * \sa GetCellId()
 	 */
@@ -147,7 +163,7 @@ public:
 
 	//! Get the collisioned cell of the deformable model
 	/*!
-	 * \param i index of the item in the collection
+	 * \param i index of the element in the collection
 	 * \return cell id of the organ mesh
 	 * \sa SetCellId(int value)
 	 */
@@ -159,37 +175,37 @@ public:
 	//! Get the scalar distance
 	vtkGetMacro(Distance, double);
 
-	//! Set the displacement vector of the contact
+	//! Set the displacement vector of the collision
 	vtkSetVector3Macro(Displacement, double);
 
-	//! Returns the direction vector of the contact
+	//! Returns the direction vector of the collision
 	vtkGetVector3Macro(Displacement, double);
 
-	//! Performs a full detailed copy of the contact
-	void DeepCopy(vtkContact *info);
+	//! Performs a full detailed copy of the collision
+	void DeepCopy(vtkCollision *info);
 
 protected:
-	vtkContact();
-	~vtkContact();
+	vtkCollision();
+	~vtkCollision();
 private:
 
-	//! Contact Type
-	vtkContactType ContactType;
+	//! Collision Type
+	vtkCollisionType CollisionType;
+
+	// Identificadores de cada uno de los elementos colisionados
+	//! Collided elements ids
+	vtkIdList * ElementIds;
 
 	// Identificadores de cada uno de los objetos colisionados
-	//! Collided items ids
-	/*! The identifiers will be stored according to the following sequence
-	 * 0 -> toolId
-	 * 1 -> organId
-	 */
-	vtkIdList * ItemIds;
+	//! Collided objects ids
+	vtkIdList * ObjectIds;
 
 	// Posición donde se debe mover el vertice para sacarlo de la herramienta
 	//! Collision point on both objects
 	vtkPoints * Points;
 
 	// Identificadores de los objetos en colisión
-	//! Point ids of the collided items.
+	//! Point ids of the collided elements.
 	vtkIdList * PointIds;
 
 	// Id de la celda del vertice colisionado
@@ -200,14 +216,11 @@ private:
 	//! Scalar distance
 	double Distance;
 
-	// Vector desplazamiento del contacto
-	//! Displacement Vector of the contact
+	// Vector desplazamiento de la colisión
+	//! Displacement Vector of the collision
 	double Displacement[3];
 
-	//! Define the contact as grasped
-	bool isGrasped;
-
-	vtkContact (const vtkContact &);//NotImplemented
-	void operator =(const vtkContact &);//Not Implemented
+	vtkCollision (const vtkCollision &);//NotImplemented
+	void operator =(const vtkCollision &);//Not Implemented
 };
 #endif

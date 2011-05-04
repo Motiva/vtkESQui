@@ -115,12 +115,9 @@ int main(int argc, char * argv[])
 
 	vtkPolyData * mesh = reader->GetOutput();
 
-	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
-	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
-
 	vtkParticleSpringSystem* ParticleSpringSystem = vtkParticleSpringSystem::New();
 	ParticleSpringSystem->SetInput(mesh);
-	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
+	ParticleSpringSystem->SetSolverType(vtkMotionEquationSolver::RungeKutta4);
 	ParticleSpringSystem->SetSpringCoefficient(250);
 	ParticleSpringSystem->SetDistanceCoefficient(10);
 	ParticleSpringSystem->SetDampingCoefficient(2);//Friction
@@ -150,8 +147,7 @@ int main(int argc, char * argv[])
 
 	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
 	{
-		double * mp = mesh->GetPoint(list->GetId(i));
-		ParticleSpringSystem->InsertContact(list->GetId(i), dir);
+		ParticleSpringSystem->InsertCollision(list->GetId(i), dir);
 	}
 
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
@@ -183,7 +179,9 @@ int main(int argc, char * argv[])
 	renderer->SetBackground(1,1,1);
 
 	renderer->ResetCamera();
-	//renderer->GetActiveCamera()->Azimuth(90);
+
+	ParticleSpringSystem->Print(cout);
+
 	iren->Initialize();
 
 	renWin->Render();

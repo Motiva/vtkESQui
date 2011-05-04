@@ -45,10 +45,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiSimulationWin32Header.h"
 #include "vtkObject.h"
 
-#include "vtkRenderWindowInteractor.h"
-
-#include "vtkScenario.h"
-
+class vtkScenario;
+class vtkRenderWindowInteractor;
+class vtkCollisionDetection;
 class vtkCallbackCommand;
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
@@ -73,29 +72,26 @@ public:
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initializes the simulation (Haptic, Manager, etc...)
-	void Init();
-
-	//! Starts the simulation
-	void Run();
-
-	//!Update the simulation Manager. The whole Scenario is updated
-	void UpdateScenario();
-
-	//!Update the haptic state and obtains the value of the force feedback for the haptic device
-	void UpdateHaptic();
-
 	//! Set simulation render window interactor
 	/*!
 	* \sa GetInteractor()
 	*/
-	vtkSetObjectMacro(Interactor, vtkRenderWindowInteractor);
+	void SetInteractor(vtkRenderWindowInteractor * i);
 
 	//!Get simulation render window interactor
 	/*!
 	* \sa SetInteractor(vtkRenderWindowInteractor *iren)
 	*/
-	vtkGetObjectMacro(Interactor, vtkRenderWindowInteractor);
+	vtkRenderWindowInteractor * GetInteractor();
+
+	//! Set the simulation scenario: organs, tools, etc...
+	/*!
+	 * Contains the information of the scenario items: organs, tools, contacts, etc...
+	 */
+	void SetScenario(vtkScenario * s);
+
+	//!Return the scenario of the simulation
+	vtkScenario * GetScenarior();
 
 	//!Set haptic device timer refresh rate (s)
 	vtkSetMacro(HapticTimerRate, double);
@@ -141,19 +137,22 @@ public:
 	//!Enable the verbose
 	vtkBooleanMacro(Verbose, bool);
 
-	//! Set the scenario items: organs, tools, etc...
-	/*!
-	 * Contains the information of the scenario items: organs, tools, contacts, etc...
-	 */
-	vtkSetObjectMacro(Scenario, vtkScenario);
-
-	//!Return the scenario of the simulation
-	vtkGetObjectMacro(Scenario, vtkScenario);
-
 	//! Set Gravity Force (m/s2)
 	vtkSetVector3Macro(Gravity, double);
 	//! Get Gravity Force (m/s2)
 	vtkGetVector3Macro(Gravity, double);
+
+	//! Initializes the simulation (Haptic, Manager, etc...)
+	void Init();
+
+	//! Starts the simulation
+	void Run();
+
+	//!Update the simulation Manager. The whole Scenario is updated
+	void UpdateScenario();
+
+	//!Update the haptic state and obtains the value of the force feedback for the haptic device
+	void UpdateHaptic();
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	//BTX
@@ -194,7 +193,7 @@ private:
 	vtkRenderWindowInteractor *Interactor;
 
 	//!collision detection library
-	vtkCollisionDetectionLibrary* CollisionDetection;
+	vtkCollisionDetection* CollisionDetection;
 
 	//! Enable/disable haptic device usage
 	bool UseHaptic;

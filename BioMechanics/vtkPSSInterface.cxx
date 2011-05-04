@@ -46,9 +46,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInformationVector.h"
 #include "vtkInformation.h"
 #include "vtkDataObject.h"
+#include "vtkTransform.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataMapper.h"
+#include "vtkXMLPolyDataReader.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
 
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
+#include "vtkCollision.h"
+#include "vtkCollisionCollection.h"
 #include "vtkBoundaryCondition.h"
 #include "vtkBoundaryConditionCollection.h"
 
@@ -59,12 +65,15 @@ vtkStandardNewMacro(vtkPSSInterface);
 vtkPSSInterface::vtkPSSInterface()
 {
 	this->ParticleSpringSystem = vtkParticleSpringSystem::New();
+	this->SpringCoefficient = 0.0;
 	this->DistanceCoefficient = 0;
-	this->SpringCoefficient = 0;
 	this->DampingCoefficient = 0;
-	this->Mass = 0;
 	this->DeltaT = 0;
-	this->SolverType = vtkParticleSpringSystem::VelocityVerlet;
+	this->Mass = 0;
+	this->RigidityFactor = 1;
+	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
+	this->DeltaT = 0;
+	this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
 }
 
 //----------------------------------------------------------------------------
@@ -76,9 +85,11 @@ vtkPSSInterface::~vtkPSSInterface()
 //--------------------------------------------------------------------------
 void vtkPSSInterface::Init()
 {
-	//Set pss input data
+	this->Superclass::Init();
+
+	//Set input data
 	this->ParticleSpringSystem->SetInput(this->GetInput());
-	//Set common params
+	//Set common parameters
 	this->ParticleSpringSystem->SetGravity(this->Gravity);
 	this->ParticleSpringSystem->SetDeltaT(this->DeltaT);
 	//Set Mass-Spring System parameters
@@ -103,6 +114,9 @@ void vtkPSSInterface::Init()
 			this->ParticleSpringSystem->SetParticleStatus(c->GetPointId(), c->GetValue());
 		}
 	}
+
+	this->ParticleSpringSystem->Print(cout);
+	//this->Mapper->SetInput(this->GetOutput());
 }
 
 // VTK specific method: This method is called when the pipeline is calculated.
@@ -112,32 +126,52 @@ int vtkPSSInterface::RequestData(
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
 
-	//cout << "vtkPSSInterface::RequestData\n";
-	// Get the info objects
+	//cout << "vtkPSSInterface::RequestData (" << this->GetName() <<  ")\n";
+
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *inInfo1 = inputVector[1]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	// Get the input and output
-	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *input = vtkPolyData::SafeDownCast(
+			inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *output = vtkPolyData::SafeDownCast(
+			outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	this->ParticleSpringSystem->SetInput(input);
+	//Update object transform
+	this->Transform->Update();
 
-	this->Contacts->InitTraversal();
-	while(vtkContact * contact = this->Contacts->GetNextContact())
+	//Get transformed values
+	this->Transform->GetPosition(this->Position);
+	this->Transform->GetOrientation(this->Orientation);
+
+	if(this->Collisions)
 	{
-		if(contact->GetContactType() == vtkContact::ToolOrgan)
+		this->Collisions->InitTraversal();
+		while(vtkCollision * collision = this->Collisions->GetNextCollision())
 		{
-			this->ParticleSpringSystem->InsertContact(contact->GetPointId(1), contact->GetDisplacement());
+			if(collision->GetCollisionType() == vtkCollision::ToolOrgan)
+			{
+				this->ParticleSpringSystem->InsertCollision(collision->GetPointId(1), collision->GetDisplacement());
+			}
+
+			//Once a collision has been processed it is removed from collection
+			this->Collisions->RemoveItem(collision);
+			collision->Delete();
 		}
 	}
 
+	//Force recalculation of the output in every step
 	this->ParticleSpringSystem->Modified();
 	this->ParticleSpringSystem->Update();
 
-	output->ShallowCopy(this->ParticleSpringSystem->GetOutput());
+	//Set visualization parameters
+	this->Actor->GetProperty()->SetColor(this->Color);
+	this->Actor->GetProperty()->SetOpacity(this->Opacity);
+	this->Actor->SetVisibility(this->Visibility);
 
-	this->DeleteContacts();
+	this->Mapper->SetInput(this->ParticleSpringSystem->GetOutput());
+
+	output->ShallowCopy(this->ParticleSpringSystem->GetOutput());
 
 	return 1;
 }

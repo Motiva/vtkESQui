@@ -39,106 +39,114 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkContact.h"
+#include "vtkDeformationModel.h"
 
 #include "vtkObjectFactory.h"
-#include "vtkPoints.h"
-#include "vtkIdList.h"
+#include "vtkStreamingDemandDrivenPipeline.h"
+#include "vtkInformationVector.h"
+#include "vtkInformation.h"
+#include "vtkDataObject.h"
+#include "vtkPolyData.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
 
-vtkCxxRevisionMacro(vtkContact, "$Revision: 0.1 $");
-vtkStandardNewMacro(vtkContact);
+#include "vtkCollisionCollection.h"
+#include "vtkCollision.h"
+#include "vtkBoundaryConditionCollection.h"
+#include "vtkBoundaryCondition.h"
+
+vtkCxxRevisionMacro(vtkDeformationModel, "$Revision: 0.1 $");
+//vtkStandardNewMacro(vtkDeformationModel);
 
 //--------------------------------------------------------------------------
-vtkContact::vtkContact() {
-	this->isGrasped=false;
-	this->ItemIds = vtkIdList::New();
-	this->ItemIds->SetNumberOfIds(2);
-	this->PointIds = vtkIdList::New();
-	this->PointIds->SetNumberOfIds(2);
-	this->CellIds = vtkIdList::New();
-	this->CellIds->SetNumberOfIds(2);
-	this->Points = vtkPoints::New();
-	this->Points->SetDataTypeToDouble();
-	this->Points->SetNumberOfPoints(2);
+vtkDeformationModel::vtkDeformationModel() {
+
+	this->SetModelType(vtkModel::Deformation);
+	this->Name = NULL;
+	this->BoundaryConditions = vtkBoundaryConditionCollection::New();
+	this->Collisions = vtkCollisionCollection::New();
+
 }
 
 //--------------------------------------------------------------------------
-vtkContact::~vtkContact()
+vtkDeformationModel::~vtkDeformationModel() {
+
+	if(this->BoundaryConditions) this->BoundaryConditions->Delete();
+	if(this->Collisions) this->Collisions->Delete();
+}
+
+//--------------------------------------------------------------------------
+void vtkDeformationModel::SetCollisions(vtkCollisionCollection * c)
 {
-	this->ItemIds->Delete();
-	this->PointIds->Delete();
-	this->CellIds->Delete();
-	this->Points->Delete();
+	if(this->Collisions) this->Collisions->Delete();
+	this->Collisions = c;
 }
 
 //--------------------------------------------------------------------------
-void vtkContact::SetItemId(int i, int id)
+vtkCollisionCollection * vtkDeformationModel::GetCollisions()
 {
-	this->ItemIds->SetId(i, id);
+	return this->Collisions;
 }
 
 //--------------------------------------------------------------------------
-int vtkContact::GetItemId(int i){
-	return this->ItemIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkContact::SetPointId(int i, int id)
+void vtkDeformationModel::AddCollision(vtkCollision * c)
 {
-	this->PointIds->SetId(i, id);
+	this->Collisions->AddItem(c);
 }
 
 //--------------------------------------------------------------------------
-int vtkContact::GetPointId(int i){
-	return this->PointIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkContact::SetPoint(int i, double x, double y, double z) {
-	this->Points->SetPoint(i, x, y, z);
-}
-
-//--------------------------------------------------------------------------
-void vtkContact::SetPoint(int i, double point[3]) {
-	this->SetPoint(i, point[0],point[1],point[2]);
-}
-
-//--------------------------------------------------------------------------
-double * vtkContact::GetPoint(int i){
-	return this->Points->GetPoint(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkContact::SetCellId(int i, vtkIdType value){
-	this->CellIds->SetId(i, value);
-}
-
-//--------------------------------------------------------------------------
-int vtkContact::GetCellId(int i){
-	return this->CellIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkContact::DeepCopy(vtkContact *info) {
-	this->ItemIds->DeepCopy(info->ItemIds);
-	this->PointIds->DeepCopy(info->PointIds);
-	this->CellIds->DeepCopy(info->CellIds);
-	this->Points->DeepCopy(info->Points);
-	this->isGrasped = info->isGrasped;
-}
-
-//--------------------------------------------------------------------------
-void vtkContact::PrintSelf(ostream&os, vtkIndent indent)
+void vtkDeformationModel::RemoveCollision(vtkIdType id)
 {
-	os << indent << "ContactType: " << this->ContactType << endl;
-	for(int i = 0; i< 2; i++)
+	this->Collisions->RemoveItem(id);
+}
+
+//--------------------------------------------------------------------------
+void vtkDeformationModel::RemoveAllCollisions()
+{
+	this->Collisions->RemoveAllItems();
+}
+
+//--------------------------------------------------------------------------
+void vtkDeformationModel::Init()
+{
+	this->Superclass::Init();
+
+	//Display as a wire frame
+	this->Actor->GetProperty()->SetRepresentationToWireframe();
+}
+
+//--------------------------------------------------------------------------
+void vtkDeformationModel::InsertNextBoundaryCondition(vtkBoundaryCondition* condition)
+{
+	//Insert collision point coordinates
+	this->BoundaryConditions->InsertNextBoundaryCondition(condition);
+	this->Modified();
+}
+
+//--------------------------------------------------------------------------
+void vtkDeformationModel::InsertBoundaryConditions(vtkBoundaryConditionCollection * collection)
+{
+	//Extract data from vtkBoundaryConditionCollection object
+	collection->InitTraversal();
+	vtkBoundaryCondition * c;
+	c = collection->GetNextBoundaryCondition();
+	while(c)
 	{
-		os << indent << "Item["<< i <<"] Id: " << this->ItemIds->GetId(i) << endl;
-		os << indent << "Cell[" << i <<"] Id: " << this->CellIds->GetId(i) << endl;
-		os << indent << "Point[" << i <<"] Id: " << this->PointIds->GetId(i)<< endl;
-		double * point = this->Points->GetPoint(i);
-		os << indent << "Point[" << i <<"] Position: " << point[0] << ", " << point[1] << ", " << point[2] << endl;
+		this->InsertNextBoundaryCondition(c);
+		c = collection->GetNextBoundaryCondition();
 	}
-	os << indent << "isGrasped: " << this->isGrasped << endl;
-	os << indent << "Direction: " << this->Displacement[0] << ", " << this->Displacement[1] << ", " << this->Displacement[2] << endl;
+
+	this->Modified();
+}
+
+//--------------------------------------------------------------------------
+void vtkDeformationModel::DeleteBoundaryConditions()
+{
+	this->BoundaryConditions->RemoveBoundaryConditions();
+	this->Modified();
+}
+//--------------------------------------------------------------------------
+void vtkDeformationModel::PrintSelf(ostream& os,vtkIndent indent) {
+
+	this->Superclass::PrintSelf(os, indent);
 }

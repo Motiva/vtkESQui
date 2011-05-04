@@ -47,6 +47,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkParticleSpringSystemWin32Header.h"
 #include "vtkMotionEquationSolver.h"
 
+class vtkParticleSpringSystem;
+class vtkParticleCollection;
+class vtkParticle;
+
 //! Implementation of the semi-implicit Euler solver.
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkEulerSolver : public vtkMotionEquationSolver {

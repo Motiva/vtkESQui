@@ -9,6 +9,7 @@
 #include "vtkCellArray.h"
 #include "vtkIdList.h"
 #include "vtkActor.h"
+#include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkCamera.h"
 
@@ -20,10 +21,11 @@
 #include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
 
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
-
+#include "vtkSmartPointer.h"
 #include "vtkCommand.h"
+
+#include "vtkCollision.h"
+#include "vtkCollisionCollection.h"
 
 #include "vtkPSSInterface.h"
 
@@ -92,7 +94,7 @@ public:
 		this->BMM = bmm;
 	}
 
-	void SetContactIds(vtkIdList * list)
+	void SetCollisionIds(vtkIdList * list)
 	{
 		this->List = list;
 	}
@@ -106,7 +108,7 @@ private:
 	vtkPSSInterface * BMM;
 };
 
-int main(int argc, char * argv[])
+int TestvtkPSSInterface(int argc, char * argv[])
 {
 	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/sphere12_12_1.vtp";
 
@@ -115,30 +117,30 @@ int main(int argc, char * argv[])
 		filename = argv[1];
 	}
 
-	vtkXMLPolyDataReader * reader = vtkXMLPolyDataReader::New();
+	vtkSmartPointer<vtkXMLPolyDataReader> reader =
+			vtkSmartPointer<vtkXMLPolyDataReader>::New();
 	reader->SetFileName(filename);
 	reader->Update();
 
 	vtkPolyData * mesh = reader->GetOutput();
 
-	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
-	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
+	vtkSmartPointer<vtkPSSInterface> pss = vtkSmartPointer<vtkPSSInterface>::New();
+	pss->SetFileName(filename);
+	pss->SetColor(1,0,0);
+	pss->SetOpacity(1.0);
+	pss->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
+	pss->SetSpringCoefficient(150);
+	pss->SetDistanceCoefficient(10);
+	pss->SetDampingCoefficient(5);//Friction
+	pss->SetMass(.5);
+	pss->SetDeltaT(0.001);//10ms
+	pss->SetRigidityFactor(2);
+	pss->Init();
 
-	vtkPSSInterface* ParticleSpringSystem = vtkPSSInterface::New();
-	ParticleSpringSystem->SetInput(mesh);
-	ParticleSpringSystem->SetSolverType(vtkParticleSpringSystem::VelocityVerlet);
-	ParticleSpringSystem->SetSpringCoefficient(150);
-	ParticleSpringSystem->SetDistanceCoefficient(10);
-	ParticleSpringSystem->SetDampingCoefficient(5);//Friction
-	ParticleSpringSystem->SetMass(.5);
-	ParticleSpringSystem->SetDeltaT(0.001);//10ms
-	ParticleSpringSystem->SetRigidityFactor(2);
-	ParticleSpringSystem->Init();
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	vtkRenderer * renderer = vtkRenderer::New();
-
-	//Locate contact points
-	vtkPointLocator * locator = vtkPointLocator::New();
+	//Locate collision points
+	vtkSmartPointer<vtkPointLocator> locator = vtkSmartPointer<vtkPointLocator>::New();
 	double bounds[6];
 	mesh->GetBounds(bounds);
 
@@ -146,15 +148,14 @@ int main(int argc, char * argv[])
 
 	locator->SetDataSet(mesh);
 
-	vtkIdList * list = vtkIdList::New();
-	vtkDoubleArray * directions = vtkDoubleArray::New();
+	vtkSmartPointer<vtkIdList> list = vtkSmartPointer<vtkIdList>::New();
+	vtkSmartPointer<vtkDoubleArray> directions = vtkSmartPointer<vtkDoubleArray>::New();
 	directions->SetNumberOfComponents(3);
 
-	//list->InsertNextId(0);
 	locator->FindClosestNPoints(3, p, list);
 
-	//Set Contacts
-	vtkContactCollection * contacts = vtkContactCollection::New();
+	//Set Collisions
+	vtkSmartPointer<vtkCollisionCollection> collisions = vtkSmartPointer<vtkCollisionCollection>::New();
 
 	double dir[3];
 	dir[0] = 0.2;//-0.1;
@@ -167,67 +168,58 @@ int main(int argc, char * argv[])
 		directions->InsertNextTuple(dir);
 		vtkIdType id = list->GetId(i);
 
-		//Insert contact info
-		vtkContact * contact = vtkContact::New();
-		contact->SetItemId(0, 0);
-		contact->SetItemId(1, 0);
+		//Insert collision info
+		vtkCollision * collision = vtkCollision::New();
+		collision->SetElementId(0, 0);
+		collision->SetElementId(1, 0);
 
 		//Organ cell point
-		contact->SetPointId(1, id);
-		contact->SetPoint(1, point);
-		//contact->InsertCellId(0, organCellId);
-		contact->SetDisplacement(dir);
+		collision->SetPointId(1, id);
+		collision->SetPoint(1, point);
+		//collision->InsertCellId(0, organCellId);
+		collision->SetDisplacement(dir);
 
-		contact->Print(cout);
-
-		contacts->InsertNextContact(contact);
+		collisions->InsertNextCollision(collision);
 	}
 
 	//Set a fictional force
-	ParticleSpringSystem->InsertContacts(contacts);
+	pss->SetCollisions(collisions);
 
-	vtkRenderWindow * renWin = vtkRenderWindow::New();
+	vtkSmartPointer<vtkRenderWindow> renWin =
+			vtkSmartPointer<vtkRenderWindow>::New();
 	renWin->SetSize(500,500);
 	renWin->AddRenderer(renderer);
 
-	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
+	vtkSmartPointer<vtkRenderWindowInteractor> iren =
+			vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	iren->SetRenderWindow(renWin);
 
-	vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
+	vtkSmartPointer<vtkPolyDataMapper> mapper =
+			vtkSmartPointer<vtkPolyDataMapper>::New();
 	mapper->SetInput(mesh);
-	mapper->ScalarVisibilityOff();
 
-	vtkActor * actor = vtkActor::New();
+	vtkSmartPointer<vtkActor> actor =
+			vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetColor(0,1,0);
 	actor->GetProperty()->SetOpacity(0.5);
 
-	vtkPolyDataMapper * mapper2 = vtkPolyDataMapper::New();
-	mapper2->SetInput(ParticleSpringSystem->GetOutput());
-	//mapper2->ScalarVisibilityOff();
-
-	vtkActor * actor2 = vtkActor::New();
-	actor2->SetMapper(mapper2);
-	actor2->GetProperty()->SetColor(1,0,0);
-	actor2->GetProperty()->SetRepresentationToWireframe();
-
 	renderer->AddActor(actor);
-	renderer->AddActor(actor2);
+	renderer->AddActor(pss->GetActor());
 	renderer->SetBackground(1,1,1);
 
 	renderer->ResetCamera();
-	//renderer->GetActiveCamera()->Azimuth(90);
 	iren->Initialize();
 
 	renWin->Render();
 
 	// Sign up to receive TimerEvent:
 	//
-	vtkTimerCallback *cb = vtkTimerCallback::New();
+	vtkTimerCallback * cb = vtkTimerCallback::New();
 	iren->AddObserver(vtkCommand::TimerEvent, cb);
 	int tid;
 
-	cb->SetBMM(ParticleSpringSystem);
+	cb->SetBMM(pss);
 
 	//Create a faster timer for BMM update
 	tid = iren->CreateRepeatingTimer(10);
@@ -241,14 +233,6 @@ int main(int argc, char * argv[])
 
 	iren->Start();
 
-	ParticleSpringSystem->Delete();
-	mapper->Delete();
-	actor->Delete();
-	mapper2->Delete();
-	actor2->Delete();
-	renderer->Delete();
-	renWin->Delete();
-	iren->Delete();
 	return 0;
 }
 

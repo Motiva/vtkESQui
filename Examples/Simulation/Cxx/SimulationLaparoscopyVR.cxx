@@ -96,8 +96,8 @@ int main(int argc, char * argv[])
 	const char * fn1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
 	const char * fn2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
 	const char * fn3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
-	const char * fn3t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg";
-	const char * fn4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp";
+	const char * fn3t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg";
+	const char * fn4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/DICOM/AbdVessels/vessels.vtp";
 	const char * fn4t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg";
 	const char * fn5 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp";
 	const char * fn6 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp";
@@ -130,18 +130,18 @@ int main(int argc, char * argv[])
 	organ->SetTextureFileName(fn3t);
 
 	//Set geometric parameters
-	organ->SetPosition(0.0, 0.0, -3.0);
+	organ->SetPosition(0.0, -50.0, -150.0);
 	organ->SetOrientation(0.0, 0.0, 0.0);
-	organ->SetOrigin(0.0, 0.0, -3.0);
+	organ->SetOrigin(0.0, 0.0, -150.0);
 
 	//Set tool scale (size)
-	organ->SetScale(1.0, 1.0, 1.0);
+	organ->SetScale(10.0, 10.0, 10.0);
 
 	//Set organ type
-	organ->SetOrganType(vtkOrgan::Deformable);
+	//organ->SetOrganType(vtkOrgan::Deformable);
 
 	//Set Deformation Model
-	vtkPSSInterface * particleSpring = vtkPSSInterface::New();
+/*	vtkPSSInterface * particleSpring = vtkPSSInterface::New();
 	particleSpring->SetDeltaT(0.01);
 	particleSpring->SetGravity(0.0, 0.0, 0.0);
 
@@ -153,10 +153,29 @@ int main(int argc, char * argv[])
 	particleSpring->SetRigidityFactor(2);
 	particleSpring->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
 
-	organ->SetDeformationModel(particleSpring);
+	organ->SetDeformationModel(particleSpring);*/
 
 	//Add organ to the scenario
-	//scenario->AddOrgan(organ);
+	scenario->AddOrgan(organ);
+
+	vtkOrgan * vessels = vtkOrgan::New();
+	//Set organ identifier
+	vessels->SetId(1);
+	vessels->SetName("Vessels");
+
+	//Set source data fn
+	vessels->SetFileName(fn4);
+	vessels->SetTextureFileName(fn4t);
+
+	//Set geometric parameters
+	vessels->SetPosition(0.0, 0.0, 0.0);
+	vessels->SetOrientation(0.0, 0.0, 0.0);
+	vessels->SetOrigin(0.0, 0.0, 0.0);
+
+	//Set tool scale (size)
+	vessels->SetScale(1.0, 1.0, 1.0);
+
+	scenario->AddOrgan(vessels);
 
 	/********** Load Tools **********/
 	//Add new tool To the scenario
@@ -170,9 +189,9 @@ int main(int argc, char * argv[])
 	leftGrasper->SetLeftLeverFileName(fn1);
 	leftGrasper->SetRightLeverFileName(fn2);
 	//Set geometric parameters
-	leftGrasper->SetPosition(-3, 0, 0);
+	leftGrasper->SetPosition(-3, 0, -20);
 	leftGrasper->SetOrientation(0, 10, 0);
-	leftGrasper->SetOrigin(0, 0, 4);
+	leftGrasper->SetOrigin(0, 0, 0);
 
 	//Set tool scale (size)
 	leftGrasper->SetScale(1.0, 1.0, 1.0);
@@ -190,9 +209,9 @@ int main(int argc, char * argv[])
 	rightProbe->SetStickFileName(fn5);
 	rightProbe->SetTipFileName(fn6);
 	//Set geometric parameters
-	rightProbe->SetPosition(3, 0, 0);
+	rightProbe->SetPosition(3, -10, -20);
 	rightProbe->SetOrientation(0, -10, 0);
-	rightProbe->SetOrigin(0, 0, 4);
+	rightProbe->SetOrigin(0, 0, 0);
 
 	//Set tool scale (size)
 	rightProbe->SetScale(1.0, 1.0, 1.0);
@@ -242,19 +261,19 @@ int main(int argc, char * argv[])
 	double * r = i->GetScalarRange();
 
 	int minT = r[0];
-	int lowT = 90;
-	int highT = 1150;
+	int lowT = 120;
+	int highT = 350;
 	int maxT = r[1];
 
 	colorFunction->AddRGBPoint(minT, 0, 0, 0);//, 0.5, 0.0 );
 	colorFunction->AddRGBPoint(lowT, 0.73, 0.25, 0.30);//, 0.5, .61 );
-	colorFunction->AddRGBPoint(highT, 0.9, 0.8, 0.5);//, .5, 0.0 );
+	colorFunction->AddRGBPoint(highT, 0.73, 0.25, 0.30);//, 0.5, .61 );
+	//colorFunction->AddRGBPoint(highT, 0.9, 0.8, 0.5);//, .5, 0.0 );
 	colorFunction->AddRGBPoint(maxT, 1.0, 1.0, 1.0);//, .5, 0.0 );
 
 	opacityFunction->AddPoint(minT, 0.0);
 	opacityFunction->AddPoint(lowT, 0.0);
-	opacityFunction->AddPoint(highT, 0.1);
-	opacityFunction->AddPoint(1150, 0.1);
+	opacityFunction->AddPoint(highT, 0.3);
 	opacityFunction->AddPoint(maxT, 0.9);
 
 	gradientFunction->AddPoint(0,   0.0);
@@ -291,7 +310,7 @@ int main(int argc, char * argv[])
 	headLight->SetLightTypeToHeadlight();
 	headLight->PositionalOn();
 	headLight->SetIntensity(0.5);
-	headLight->SetConeAngle(30);
+	headLight->SetConeAngle(60);
 	ren1->AddLight(headLight);
 
 	vtkLight *ambientLight = vtkLight::New(); 
@@ -303,19 +322,19 @@ int main(int argc, char * argv[])
 
 	/**********  Camera Definitions  ********/
 	vtkCamera * camera = ren1->GetActiveCamera();
-	camera->SetPosition(0, 0, 2);
-	camera->SetFocalPoint(0, 0, -6);
+	camera->SetPosition(0, 0, -20);
+	camera->SetFocalPoint(0, 0, -40);
 	camera->Yaw(0);
 	camera->Elevation(20);
 	camera->Pitch(-15);
-	camera->Dolly(1);
+	camera->Dolly(1.5);
 	camera->ParallelProjectionOff();
 	camera->SetViewAngle(70);
 
 	/**********  Simulation Setup  ********/
 	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
 	style->SetScenario(scenario);
-	iren->SetInteractorStyle(style);
+	//iren->SetInteractorStyle(style);
 
 	vtkSimulation * simulation = vtkSimulation::New();
 	simulation->SetScenario(scenario);

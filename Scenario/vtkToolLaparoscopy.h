@@ -51,13 +51,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLSW.h"
 #endif
 
-// Fichero que implementa la clase vtkToolLaparoscopy, para abstraerse del tipo de herramienta
-/*
-    vtkToolLaparoscopy es la clase que da soporte a la simulacion para abstraerse del tipo de
-    herramienta utilizada. De esta forma se pueden usar colecciones de herramientas sin
-    problema alguno.
- */
-
 //! Class vtkToolLaparoscopy, abstract the use of a surgical laparoscopic tool
 /*!
  * vtkToolLaparoscopy abstracts the use of a surgical tool during the simulation exercise.
@@ -81,7 +74,8 @@ public:
 		Probe = 0,
 		Grasper = 1,
 		Scissors = 2,
-		Hook = 3
+		Hook = 3,
+		Dummy = 4
 	};
 
 	//!Set tool model
@@ -161,7 +155,6 @@ public:
 	 */
 	virtual void Push();
 
-	// **** Geometrical Functions **** //
 	//! Sets the tool's depth in its own coordinate system
 	virtual void SetDepth(double depth);
 
@@ -169,22 +162,13 @@ public:
 	virtual double GetDepth();
 
 	//! Rotate the tool in degrees from current orientation about the X axis using the right hand rule.
-	/*!
-	* Standard laparoscopic tool X-axis rotation. Mobile pieces are processed in implementation classes (vtkToolGrasper, vtkToolScissors, etc...)
-	*/
-	virtual void RotateX(double angle);
+	void RotateX(double angle);
 
 	//! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
-	/*!
-	* Standard laparoscopic tool Y-axis rotation. Mobile pieces are processed in implementation classes (vtkToolGrasper, vtkToolScissors, etc...)
-	*/
-	virtual void RotateY(double angle);
+	void RotateY(double angle);
 
 	//! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
-	/*!
-	* Standard laparoscopic tool Z-axis rotation. Mobile pieces are processed in implementation classes (vtkToolGrasper, vtkToolScissors, etc...)
-	*/
-	virtual void RotateZ(double angle);
+	void RotateZ(double angle);
 
 protected:
 

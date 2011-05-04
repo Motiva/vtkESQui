@@ -9,25 +9,21 @@ SET(UKIT CollisionDetection)  #Uppercase Kit Name
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
 SET (Kit_SRCS 
+vtkCollision.cxx
+vtkCollisionCollection.cxx
+vtkCollisionModel.cxx
+vtkCollisionDetection.cxx
 vtkBioEngInterface.cxx
-vtkCollisionDetectionLibrary.cxx
-#vtkRDMInterface.cxx
 )
 
 
 SET_SOURCE_FILES_PROPERTIES(
-vtkCollisionDetectionLibrary
+vtkCollisionDetection
 ABSTRACT
 )
 
-#SET_SOURCE_FILES_PROPERTIES(
-#vtkBioMechanicalModel
-#WRAP_EXCLUDE
-#)
-
 # Set your list of libraries here.
 SET(KIT_LIBS ${PROJECT_NAME}Common
-    ${PROJECT_NAME}Scenario
     vtkBioeng 
     vtkCommon
     vtkFiltering
@@ -36,7 +32,6 @@ SET(KIT_LIBS ${PROJECT_NAME}Common
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
 ${PROJECT_NAME}CommonTCL
-${PROJECT_NAME}ScenarioTCL
 vtkBioengTCL
 vtkFilteringTCL
 vtkCommonTCL
@@ -80,3 +75,4 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 # Subdirs to be added
 
 SUBDIRS(vtkbioeng)
+SUBDIRS(Testing)

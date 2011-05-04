@@ -45,6 +45,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkParticleSpringSystemWin32Header.h"
 #include "vtkMotionEquationSolver.h"
 
+class vtkParticleSpringSystem;
+class vtkParticleCollection;
+class vtkParticle;
+
 //! Implementation of the Runge-Kutta solver.
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkRK4Solver : public vtkMotionEquationSolver {

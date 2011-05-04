@@ -39,86 +39,41 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkObjectFactory.h"
-#include "vtkContactCollection.h"
+#include "vtkModelCollection.h"
 
-#include "vtkContact.h"
+#include "vtkModel.h"
 
-vtkCxxRevisionMacro(vtkContactCollection, "$Revision: 0.1 $");
-vtkStandardNewMacro(vtkContactCollection);
+vtkCxxRevisionMacro(vtkModelCollection, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
-void vtkContactCollection::DeepCopy(vtkContactCollection *collection) {
-	vtkContact * AuxCopy;
-	vtkContact * Aux;
-	this->InitTraversal();
-	AuxCopy = collection->GetNextContact();
-	while(AuxCopy) {
-		Aux = vtkContact::New();
-		Aux->DeepCopy(AuxCopy);
-		this->InsertNextContact(Aux);
-		AuxCopy = collection->GetNextContact();
-	}
+void vtkModelCollection::InsertModel(vtkIdType id, vtkModel *Model) {
+	this->vtkModelCollection::ReplaceItem(id, (vtkObject*) Model);
 }
 
 //--------------------------------------------------------------------------
-void vtkContactCollection::InsertNextContact(vtkContact *contact) {
-	this->vtkCollection::AddItem(contact);
+void vtkModelCollection::AddModel(vtkModel *Model) {
+	this->vtkCollection::AddItem((vtkObject *) Model);
 }
 
-//-------------------------------------------------------------------------
-void vtkContactCollection::ReplaceContact(vtkIdType id, vtkContact *contact) {
-	this->vtkCollection::ReplaceItem(id, contact);
+//--------------------------------------------------------------------------
+vtkModel * vtkModelCollection::GetModel(vtkIdType id) {
+	return static_cast <vtkModel *>(this->GetItemAsObject(id));
 }
 
-//-------------------------------------------------------------------------
-vtkIdType vtkContactCollection::ContainsContact(vtkContact * contact)
+//--------------------------------------------------------------------------
+vtkModel * vtkModelCollection::GetNextModel()
 {
-	return (this->FindContact(contact) != -1);
+	return static_cast <vtkModel *>(this->GetNextItemAsObject());
 }
 
-//-------------------------------------------------------------------------
-vtkIdType vtkContactCollection::FindContact(vtkContact * contact)
+//--------------------------------------------------------------------------
+vtkIdType vtkModelCollection::GetNumberOfModels()
 {
-	vtkContact * local;
-
-	for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
-	{
-		local = this->GetContact(id);
-		if ((local) &&
-				(local->GetItemId(0) == contact->GetItemId(0)) &&
-				(local->GetItemId(1) == contact->GetItemId(1)) &&
-				(local->GetPointId(1) == contact->GetPointId(1)))
-		{
-			return id;
-		}
-	}
-	return -1;
-}
-
-//--------------------------------------------------------------------------
-vtkContact* vtkContactCollection::GetContact(vtkIdType id) {
-	return static_cast <vtkContact *>(this->GetItemAsObject(id));
-}
-
-//--------------------------------------------------------------------------
-vtkContact * vtkContactCollection::GetNextContact() {
-	return static_cast <vtkContact*>(this->GetNextItemAsObject());
-}
-
-//--------------------------------------------------------------------------
-void vtkContactCollection::RemoveContact(vtkIdType id) {
-	this->vtkCollection::RemoveItem(id);
-}
-
-//--------------------------------------------------------------------------
-void vtkContactCollection::RemoveContacts() {
-	this->RemoveAllItems();
+	return this->GetNumberOfItems();
 }
 
 //----------------------------------------------------------------------------
-void vtkContactCollection::PrintSelf(ostream& os, vtkIndent indent)
+void vtkModelCollection::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
 }
-

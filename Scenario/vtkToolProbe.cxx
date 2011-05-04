@@ -41,15 +41,10 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 
 #include "vtkToolProbe.h"
-
 #include "vtkObjectFactory.h"
-#include "vtkTransformCollection.h"
-#include "vtkActorCollection.h"
 
-#include "vtkPiece.h"
-#include "vtkPieceCollection.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioElementCollection.h"
 
 vtkCxxRevisionMacro(vtkToolProbe, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkToolProbe);
@@ -58,11 +53,8 @@ vtkStandardNewMacro(vtkToolProbe);
 vtkToolProbe::vtkToolProbe()
 {
 	this->ToolModel = Probe;
-	this->NumberOfPieces = 2;
-	this->StickFileName = NULL;
-	this->TipFileName = NULL;
-	this->StickTextureFileName = NULL;
-	this->TipTextureFileName = NULL;
+	this->Stick = NULL;
+	this->Tip = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -71,35 +63,46 @@ vtkToolProbe::~vtkToolProbe()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolProbe::Init() {
-	
-	//Physical pieces Tool Construction
-	vtkPiece * piece;
-
-	for (vtkIdType id = 0; id < this->NumberOfPieces ; id++)
+void vtkToolProbe::Init()
+{
+	//Check if elements has been set
+	if(this->Stick && this->Tip)
 	{
-		piece = vtkPiece::New();
-		piece->SetId(id);
-		piece->SetRenderWindow(this->RenderWindow);
-		if(id == 0) {
-			piece->SetPieceType(vtkPiece::Stick);
-			piece->SetFileName(this->StickFileName);
-			if(this->StickTextureFileName) piece->SetTextureFileName(this->StickTextureFileName);
-		}
-		else {
-			piece->SetPieceType(vtkPiece::Tip);
-			piece->SetFileName(this->TipFileName);
-			if(this->TipTextureFileName) piece->SetTextureFileName(this->TipTextureFileName);
-
-		}
-		piece->Init();
-		this->Pieces->AddPiece(piece);
-		
-		this->Actors->AddItem((vtkActor*) piece->GetActor());
-		this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
+		//Remove any remaining item
+		this->Elements->RemoveAllItems();
+		//Elements must be inserted in this order
+		this->Stick->SetName("Stick");
+		this->AddElement(this->Stick);
+		this->Tip->SetName("Tip");
+		this->AddElement(this->Tip);
 	}
-	
+	else
+	{
+		//Check number of elements
+		if(this->Elements->GetNumberOfElements() == 2)
+		{
+			this->Stick = this->Elements->GetElement(0);
+			this->Tip = this->Elements->GetElement(1);
+		}
+		else
+		{
+			vtkErrorMacro("vtkToolGrasper has not been correctly initialized.");
+		}
+	}
+
 	Superclass::Init();
+}
+
+//----------------------------------------------------------------------------
+void vtkToolProbe::SetStick(vtkScenarioElement * e)
+{
+	this->Stick = e;
+}
+
+//----------------------------------------------------------------------------
+void vtkToolProbe::SetTip(vtkScenarioElement * e)
+{
+	this->Tip = e;
 }
 
 //----------------------------------------------------------------------------

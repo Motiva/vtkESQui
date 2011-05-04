@@ -59,108 +59,21 @@ public:
 
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkToolGrasper,vtkToolLaparoscopy);
-
 	//!Create new vtkToolGrasper object
 	static vtkToolGrasper *New();
-
 	//!Return class name
 	const char *GetClassName() { return "vtkToolGrasper"; }
-
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	
-	//!Tool tyoe definition
-	enum vtkPieceType{
-		Stick = 0,
-		LeftLever = 1,
-		RightLever = 2
-	};
-	
+	//! set the stick element to the object
+	void SetStick(vtkScenarioElement * e);
 
-	//!Initialize the tool from VTK file
-	/*!
-		This function initializes the tool whose mesh is described on a VTK file
-	*/
-	virtual void Init();
+	//! Set the left lever element to the object
+	void SetLeftLever(vtkScenarioElement * e);
 
-	//!Update the tool
-	/*!
-	 * This function update the tool values
-	 */
-	virtual void Update();
-
-	//!Set stick polydata filename
-	/*!
-	* Specify the path of the file that contains the stick piece polydata
-	*/
-	vtkSetStringMacro(StickFileName);
-
-	//!Return the stick polydata file name
-	/*!
-	 * Path of the file that contains the lever piece polydata
-	 */
-	vtkGetStringMacro(StickFileName);
-
-	//!Set lever polydata filename
-	/*!
-	 * Specify the path of the file that contains the lever piece polydata
-	 */
-	vtkSetStringMacro(LeftLeverFileName);
-
-	//!Return the left lever polydata file name
-	/*!
-	* Path of the file that contains the lever piece polydata
-	*/
-	vtkGetStringMacro(LeftLeverFileName);
-
-	//!Set lever polydata filename
-	/*!
-	 * Specify the path of the file that contains the lever piece polydata
-	 */
-	vtkSetStringMacro(RightLeverFileName);
-
-	//!Return the left lever polydata file name
-	/*!
-	 * Path of the file that contains the lever piece polydata
-	 */
-	vtkGetStringMacro(RightLeverFileName);
-
-	//!Set stick texture filename
-	/*!
-	* Specify the path of the file that contains the stick piece texture
-	*/
-	vtkSetStringMacro(StickTextureFileName);
-
-	//!Return the stick texture file name
-	/*!
-	 * Path of the file that contains the lever piece texture
-	 */
-	vtkGetStringMacro(StickTextureFileName);
-
-	//!Set left lever texture filename
-	/*!
-	 * Specify the path of the file that contains the lever piece texture
-	 */
-	vtkSetStringMacro(LeftLeverTextureFileName);
-
-	//!Return the left lever texture file name
-	/*!
-	* Path of the file that contains the lever piece texture
-	*/
-	vtkGetStringMacro(LeftLeverTextureFileName);
-
-	//!Set left lever texture filename
-	/*!
-	 * Specify the path of the file that contains the lever piece texture
-	 */
-	vtkSetStringMacro(RightLeverTextureFileName);
-
-	//!Return the left lever texture file name
-	/*!
-	 * Path of the file that contains the lever piece texture
-	 */
-	vtkGetStringMacro(RightLeverTextureFileName);
+	//! Set the right lever element to the object
+	void SetRightLever(vtkScenarioElement * e);
 
 	//! Set the tool's aperture according with the value given in the "Aperture" parameter
 	/*!
@@ -171,6 +84,12 @@ public:
 	void SetOpening(double opening);
 	//!Get pincer opening
 	vtkGetMacro(Opening, double);
+
+	//!Initialize the tool from VTK file
+	/*!
+		This function initializes the tool whose mesh is described on a VTK file
+	*/
+	virtual void Init();
 
 	//! Open the grasper moving piece actors
 	/*!
@@ -224,38 +143,22 @@ protected:
 	vtkToolGrasper();
 	~vtkToolGrasper();
 
+	//! Process the algorithm request (Update).
+	virtual int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
+
 private:
 
 	vtkToolGrasper (const vtkToolGrasper &); //Not Implemented
 	void operator =(const vtkToolGrasper &); //Not Implemented
 
-	char * StickFileName;
-	char * LeftLeverFileName;
-	char * RightLeverFileName;
-
-	char * StickTextureFileName;
-	char * LeftLeverTextureFileName;
-	char * RightLeverTextureFileName;
+	vtkScenarioElement * Stick;
+	vtkScenarioElement * LeftLever;
+	vtkScenarioElement * RightLever;
 
 	//! Tool pieces opening
 	double Opening;
-	//!Return the stick piece
-	/*!
-	 * Return the vtkPiece object of the stick
-	 */
-	vtkPiece * GetStick(){return this->GetPiece(vtkToolGrasper::Stick);};
-
-	//!Return the left lever piece
-	/*!
-	 * Return the vtkPiece object of the left lever at the specified id
-	 */
-	vtkPiece * GetLeftLever(){return this->GetPiece(vtkToolGrasper::LeftLever);};
 	
-	//!Return the right lever piece
-	/*!
-	 * Return the vtkPiece object of the right lever
-	 */
-	vtkPiece * GetRightLever(){return this->GetPiece(vtkToolGrasper::RightLever);};
+	double OpeningAngle;
 
 };
 #endif

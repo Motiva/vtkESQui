@@ -47,11 +47,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkParticleSpringSystemWin32Header.h"
 #include "vtkObject.h"
 
-#include "vtkParticleSpringSystem.h"
-
 class vtkDoubleArray;
 
+class vtkParticleSpringSystem;
 class vtkParticleCollection;
+class vtkParticle;
 
 //! Implementation of the abstract motion equation solver
 
@@ -63,6 +63,14 @@ public:
 	//! Print solver info
 	void PrintSelf(ostream& os, vtkIndent indent);
 
+	//!Enumeration of solver types
+	enum MotionEquationSolverType{
+		Euler = 0,
+		ModifiedEuler = 1,
+		VelocityVerlet = 2,
+		RungeKutta4 = 3
+	};
+
 	//! Set number of particles
 	vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
 
@@ -70,7 +78,7 @@ public:
 	vtkSetMacro(Residual, double);// NumberOfParticles
 
 	//! Set Deformation model
-	void SetDeformationModel(vtkParticleSpringSystem * model){this->DeformationModel = model;};
+	void SetDeformationModel(vtkParticleSpringSystem * model);
 
 	//! Initialize solver.
 	/*!

@@ -43,22 +43,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkScenario.h"
 
 #include "vtkObjectFactory.h"
-#include "vtkRendererCollection.h"
-#include "vtkPoints.h"
-
-#include "vtkOrgan.h"
-#include "vtkOrganCollection.h"
-#include "vtkTool.h"
-#include "vtkToolCollection.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
-
 #include "vtkRenderWindow.h"
-#include "vtkTextProperty.h"
-#include "vtkTextActor.h"
-#include "vtkActor2DCollection.h"
+#include "vtkRendererCollection.h"
 
-#include <sstream>
+#include "vtkScenarioObject.h"
+#include "vtkScenarioObjectCollection.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioElementCollection.h"
+#include "vtkModel.h"
+#include "vtkActor.h"
+#include "vtkVisualizationModel.h"
+#include "vtkModelCollection.h"
 
 vtkCxxRevisionMacro(vtkScenario, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkScenario);
@@ -66,220 +61,72 @@ vtkStandardNewMacro(vtkScenario);
 //----------------------------------------------------------------------------
 vtkScenario::vtkScenario() {
 
-	this->Organs = vtkOrganCollection::New();
-	this->Tools = vtkToolCollection::New();
-	this->Contacts = NULL;
+	this->Initialized = 0;
+	this->Objects = vtkScenarioObjectCollection::New();
 
 }
 
 //----------------------------------------------------------------------------
 vtkScenario::~vtkScenario(){
-	this->Organs->RemoveAllItems();
-	this->Tools->RemoveAllItems();
-	this->Organs->Delete();
-	this->Tools->Delete();
+	this->Objects->RemoveAllItems();
+	this->Objects->Delete();
 }
 
 //----------------------------------------------------------------------------
-//Set the Collection of organs of the scenario
-void vtkScenario::SetOrgans(vtkOrganCollection * collection)
+void vtkScenario::SetObjects(vtkScenarioObjectCollection * collection)
 {
-	this->Organs->RemoveAllItems();
+	this->Objects->RemoveAllItems();
 
-	vtkOrgan * organ;
 	collection->InitTraversal();
-	organ = collection->GetNextOrgan();
-	while(organ != 0)
+	while(vtkScenarioObject * object = collection->GetNextObject())
 	{
-		this->AddOrgan(organ);
-		organ = collection->GetNextOrgan();
+		this->AddObject(object);
 	}
 
 }
 
 //----------------------------------------------------------------------------
-//Get the collection of organs of the Scenario
-vtkOrganCollection * vtkScenario::GetOrgans()
+vtkScenarioObjectCollection * vtkScenario::GetObjects()
 {
-	return this->Organs;
+	return this->Objects;
 }
 
 //----------------------------------------------------------------------------
-//Add Organs to the Scenario
-void vtkScenario::AddOrgan(vtkOrgan* organ)
+void vtkScenario::AddObject(vtkScenarioObject* object)
 {
-	organ->SetId(this->GetNumberOfOrgans());
-	organ->SetRenderWindow(this->RenderWindow);
-	organ->Init();
-	this->Organs->AddOrgan(organ);
+	object->SetId(this->GetNumberOfObjects());
+	object->SetRenderWindow(this->RenderWindow);
+	this->Objects->AddObject(object);
 }
 
 //----------------------------------------------------------------------------
-// Insert an organ in the specified position
-void vtkScenario::ReplaceOrgan(vtkIdType index,vtkOrgan* organ)
+void vtkScenario::ReplaceObject(vtkIdType index,vtkScenarioObject* object)
 {
-	organ->SetId(index);
-	this->Organs->ReplaceOrgan(index, organ);
+	object->SetId(index);
+	this->Objects->ReplaceObject(index, object);
 }
 
 //----------------------------------------------------------------------------
-// Delete the organ at the specified id from the scenario
-void vtkScenario::RemoveOrgan(vtkIdType index)
+void vtkScenario::RemoveObject(vtkIdType index)
 {
-	this->Organs->RemoveItem(index);
+	this->Objects->RemoveItem(index);
 }
 
 //----------------------------------------------------------------------------
-vtkIdType vtkScenario::GetNumberOfOrgans()
+vtkIdType vtkScenario::GetNumberOfObjects()
 {
-	return this->Organs->GetNumberOfItems();
+	return this->Objects->GetNumberOfItems();
 }
 
 //----------------------------------------------------------------------------
-vtkOrgan * vtkScenario::GetOrgan(vtkIdType id)
+vtkScenarioObject * vtkScenario::GetObject(vtkIdType id)
 {
-	return this->Organs->GetOrgan(id);	
+	return this->Objects->GetObject(id);
 }
 
 //----------------------------------------------------------------------------
-//Set the Collection of tools of the scenario
-void vtkScenario::SetTools(vtkToolCollection * collection)
-{
-	this->Tools->RemoveAllItems();
-
-	vtkTool * tool;
-	collection->InitTraversal();
-	tool = collection->GetNextTool();
-	while(tool != 0)
-	{
-		this->AddTool(tool);
-		tool = collection->GetNextTool();
-	}
-
-}
-
-//----------------------------------------------------------------------------
-//Get the collection of tools of the Scenario
-vtkToolCollection * vtkScenario::GetTools()
-{
-	return this->Tools;
-}
-
-//----------------------------------------------------------------------------
-//Add Tools to the Scenario
-void vtkScenario::AddTool(vtkTool* tool)
-{
-	tool->SetRenderWindow(this->RenderWindow);
-	tool->SetId(this->GetNumberOfTools());
-	tool->Init();
-	this->Tools->AddTool(tool);
-}
-
-//----------------------------------------------------------------------------
-//Insert in a given position in the vector the tool for collisions detection purposes
-void vtkScenario::ReplaceTool(vtkIdType index, vtkTool* tool)
-{
-	tool->SetId(index);
-	tool->SetRenderWindow(this->RenderWindow);
-	tool->Init();
-	this->Tools->ReplaceTool(index, tool);
-}
-
-//----------------------------------------------------------------------------
-//Delete the tool at the specified id from the scenario
-void vtkScenario::RemoveTool(vtkIdType index)
-{
-	this->Tools->RemoveItem(index);
-}
-
-//----------------------------------------------------------------------------
-vtkIdType vtkScenario::GetNumberOfTools()
-{
-	return this->Tools->GetNumberOfItems();
-}
-
-//----------------------------------------------------------------------------
-vtkTool * vtkScenario::GetTool(vtkIdType id)
-{
-	return this->Tools->GetTool(id);	
-}
-
-//----------------------------------------------------------------------------
-//Set the Collection of contacts of the scenario
-void vtkScenario::SetContacts(vtkContactCollection * collection)
-{
-	//this->Contacts->DeepCopy(collection);
-	this->Contacts = collection;
-}
-
-//----------------------------------------------------------------------------
-//Get the collection of contacts of the Scenario
-vtkContactCollection * vtkScenario::GetContacts()
-{
-	return this->Contacts;
-}
-
-//----------------------------------------------------------------------------
-//Set the Collection of extras of the scenario
-/*void vtkScenario::SetExtras(vtkPropCollection * collection)
-{
-	this->Extras->RemoveAllItems();
-
-	vtkProp * actor;
-	collection->InitTraversal();
-	actor = collection->GetLastProp();
-	while(actor != 0)
-	{
-		this->InsertNextExtra(actor);
-		actor = collection->GetNextProp();
-	}
-
-}
-
-//----------------------------------------------------------------------------
-//Get the collection of extras of the Scenario
-vtkPropCollection * vtkScenario::GetExtras()
-{
-	return this->Extras;
-}
-
-//----------------------------------------------------------------------------
-//Add extras to the scenario
-void vtkScenario::InsertNextExtra(vtkProp* extra)
-{
-	this->Extras->AddItem(extra);
-}
-
-//----------------------------------------------------------------------------
-//Insert in a given position in the vector the tool for collisions detection purposes
-void vtkScenario::InsertExtra(vtkIdType index, vtkProp* actor)
-{
-	this->Extras->InsertItem(index, actor);
-}
-
-//----------------------------------------------------------------------------
-//Delete the tool at the specified id from the scenario
-void vtkScenario::RemoveExtra(vtkIdType index)
-{
-	this->Extras->RemoveItem(index);
-}
-
-//----------------------------------------------------------------------------
-vtkIdType vtkScenario::GetNumberOfExtras()
-{
-	return this->Extras->GetNumberOfItems();
-}
-
-//----------------------------------------------------------------------------
-vtkActor * vtkScenario::GetExtra(vtkIdType id)
-{
-	return static_cast<vtkActor *>(this->Extras->GetItemAsObject(id));
-}
-*/
-
-//----------------------------------------------------------------------------
-void vtkScenario::SetRenderWindow(vtkRenderWindow *Renderer) {
-	this->RenderWindow = Renderer;
+void vtkScenario::SetRenderWindow(vtkRenderWindow *window) {
+	this->RenderWindow = window;
 	this->Renderer= RenderWindow->GetRenderers()->GetFirstRenderer();
 }
 
@@ -291,39 +138,60 @@ vtkRenderWindow* vtkScenario::GetRenderWindow() {
 //----------------------------------------------------------------------------
 void vtkScenario::Init()
 {
+	if(!this->Initialized && this->RenderWindow)
+	{
+		this->Objects->InitTraversal();
+		int i = 0;
+		while(vtkScenarioObject * o = this->Objects->GetNextObject())
+		{
+			o->SetRenderWindow(this->RenderWindow);
+			o->SetRenderer(this->Renderer);
+			o->SetId(i);
+
+			if(!o->IsInitialized()) o->Init();
+
+			//Add all actors to the render window
+			for(int id = 0; id<o->GetNumberOfElements(); id++)
+			{
+				vtkScenarioElement * e = o->GetElement(id);
+
+				//Display every visible model. Hiding model is done by vtkModel:Hide()
+				vtkModelCollection * models = e->GetModels();
+				models->InitTraversal();
+				while(vtkModel * m = models->GetNextModel()){
+					if(m->GetVisibility()) this->Renderer->AddActor(m->GetActor());
+				}
+
+			}
+			i++;
+		}
+		this->Initialized = 1;
+	}
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::Update()
 {
-	//Update organs & tools after collision detection has been performed
-	if(this->Contacts && this->Contacts > 0)
+	//cout << "vtkScenario::Update()" << endl;
+	//Process every scenario object and perform an update on it
+	this->Objects->InitTraversal();
+	while(vtkScenarioObject * object = this->Objects->GetNextObject())
 	{
-		this->Contacts->InitTraversal();
-		while(vtkContact * contact = this->Contacts->GetNextContact())
-		{
-			//Set organ contact point for deformation purposes
-			vtkTool * tool = this->GetTool(contact->GetItemId(0));
-			vtkOrgan * organ = this->GetOrgan(contact->GetItemId(1));
-
-			tool->InsertNextContact(contact);
-			organ->InsertNextContact(contact);
-		}
+		object->Modified();
+		object->Update();
 	}
-	//Process every scenario item and perform an update on it
-
-	this->Organs->InitTraversal();
-	while(vtkOrgan * organ = this->Organs->GetNextOrgan())
-	{
-		organ->Modified();
-		organ->Update();
-	}
-
-	this->Tools->InitTraversal();
-	while(vtkTool * tool = this->Tools->GetNextTool())
-	{
-		//tool->Modified();
-		tool->Update();
-	}
+	this->RenderWindow->Render();
 }
 
+//--------------------------------------------------------------------------
+void vtkScenario::PrintSelf(ostream&os, vtkIndent indent)
+{
+	if(this->Name) os << indent << "Name: " << this->Name << "\n";
+	os << indent << "NumberOfObjects: " << this->Objects->GetNumberOfObjects() << endl;
+	this->Objects->InitTraversal();
+	while(vtkScenarioObject * o = this->Objects->GetNextObject())
+	{
+		o->Print(os);
+	}
+
+}

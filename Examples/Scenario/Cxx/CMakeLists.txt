@@ -7,8 +7,10 @@ SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
-    ToolEndovascular
-    ToolLaparoscopy
+    OrganDummy
+    #ToolCatheter
+    ToolProbe
+    ToolGrasper
     ScenarioLaparoscopy
 )
 
@@ -23,7 +25,7 @@ ENDIF(VTKESQUI_USE_HAPTICS)
  # Set your list of libraries here.
 SET(KIT_LIBS 
     ${PROJECT_NAME}Scenario
-    ${PROJECT_NAME}Simulation
+    ${PROJECT_NAME}CollisionDetection
     vtkRendering
 	vtkGraphics 
 	vtkCommon

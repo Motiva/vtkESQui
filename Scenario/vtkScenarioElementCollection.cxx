@@ -39,55 +39,46 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include <iostream>
+#include "vtkScenarioElementCollection.h"
 
-#include "vtkMath.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
+#include "vtkScenarioElement.h"
 
+vtkCxxRevisionMacro(vtkScenarioElementCollection, "$Revision: 0.1 $");
 
-using namespace std;
-
-//!This test perform a test of the vtkContactCollection class
-
-int TestvtkContactCollection(int argc, char * argv[])
-{
-	vtkContact * contact;
-	vtkContactCollection * collection = vtkContactCollection::New();
-
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		contact = vtkContact::New();
-		contact->SetItemId(0, 0);
-		contact->SetItemId(0, 1);
-		contact->SetPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-		contact->SetPointId(0, id);
-		contact->SetCellId(0, 1);
-		contact->SetPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-		contact->SetPointId(1, id);
-		contact->SetCellId(0, 1);
-
-		collection->InsertNextContact(contact);
-		std::cout << "Contact (" << id <<  ") has been inserted...\n";
-	}
-
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
-
-	collection->InitTraversal();
-
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		std::cout << "#########################\n";
-		contact = collection->GetNextContact();
-		contact->Print(std::cout);
-		std::cout << "Contact (" << id <<  ") has been removed...\n";
-		//collection->RemoveItem(id);
-		contact->Delete();
-	}
-	collection->RemoveAllItems();
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
-
-	return 0;
+//--------------------------------------------------------------------------
+void vtkScenarioElementCollection::ReplaceElement(vtkIdType id, vtkScenarioElement *e) {
+	this->vtkScenarioElementCollection::ReplaceItem(id, (vtkObject*) e);
 }
 
+//--------------------------------------------------------------------------
+void vtkScenarioElementCollection::AddElement(vtkScenarioElement *e) {
+	this->vtkCollection::AddItem((vtkObject *) e);
+}
 
+//--------------------------------------------------------------------------
+void vtkScenarioElementCollection::RemoveElement(vtkIdType id) {
+	this->vtkCollection::RemoveItem(id);
+}
+
+//--------------------------------------------------------------------------
+vtkScenarioElement * vtkScenarioElementCollection::GetElement(vtkIdType id) {
+	return static_cast <vtkScenarioElement *>(this->GetItemAsObject(id));
+}
+
+//--------------------------------------------------------------------------
+vtkScenarioElement * vtkScenarioElementCollection::GetNextElement()
+{
+	return static_cast <vtkScenarioElement *>(this->GetNextItemAsObject());
+}
+
+//--------------------------------------------------------------------------
+vtkIdType vtkScenarioElementCollection::GetNumberOfElements()
+{
+	return this->GetNumberOfItems();
+}
+
+//----------------------------------------------------------------------------
+void vtkScenarioElementCollection::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+}

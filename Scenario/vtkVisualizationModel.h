@@ -39,52 +39,80 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkScenarioItem.h"
+#ifndef __vtkVisualizationModel
+#define __vtkVisualizationModel
 
-vtkCxxRevisionMacro(vtkScenarioItem, "$Revision: 0.1 $");
+#include "vtkESQuiScenarioWin32Header.h"
+#include "vtkModel.h"
 
-//--------------------------------------------------------------------------
-vtkScenarioItem::vtkScenarioItem() {
-	this->Id = -1;
-	this->Name = NULL;
-	this->RenderWindow = NULL;
-	this->Renderer = NULL;
+class vtkTexture;
+class vtkJPEGReader;
+class vtkTextureMapToSphere;
+class vtkTransformTextureCoords;
 
-	this->SetNumberOfInputPorts(1);
-	this->SetNumberOfOutputPorts(1);
 
-	this->Type = Tool;
-	this->Status = Visible;
-	this->Scale[0] = this->Scale[1] = this->Scale[2] = 1.0;
-	this->DeltaT = 0.0;
+//! Class vtkVisualizationModel defines a visualization mesh (PolyData) with its texture. Inherits from vtkModel
 
-	this->Position[0]=this->Position[1]=this->Position[2]=0.0;
-	this->Velocity[0]=this->Velocity[1]=this->Velocity[2]=0.0;
-	this->Acceleration[0]=this->Acceleration[1]=this->Acceleration[2]=0.0;
-	this->Orientation[0]=this->Orientation[1]=this->Orientation[2]=0.0;
-	this->Origin[0]=this->Origin[1]=this->Origin[2]=0.0;
-	this->Direction[0]=this->Direction[1]=this->Direction[2]=0.0;
+class VTK_ESQUI_SCENARIO_EXPORT vtkVisualizationModel: public vtkModel {
 
-}
+public:
 
-//--------------------------------------------------------------------------
-vtkScenarioItem::~vtkScenarioItem()
-{
-}
+	//!Type revision macro
+	vtkTypeRevisionMacro(vtkVisualizationModel, vtkModel);
+	//!Create a new Scenario object
+	static vtkVisualizationModel * New();
 
-//--------------------------------------------------------------------------
-void vtkScenarioItem::PrintSelf(ostream& os,vtkIndent indent) {
+	//!Return the class name
+	const char *GetClassName() {return "vtkVisualizationModel";}
 
-	this->Superclass::PrintSelf(os, indent);
+	//!Print class values
+	void PrintSelf(ostream& os, vtkIndent indent);
 
-	os << indent << "Name: " << this->GetName() << "\n";
-	os << indent << "Id: " << this->GetId() << "\n";
-	os << indent << "Scale: " << this->Scale[0] << ", " << this->Scale[1] << ", " << this->Scale[2] << endl;
-	os << indent << "Origin: " << this->Origin[0] << ", " << this->Origin[1] << ", " << this->Origin[2] << endl;
-	os << indent << "Orientation: " << this->Orientation[0] << ", " << this->Orientation[1] << ", " << this->Orientation[2] <<  endl;
-	os << indent << "Direction: " << this->Direction[0] << ", " << this->Direction[1] << ", " << this->Direction[2] <<  endl;
-	os << indent << "Position: " << this->Position[0] << ", " << this->Position[1] << ", " << this->Position[2] << endl;
-	os << indent << "Velocity: " << this->Velocity[0] << ", " << this->Velocity[1] << ", " << this->Velocity[2] <<  endl;
-	os << indent << "Acceleration: " << this->Acceleration[0] << ", " << this->Acceleration[1] << ", " << this->Acceleration[2] <<  endl;
+	//! Assign texture model filename
+	/*!
+	 *\sa GetTextureFileName()
+	 */
+	vtkSetStringMacro(TextureFileName);
 
-}
+	//!Return model texture filename
+	/*!
+	 *\sa SetTextureFileName(const char * name)
+	 */
+	vtkGetStringMacro(TextureFileName);
+
+	//!Abstract initialization function
+	/*!
+	* This method initializes the tool physical values, scale, position, etc...
+	*/
+	virtual void Init();
+
+protected:
+
+	vtkVisualizationModel();
+	~vtkVisualizationModel();
+
+	//! Process the algorithm request (Update).
+	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+
+private:
+	vtkVisualizationModel (const vtkVisualizationModel &);
+	void operator =(const vtkVisualizationModel &);
+
+	//!Visualization texture filename
+	char * TextureFileName;
+
+	//!Visualization mesh texture
+	vtkTexture * Texture;
+
+	//!Texture file reader
+	vtkJPEGReader * TextureReader;
+
+	//!Texture mapper
+	vtkTextureMapToSphere * TextureMap;
+
+	//!Transformation of texture coords
+	vtkTransformTextureCoords * TextureCoords;
+
+};
+
+#endif

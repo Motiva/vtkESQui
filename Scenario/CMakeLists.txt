@@ -9,28 +9,28 @@ SET(UKIT SCENARIO)  #Uppercase Kit Name
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
 SET (Kit_SRCS 
+vtkVisualizationModel.cxx
+vtkScenarioObject.cxx
+vtkScenarioObjectCollection.cxx
+vtkScenarioElement.cxx
+vtkScenarioElementCollection.cxx
 vtkScenario.cxx
-vtkScenarioItem.cxx
 vtkOrgan.cxx
-vtkOrganCollection.cxx
 vtkTool.cxx
-vtkToolCollection.cxx
 vtkToolEndovascular.cxx
 vtkToolCatheter.cxx
 vtkToolLaparoscopy.cxx
+vtkToolDummy.cxx
 vtkToolGrasper.cxx
 vtkToolProbe.cxx
 vtkToolScissors.cxx
-vtkToolDummy.cxx
-vtkPiece.cxx
-vtkPieceCollection.cxx
 )
 
 SET_SOURCE_FILES_PROPERTIES(
+vtkScenarioObject
+vtkTool
 vtkToolLaparoscopy
 vtkToolEndovascular
-vtkTool
-vtkScenarioItem
 ABSTRACT
 )
 

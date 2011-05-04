@@ -43,13 +43,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define _vtkOrgan_h_
 
 #include "vtkESQuiScenarioWin32Header.h"
-#include "vtkScenarioItem.h"
+#include "vtkScenarioObject.h"
 
 #include "vtkActor.h"
 #include "vtkPolyDataMapper.h"
-
-#include "vtkContactCollection.h"
-#include "vtkBioMechanicalModel.h"
 
 class vtkPoints;
 class vtkCell;
@@ -60,99 +57,21 @@ class vtkTransformPolyDataFilter;
 class vtkTransform;
 class vtkTexture;
 
+class vtkBioMechanicalModel;
+class vtkCollisionModel;
+
 //! Implementation class for organ definition
-class VTK_ESQUI_SCENARIO_EXPORT vtkOrgan: public vtkScenarioItem
+class VTK_ESQUI_SCENARIO_EXPORT vtkOrgan: public vtkScenarioObject
 {
 public:
 	//! Type revision macro
-	vtkTypeRevisionMacro(vtkOrgan, vtkScenarioItem);
+	vtkTypeRevisionMacro(vtkOrgan, vtkScenarioObject);
 	//! Create new organ
 	static vtkOrgan * New();
 	//! Return class name
 	const char *GetClassName() {return "vtkOrgan";}
 
 	virtual void PrintSelf(ostream &os, vtkIndent indent);
-
-	
-	//!Organ type definition
-	enum vtkOrganType{
-		Static = 0,
-		Deformable = 1
-	};
-	
-	//!Initialize mesh data
-	/*!
-	* The following parameters should be set before calling this function:
-	* - Id
-	* - Name
-	* - FileName
-	* - Position
-	* - Orientation
-	* - Origin
-	* - Scale
-	* Optional parameters:
-	* - TextureFileName
-	* - OrganType
-	* - DeformationModel
-	*/
-	virtual void Init();
-
-	//! Process the algorithm request (Update).
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
-
-	//!Set the deformation model of the organ
-	/*!
-	* \param model deformation model of the organ
-	*/
-	void SetDeformationModel(vtkBioMechanicalModel * model);
-
-	//!Get the deformation model of the organ
-	/*!
-	* \return deformation model of the organ
-	* \sa SetDeformationModel(vtkBioMechanicalModel * model)
-	*/
-	vtkBioMechanicalModel * GetDeformationModel();
-
-	//!Set organ type
-	vtkSetMacro(OrganType, vtkOrgan::vtkOrganType);
-	//!Return organ type
-	vtkGetMacro(OrganType, vtkOrgan::vtkOrganType);
-
-	//!Set initial values filename
-	/*!
-	* \sa GetFileName()
-	*/
-	vtkSetStringMacro(FileName);
-
-	//!Return initial values filename
-	/*!
-	* \sa SetFileName(const char* name);
-	*/
-	vtkGetStringMacro(FileName);
-
-	//!Set texture filename
-	/*!
-	* \sa GetTextureFileName()
-	*/
-	vtkSetStringMacro(TextureFileName);
-
-	//!Return texture filename
-	/*!
-	* \sa SetTextureFileName(const char* name);
-	*/
-	vtkGetStringMacro(TextureFileName);
-
-	//!Set initial values filename
-	/*!
-	 * \sa GetFileName()
-	 */
-	vtkSetStringMacro(DeformationModelName);
-
-	//!Return initial values filename
-	/*!
-	 * \sa SetFileName(const char* name);
-	 */
-	vtkGetStringMacro(DeformationModelName);
 
 	//!Set force factor.
 	/*!
@@ -167,172 +86,10 @@ public:
 	*/
 	vtkGetMacro(ForceFactor, double);
 
-	//!Set organ as hooked
-	/*!
-	* \sa GetHooked()
-	*/
-	vtkSetMacro(Hooked, bool);
-
-	//!Return if the organ is hooked
-	/*!
-	* \sa SetHooked(bool)
-	*/
-	vtkGetMacro(Hooked, bool);
-
-	//!Set On/Off organ as hooked
-	vtkBooleanMacro(Hooked, bool);
-
-	// **** Geometrical Functions **** //
-
-	//! Implements the translation of the organ (Local coordinate system)
-	/*!
-		The X & Y parameters contains the relative movement in the horizontal and vertical axes respectively
-		\param x x position of the organ
-		\param y y position of the organ
-		\param z z position of the organ
-	 */
-	virtual void Translate(double x, double y, double z);
-
-	//! Implements the translation of the organ (Local coordinate system)
-	/*!
-			\param vector position vector of the translation
-	 */
-	virtual void Translate(double * vector);
-
-	//! Implements the lateral movements of the organ  (Local coordinate system)
-	/*!
-		The X parameter contains the relative movement in the horizontal axes
-		\param x x orientation angle
-	 */
-	virtual void RotateX(double x);
-
-	//! Implements the lateral movements of the organ  (Local coordinate system)
-	/*!
-		The Y parameter contains the relative movement in the vertical axes
-		\param y y orientation angle
-	 */
-	virtual void RotateY(double y);
-
-	//! Rotate the organ on its own axes  (Local coordinate system)
-	/*!
-		This function rotate the organ on its own axis the value of an angle given
-		by the "Rotation" variable the rotation is produced acting on the actors who compose the organ.
-		\param rotation rotation angle (radians)
-	 */
-	virtual void RotateZ(double rotation);
-
-	//------- Rendering purposes ----------//
-
-	//!Set the actor of the organ
-	/*!
-	* \sa GetActor()
-	*/
-	vtkSetObjectMacro(Actor, vtkActor);
-
-	//!Return the actor that displays the organ
-	/*!
-	* \sa SetActor(vtkActor *)
-	*/
-	vtkGetObjectMacro(Actor, vtkActor);
-
-	//!Set the mapper of the actor
-	/*!
-	* \sa GetMapper()
-	*/
-	vtkSetObjectMacro(Mapper, vtkPolyDataMapper);
-
-	//!Return the data set mapper
-	/*!
-	* \sa SetMapper(vtkDataSetMapper *)
-	*/
-	vtkGetObjectMacro(Mapper, vtkPolyDataMapper);
-
-	//------- Biomechanical model interface methods -------//
-
-	//!Add a contact to the list
-	/*!
-	* \param contact vtkContact object with the information of the contact( toolId, organId, point, cell... etc)
-	* \sa InsertContacts( vtkContactCollection* contacts )
-	*/
-	void InsertNextContact( vtkContact* contact )  { this->Contacts->InsertNextContact(contact); };
-
-	//!Add several contacts to the list
-	/*!
-	* \param contacts List of vtkContact objects
-	* \sa InsertNextContact( vtkContact* contact )
-	*/
-	void InsertContacts( vtkContactCollection* contacts )  { this->Contacts->DeepCopy(contacts); };
-
-	//!Get organ contacts
-	vtkContactCollection * GetContacts() {return this->Contacts;};
-
-	//!Get number of contacts
-	vtkIdType GetNumberOfContacts() {return this->Contacts->GetNumberOfItems();};
-
-	//!Remove all contacts
-	/*!
-	 * Remove all contacts from the list. Memory is not freed
-	 */
-	void CleanContacts() {this->Contacts->RemoveContacts();};
-
-	//! Hide scenario organ.
-	virtual void Hide();
-	//! Show/Display organ.
-	virtual void Show();
-	//! Disable organ.
-	virtual void Disable();
-
-	//*****   p r o t e c t e d   m e m b e r s
 protected:
-
-	//! Organ Type
-	vtkOrganType OrganType;
-
-	//!Configuration filename
-	char * FileName;
-
-	//!Configuration filename
-	char * TextureFileName;
-
-	//!Deformation Model Name
-	char * DeformationModelName;
-
-	//!Texture
-	vtkTexture * Texture;
-
-	//!Input Unstructured Grid
-	vtkPolyData * Input;
-
-	//!Input Unstructured Grid
-	vtkPolyData * Output;
-
-	//!Unstructured grid reader
-	vtkXMLPolyDataReader * Reader;
-
-	//!BioMechamical Model of the organ
-	vtkBioMechanicalModel * DeformationModel;
-
-	//!Collection of organ contact points
-	vtkContactCollection * Contacts;
 
 	//!Force estimation
 	double ForceFactor;
-
-	//!Organ is hooked
-	bool Hooked;
-
-	//**** Graphical Purposes objects ****//
-	//!Actor of the organ
-	vtkActor * Actor;
-
-	//!Dataset mapper of the actor
-	vtkPolyDataMapper * Mapper;
-
-	//!Transform filter of the organ
-	vtkTransformPolyDataFilter *TransformFilter;
-
-	//!Transform function of the organ
-	vtkTransform * Transform;
 
 	vtkOrgan();
 	~vtkOrgan();

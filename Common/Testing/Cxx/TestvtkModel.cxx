@@ -39,35 +39,64 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkToolCollection.h"
+#include <iostream>
+#include "vtkSmartPointer.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderer.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
+#include "vtkCamera.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataMapper.h"
 
-#include "vtkTool.h"
+#include "vtkModel.h"
 
-vtkCxxRevisionMacro(vtkToolCollection, "$Revision: 0.1 $");
+using namespace std;
 
-//--------------------------------------------------------------------------
-void vtkToolCollection::ReplaceTool(vtkIdType id, vtkTool *tool) {
-	this->vtkToolCollection::ReplaceItem(id, (vtkObject*) tool);
-}
+//!This test perform a test of the vtkContactCollection class
 
-//--------------------------------------------------------------------------
-void vtkToolCollection::AddTool(vtkTool *tool) {
-	this->vtkCollection::AddItem((vtkObject *) tool);
-}
-
-//--------------------------------------------------------------------------
-vtkTool * vtkToolCollection::GetTool(vtkIdType id) {
-	return static_cast <vtkTool *>(this->GetItemAsObject(id));
-}
-
-//--------------------------------------------------------------------------
-vtkTool * vtkToolCollection::GetNextTool()
+int TestvtkModel(int argc, char * argv[])
 {
-	return static_cast <vtkTool *>(this->GetNextItemAsObject());
+	const char * filename ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1.vtp";
+
+	vtkSmartPointer<vtkModel> model = vtkSmartPointer<vtkModel>::New();
+	model->SetFileName(filename);
+	model->SetPosition(3.0, 2.5, 0.0);
+	model->SetOrientation(25, -15, 30);
+	model->SetColor(0.0 ,1.0 , 0.0);
+	model->Init();
+
+	// A call to update method is made to force the model to be at its last state
+	model->Update();
+
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+
+	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+	renWin->SetSize(500,500);
+	renWin->AddRenderer(renderer);
+
+	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	iren->SetRenderWindow(renWin);
+
+	vtkActor * actor = model->GetActor();
+
+	//vtkActor * actor = vtkActor::New();
+	//vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
+	//mapper->SetInput(model->GetOutput());
+	//actor->SetMapper(mapper);
+
+	renderer->AddActor(actor);
+	renderer->SetBackground(1,1,1);
+
+	renderer->ResetCamera();
+	iren->Initialize();
+
+	renWin->Render();
+
+	iren->Start();
+
+	return 0;
 }
 
-//----------------------------------------------------------------------------
-void vtkToolCollection::PrintSelf(ostream& os, vtkIndent indent)
-{
-	this->Superclass::PrintSelf(os,indent);
-}
+

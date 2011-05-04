@@ -44,9 +44,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 #include "vtkCallbackCommand.h"
 #include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
 
+#include "vtkScenario.h"
+#include "vtkScenarioObject.h"
+#include "vtkScenarioObjectCollection.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioElementCollection.h"
+#include "vtkCollisionModel.h"
 #include "vtkBioEngInterface.h"
-#include "vtkTool.h"
 
 void func ( vtkObject* caller, long unsigned int eventId, void* clientData, void* callData )
 {
@@ -95,12 +101,39 @@ vtkSimulation::vtkSimulation()
 	this->RenderTimerId = 0;
 	this->RenderTimerRate = 0;
 	this->UseHaptic = false;
+	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0.0;
+
+	this->Callback = vtkCallbackCommand::New();
 }
 
 //----------------------------------------------------------------------------
 vtkSimulation::~vtkSimulation()
 {
+	if(this->Callback) this->Callback->Delete();
+}
 
+//----------------------------------------------------------------------------
+void vtkSimulation::SetInteractor(vtkRenderWindowInteractor * i)
+{
+	this->Interactor = i;
+}
+
+//----------------------------------------------------------------------------
+vtkRenderWindowInteractor * vtkSimulation::GetInteractor()
+{
+	return this->Interactor;
+}
+
+//----------------------------------------------------------------------------
+void vtkSimulation::SetScenario(vtkScenario * s)
+{
+	this->Scenario = s;
+}
+
+//----------------------------------------------------------------------------
+vtkScenario * vtkSimulation::GetScenarior()
+{
+	return this->Scenario;
 }
 
 //----------------------------------------------------------------------------
@@ -128,8 +161,6 @@ void vtkSimulation::Init() {
 	}
 #endif
 
-	//
-	this->Callback = vtkCallbackCommand::New();
 	this->Callback->SetCallback(func);
 	this->Callback->SetClientData(this);
 
@@ -173,9 +204,22 @@ void vtkSimulation::Init() {
 	this->CollisionDetection = vtkBioEngInterface::New();
 	this->CollisionDetection->Init();
 
-	this->CollisionDetection->SetTools(this->Scenario->GetTools());
-	this->CollisionDetection->SetOrgans(this->Scenario->GetOrgans());
-
+	vtkScenarioObjectCollection * objects = this->Scenario->GetObjects();
+	objects->InitTraversal();
+	while(vtkScenarioObject * o = objects->GetNextObject())
+	{
+		vtkScenarioElementCollection * elements = o->GetElements();
+		elements->InitTraversal();
+		while(vtkScenarioElement * e = elements->GetNextElement())
+		{
+			vtkCollisionModel *m = e->GetCollisionModel();
+			if(m)
+			{
+				m->SetDeltaT(this->SimulationTimerRate);
+				this->CollisionDetection->AddModel(m);
+			}
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -187,9 +231,8 @@ void vtkSimulation::Run()
 //----------------------------------------------------------------------------
 void vtkSimulation::UpdateScenario()
 {
-	//Check if any collision between tools & organs has occurred
+	//Check if any collision has occurred
 	this->CollisionDetection->Update();
-	this->Scenario->SetContacts(this->CollisionDetection->GetContacts());
 	this->Scenario->Update();
 }
 
@@ -212,7 +255,7 @@ void vtkSimulation::PrintSelf(ostream& os,vtkIndent indent) {
 	os << indent << "SimulationTimerRate: " << this->SimulationTimerRate << "\n";
 	os << indent << "HapticTimerRate: " << this->HapticTimerRate << "\n";
 	os << indent << "RenderTimerRate: " << this->RenderTimerRate << "\n";
-	os << indent << "Gravity: " << this->Gravity << "\n";
+	os << indent << "Gravity: " << this->Gravity[0] << ", " << this->Gravity[1] << ", " << this->Gravity[2] << "\n";
 	os << indent << "UseHaptic: " << this->UseHaptic << "\n";
 	os << indent << "Verbose: " << this->Verbose << "\n";
 

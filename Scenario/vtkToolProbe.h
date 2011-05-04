@@ -59,23 +59,18 @@ public:
 
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkToolProbe,vtkToolLaparoscopy);
-
 	//!Create new vtkToolProbe object
 	static vtkToolProbe *New();
-
 	//!Return class name
 	const char *GetClassName() { return "vtkToolProbe"; }
-
 	//!Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	
-	//!Tool type definition
-	enum vtkPieceType{
-		Stick = 0,
-		Tip = 1,
-	};
-	
+	//! set the stick element to the object
+	void SetStick(vtkScenarioElement * e);
+
+	//! Set the left lever element to the object
+	void SetTip(vtkScenarioElement * e);
 
 	//!Initialize the tool from VTK file
 	/*!
@@ -88,54 +83,6 @@ public:
 	 * This function update the tool values
 	 */
 	virtual void Update();
-
-	//!Set stick polydata filename
-	/*!
-	* Specify the path of the file that contains the stick piece polydata
-	*/
-	vtkSetStringMacro(StickFileName);
-
-	//!Return the stick polydata file name
-	/*!
-	 * Path of the file that contains the probe piece polydata
-	 */
-	vtkGetStringMacro(StickFileName);
-
-	//!Set probe polydata filename
-	/*!
-	 * Specify the path of the file that contains the probe piece polydata
-	 */
-	vtkSetStringMacro(TipFileName);
-
-	//!Return the left probe polydata file name
-	/*!
-	* Path of the file that contains the probe piece polydata
-	*/
-	vtkGetStringMacro(TipFileName);
-
-	//!Set stick texture filename
-	/*!
-	 * Specify the path of the file that contains the stick piece texture
-	 */
-	vtkSetStringMacro(StickTextureFileName);
-
-	//!Return the stick texture file name
-	/*!
-	 * Path of the file that contains the stick piece texture
-	 */
-	vtkGetStringMacro(StickTextureFileName);
-
-	//!Set tip texture filename
-	/*!
-	 * Specify the path of the file that contains the tip piece texture
-	 */
-	vtkSetStringMacro(TipTextureFileName);
-
-	//!Return the tip texture file name
-	/*!
-	 * Path of the file that contains the tip piece texture
-	 */
-	vtkGetStringMacro(TipTextureFileName);
 
 	//! Sets the probe yaw angle
 	void Yaw(double angle);
@@ -156,23 +103,8 @@ private:
 	vtkToolProbe (const vtkToolProbe &); //Not Implemented
 	void operator =(const vtkToolProbe &); //Not Implemented
 
-	char * StickFileName;
-	char * TipFileName;
-
-	char * StickTextureFileName;
-	char * TipTextureFileName;
-
-	//!Return the stick piece
-	/*!
-	 * Return the vtkPiece object of the stick
-	 */
-	vtkPiece * GetStick(){return this->GetPiece(vtkToolProbe::Stick);};
-
-	//!Return the tip piece
-	/*!
-	 * Return the vtkPiece object of the tip
-	 */
-	vtkPiece * GetTip(){return this->GetPiece(vtkToolProbe::Tip);};
+	vtkScenarioElement * Stick;
+	vtkScenarioElement * Tip;
 
 };
 #endif

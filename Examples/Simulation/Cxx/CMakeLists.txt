@@ -7,10 +7,11 @@ SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
-    vtkESQuiLap
+    #vtkESQuiLap
     SimulationLaparoscopy
-    SimulationLaparoscopyVR
-    vtkESQuiSRMLExample
+    SimulationInteractor
+    #SimulationLaparoscopyVR
+    #vtkESQuiSRMLExample
 )
 
 #-----------------------------------------------------------------------------
@@ -23,7 +24,7 @@ ENDIF(VTKESQUI_USE_HAPTICS)
 
  # Set your list of libraries here.
 SET(KIT_LIBS 
-    ${PROJECT_NAME}Utilities
+    #${PROJECT_NAME}Utilities
     ${PROJECT_NAME}Scenario
     ${PROJECT_NAME}Simulation
     ${PROJECT_NAME}Common
@@ -36,7 +37,7 @@ SET(KIT_LIBS
 
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
-    ${PROJECT_NAME}UtilitiesTCL
+    #${PROJECT_NAME}UtilitiesTCL
     ${PROJECT_NAME}ScenarioTCL
     ${PROJECT_NAME}SimulationTCL
     ${PROJECT_NAME}CommonTCL

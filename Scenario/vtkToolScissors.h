@@ -39,51 +39,46 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef _vtkToolScissors_h
-#define _vtkToolScissors_h
+#ifndef __vtkToolScissors_h
+#define __vtkToolScissors_h
 
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolLaparoscopy.h"
 
-//! Implementation class of scissors
+//! Implementation class of grasper
 /*!
-* vtkToolScissors is the class that implements the scissors tool, inside the scene.
-* Contains methods for position control of the tool in the scene and collision detection.
-* Scissors are composed of 3 pieces: 1 stick and 2 blades (vtkPiece)
-* Inherits vtkToolLaparascopy
+	vtkToolScissors is the class that implements the grasper tool, inside the scene.
+	Contains methods for position control of the tool in the scene and collision detection.
+	Scissors are composed of 3 pieces: 1 stick and 2 graspers (vtkPiece)
+	Inherits vtkToolLaparascopy class
 */
-class VTK_ESQUI_SCENARIO_EXPORT vtkToolScissors : public vtkToolLaparoscopy
+
+class VTK_ESQUI_SCENARIO_EXPORT vtkToolScissors: public vtkToolLaparoscopy
 {
-
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkToolScissors,vtkToolLaparoscopy);
-	//! Create new vtkToolScissors object
-	static vtkToolScissors *New();
-	//! Return the class name
-	const char *GetClassName() { return "vtkToolScissors"; }
-	//! Print the attributes value
-	void PrintSelf(ostream& os, vtkIndent indent);
 
-	
-	//!Tool tyoe definition
-	enum vtkPieceType{
-		Stick = 0,
-		LeftBlade = 1,
-		RightBlade = 2
-	};
-	
+	//!Type revision macro
+	vtkTypeRevisionMacro(vtkToolScissors,vtkToolLaparoscopy);
+
+	//!Create new vtkToolScissors object
+	static vtkToolScissors *New();
+
+	//!Return class name
+	const char *GetClassName() { return "vtkToolScissors"; }
+
+	//!Print the attributes value
+	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//!Initialize the tool from VTK file
 	/*!
-	* This function initializes the tool whose mesh is described on a VTK file
+		This function initializes the tool whose mesh is described on a VTK file
 	*/
 	virtual void Init();
 
 	//!Update the tool
 	/*!
-	* This function update the tool values
-	*/
+	 * This function update the tool values
+	 */
 	virtual void Update();
 
 	//! Set the tool's aperture according with the value given in the "Aperture" parameter
@@ -96,45 +91,52 @@ public:
 	//!Get pincer opening
 	vtkGetMacro(Opening, double);
 
-
-	//!Set stick polydata filename
+	//! Open the grasper moving piece actors
 	/*!
-	* Specify the path of the file that contains the stick piece polydata
+		Piece actors are transformed to perform tool opening
+		Bounding boxes are recalculated.
 	*/
-	vtkSetStringMacro(StickFileName);
+	void Open();
 
-	//!Return the stick polydata file name
+	//! Close the grasper moving piece actors
 	/*!
-	 * Path of the file that contains the grasper piece polydata
-	 */
-	vtkGetStringMacro(StickFileName);
-
-	//!Set grasper polydata filename
-	/*!
-	 * Specify the path of the file that contains the grasper piece polydata
-	 */
-	vtkSetStringMacro(LeftBladeFileName);
-
-	//!Return the left grasper polydata file name
-	/*!
-	* Path of the file that contains the grasper piece polydata
+		Piece actors are transformed to perform tool closing
+		Bounding boxes are recalculated.
 	*/
-	vtkGetStringMacro(LeftBladeFileName);
+	void Close();
 
-	//!Set grasper polydata filename
+	//!Return whether the grasper is closed or not
+	bool IsClosed(){return (this->Opening <= 0.);}
+
+	//! Sets the grasper' depth in its own coordinate system
+	void SetDepth(double position);
+
+	//! Rotate the grasper in degrees from current orientation about the X axis using the right hand rule.
 	/*!
-	 * Specify the path of the file that contains the grasper piece polydata
+	 * Scissors specific X-axis rotation.
 	 */
-	vtkSetStringMacro(RightBladeFileName);
+	void RotateX(double angle);
 
-	//!Return the left grasper polydata file name
+	//! Rotate the grasper in degrees from current orientation about the Y axis using the right hand rule.
 	/*!
-	 * Path of the file that contains the grasper piece polydata
+	 * Scissors specific X-axis rotation.
 	 */
-	vtkGetStringMacro(RightBladeFileName);
+	void RotateY(double angle);
 
-	//!Return whether the Blade is closed or not
-	bool IsClosed(){return (this->Opening < 0.0f);}
+	//! Rotate the grasper in degrees from current orientation about the Y axis using the right hand rule.
+	/*!
+	 * Scissors specific X-axis rotation.
+	 */
+	void RotateZ(double angle);
+
+	//! Sets the grasper yaw angle
+	void Yaw(double angle);
+
+	//! Sets the grasper pitch angle
+	void Pitch(double angle);
+
+	//! Sets the grasper roll angle
+	void Roll(double angle);
 
 protected:
 
@@ -146,28 +148,9 @@ private:
 	vtkToolScissors (const vtkToolScissors &); //Not Implemented
 	void operator =(const vtkToolScissors &); //Not Implemented
 
+	//! Tool pieces opening
 	double Opening;
-	char * StickFileName;
-	char * LeftBladeFileName;
-	char * RightBladeFileName;
 
-	//!Return the stick piece
-	/*!
-	* Return the vtkPiece object of the stick
-	*/
-	vtkPiece * GetStick(){return this->GetPiece(vtkToolScissors::Stick);};
-
-	//!Return the Blade piece
-	/*!
-	* Return the vtkPiece object of the Blade at the specified id
-	*/
-	vtkPiece * GetLeftBlade(){return this->GetPiece(vtkToolScissors::LeftBlade);};
-
-	//!Return the Blade piece
-	/*!
-	 * Return the vtkPiece object of the Blade at the specified id
-	 */
-	vtkPiece * GetRightBlade(){return this->GetPiece(vtkToolScissors::RightBlade);};
 };
-
 #endif
+

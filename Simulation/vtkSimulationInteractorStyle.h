@@ -45,7 +45,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiSimulationWin32Header.h"
 #include "vtkInteractorStyleTrackballCamera.h"
 
-#include "vtkScenario.h"
+class vtkIdList;
+class vtkCamera;
+class vtkScenario;
 
 //! Implementation of the simulation interactor
 /*!
@@ -63,6 +65,9 @@ public:
 	//! Return class name
 	const char *GetClassName() {return "vtkSimulationInteractorStyle";};
 
+	//! Initialization
+	void Init();
+
 	//! Handle onKeyPress event
 	virtual void OnKeyPress();
 
@@ -79,9 +84,9 @@ public:
 	virtual void OnRightButtonUp();
 
 	//! Set Interactor Scenario
-	vtkSetObjectMacro(Scenario, vtkScenario);
+	void SetScenario(vtkScenario * s);
 	//! Get Interactor Scenario
-	vtkGetObjectMacro(Scenario, vtkScenario);
+	vtkScenario * GetScenario();
 
 	//! Set currently active tool id
 	vtkSetMacro(ActiveToolId, vtkIdType);
@@ -96,7 +101,18 @@ public:
 protected:
 	vtkSimulationInteractorStyle();
 	~vtkSimulationInteractorStyle();
+
 private:
+	vtkSimulationInteractorStyle (const vtkSimulationInteractorStyle &);//NotImplemented
+	void operator =(const vtkSimulationInteractorStyle &);//Not Implemented
+
+	int GetToolId(int id);
+
+	int GetNumberOfTools();
+
+	vtkScenario * Scenario;
+
+	vtkCamera * Camera;
 
 	int PreviousPosition[2];
 	double Scale;
@@ -104,12 +120,11 @@ private:
 	bool LeftButtonPressed;
 	bool RightButtonPressed;
 
-	vtkScenario * Scenario;
 	//! Camera/Tool Mode
 	bool Mode;
+	//! Tool id list
+	vtkIdList * ToolIds;
+	//! Active tool identifier
 	vtkIdType ActiveToolId;
-
-	vtkSimulationInteractorStyle (const vtkSimulationInteractorStyle &);//NotImplemented
-	void operator =(const vtkSimulationInteractorStyle &);//Not Implemented
 };
 #endif

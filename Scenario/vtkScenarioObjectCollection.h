@@ -39,66 +39,74 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkPieceCollection_h
-#define __vtkPieceCollection_h
+#ifndef __vtkScenarioObjectCollection_h
+#define __vtkScenarioObjectCollection_h
 
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkCollection.h"
 
-class vtkPiece;
+class vtkScenarioObject;
 
-//!Collection of Pieces
-class VTK_ESQUI_SCENARIO_EXPORT vtkPieceCollection : public vtkCollection
+//!Collection of ScenarioObjects
+class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioObjectCollection : public vtkCollection
 {
 public:
 	//!Type revision macro
-	vtkTypeRevisionMacro(vtkPieceCollection,vtkCollection);
-	//! Create new piece storage collection
-	static vtkPieceCollection *New() {return new vtkPieceCollection;}
+	vtkTypeRevisionMacro(vtkScenarioObjectCollection,vtkCollection);
+	//! Create new object storage collection
+	static vtkScenarioObjectCollection *New() {return new vtkScenarioObjectCollection;}
 	//! Return classname
-	const char *GetClassName() {return "vtkPieceCollection";}
+	const char *GetClassName() {return "vtkScenarioObjectCollection";}
 	//! Print collection values
 	virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Insert a piece into the collection
+	//!Insert (replace) an object into the collection
 	/*!
-	* Piece will be added at the specified id
-	* \param id index of the list where the piece will be added
-	* \param Piece vtkPiece object to be inserted
-	* \sa InsertNextPiece(vtkPiece * Piece);
+	* Object will be added at the specified id replacing its old value.
+	* \param id index of the list where the object will be added
+	* \param ScenarioObject vtkScenarioObject object to be inserted
+	* \sa InsertNextScenarioObject(vtkScenarioObject * ScenarioObject);
 	*/
-	void InsertPiece(vtkIdType id, vtkPiece * Piece);
+	void ReplaceObject(vtkIdType id, vtkScenarioObject * ScenarioObject);
 
-	//!Insert piece at the end of the collection
+	//!Insert object at the end of the collection
 	/*!
-	* \param Piece vtkPiece object to be inserted
-	* \sa InsertPiece(vtkIdType id, vtkPiece * Piece)
+	* \param ScenarioObject vtkScenarioObject object to be inserted
+	* \sa ReplaceScenarioObject(vtkIdType id, vtkScenarioObject * ScenarioObject)
 	*/
-	void AddPiece(vtkPiece * Piece);
+	void AddObject(vtkScenarioObject * ScenarioObject);
 
-	//!Return piece located the specified id
+	//!Remove an object of the collection at the specified id
 	/*!
-	* Get the piece in the list with the position id. NULL is returned when the collection is exhausted.
-	* \param id list index where the piece is stored
+	* \param id index of the object in the collection
+	* \sa ReplaceScenarioObject(vtkIdType id, vtkScenarioObject * ScenarioObject)
+	* \sa AddScenarioObject(vtkScenarioObject * ScenarioObject)
 	*/
-	vtkPiece * GetPiece(vtkIdType id);
+	void RemoveObject(vtkIdType id);
 
-	//!Return piece on the collection
+	//!Return object located the specified id
 	/*!
-	* Get the piece at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+	* Get the object in the list with the position id. NULL is returned when the collection is exhausted.
+	* \param id list index where the object is stored
 	*/
-	vtkPiece * GetNextPiece();
+	vtkScenarioObject * GetObject(vtkIdType id);
 
-	//!Return number of pieces in the collection
-	vtkIdType GetNumberOfPieces();
+	//!Return object on the collection
+	/*!
+	* Get the object at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+	*/
+	vtkScenarioObject * GetNextObject();
+
+	//!Return number of objects in the collection
+	vtkIdType GetNumberOfObjects();
 
 protected:
-	vtkPieceCollection() {};
-	~vtkPieceCollection() {};
+	vtkScenarioObjectCollection() {};
+	~vtkScenarioObjectCollection() {};
 
 private:
-	vtkPieceCollection(const vtkPieceCollection&);  // Not implemented.
-	void operator=(const vtkPieceCollection&);  // Not implemented.
+	vtkScenarioObjectCollection(const vtkScenarioObjectCollection&);  // Not implemented.
+	void operator=(const vtkScenarioObjectCollection&);  // Not implemented.
 };
 
 

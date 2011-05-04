@@ -58,9 +58,9 @@ public:
   static vtkIterativePolyDataAlgorithm *New();
 
   //! NumberOfIterations accessors
-  vtkSetMacro( NumberOfIterations, int );
+  vtkSetMacro( NumberOfIterations, unsigned int );
   //! NumberOfIterations accessors
-  vtkGetMacro( NumberOfIterations, int );
+  vtkGetMacro( NumberOfIterations, unsigned int );
 
   //! IterateFromZero accessors
   vtkSetMacro( IterateFromZero, int );

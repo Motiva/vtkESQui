@@ -39,41 +39,55 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkPieceCollection.h"
+#include <iostream>
 
-#include "vtkPiece.h"
+#include "vtkMath.h"
+#include "vtkCollision.h"
+#include "vtkCollisionCollection.h"
 
-vtkCxxRevisionMacro(vtkPieceCollection, "$Revision: 0.1 $");
 
-//--------------------------------------------------------------------------
-void vtkPieceCollection::InsertPiece(vtkIdType id, vtkPiece *Piece) {
-	this->vtkPieceCollection::ReplaceItem(id, (vtkObject*) Piece);
-}
+using namespace std;
 
-//--------------------------------------------------------------------------
-void vtkPieceCollection::AddPiece(vtkPiece *Piece) {
-	this->vtkCollection::AddItem((vtkObject *) Piece);
-}
+//!This test perform a test of the vtkCollisionCollection class
 
-//--------------------------------------------------------------------------
-vtkPiece * vtkPieceCollection::GetPiece(vtkIdType id) {
-	return static_cast <vtkPiece *>(this->GetItemAsObject(id));
-}
-
-//--------------------------------------------------------------------------
-vtkPiece * vtkPieceCollection::GetNextPiece()
+int TestvtkCollisionCollection(int argc, char * argv[])
 {
-	return static_cast <vtkPiece *>(this->GetNextItemAsObject());
+	vtkCollision * collision;
+	vtkCollisionCollection * collection = vtkCollisionCollection::New();
+
+	for (vtkIdType id = 0; id < 10; id++)
+	{
+		collision = vtkCollision::New();
+		collision->SetElementId(0, 0);
+		collision->SetElementId(0, 1);
+		collision->SetPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+		collision->SetPointId(0, id);
+		collision->SetCellId(0, 1);
+		collision->SetPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+		collision->SetPointId(1, id);
+		collision->SetCellId(0, 1);
+
+		collection->InsertNextCollision(collision);
+		std::cout << "Collision (" << id <<  ") has been inserted...\n";
+	}
+
+	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
+
+	collection->InitTraversal();
+
+	for (vtkIdType id = 0; id < 10; id++)
+	{
+		std::cout << "#########################\n";
+		collision = collection->GetNextCollision();
+		collision->Print(std::cout);
+		std::cout << "Collision (" << id <<  ") has been removed...\n";
+		//collection->RemoveItem(id);
+		collision->Delete();
+	}
+	collection->RemoveAllItems();
+	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
+
+	return 0;
 }
 
-//--------------------------------------------------------------------------
-vtkIdType vtkPieceCollection::GetNumberOfPieces()
-{
-	return this->GetNumberOfItems();
-}
 
-//----------------------------------------------------------------------------
-void vtkPieceCollection::PrintSelf(ostream& os, vtkIndent indent)
-{
-  this->Superclass::PrintSelf(os,indent);
-}

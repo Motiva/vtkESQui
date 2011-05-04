@@ -20,20 +20,19 @@
 #include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
 
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
+#include "vtkCollision.h"
+#include "vtkCollisionCollection.h"
 
 #include "vtkCommand.h"
 
 #include "vtkEDMInterface.h"
 
-
-class vtkTimerCallback : public vtkCommand
+class vtkEDMTimerCallback : public vtkCommand
 {
 public:
-	static vtkTimerCallback *New()
+	static vtkEDMTimerCallback *New()
 	{
-		vtkTimerCallback *cb = new vtkTimerCallback;
+		vtkEDMTimerCallback *cb = new vtkEDMTimerCallback;
 		cb->FastTimerId = 0;
 		cb->FasterTimerId = 0;
 		cb->RenderTimerId = 0;
@@ -94,7 +93,7 @@ public:
 		this->DeformationModel = DeformationModel;
 	}
 
-	void SetContactIds(vtkIdList * list)
+	void SetCollisionIds(vtkIdList * list)
 	{
 		this->List = list;
 	}
@@ -108,7 +107,7 @@ private:
 	vtkEDMInterface * DeformationModel;
 };
 
-int main(int argc, char * argv[])
+int TestvtkEDMInterface(int argc, char * argv[])
 {
 	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/sphere12_12_1.vtp";
 
@@ -116,12 +115,6 @@ int main(int argc, char * argv[])
 	{
 		filename = argv[1];
 	}
-
-	//vtkXMLPolyDataReader * reader = vtkXMLPolyDataReader::New();
-	//reader->SetFileName(filename);
-	//reader->Update();
-
-	//vtkPolyData * mesh = reader->GetOutput();
 
 	vtkSmartPointer<vtkSphereSource> sphereSource =
 			vtkSmartPointer<vtkSphereSource>::New();
@@ -140,7 +133,7 @@ int main(int argc, char * argv[])
 
 	vtkRenderer * renderer = vtkRenderer::New();
 
-	//Locate contact points
+	//Locate collision points
 	vtkPointLocator * locator = vtkPointLocator::New();
 	double bounds[6];
 	mesh->GetBounds(bounds);
@@ -156,8 +149,8 @@ int main(int argc, char * argv[])
 	//list->InsertNextId(0);
 	locator->FindClosestNPoints(10, p, list);
 
-	//Set Contacts
-	vtkContactCollection * contacts = vtkContactCollection::New();
+	//Set Collisions
+	vtkCollisionCollection * collisions = vtkCollisionCollection::New();
 
 	double dir[3];
 	dir[0] = 5;//-0.1;
@@ -170,24 +163,24 @@ int main(int argc, char * argv[])
 		directions->InsertNextTuple(dir);
 		vtkIdType id = list->GetId(i);
 
-		//Insert contact info
-		vtkContact * contact = vtkContact::New();
-		contact->SetItemId(0, 0);
-		contact->SetItemId(1, 0);
+		//Insert collision info
+		vtkCollision * collision = vtkCollision::New();
+		collision->SetElementId(0, 0);
+		collision->SetElementId(1, 0);
 
 		//Organ cell point
-		contact->SetPointId(1, id);
-		contact->SetPoint(1, point);
-		//contact->InsertCellId(0, organCellId);
-		contact->SetDisplacement(dir);
+		collision->SetPointId(1, id);
+		collision->SetPoint(1, point);
+		//collision->InsertCellId(0, organCellId);
+		collision->SetDisplacement(dir);
 
-		contact->Print(cout);
+		collision->Print(cout);
 
-		contacts->InsertNextContact(contact);
+		collisions->InsertNextCollision(collision);
 	}
 
 	//Set a fictional force
-	EDM->InsertContacts(contacts);
+	EDM->SetCollisions(collisions);
 
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
 	renWin->SetSize(500,500);
@@ -226,7 +219,7 @@ int main(int argc, char * argv[])
 
 	// Sign up to receive TimerEvent:
 	//
-	vtkTimerCallback *cb = vtkTimerCallback::New();
+	vtkEDMTimerCallback *cb = vtkEDMTimerCallback::New();
 	iren->AddObserver(vtkCommand::TimerEvent, cb);
 	int tid;
 

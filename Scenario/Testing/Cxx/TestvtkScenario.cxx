@@ -47,10 +47,19 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <iostream>
+#include "vtkSmartPointer.h"
+#include "vtkRenderer.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
 
 #include "vtkScenario.h"
-#include "vtkTool.h"
-#include "vtkToolDummy.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioObject.h"
+#include "vtkVisualizationModel.h"
+#include "vtkCollisionModel.h"
+#include "vtkPSSInterface.h"
 #include "vtkOrgan.h"
 
 using namespace std;
@@ -59,26 +68,72 @@ using namespace std;
 
 int TestvtkScenario(int argc, char * argv[])
 {
-	vtkScenario * scenario = vtkScenario::New();
+	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1.vtp";
+	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1_col.vtp";
+	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/liver.jpg";
 
-	vtkOrgan * organ = vtkOrgan::New();
-	organ->SetId(0);
-	organ->SetName("TestOrgan");
-	organ->SetFileName("FileName");
-	organ->SetTextureFileName("TextureFileName");
-	organ->SetPosition(0,0,0);
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	renderer->SetBackground(1,1,1);
 
-	vtkToolDummy * tool = vtkToolDummy::New();
-	tool->SetPosition(0,0,0);
-	tool->SetId(0);
-	tool->SetName("TestOrgan");
-	tool->SetStickFileName("FileName");
+	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+	renWin->SetSize(800,600);
+	renWin->AddRenderer(renderer);
 
+	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	iren->SetRenderWindow(renWin);
 
-	scenario->AddOrgan(organ);
-	scenario->AddTool(tool);
+	vtkSmartPointer<vtkScenario> scenario = vtkSmartPointer<vtkScenario>::New();
 
+	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
+	vis->SetName("ellipsoid_16_16_1");
+	vis->SetFileName(fn);
+	vis->SetTextureFileName(tfn);
+	vis->SetPosition(3.0, 2.5, 0.0);
+	vis->SetOrientation(25, -15, 30);
+	vis->SetOpacity(0.5);
+	vis->SetColor(1.0, 1.0, 1.0);
+	vis->Init();
+
+	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
+	col->SetName("vtkbioeng");
+	col->SetFileName(cfn);
+	col->SetPosition(3.0, 2.5, 0.0);
+	col->SetOrientation(25, -15, 30);
+	col->SetOpacity(0.5);
+	col->SetColor(0.0, 0.0, 1.0);
+	col->Init();
+
+	//Deformation model. Particle-Spring system
+	vtkSmartPointer<vtkPSSInterface> def = vtkSmartPointer<vtkPSSInterface>::New();
+	def->SetName("ParticleSpring");
+	def->SetFileName(fn);
+	def->SetPosition(3.0, 2.5, 0.0);
+	def->SetOrientation(25, -15, 30);
+	def->SetOpacity(1.0);
+	def->SetColor(0.0, 1.0, 0.0);
+	def->Init();
+
+	vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
+	element->SetId(0);
+	element->SetName("ellipsoid");
+	element->SetVisualizationModel(vis);
+	element->SetCollisionModel(col);
+	element->SetDeformationModel(def);
+	element->Init();
+
+	vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
+	organ->AddElement(element);
+	organ->Init();
+
+	organ->Update();
+
+	scenario->SetRenderWindow(renWin);
+	scenario->AddObject(organ);
 	scenario->Init();
+
+	scenario->Update();
+
+	scenario->Print(cout);
 
 	return 0;
 }

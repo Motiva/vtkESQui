@@ -9,8 +9,8 @@ SET(UKIT COMMON)  #Uppercase Kit Name
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
 SET (Kit_SRCS 
-vtkContact.cxx
-vtkContactCollection.cxx
+vtkModel.cxx
+vtkModelCollection.cxx
 vtkTimerCallback.cxx
 )
 

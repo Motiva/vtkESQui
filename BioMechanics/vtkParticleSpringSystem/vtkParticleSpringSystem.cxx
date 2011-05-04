@@ -33,13 +33,13 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->DeltaT = 0;
 	this->Mass = 0;
 	this->Residual = 1e-6;
-	this->RigidityFactor = 0;
+	this->RigidityFactor = 1;
 	this->Volume = 0;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
 	this->SystemProperties = NULL;
-	this->SolverType = vtkParticleSpringSystem::VelocityVerlet;
-	this->ContactIds = NULL;
-	this->ContactDisplacements = NULL;
+	this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
+	this->CollisionIds = NULL;
+	this->CollisionDisplacements = NULL;
 	this->Particles = NULL;
 	this->Springs = NULL;
 }
@@ -49,8 +49,117 @@ vtkParticleSpringSystem::~vtkParticleSpringSystem()
 {
 	if(this->Particles) this->Particles->Delete();
 	if(this->Springs) this->Springs->Delete();
-	if(this->ContactIds) this->ContactIds->Delete();
-	if(this->ContactDisplacements) this->ContactDisplacements->Delete();
+	if(this->CollisionIds) this->CollisionIds->Delete();
+	if(this->CollisionDisplacements) this->CollisionDisplacements->Delete();
+}
+
+//----------------------------------------------------------------------------
+void vtkParticleSpringSystem::Init()
+{
+	vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
+	//Ensure mesh is at its last state
+	input->Update();
+
+	//Initialize Particle System
+	this->Particles = vtkParticleCollection::New();
+	this->Springs = vtkSpringCollection::New();
+
+	for(int id = 0; id < input->GetNumberOfPoints(); id++)
+	{
+		//One particle per input point
+		double * point = input->GetPoint(id);
+
+		vtkParticle * p0 = vtkParticle::New();
+		p0->SetId(id);
+		p0->SetPosition(point);
+		p0->SetMass(this->Mass);
+		p0->SetStatus(1);
+		this->Particles->InsertNextParticle(p0);
+	}
+
+	vtkIdList * cellPointIds = vtkIdList::New();
+	vtkIdList * neighborCellIds = vtkIdList::New();
+	vtkIdList * neighborPointIds = vtkIdList::New();
+
+	//For each cell get its points
+	for(vtkIdType jd=0; jd<input->GetNumberOfCells();jd++)
+	{
+		vtkIdType cellId = jd;
+		//Cell points
+		cellPointIds->Reset();
+		input->GetCellPoints(cellId, cellPointIds);
+		//Structural springs
+		//Default 3 points per cell. 3D cells are unsupported
+		for(int kd=0;kd<cellPointIds->GetNumberOfIds();kd++)
+		{
+			//Connect each pair of cell points with a spring
+			//In case cells are lines only the first 2 points are processed
+			if (input->GetCellType(cellId) == VTK_LINE)
+			{
+				if (kd>0) continue;
+			}
+			vtkIdType nextId = kd+1;
+			if(nextId == 3) nextId = 0;
+			vtkParticle * p0 = this->Particles->GetParticle(cellPointIds->GetId(kd));
+			vtkParticle * p1 = this->Particles->GetParticle(cellPointIds->GetId(nextId));
+
+			this->CreateSpring(p0, p1);
+
+			if(this->RigidityFactor > 1)
+			{
+				//Shearing springs (Rigidity Factor=2)
+				input->GetPointCells(p1->GetId(), neighborCellIds);
+				for(vtkIdType ld=0;ld<neighborCellIds->GetNumberOfIds();ld++)
+				{
+					vtkIdType neighborCellId = neighborCellIds->GetId(ld);
+					input->GetCellPoints(neighborCellId, neighborPointIds);
+					for(vtkIdType md=0;md<neighborPointIds->GetNumberOfIds();md++)
+					{
+						vtkIdType neighborPointId = neighborPointIds->GetId(md);
+						if(neighborPointId != p0->GetId() ||
+								neighborPointId != p1->GetId())
+						{
+							vtkParticle * pn = this->Particles->GetParticle(neighborPointId);
+							this->CreateSpring(p0, pn);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	switch(this->SolverType)
+	{
+	case vtkMotionEquationSolver::Euler:
+		this->Solver = vtkEulerSolver::New();
+		break;
+	case vtkMotionEquationSolver::VelocityVerlet:
+		this->Solver = vtkVelocityVerletSolver::New();
+		break;
+	case vtkMotionEquationSolver::RungeKutta4:
+		this->Solver = vtkRK4Solver::New();
+		break;
+	default:
+		break;
+	}
+
+	//System Properties
+	this->SystemProperties = vtkMassProperties::New();
+
+	//Initialize motion equation solver
+	this->Solver->SetDeformationModel(this);
+	this->Solver->SetNumberOfParticles(this->Particles->GetNumberOfItems());
+	this->Solver->SetResidual(this->Residual);
+	this->Solver->Init();
+
+	//Initialize contact objects
+	//this->Contacts = vtkContactCollection::New();
+	this->CollisionIds = vtkIdList::New();
+	this->CollisionDisplacements = vtkDoubleArray::New();
+	this->CollisionDisplacements->SetNumberOfComponents(3);
+
+	//Raise update event
+	this->Modified();
 }
 
 //----------------------------------------------------------------------------
@@ -105,114 +214,6 @@ void vtkParticleSpringSystem::Step()
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::Init()
-{
-	vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
-	vtkPolyData * mesh = input;
-
-	//Initialize Particle System
-	this->Particles = vtkParticleCollection::New();
-	this->Springs = vtkSpringCollection::New();
-
-	for(int id = 0; id < mesh->GetNumberOfPoints(); id++)
-	{
-		//One particle per mesh point
-		double * point = mesh->GetPoint(id);
-
-		vtkParticle * p0 = vtkParticle::New();
-		p0->SetId(id);
-		p0->SetPosition(point);
-		p0->SetMass(this->Mass);
-		p0->SetStatus(1);
-		this->Particles->InsertNextParticle(p0);
-	}
-
-	vtkIdList * cellPointIds = vtkIdList::New();
-	vtkIdList * neighborCellIds = vtkIdList::New();
-	vtkIdList * neighborPointIds = vtkIdList::New();
-
-	//For each cell get its points
-	for(vtkIdType jd=0; jd<mesh->GetNumberOfCells();jd++)
-	{
-		vtkIdType cellId = jd;
-		//Cell points
-		cellPointIds->Reset();
-		mesh->GetCellPoints(cellId, cellPointIds);
-		//Structural springs
-		//Default 3 points per cell. 3D cells are unsupported
-		for(int kd=0;kd<cellPointIds->GetNumberOfIds();kd++)
-		{
-			//Connect each pair of cell points with a spring
-			//In case cells are lines only the first 2 points are processed
-			if (mesh->GetCellType(cellId) == VTK_LINE)
-			{
-				if (kd>0) continue;
-			}
-			vtkIdType nextId = kd+1;
-			if(nextId == 3) nextId = 0;
-			vtkParticle * p0 = this->Particles->GetParticle(cellPointIds->GetId(kd));
-			vtkParticle * p1 = this->Particles->GetParticle(cellPointIds->GetId(nextId));
-
-			this->CreateSpring(p0, p1);
-
-			if(this->RigidityFactor > 1)
-			{
-				//Shearing springs (Rigidity Factor=2)
-				mesh->GetPointCells(p1->GetId(), neighborCellIds);
-				for(vtkIdType ld=0;ld<neighborCellIds->GetNumberOfIds();ld++)
-				{
-					vtkIdType neighborCellId = neighborCellIds->GetId(ld);
-					mesh->GetCellPoints(neighborCellId, neighborPointIds);
-					for(vtkIdType md=0;md<neighborPointIds->GetNumberOfIds();md++)
-					{
-						vtkIdType neighborPointId = neighborPointIds->GetId(md);
-						if(neighborPointId != p0->GetId() ||
-							neighborPointId != p1->GetId())
-						{
-							vtkParticle * pn = this->Particles->GetParticle(neighborPointId);
-							this->CreateSpring(p0, pn);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	switch(this->SolverType)
-	{
-	case Euler:
-		this->Solver = vtkEulerSolver::New();
-		break;
-	case VelocityVerlet:
-		this->Solver = vtkVelocityVerletSolver::New();
-		break;
-	case RungeKutta4:
-		this->Solver = vtkRK4Solver::New();
-		break;
-	default:
-		break;
-	}
-
-	//System Properties
-	this->SystemProperties = vtkMassProperties::New();
-
-	//Initialize motion equation solver
-	this->Solver->SetDeformationModel(this);
-	this->Solver->SetNumberOfParticles(this->Particles->GetNumberOfItems());
-	this->Solver->SetResidual(this->Residual);
-	this->Solver->Init();
-
-	//Initialize contact objects
-	//this->Contacts = vtkContactCollection::New();
-	this->ContactIds = vtkIdList::New();
-	this->ContactDisplacements = vtkDoubleArray::New();
-	this->ContactDisplacements->SetNumberOfComponents(3);
-
-	//Raise update event
-	this->Modified();
-}
-
-//----------------------------------------------------------------------------
 void vtkParticleSpringSystem::SetParticleStatus(vtkIdType id, bool status)
 {
 	this->Particles->GetParticle(id)->SetStatus(status);
@@ -247,27 +248,27 @@ void vtkParticleSpringSystem::CreateSpring(vtkParticle * p0, vtkParticle * p1)
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::InsertContact(vtkIdType id, double * displacement)
+void vtkParticleSpringSystem::InsertCollision(vtkIdType id, double * displacement)
 {
-	this->ContactIds->InsertNextId(id);
-	this->ContactDisplacements->InsertNextTuple(displacement);
+	this->CollisionIds->InsertNextId(id);
+	this->CollisionDisplacements->InsertNextTuple(displacement);
 	this->Modified();
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::SetContacts(vtkIdList * ids, vtkDoubleArray * displacements)
+void vtkParticleSpringSystem::SetCollisions(vtkIdList * ids, vtkDoubleArray * displacements)
 {
 	if(ids->GetNumberOfIds() != displacements->GetNumberOfTuples())
 	{
 		vtkDebugMacro("Not the same number of contact ids and displacements")
-		return;
+				return;
 	}
 
-	this->ContactIds->Reset();
-	this->ContactDisplacements->Reset();
+	this->CollisionIds->Reset();
+	this->CollisionDisplacements->Reset();
 
-	this->ContactIds->DeepCopy(ids);
-	this->ContactDisplacements->DeepCopy(displacements);
+	this->CollisionIds->DeepCopy(ids);
+	this->CollisionDisplacements->DeepCopy(displacements);
 
 	this->Modified();
 }
@@ -279,13 +280,13 @@ void vtkParticleSpringSystem::ComputeContacts()
 	//double distance[3];
 	//double dNorm, L, ratio;
 
-	if(this->ContactIds && this->ContactIds->GetNumberOfIds() != 0)
+	if(this->CollisionIds && this->CollisionIds->GetNumberOfIds() != 0)
 	{
-		for (vtkIdType i = 0; i < this->ContactIds->GetNumberOfIds(); i++)
+		for (vtkIdType i = 0; i < this->CollisionIds->GetNumberOfIds(); i++)
 		{
 			//
-			vtkIdType id = this->ContactIds->GetId(i);
-			double * d = this->ContactDisplacements->GetTuple(i);
+			vtkIdType id = this->CollisionIds->GetId(i);
+			double * d = this->CollisionDisplacements->GetTuple(i);
 
 			vtkParticle * p = this->Particles->GetParticle(id);
 
@@ -300,8 +301,8 @@ void vtkParticleSpringSystem::ComputeContacts()
 		}
 
 		//Reset contact state
-		this->ContactIds->Reset();
-		this->ContactDisplacements->Reset();
+		this->CollisionIds->Reset();
+		this->CollisionDisplacements->Reset();
 	}
 }
 
@@ -369,5 +370,14 @@ void vtkParticleSpringSystem::ComputeForces()
 //----------------------------------------------------------------------------
 void vtkParticleSpringSystem::PrintSelf(ostream& os, vtkIndent indent)
 {
-  this->Superclass::PrintSelf(os,indent);
+	this->Superclass::PrintSelf(os,indent);
+
+	os << indent << "SpringCoefficient: " << this->SpringCoefficient << endl;
+	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << endl;
+	os << indent << "DampingCoefficient: " << this->DampingCoefficient << endl;
+	os << indent << "DeltaT: " << this->DeltaT << endl;
+	os << indent << "Mass: " << this->Mass << endl;
+	os << indent << "Residual: " << this->Residual << endl;
+	os << indent << "RigidityFactor: " << this->RigidityFactor << endl;
+	os << indent << "Volume: " << this->Volume << endl;
 }

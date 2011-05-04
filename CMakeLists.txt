@@ -118,12 +118,12 @@ IF(VTK_FOUND)
 
   #TODO: Change SUBDIRS Command to ADD_SUBDIRECTORY. This command is deprecated
   SUBDIRS (
-    Utilities
-    Scenario
-    Common
     BioMechanics
-    Simulation
     CollisionDetection
+    Common
+    Scenario
+    Simulation
+    #Utilities
   )
 
   IF(VTKESQUI_USE_HAPTICS)

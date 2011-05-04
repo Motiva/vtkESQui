@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkTool
 
 #include "vtkESQuiScenarioWin32Header.h"
-#include "vtkScenarioItem.h"
+#include "vtkScenarioObject.h"
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 #include "vtkHaptic.h"
@@ -51,16 +51,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLSW.h"
 #endif
 
-class vtkTransform;
-class vtkTransformCollection;
-class vtkTransformPolyDataFilter;
-class vtkAppendPolyData;
-class vtkActor;
-class vtkActorCollection;
-class vtkDoubleArray;
-
-class vtkPiece;
-class vtkPieceCollection;
 class vtkContact;
 class vtkContactCollection;
 
@@ -69,12 +59,12 @@ class vtkContactCollection;
 vtkTool abstracts the use of a surgical tool during the simulation exercise.
 This provide an easy use of surgical tools collections.
 */
-class VTK_ESQUI_SCENARIO_EXPORT vtkTool: public vtkScenarioItem {
+class VTK_ESQUI_SCENARIO_EXPORT vtkTool: public vtkScenarioObject {
 
 public:
 
 	//!Type revision macro
-	vtkTypeRevisionMacro(vtkTool,vtkScenarioItem);
+	vtkTypeRevisionMacro(vtkTool,vtkScenarioObject);
 
 	//!Return the class name
 	const char *GetClassName() {return "vtkTool";}
@@ -95,28 +85,6 @@ public:
 	//!Return tool type
 	vtkGetMacro(ToolType, vtkTool::vtkToolType);
 
-	//!Abstract initialization function
-	/*!
-	* This method initializes the tool physical values, scale, position, etc...
-	*/
-	virtual void Init();
-
-	//! Process the algorithm request (Update).
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
-
-	//!Set the number of pieces
-	vtkSetMacro(NumberOfPieces, int);
-	//!Get the number of pieces
-	vtkGetMacro(NumberOfPieces, int);
-
-	// **** Physical Parameters **** //
-
-	//!Return tool piece with the specified id
-	/*!
-	* id Identifier of the tool piece
-	*/
-	vtkPiece * GetPiece(vtkIdType id);
-
 	// **** Haptic Management Methods **** //
 
 	//! Set the use of haptic device
@@ -126,75 +94,6 @@ public:
 
 	//!Enable/Disable haptic device use
 	vtkBooleanMacro(UseHaptic, bool);
-
-	// **** Graphical Purposes Methods **** //
-	//! Return the actors collection of the tool
-	/*!
-	Return a pointer to the object who stores all tool's actors
-	*/
-	vtkActorCollection* GetActors();
-
-	//! Return the actor of the specified piece
-	/*!
-	* \param id Identifier of the piece
-	*/
-	vtkActor * GetActor(vtkIdType id);
-
-	//!Get tool piece transform function with the specified id
-	/*!
-	* \param id Identifier of the piece
-	*/
-	vtkTransform * GetTransform(vtkIdType id);
-
-	//! Set the color of the specified piece
-	/*!
-	 * \param id Identifier of the piece
-	 * \param r red component
-	 * \param g green component
-	 * \param b blue component
-	 */
-	void SetColor(vtkIdType id, double r, double g, double b);
-
-	//! Return the colors collection of the tool
-	/*!
-		Return a pointer to the object who stores all piece's colors
-	 */
-	vtkDoubleArray * GetColors();
-
-	//! Return the color of the specified piece
-	/*!
-	 * \param id Identifier of the piece
-	 */
-	double * GetColor(vtkIdType id);
-
-
-
-	// **** Simulation Manager Methods **** //
-	//!Remove all contacts from the collection
-	/*!
-	* All Contacts are cleared but not erased on memory
-	*/
-	void RemoveContacts();
-
-	//!Add a contact to the collection
-	/*!
-	* Add a single contact to the collection of contacts
-	* \param contact Contact point
-	*/
-	void InsertNextContact(vtkContact* contact);
-
-	/// Returns the number of contacts the tool has made
-	/*!
-	* Total number of tool contact points
-	*/
-	vtkIdType GetNumberOfContacts();
-
-	//! Hide scenario organ.
-	virtual void Hide();
-	//! Show/Display organ.
-	virtual void Show();
-	//! Disable organ.
-	virtual void Disable();
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	
@@ -222,73 +121,6 @@ protected:
 
 	//! Enable haptic device control
 	bool UseHaptic;
-
-	//!Number of pieces
-	int NumberOfPieces;
-
-	//!Collection of tool pieces
-	vtkPieceCollection * Pieces;
-
-	//!Array of tool pieces colors
-	vtkDoubleArray * Colors;
-
-	//**** Graphical Purposes objects ****//
-
-	//!Collection of tool pieces actors
-	vtkActorCollection * Actors;
-
-	//!Collection of tool pieces transforms
-	vtkTransformCollection * Transforms;
-
-	//!Collection of contact point information
-	vtkContactCollection *Contacts;
-
-	//! Appended Polydata
-	vtkAppendPolyData *AppendFilter;
-
-	// **** Geometrical Functions **** //
-	//! Implements the translation of the tool (Local coordinate system)
-	/*!
-	The X & Y parameters contains the relative movement in the horizontal and vertical axes respectively
-	\param x x position of the tool
-	\param y y position of the tool
-	\param z z position of the tool
-	*/
-	virtual void Translate(double x, double y, double z);
-
-	//! Implements the translation of the tool (Local coordinate system)
-	/*!
-		\param vector position vector of the translation
-	 */
-	virtual void Translate(double * vector);
-
-	//!Set tool back to Origin for rotation translation
-	virtual void TranslateToOrigin();
-
-	//!Restore tool position from origin
-	virtual void TranslateFromOrigin();
-
-	//! Implements the lateral movements of the tool  (Local coordinate system)
-	/*!
-	The X parameter contains the relative movement in the horizontal axes
-	\param x x orientation angle
-	*/
-	virtual void RotateX(double x);
-
-	//! Implements the lateral movements of the tool  (Local coordinate system)
-	/*!
-	The Y parameter contains the relative movement in the vertical axes
-	\param y y orientation angle
-	*/
-	virtual void RotateY(double y);
-
-	//! Rotate the tool on its own axes  (Local coordinate system)
-	/*!
-	This function rotate the tool on its own axis the value of an angle given
-	by the "Rotation" variable the rotation is produced acting on the actors who compose the tool.
-	\param rotation rotation angle (radians)
-	*/
-	virtual void RotateZ(double rotation);
 
 private:
 	vtkTool (const vtkTool &);

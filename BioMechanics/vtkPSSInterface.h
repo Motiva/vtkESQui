@@ -43,17 +43,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkPSSInterface_h
 
 #include "vtkESQuiBioMechanicsWin32Header.h"
-#include "vtkBioMechanicalModel.h"
+#include "vtkDeformationModel.h"
 
 #include "vtkParticleSpringSystem.h"
 
 //! Interface to the abstract vtkBiomechanicalModel class for a particle-spring system
 
-class VTK_ESQUI_BIOMECHANICS_EXPORT vtkPSSInterface : public vtkBioMechanicalModel
+class VTK_ESQUI_BIOMECHANICS_EXPORT vtkPSSInterface : public vtkDeformationModel
 {
 public:
 	//! Type Revision Macro
-	vtkTypeRevisionMacro(vtkPSSInterface, vtkBioMechanicalModel);
+	vtkTypeRevisionMacro(vtkPSSInterface, vtkDeformationModel);
 	//! Create a new PSS Interface
 	static vtkPSSInterface* New();
 	const char *GetClassName() {return "vtkPSSInterface";};
@@ -63,7 +63,7 @@ public:
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-	//!Initialize the Biomechanical Model
+	//!Initialize the Bio-Mechanical Model
 	virtual void Init();
 
 	//! Set the distance coefficient
@@ -79,7 +79,7 @@ public:
 	//! Set the neighborhood size
 	vtkSetMacro(RigidityFactor, int);
 	//! Set motion equation solver type.
-	vtkSetMacro(SolverType, vtkParticleSpringSystem::MotionEquationSolverType);
+	vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);
 
 protected:
 	vtkPSSInterface();
@@ -112,7 +112,7 @@ private:
 	int RigidityFactor;
 	//! Motion equation solver type
 	
-	vtkParticleSpringSystem::MotionEquationSolverType SolverType;
+	vtkMotionEquationSolver::MotionEquationSolverType SolverType;
 	
 };
 

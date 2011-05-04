@@ -79,18 +79,6 @@ public:
 	 */
 	virtual void Update();
 
-	//!Set catheter model filename
-	vtkSetStringMacro(FileName);
-	//!Get catheter model filename
-	vtkGetStringMacro(FileName);
-
-	//! Set Polydata object to the tool.
-	/*!
-	 * \param id identifier of the piece
-	 * \param polyData basic polydata that defines the tool
-	 */
-	void SetPolyData(vtkIdType id, vtkPolyData* polyData);
-
 	//! Sets the catheter yaw angle
 	void Yaw(double angle);
 
@@ -109,8 +97,6 @@ private:
 
 	vtkToolCatheter (const vtkToolCatheter &); //Not Implemented
 	void operator =(const vtkToolCatheter &); //Not Implemented
-
-	char * FileName;
 
 };
 #endif

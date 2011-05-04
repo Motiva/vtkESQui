@@ -43,20 +43,20 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkBioEngInterface_h
 
 #include "vtkESQuiCollisionDetectionWin32Header.h"
-#include "vtkCollisionDetectionLibrary.h"
+#include "vtkCollisionDetection.h"
 
 class vtkCollisionDetectionFilter;
 class vtkMatrix4x4;
 
 //! Interface to the collision detection library
 
-class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkBioEngInterface: public vtkCollisionDetectionLibrary
+class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkBioEngInterface: public vtkCollisionDetection
 {
 
 
 public:
 	//! Type revision macro
-	vtkTypeRevisionMacro(vtkBioEngInterface, vtkCollisionDetectionLibrary);
+	vtkTypeRevisionMacro(vtkBioEngInterface, vtkCollisionDetection);
 	//! Create new vtkbioeng interace
 	static vtkBioEngInterface *New();
 	//!Return class name
@@ -74,8 +74,6 @@ public:
 	*/
 	void Update();
 
-	virtual vtkPolyData * GetContactSurface();
-
 protected:
 
 	//! Default constructor
@@ -92,7 +90,7 @@ private:
 	/*!
 	* Should be called every time collision detection is performed
 	*/
-	void Reset();
+	void Clear();
 
 	//!Collision detection filter
 	vtkCollisionDetectionFilter *DetectionFilter;

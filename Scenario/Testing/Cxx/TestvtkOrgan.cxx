@@ -40,7 +40,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 /*
- * TestEsquivtkToolCollection.cxx
+ * TestEsquivtkOrganCollection.cxx
  *
  *  Created on: 12/01/2010
  *      Author: jballesteros
@@ -48,44 +48,78 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <iostream>
 
-#include "vtkToolDummy.h"
-#include "vtkToolCollection.h"
+#include "vtkOrgan.h"
+#include "vtkScenarioElement.h"
+#include "vtkCollisionModel.h"
+#include "vtkVisualizationModel.h"
+#include "vtkDeformationModel.h"
+#include "vtkPSSInterface.h"
+
+#include "vtkSmartPointer.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderer.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
+#include "vtkCamera.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataMapper.h"
 
 using namespace std;
 
-//!This test perform a test of the vtkToolCollection class
+//!This test perform a test of the vtkOrgan class
 
-int TestvtkToolCollection(int argc, char * argv[])
+int TestvtkOrgan(int argc, char * argv[])
 {
-	vtkToolDummy * tool;
-	vtkToolCollection * collection = vtkToolCollection::New();
+	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1.vtp";
+	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1_col.vtp";
+	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg";
 
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		tool = vtkToolDummy::New();
-		tool->SetPosition(0,0,0);
-		tool->SetId(id);
+	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
+	vis->SetName("ellipsoid_16_16_1");
+	vis->SetFileName(fn);
+	vis->SetTextureFileName(tfn);
+	vis->SetPosition(3.0, 2.5, 0.0);
+	vis->SetOrientation(25, -15, 30);
+	vis->SetOpacity(0.5);
+	vis->SetColor(1.0, 1.0, 1.0);
+	vis->Init();
 
-		collection->AddTool(tool);
-		//tool->Print(std::cout);
-		std::cout << "Tool (" << id <<  ") has been inserted...\n";
-	}
+	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
+	col->SetName("vtkbioeng");
+	col->SetFileName(cfn);
+	col->SetPosition(3.0, 2.5, 0.0);
+	col->SetOrientation(25, -15, 30);
+	col->SetOpacity(0.5);
+	col->SetColor(0.0, 0.0, 1.0);
+	col->Init();
 
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
+	//Deformation model. Particle-Spring system
+	vtkSmartPointer<vtkPSSInterface> def = vtkSmartPointer<vtkPSSInterface>::New();
+	def->SetName("ParticleSpring");
+	def->SetFileName(fn);
+	def->SetPosition(3.0, 2.5, 0.0);
+	def->SetOrientation(25, -15, 30);
+	def->SetOpacity(1.0);
+	def->SetColor(0.0, 1.0, 0.0);
+	def->Init();
 
-	collection->InitTraversal();
+	vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
+	element->SetId(0);
+	element->SetName("ellipsoid");
+	element->SetVisualizationModel(vis);
+	element->SetCollisionModel(col);
+	element->SetDeformationModel(def);
+	element->Init();
 
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		std::cout << "#########################\n";
-		vtkTool * tool = collection->GetNextTool();
-		tool->Print(std::cout);
-		std::cout << "Tool (" << id <<  ") has been removed...\n";
-		//collection->RemoveItem(id);
-		tool->Delete();
-	}
-	collection->RemoveAllItems();
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
+	element->RotateZ(35);
+	element->Update();
+
+	vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
+	organ->AddElement(element);
+	organ->Init();
+
+	organ->Print(cout);
 
 	return 0;
 }

@@ -46,11 +46,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTransformCollection.h"
 #include "vtkActorCollection.h"
 
-#include "vtkPiece.h"
-#include "vtkPieceCollection.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
-
 vtkCxxRevisionMacro(vtkToolDummy, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkToolDummy);
 
@@ -58,7 +53,7 @@ vtkStandardNewMacro(vtkToolDummy);
 vtkToolDummy::vtkToolDummy() {
 
 	//Physical pieces Tool Construction
-	vtkPiece * piece;
+/*	vtkPiece * piece;
 
 	for(vtkIdType i = 0; i<2; i++)
 	{
@@ -70,22 +65,19 @@ vtkToolDummy::vtkToolDummy() {
 	// Tool Piece Types (id)
 	// 0 -> Stick
 	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Stick);
-	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Ball);
+	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Ball);*/
 }
 
 //----------------------------------------------------------------------------
 vtkToolDummy::~vtkToolDummy()
 {
-	for (vtkIdType id = 0; id < this->GetNumberOfPieces() ; id++)
-	{
-		this->GetPiece(id)->Delete();
-	}
 }
 
 //----------------------------------------------------------------------------
 void vtkToolDummy::Init() {
 
-	vtkPiece * piece;
+	Superclass::Init();
+/*	vtkPiece * piece;
 
 	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
 	{
@@ -97,21 +89,9 @@ void vtkToolDummy::Init() {
 		this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
 	}
 
-	Superclass::Init();
 
-	this->Update();
-}
 
-//----------------------------------------------------------------------------
-void vtkToolDummy::Update()
-{
-	this->Superclass::Update();
-}
-
-//----------------------------------------------------------------------------
-void vtkToolDummy::SetPolyData(vtkIdType id, vtkPolyData* polyData)
-{
-	this->GetPiece(id)->SetPolyData(polyData);
+	this->Update();*/
 }
 
 void vtkToolDummy::Yaw(double angle)

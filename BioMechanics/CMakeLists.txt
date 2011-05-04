@@ -9,7 +9,7 @@ SET(UKIT BioMechanics)  #Uppercase Kit Name
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
 SET (Kit_SRCS 
-vtkBioMechanicalModel.cxx
+vtkDeformationModel.cxx
 vtkPSSInterface.cxx
 vtkEDMInterface.cxx
 vtkBoundaryCondition.cxx
@@ -18,6 +18,7 @@ vtkBoundaryConditionCollection.cxx
 
 SET_SOURCE_FILES_PROPERTIES(
 vtkBioMechanicalModel
+vtkDeformationModel
 ABSTRACT
 )
 
@@ -30,6 +31,7 @@ ABSTRACT
 SET(KIT_LIBS ${PROJECT_NAME}Common
 vtkCommon
 vtkFiltering
+vtkHybrid
 vtkParticleSpringSystem
 vtkExplicitDeformableModel
 )
@@ -39,6 +41,7 @@ SET(KIT_TCL_LIBS
 ${PROJECT_NAME}CommonTCL
 vtkFilteringTCL
 vtkCommonTCL
+vtkHybridTCL
 )
 
 #

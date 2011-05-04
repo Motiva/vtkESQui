@@ -5,6 +5,7 @@
 
 #include "vtkParticle.h"
 #include "vtkParticleCollection.h"
+#include "vtkParticleSpringSystem.h"
 
 vtkCxxRevisionMacro(vtkEulerSolver, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkEulerSolver);

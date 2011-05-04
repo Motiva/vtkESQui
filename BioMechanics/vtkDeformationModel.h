@@ -39,55 +39,62 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkBioMechanicalModel_h
-#define __vtkBioMechanicalModel_h
+#ifndef __vtkDeformationModel
+#define __vtkDeformationModel
 
-#include "vtkESQuiBioMechanicsWin32Header.h"
-#include "vtkPolyDataAlgorithm.h"
+#include "vtkESQuiScenarioWin32Header.h"
+#include "vtkModel.h"
 
 class vtkPolyData;
 
-class vtkContact;
-class vtkContactCollection;
+class vtkCollision;
+class vtkCollisionCollection;
 class vtkBoundaryCondition;
 class vtkBoundaryConditionCollection;
 
-//! Generic interface to the Biomechanical Model
+//! Class vtkDeformationModel defines a visualization mesh (PolyData) with its texture. Inherits from vtkModel
 
-class VTK_ESQUI_BIOMECHANICS_EXPORT vtkBioMechanicalModel: public vtkPolyDataAlgorithm
-{
+class VTK_ESQUI_SCENARIO_EXPORT vtkDeformationModel: public vtkModel {
+
 public:
-	vtkTypeRevisionMacro(vtkBioMechanicalModel, vtkPolyDataAlgorithm);
 
-	const char *GetClassName() {return "vtkBioMechanicalModel";};
-	//! Print class object values
+	//!Type revision macro
+	vtkTypeRevisionMacro(vtkDeformationModel, vtkModel);
+
+	//!Create a new Scenario object
+	//static vtkDeformationModel * New();
+
+	//!Return the class name
+	const char *GetClassName() {return "vtkDeformationModel";}
+
+	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Set BioMechanical model name
-	vtkSetStringMacro(Name);
+	//!Initialize the Deformation Model
+	virtual void Init();
 
-	//!Get BioMechanical model name
-	vtkGetStringMacro(Name);
+	//!Set the detected collisions
+	void SetCollisions(vtkCollisionCollection * collisions);
 
-	//!Initialize the Biomechanical Model
-	virtual void Init() = 0;
+	//!Get the detected contacts
+	vtkCollisionCollection * GetCollisions();
 
-	//!Insert a contact into the biomechanical model
-	virtual void InsertNextContact(vtkContact * contact) ;
+	//!Add a collision to the model
+	void AddCollision(vtkCollision * c);
 
-	//!Insert a collection of contacts into the biomechanical model
-	virtual void InsertContacts(vtkContactCollection * collection);
+	//!Remove the collision at the specified id
+	void RemoveCollision(vtkIdType id);
 
-	//!Remove contacts of the biomechanical model
-	virtual void DeleteContacts();
+	//!Remove all collisions from the model
+	void RemoveAllCollisions();
 
-	//!Insert a condition into the biomechanical model
+	//!Insert a condition into the deformation model
 	virtual void InsertNextBoundaryCondition(vtkBoundaryCondition * condition) ;
 
-	//!Insert a collection of conditions into the biomechanical model
+	//!Insert a collection of conditions into the deformation model
 	virtual void InsertBoundaryConditions(vtkBoundaryConditionCollection * collection);
 
-	//!Remove conditions of the biomechanical model
+	//!Remove conditions of the deformation model
 	virtual void DeleteBoundaryConditions();
 
 	//! Set Gravity Force (m/s2)
@@ -96,26 +103,29 @@ public:
 	vtkGetVector3Macro(Gravity, double);
 
 protected:
-	vtkBioMechanicalModel();
-	~vtkBioMechanicalModel();
 
-	//!Model Name
-	char * Name;
+	vtkDeformationModel();
+	~vtkDeformationModel();
 
 	//! Gravitation force
 	double Gravity[3];
 
-	//!Contacts
-	vtkContactCollection * Contacts;
+	//!Model collisions.
+	/*!
+	 * This acts as pointer to the collision model collection of collisions
+	 */
+	vtkCollisionCollection * Collisions;
 
 	//!Boundary conditions
 	vtkBoundaryConditionCollection * BoundaryConditions;
 
+	//! Process the algorithm request (Update).
+	//virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+
 private:
-	vtkBioMechanicalModel(const vtkBioMechanicalModel &); //NotImplemented
-	void operator =(const vtkBioMechanicalModel &); //Not Implemented
+	vtkDeformationModel (const vtkDeformationModel &);
+	void operator =(const vtkDeformationModel &);
+
 };
 
-
-#endif 
-
+#endif

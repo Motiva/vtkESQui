@@ -39,36 +39,70 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkOrganCollection.h"
+#ifndef vtkCollisionDetectionLibrary_h
+#define vtkCollisionDetectionLibrary_h
 
-#include "vtkObjectFactory.h"
-#include "vtkOrgan.h"
+#include "vtkESQuiCollisionDetectionWin32Header.h"
+#include "vtkObject.h"
 
-vtkCxxRevisionMacro(vtkOrganCollection, "$Revision: 0.1 $");
-vtkStandardNewMacro(vtkOrganCollection);
+class vtkCollisionCollection;
+class vtkCollisionModel;
+class vtkModelCollection;
 
-//----------------------------------------------------------------------------
-void vtkOrganCollection::ReplaceOrgan(vtkIdType id, vtkOrgan *organ) {
-	this->vtkCollection::ReplaceItem(id, (vtkObject*) organ);
-}
+class vtkPolyData;
 
-//--------------------------------------------------------------------------
-void vtkOrganCollection::AddOrgan(vtkOrgan *organ) {
-	this->vtkCollection::AddItem((vtkObject *) organ);
-}
+//! Generic interface of the Collision Detection Library
 
-//--------------------------------------------------------------------------
-vtkOrgan * vtkOrganCollection::GetOrgan(vtkIdType id) {
-	return static_cast <vtkOrgan *>(this->GetItemAsObject(id));
-}
-
-//--------------------------------------------------------------------------
-vtkOrgan * vtkOrganCollection::GetNextOrgan() {
-	return static_cast <vtkOrgan *>(this->GetNextItemAsObject());
-}
-
-//----------------------------------------------------------------------------
-void vtkOrganCollection::PrintSelf(ostream& os, vtkIndent indent)
+class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollisionDetection: public vtkObject
 {
-	this->Superclass::PrintSelf(os,indent);
-}
+public:
+	//! Type revision macro
+	vtkTypeRevisionMacro(vtkCollisionDetection, vtkObject);
+	vtkCollisionDetection();
+	~vtkCollisionDetection();
+
+	//! Specify the collision models to be checked in the collision detection process
+	void SetModels(vtkModelCollection * models);
+
+	//! Add a new collision model to the detector
+	void AddModel(vtkCollisionModel * element);
+
+	//! Return the collisions detected
+	vtkCollisionCollection * GetCollisions();
+
+	//! Get total number of collisions detected
+	int GetNumberOfCollisions();
+
+	//! Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use
+	/*!
+	* Abstract method to be defined on each implementation class
+	*/
+	virtual void Update() = 0;
+
+	//!Initializes the CollisionDetectionLibrary
+	/*!
+	* Abstract method to be defined on each implementation class
+	*/
+	virtual void Init() = 0;
+
+protected:
+
+	//! Collection of elements to check
+	vtkModelCollection * Models;
+	//! Collection of collisions obtained
+	vtkCollisionCollection * Collisions;
+
+private:
+	vtkCollisionDetection(const vtkCollisionDetection &); //NotImplemented
+	void operator =(const vtkCollisionDetection &); //Not Implemented
+
+	//!Clear the CollisionDetectionLibrary
+	/*!
+	* Pure virtual method. Should be defined in the implementation classes
+	*/
+	virtual void Clear() = 0;
+};
+
+
+#endif
+

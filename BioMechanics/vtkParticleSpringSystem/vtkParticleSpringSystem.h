@@ -45,16 +45,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkParticleSpringSystemWin32Header.h"
 #include "vtkPolyDataAlgorithm.h"
 
+#include "vtkMotionEquationSolver.h"
+
 class vtkMassProperties;
 
 class vtkSpring;
 class vtkSpringCollection;
 class vtkParticle;
 class vtkParticleCollection;
-
-
-class vtkMotionEquationSolver;
-
 
 //! Implementation of the particle-spring deformation model
 /*!
@@ -64,16 +62,6 @@ class vtkMotionEquationSolver;
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkParticleSpringSystem : public vtkPolyDataAlgorithm {
 public:
-
-	
-	//!Enumeration of solver types
-	enum MotionEquationSolverType{
-		Euler = 0,
-		ModifiedEuler = 1,
-		VelocityVerlet = 2,
-		RungeKutta4 = 3
-	};
-	
 
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkParticleSpringSystem,vtkPolyDataAlgorithm);
@@ -110,7 +98,7 @@ public:
 	//! Set rigidity factor.
 	vtkSetMacro(RigidityFactor, vtkIdType);		// Rigidity Factor -> neighborhood size
 	//! Set motion equation solver type.
-	vtkSetMacro(SolverType, MotionEquationSolverType);		// Motion equation solver type
+	vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);		// Motion equation solver type
 
 	//! Set Gravity Force (m/s2)
 	vtkSetVector3Macro(Gravity, double);
@@ -124,17 +112,17 @@ public:
 	 */
 	void SetParticleStatus(vtkIdType id, bool status);
 
-	//! Insert a contact in the particle-spring system
-	void InsertContact(vtkIdType id, double * displacement);
+	//! Insert a collision in the particle-spring system
+	void InsertCollision(vtkIdType id, double * displacement);
 
-	//! Insert contacts particle-spring system
+	//! Insert collisions particle-spring system
 	/*!
 	 * \param ids List of particle ids
 	 * \param displacements Array containing displacement displacements
 	 */
-	void SetContacts(vtkIdList * ids, vtkDoubleArray * displacements);
+	void SetCollisions(vtkIdList * ids, vtkDoubleArray * displacements);
 
-	//! Compute the forces attending to the contacts
+	//! Compute the forces attending to the collisions
 	/*!
 	 * The solver is executed every step, in order to compute the force propagation along the whole system
 	 */
@@ -182,13 +170,13 @@ protected:
 	//! Motion equation solver
 	vtkMotionEquationSolver * Solver;
 	//! Motion equation solver type
-	MotionEquationSolverType SolverType;
+	vtkMotionEquationSolver::MotionEquationSolverType SolverType;
 
 	//Contact data
 	//! Contact Point Ids
-	vtkIdList * ContactIds;
+	vtkIdList * CollisionIds;
 	//! Contact Point Displacements
-	vtkDoubleArray * ContactDisplacements;
+	vtkDoubleArray * CollisionDisplacements;
 
 	//vtkContactCollection * Contacts;
 
@@ -199,7 +187,7 @@ private:
 	//! Create a new spring between two particles
 	void CreateSpring(vtkParticle * p0, vtkParticle * p1);
 
-	//! Compute inserted contacts
+	//! Compute inserted collisions
 	void ComputeContacts();
 
 };

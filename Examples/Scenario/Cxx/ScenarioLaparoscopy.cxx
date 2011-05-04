@@ -40,124 +40,114 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 
+#include "vtkSmartPointer.h"
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
 #include "vtkCamera.h"
 
-#include "vtkSimulationInteractorStyle.h"
 #include "vtkScenario.h"
-#include "vtkTool.h"
-#include "vtkToolLaparoscopy.h"
-#include "vtkToolGrasper.h"
-#include "vtkOrgan.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioObject.h"
+#include "vtkVisualizationModel.h"
+#include "vtkCollisionModel.h"
 #include "vtkPSSInterface.h"
+#include "vtkToolDummy.h"
 
 //!This test perform a test of the vtkToolLaparoscopy class
 
 int main(int argc, char * argv[])
 {
 
-	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp";
-	const char * filename1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
-	const char * filename2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
-	const char * filename3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
+	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp";
+	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp";
+	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
 
-	if (argc > 3)
-	{
-		filename0 = argv[1];
-		filename1 = argv[2];
-		filename2 = argv[3];
-	}
+	const char * fnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp";
+	const char * cfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp";
+	const char * tfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 
-	/**********  Render Window Definitions  ********/
-	vtkRenderer * ren1 = vtkRenderer::New();
-	ren1->SetBackground(1.0,1.0,1.0);
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	renderer->SetBackground(0.8,0.8,0.8);
 
-	vtkRenderWindow *renWin = vtkRenderWindow::New();
-	renWin->AddRenderer(ren1);
-	renWin->SetSize(840,480);
+	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+	renWin->SetSize(800,600);
+	renWin->AddRenderer(renderer);
 
-	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
+	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	iren->SetRenderWindow(renWin);
 
-	//Create new Scenario
-	vtkScenario * scenario = vtkScenario::New();
+	vtkSmartPointer<vtkScenario> scenario = vtkSmartPointer<vtkScenario>::New();
+
+	//Create a probe
+	//Generate probe's first element (stick)
+	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
+	vis->SetName("stick_vis");
+	vis->SetFileName(fn);
+	vis->SetOrigin(0,0,6);
+	vis->SetTextureFileName(tfn);
+	vis->SetOpacity(1.0);
+
+	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
+	col->SetName("stick_col");
+	col->SetFileName(cfn);
+	vis->SetOrigin(0,0,6);
+	col->SetOpacity(1.0);
+	col->SetColor(0.0, 0.0, 1.0);
+
+	vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
+	stick->SetId(0);
+	stick->SetName("stick");
+	stick->SetVisualizationModel(vis);
+	stick->SetCollisionModel(col);
+
+	//Second element (tip)
+	vtkSmartPointer<vtkVisualizationModel> visb = vtkSmartPointer<vtkVisualizationModel>::New();
+	visb->SetName("tip_vis");
+	visb->SetFileName(fnb);
+	visb->SetTextureFileName(tfnb);
+	vis->SetOrigin(0,0,6);
+	visb->SetOpacity(1.0);
+	visb->SetColor(1.0, 0.0, 1.0);
+
+	vtkSmartPointer<vtkCollisionModel> colb = vtkSmartPointer<vtkCollisionModel>::New();
+	colb->SetName("tip_col");
+	colb->SetFileName(cfnb);
+	vis->SetOrigin(0,0,6);
+	colb->SetOpacity(1.0);
+	colb->SetColor(0.0, 0.0, 1.0);
+
+	vtkSmartPointer<vtkScenarioElement> tip = vtkSmartPointer<vtkScenarioElement>::New();
+	tip->SetId(1);
+	tip->SetName("tip");
+	tip->SetVisualizationModel(visb);
+	tip->SetCollisionModel(colb);
+
+	vtkSmartPointer<vtkToolDummy> probe = vtkSmartPointer<vtkToolDummy>::New();
+	probe->AddElement(stick);
+	probe->AddElement(tip);
+
+	probe->Translate(2, 0, 0);
+	probe->RotateY(5);
+	probe->RotateX(-20);
+
 	scenario->SetRenderWindow(renWin);
+	scenario->AddObject(probe);
+	scenario->Init();
 
-	//Set Scenario Interactor
-	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
-	style->DebugOn();
-	style->SetScenario(scenario);
-	iren->SetInteractorStyle(style);
-
-	//Create a Tool
-	vtkToolGrasper * grasper = vtkToolGrasper::New();
-	//Set tool identifier
-	grasper->SetId(0);
-	grasper->SetNumberOfPieces(3);
-	//Set source data filename
-	grasper->SetStickFileName(filename0);
-	grasper->SetLeftLeverFileName(filename1);
-	grasper->SetRightLeverFileName(filename2);
-	//Set geometric parameters
-	grasper->SetPosition(-3, 0, 0);
-	grasper->SetOrientation(0, 10, 0);
-	grasper->SetOrigin(0, 0, 4);
-
-	//Set tool scale (size)
-	grasper->SetScale(1.0, 1.0, 1.0);
-
-	//Add tool to the scenario
-	scenario->AddTool(grasper);
-
-	//Create a Organ
-	vtkOrgan * organ = vtkOrgan::New();
-	//Set organ identifier
-	organ->SetId(0);
-	organ->SetName("Sphere");
-
-	//Set source data filename
-	organ->SetFileName(filename3);
-
-	//Set geometric parameters
-	organ->SetPosition(0.0, 0.0, -3.0);
-	organ->SetOrientation(0.0, 0.0, 0.0);
-	organ->SetOrigin(0.0, 0.0, -3.0);
-
-	//Set tool scale (size)
-	organ->SetScale(1.0, 1.0, 1.0);
-
-	//Set organ type
-	organ->SetOrganType(vtkOrgan::Deformable);
-
-	//Set Deformatio Model
-	vtkPSSInterface * particleSpring = vtkPSSInterface::New();
-	particleSpring->SetDeltaT(0.02);
-	particleSpring->SetGravity(0.0, 0.0, 0.0);
-
-	//Set particle-spring system specific parameters
-	particleSpring->SetSpringCoefficient(100);
-	particleSpring->SetDampingCoefficient(5);
-	particleSpring->SetDistanceCoefficient(20);
-	particleSpring->SetMass(1);
-	particleSpring->SetRigidityFactor(2);
-	particleSpring->SetSolverType(vtkParticleSpringSystem::RungeKutta4);
-
-	organ->SetDeformationModel(particleSpring);
-
-	//Add organ to the scenario
-	scenario->AddOrgan(organ);
+	scenario->Update();
 
 	//Adjust Camera
-	vtkCamera * camera = ren1->GetActiveCamera();
+	vtkCamera * camera = renderer->GetActiveCamera();
 	camera->SetPosition(0, 0, 2);
 	camera->SetFocalPoint(0, 0, -6);
 	camera->SetViewAngle(60);
 	camera->Yaw(0);
 	camera->Elevation(20);
 	camera->Pitch(-15);
-	camera->Dolly(1);
+	camera->Dolly(0.8);
 
 	iren->Initialize();
 

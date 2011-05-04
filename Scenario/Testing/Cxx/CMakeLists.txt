@@ -1,8 +1,10 @@
 SET(KIT vtkESQuiScenario)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
+  TestvtkVisualizationModel.cxx
+  TestvtkScenarioElement.cxx
+  TestvtkOrgan.cxx
+  TestvtkToolLaparoscopy.cxx
   TestvtkScenario.cxx
-  TestvtkToolCollection.cxx
-  TestvtkOrganCollection.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})

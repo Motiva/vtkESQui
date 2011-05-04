@@ -19,3 +19,8 @@ vtkXMLUnstructuredGridWriter writer
 writer SetInput [reader GetOutput]
 writer SetFileName "output.vtu"
 writer Update
+
+# prevent the tk window from showing up then start the event loop
+wm withdraw .
+
+puts "File succesfully converted."

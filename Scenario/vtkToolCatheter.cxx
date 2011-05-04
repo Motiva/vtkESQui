@@ -47,50 +47,25 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkActorCollection.h"
 #include "vtkProperty.h"
 
-#include "vtkPiece.h"
-#include "vtkPieceCollection.h"
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioElementCollection.h"
 
 vtkCxxRevisionMacro(vtkToolCatheter, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkToolCatheter);
 
 //----------------------------------------------------------------------------
-vtkToolCatheter::vtkToolCatheter() {
-
-	//Physical pieces Tool Construction
-	vtkPiece * piece = vtkPiece::New();
-	piece->SetId(0);
-	this->Pieces->AddPiece(piece);
-
-	// Tool Piece Types (id)
-	// 0 -> Stick
-	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Tube);
+vtkToolCatheter::vtkToolCatheter()
+{
 }
 
 //----------------------------------------------------------------------------
 vtkToolCatheter::~vtkToolCatheter()
 {
-	this->GetPiece(0)->Delete();
 }
 
 //----------------------------------------------------------------------------
-void vtkToolCatheter::Init() {
-
-	vtkPiece * piece;
-
-	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
-	{
-		piece = this->GetPiece(id);
-		piece->SetRenderWindow(this->RenderWindow);
-		piece->Init();
-
-		this->Actors->AddItem((vtkActor*) piece->GetActor());
-		this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
-
-		piece->GetActor()->GetProperty()->SetColor(0.6, 0.8, 1);
-	}
-
+void vtkToolCatheter::Init()
+{
 	Superclass::Init();
 }
 
@@ -98,12 +73,6 @@ void vtkToolCatheter::Init() {
 void vtkToolCatheter::Update()
 {
 	this->Superclass::Update();
-}
-
-//----------------------------------------------------------------------------
-void vtkToolCatheter::SetPolyData(vtkIdType id, vtkPolyData* polyData)
-{
-	this->GetPiece(id)->SetPolyData(polyData);
 }
 
 void vtkToolCatheter::Yaw(double angle)

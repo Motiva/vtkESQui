@@ -39,58 +39,46 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-/*
- * TestEsquivtkOrganCollection.cxx
- *
- *  Created on: 12/01/2010
- *      Author: jballesteros
- */
+#include "vtkScenarioObjectCollection.h"
 
-#include <iostream>
+#include "vtkScenarioObject.h"
 
-#include "vtkOrgan.h"
-#include "vtkOrganCollection.h"
+vtkCxxRevisionMacro(vtkScenarioObjectCollection, "$Revision: 0.1 $");
 
-using namespace std;
-
-//!This test perform a test of the vtkOrganCollection class
-
-int TestvtkOrganCollection(int argc, char * argv[])
-{
-	vtkOrgan * organ;
-	vtkOrganCollection * collection = vtkOrganCollection::New();
-
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		organ = vtkOrgan::New();
-		organ->SetId(id);
-		organ->SetName("TestOrgan");
-		organ->SetFileName("FileName");
-		organ->SetTextureFileName("TextureFileName");
-		organ->SetPosition(0,0,0);
-
-
-		collection->AddOrgan(organ);
-		std::cout << "Organ (" << id <<  ") has been inserted...\n";
-	}
-
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
-
-	collection->InitTraversal();
-
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		std::cout << "#########################\n";
-		vtkOrgan * organ = collection->GetNextOrgan();
-		organ->Print(std::cout);
-		std::cout << "Organ (" << id <<  ") has been removed...\n";
-		//collection->RemoveItem(id);
-		organ->Delete();
-	}
-	collection->RemoveAllItems();
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
-
-	return 0;
+//--------------------------------------------------------------------------
+void vtkScenarioObjectCollection::ReplaceObject(vtkIdType id, vtkScenarioObject *e) {
+	this->vtkScenarioObjectCollection::ReplaceItem(id, (vtkObject*) e);
 }
 
+//--------------------------------------------------------------------------
+void vtkScenarioObjectCollection::AddObject(vtkScenarioObject *e) {
+	this->vtkCollection::AddItem((vtkObject *) e);
+}
 
+//--------------------------------------------------------------------------
+void vtkScenarioObjectCollection::RemoveObject(vtkIdType id) {
+	this->vtkCollection::RemoveItem(id);
+}
+
+//--------------------------------------------------------------------------
+vtkScenarioObject * vtkScenarioObjectCollection::GetObject(vtkIdType id) {
+	return static_cast <vtkScenarioObject *>(this->GetItemAsObject(id));
+}
+
+//--------------------------------------------------------------------------
+vtkScenarioObject * vtkScenarioObjectCollection::GetNextObject()
+{
+	return static_cast <vtkScenarioObject *>(this->GetNextItemAsObject());
+}
+
+//--------------------------------------------------------------------------
+vtkIdType vtkScenarioObjectCollection::GetNumberOfObjects()
+{
+	return this->GetNumberOfItems();
+}
+
+//----------------------------------------------------------------------------
+void vtkScenarioObjectCollection::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+}

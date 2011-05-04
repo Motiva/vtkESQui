@@ -30,6 +30,12 @@ vtkMotionEquationSolver::~vtkMotionEquationSolver()
 }
 
 //----------------------------------------------------------------------------
+void vtkMotionEquationSolver::SetDeformationModel(vtkParticleSpringSystem * model)
+{
+	this->DeformationModel = model;
+}
+
+//----------------------------------------------------------------------------
 void vtkMotionEquationSolver::Init()
 {
 	for(int i=0; i< this->NumberOfParticles; i++)

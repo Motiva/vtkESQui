@@ -41,13 +41,14 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkToolEndovascular.h"
 
-#include "vtkTransform.h"
-#include "vtkTransformCollection.h"
+#include "vtkScenarioElement.h"
+#include "vtkScenarioElementCollection.h"
 
 vtkCxxRevisionMacro(vtkToolEndovascular, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 vtkToolEndovascular::vtkToolEndovascular() {
+	this->ToolType =  Endovascular;
 	this->Depth = 0;
 	this->YawAngle = 0;
 	this->PitchAngle = 0;
@@ -65,9 +66,12 @@ vtkToolEndovascular::~vtkToolEndovascular() {
 void vtkToolEndovascular::Init()
 {
 	Superclass::Init();
-	this->YawAngle = this->Orientation[0];
-	this->PitchAngle = this->Orientation[1];
-	this->RollAngle = this->Orientation[2];
+
+	//TODO:This should not be defined. Use present variable Orientation
+	double * orientation = this->GetElement(0)->GetOrientation();
+	this->YawAngle = orientation[0];
+	this->PitchAngle = orientation[1];
+	this->RollAngle = orientation[2];
 }
 
 //--------------------------------------------------------------------------
@@ -77,7 +81,6 @@ void vtkToolEndovascular::SetDepth(double depth)
 	{
 		double step = this->Depth - depth;
 		Superclass::Translate(0, 0, step);
-		this->GetTransform(0)->GetPosition(this->Position);
 		this->Depth = depth;
 	}
 }
@@ -98,40 +101,19 @@ void vtkToolEndovascular::AddDepth(double step) {
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::RotateX(double angle)
 {
-	double roll = this->Orientation[2];
-
-	Superclass::Translate(0, 0, 4);
-	Superclass::RotateZ(-roll);
 	Superclass::RotateX(angle);
-	Superclass::RotateZ(roll);
-	Superclass::Translate(0, 0, -4);
-
-	//Update Orientation
-	this->GetTransform(0)->GetOrientation(this->Orientation);
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::RotateY(double angle)
 {
-	double roll = this->Orientation[2];
-
-	Superclass::Translate(0, 0, 4);
-	Superclass::RotateZ(-roll);
 	Superclass::RotateY(angle);
-	Superclass::RotateZ(roll);
-	Superclass::Translate(0, 0, -4);
-
-	//Update Orientation
-	this->GetTransform(0)->GetOrientation(this->Orientation);
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::RotateZ(double angle)
 {
 	Superclass::RotateZ(angle);
-
-	//Update Orientation
-	this->GetTransform(0)->GetOrientation(this->Orientation);
 }
 
 //--------------------------------------------------------------------------

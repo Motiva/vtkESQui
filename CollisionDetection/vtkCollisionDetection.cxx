@@ -39,68 +39,51 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkOrganCollection_h
-#define __vtkOrganCollection_h
+#include "vtkCollisionDetection.h"
 
-#include "vtkCollection.h"
-#include "vtkESQuiScenarioWin32Header.h"
+#include "vtkCollision.h"
+#include "vtkCollisionCollection.h"
+#include "vtkCollisionModel.h"
+#include "vtkModelCollection.h"
 
-class vtkOrgan;
+vtkCxxRevisionMacro(vtkCollisionDetection, "$Revision: 0.1 $");
 
-//!  Collection of organs
-/*! 
-vtkOrganCollection represents and provides methods to manipulate a list of
-Organs (i.e., vtkOrgan and subclasses). The list is unsorted and duplicate
-entries are not prevented.
-\sa vtkCollection, vtkOrgan
-*/
-class VTK_ESQUI_SCENARIO_EXPORT vtkOrganCollection : public vtkCollection
+//--------------------------------------------------------------------------
+vtkCollisionDetection::vtkCollisionDetection(){
+	this->Models = vtkModelCollection::New();
+	this->Collisions = vtkCollisionCollection::New();
+}
+
+//--------------------------------------------------------------------------
+vtkCollisionDetection::~vtkCollisionDetection()
 {
-public:
-	//!Create new organ object
-	static vtkOrganCollection *New();
-	//!Type Revision Macro
-	vtkTypeRevisionMacro(vtkOrganCollection,vtkCollection);
-	//!Print Class Values
-	virtual void PrintSelf(ostream& os, vtkIndent indent);
+	if(this->Models) this->Models->Delete();
+	if(this->Collisions) this->Collisions->Delete();
+}
 
-	//!Insert an organ to the collection
-	/*!
-	* The organ will be inserted at the end of the list
-	* \param organ vtkOrgan object to be inserted
-	* \sa InsertOrgan(vtkIdType id, vtkOrgan *organism)
-	*/
-	void AddOrgan(vtkOrgan *organ);
+//--------------------------------------------------------------------------
+void vtkCollisionDetection::SetModels(vtkModelCollection * elements)
+{
+	if(this->Models) this->Models->Delete();
+	this->Models = elements;
+}
 
-	//!Insert an organ at the specified index
-	/*!
-	* \param id index of the list where the organ will be inserted
-	* \param organ vtkOrgan object to be inserted
-	* \sa InsertNextOrgan(vtkOrgan *organ)
-	*/
-	void ReplaceOrgan(vtkIdType id, vtkOrgan *organ);
+//--------------------------------------------------------------------------
+void vtkCollisionDetection::AddModel(vtkCollisionModel * element)
+{
+	this->Models->AddModel(element);
+}
 
-	//!Return an organ in specified position of the list.
-	/*!
-	* 	Get the organ in the list with the position id. NULL is returned when the collection is exhausted.
-	* \param id index of the organ to be returned
-	*/
-	vtkOrgan *GetOrgan(vtkIdType id);
+//--------------------------------------------------------------------------
+vtkCollisionCollection * vtkCollisionDetection::GetCollisions()
+{
+	return this->Collisions;
+}
 
-	//!Return the next organism on the list.
-	/*!
-	* Get the organ at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
-	*/
-	vtkOrgan * GetNextOrgan();
+//--------------------------------------------------------------------------
+int vtkCollisionDetection::GetNumberOfCollisions()
+{
+	return this->Collisions->GetNumberOfItems();
+}
 
 
-protected:
-	vtkOrganCollection() {};
-	~vtkOrganCollection() {};
-
-private:
-	vtkOrganCollection(const vtkOrganCollection&);  // Not implemented.
-	void operator=(const vtkOrganCollection&);					// Not implemented.
-};
-
-#endif

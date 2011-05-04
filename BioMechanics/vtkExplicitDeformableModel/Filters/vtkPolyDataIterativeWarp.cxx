@@ -62,10 +62,10 @@ int vtkPolyDataIterativeWarp::FillInputPortInformation(int port, vtkInformation 
 void vtkPolyDataIterativeWarp::Reset( vtkInformationVector** inputVector )
 {
    // get the info objects
-   vtkInformation *inMeshInfo = inputVector[0]->GetInformationObject(0);
+   //vtkInformation *inMeshInfo = inputVector[0]->GetInformationObject(0);
 
-   vtkPolyData* inputMesh = vtkPolyData::SafeDownCast(
-   inMeshInfo->Get(vtkDataObject::DATA_OBJECT()));
+   //vtkPolyData* inputMesh = vtkPolyData::SafeDownCast(
+   //inMeshInfo->Get(vtkDataObject::DATA_OBJECT()));
 
    // Prepare the internal pipeline
    this->BrownianPoints->SetInput( this->GetCachedInput() );

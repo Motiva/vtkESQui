@@ -70,6 +70,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <sys/stat.h>
 #include <assert.h>
 
+//FIXME: Restore CMakeLists to include this class & tests
+
 vtkCxxRevisionMacro(vtkSRMLImporter, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkSRMLImporter);
 

@@ -39,17 +39,67 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkCollisionDetectionLibrary.h"
+#ifndef __vtkModelCollection_h
+#define __vtkModelCollection_h
 
-vtkCxxRevisionMacro(vtkCollisionDetectionLibrary, "$Revision: 0.1 $");
+#include "vtkESQuiScenarioWin32Header.h"
+#include "vtkCollection.h"
 
-vtkCollisionDetectionLibrary::vtkCollisionDetectionLibrary(){
-	this->Organs = NULL;
-	this->Tools = NULL;
-	this->Contacts = NULL;
-}
+class vtkModel;
 
-vtkCollisionDetectionLibrary::~vtkCollisionDetectionLibrary(){
-}
+//!Collection of Models
+class VTK_ESQUI_SCENARIO_EXPORT vtkModelCollection : public vtkCollection
+{
+public:
+	//!Type revision macro
+	vtkTypeRevisionMacro(vtkModelCollection,vtkCollection);
+	//! Create new Model storage collection
+	static vtkModelCollection *New() {return new vtkModelCollection;}
+	//! Return classname
+	const char *GetClassName() {return "vtkModelCollection";}
+	//! Print collection values
+	virtual void PrintSelf(ostream& os, vtkIndent indent);
+
+	//!Insert a Model into the collection
+	/*!
+	* Model will be added at the specified id
+	* \param id index of the list where the Model will be added
+	* \param Model vtkModel object to be inserted
+	* \sa InsertNextModel(vtkModel * Model);
+	*/
+	void InsertModel(vtkIdType id, vtkModel * Model);
+
+	//!Insert Model at the end of the collection
+	/*!
+	* \param Model vtkModel object to be inserted
+	* \sa InsertModel(vtkIdType id, vtkModel * Model)
+	*/
+	void AddModel(vtkModel * Model);
+
+	//!Return Model located the specified id
+	/*!
+	* Get the Model in the list with the position id. NULL is returned when the collection is exhausted.
+	* \param id list index where the Model is stored
+	*/
+	vtkModel * GetModel(vtkIdType id);
+
+	//!Return Model on the collection
+	/*!
+	* Get the Model at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+	*/
+	vtkModel * GetNextModel();
+
+	//!Return number of Models in the collection
+	vtkIdType GetNumberOfModels();
+
+protected:
+	vtkModelCollection() {};
+	~vtkModelCollection() {};
+
+private:
+	vtkModelCollection(const vtkModelCollection&);  // Not implemented.
+	void operator=(const vtkModelCollection&);  // Not implemented.
+};
 
 
+#endif

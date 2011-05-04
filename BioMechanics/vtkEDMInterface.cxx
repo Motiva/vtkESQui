@@ -52,9 +52,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkImageMagnitude.h"
 #include "vtkPointData.h"
 #include "vtkMetaImageWriter.h"
+#include "vtkXMLPolyDataReader.h"
+#include "vtkPolyData.h"
+#include "vtkTransform.h"
+#include "vtkActor.h"
 
-#include "vtkContact.h"
-#include "vtkContactCollection.h"
+#include "vtkCollision.h"
+#include "vtkCollisionCollection.h"
 #include "vtkBoundaryCondition.h"
 #include "vtkBoundaryConditionCollection.h"
 
@@ -86,55 +90,14 @@ vtkEDMInterface::~vtkEDMInterface()
 //--------------------------------------------------------------------------
 void vtkEDMInterface::Init()
 {
-}
-
-// VTK specific method: This method is called when the pipeline is calculated.
-//----------------------------------------------------------------------------
-int vtkEDMInterface::RequestData(
-		vtkInformation *vtkNotUsed(request),
-		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector) {
-
-	// Get the info objects
-	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	vtkInformation *outInfo = outputVector->GetInformationObject(0);
-
-	// Get the input and output
-	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-	//Prepare polydata
-	this->Deformed->DeepCopy(input);
-
-	this->Contacts->InitTraversal();
-	double point[3];
-	while(vtkContact * contact = this->Contacts->GetNextContact())
-	{
-		if(contact->GetContactType() == vtkContact::ToolOrgan)
-		{
-			//Apply displacement
-			vtkIdType id = contact->GetPointId(1);
-			this->Deformed->GetPoint(id, point);
-			double * d = contact->GetDisplacement();
-			cout << point[0] << ", "<< point[1] << ", " << point[2] << "\n";
-			point[0] += d[0];
-			point[1] += d[1];
-			point[2] += d[2];
-			//cout << point[0] << ", "<< point[1] << ", " << point[2] << "\n";
-			this->Deformed->GetPoints()->SetPoint(id, point);
-		}
-	}
-
-	//Reset contacts
-	this->Contacts->RemoveContacts();
-
-	this->Deformed->Update();
-	//this->Deformed->Print(cout);
+	this->Deformed->ShallowCopy(this->Reader->GetOutput());
 
 	//Prepare white image data
 	double spacing[3];
 	spacing[0] = spacing[1] = spacing[2] = 0.5;
 	this->ImageData->SetSpacing(spacing);
+
+	this->Deformed->Update();
 
 	double * bounds = this->Deformed->GetBounds();
 	int dim[3];
@@ -161,26 +124,18 @@ int vtkEDMInterface::RequestData(
 	{
 		this->ImageData->GetPointData()->GetScalars()->SetTuple1(i, inval);
 	}
-	this->ImageData->Update();
 
 	//Define conversion
 	this->ImageStencilFilter->SetInput(this->Deformed);
 	this->ImageStencilFilter->SetOutputOrigin(origin);
 	this->ImageStencilFilter->SetOutputSpacing(spacing);
 	this->ImageStencilFilter->SetOutputWholeExtent(this->ImageData->GetExtent());
-	this->ImageStencilFilter->Update();
 
 	//Generate Stencil
 	this->Stencil->SetInput(this->ImageData);
 	this->Stencil->SetStencil(this->ImageStencilFilter->GetOutput());
 	this->Stencil->ReverseStencilOff();
 	this->Stencil->SetBackgroundValue(outval);
-	this->Stencil->Update();
-
-	vtkMetaImageWriter * writer = vtkMetaImageWriter::New();
-	//writer->SetFileName("edm.mhd");
-	//writer->SetInput(this->Stencil->GetOutput());
-	//writer->Write();
 
 	//Compute forces
 	this->ForceFilter->SetInput(this->Stencil->GetOutput());
@@ -191,8 +146,62 @@ int vtkEDMInterface::RequestData(
 	this->DeformableMesh->IterateFromZeroOff();
 	this->DeformableMesh->SetScaleFactor(0.001);
 	this->DeformableMesh->SetNumberOfIterations(this->NumberOfIterations);
-	this->DeformableMesh->SetInput(0, input);
+	this->DeformableMesh->SetInput(0, this->Reader->GetOutput());
 	this->DeformableMesh->SetInputConnection(1, this->SobelFilter->GetOutputPort());
+}
+
+// VTK specific method: This method is called when the pipeline is calculated.
+//----------------------------------------------------------------------------
+int vtkEDMInterface::RequestData(
+		vtkInformation *vtkNotUsed(request),
+		vtkInformationVector **inputVector,
+		vtkInformationVector *outputVector) {
+
+	// Get the info objects
+	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *outInfo = outputVector->GetInformationObject(0);
+
+	// Get the input and output
+	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
+
+	/*this->Collisions->InitTraversal();
+	double point[3];
+	while(vtkCollision * contact = this->Collisions->GetNextCollision())
+	{
+		if(contact->GetCollisionType() == vtkCollision::ToolOrgan)
+		{
+			//Apply displacement
+			vtkIdType id = contact->GetPointId(1);
+			this->Deformed->GetPoint(id, point);
+			double * d = contact->GetDisplacement();
+			cout << point[0] << ", "<< point[1] << ", " << point[2] << "\n";
+			point[0] += d[0];
+			point[1] += d[1];
+			point[2] += d[2];
+			//cout << point[0] << ", "<< point[1] << ", " << point[2] << "\n";
+			this->Deformed->GetPoints()->SetPoint(id, point);
+		}
+	}
+
+	//Reset contacts
+	this->Collisions->RemoveCollisions();*/
+
+	this->Deformed->ShallowCopy(this->Reader->GetOutput());
+
+	this->ImageData->Update();
+
+	this->ImageStencilFilter->Update();
+
+	this->Stencil->Update();
+
+	//vtkMetaImageWriter * writer = vtkMetaImageWriter::New();
+	//writer->SetFileName("edm.mhd");
+	//writer->SetInput(this->Stencil->GetOutput());
+	//writer->Write();
+
+
 	this->DeformableMesh->Update();
 
 	//this->SobelFilter->Update();
@@ -200,6 +209,8 @@ int vtkEDMInterface::RequestData(
 	//writer->SetFileName("sobel.mhd");
 	//writer->SetInput(this->SobelFilter->GetOutput());
 	//writer->Write();
+
+	this->Actor->SetUserMatrix(this->Transform->GetMatrix());
 
 	output->ShallowCopy(this->DeformableMesh->GetOutput());
 	//output->ShallowCopy(this->Deformed);

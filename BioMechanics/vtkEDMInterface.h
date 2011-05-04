@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define __vtkEDMInterface_h
 
 #include "vtkESQuiBioMechanicsWin32Header.h"
-#include "vtkBioMechanicalModel.h"
+#include "vtkDeformationModel.h"
 
 #include "vtkDeformableMesh.h"
 
@@ -54,11 +54,11 @@ class vtkImageSobel3D;
 
 //! Interface to the abstract vtkBiomechanicalModel class for an explicit deformable model
 
-class VTK_ESQUI_BIOMECHANICS_EXPORT vtkEDMInterface : public vtkBioMechanicalModel
+class VTK_ESQUI_BIOMECHANICS_EXPORT vtkEDMInterface : public vtkDeformationModel
 {
 public:
 	//! Type Revision Macro
-	vtkTypeRevisionMacro(vtkEDMInterface, vtkBioMechanicalModel);
+	vtkTypeRevisionMacro(vtkEDMInterface, vtkDeformationModel);
 	//! Create a new EDM Interface
 	static vtkEDMInterface* New();
 	const char *GetClassName() {return "vtkEDMInterface";};

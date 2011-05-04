@@ -39,72 +39,61 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef vtkCollisionDetectionLibrary_h
-#define vtkCollisionDetectionLibrary_h
+#include <iostream>
+#include "vtkSmartPointer.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderer.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
+#include "vtkCamera.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataMapper.h"
 
-#include "vtkESQuiCollisionDetectionWin32Header.h"
-#include "vtkObject.h"
+#include "vtkVisualizationModel.h"
 
-#include "vtkOrganCollection.h"
-#include "vtkToolCollection.h"
-#include "vtkContactCollection.h"
+using namespace std;
 
-class vtkPolyData;
+//!This test perform a test of the vtkContactCollection class
 
-//! Generic interface of the Collision Detection Library
-
-class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollisionDetectionLibrary: public vtkObject
+int TestvtkVisualizationModel(int argc, char * argv[])
 {
-public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkCollisionDetectionLibrary, vtkObject);
-	vtkCollisionDetectionLibrary();
-	~vtkCollisionDetectionLibrary();
+	const char * filename ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1.vtp";
+	const char * tfilename ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg";
 
-	
-	//! Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use
-	/*!
-	* Abstract method to be defined on each implementation class
-	*/
-	virtual void Update() = 0;
-	//!Initializes the CollisionDetectionLibrary
-	/*!
-	* Abstract method to be defined on each implementation class
-	*/
-	virtual void Init() = 0;
-	
+	vtkSmartPointer<vtkVisualizationModel> model = vtkSmartPointer<vtkVisualizationModel>::New();
+	model->SetFileName(filename);
+	model->SetTextureFileName(tfilename);
+	model->SetPosition(3.0, 2.5, 0.0);
+	model->SetOrientation(25, -15, 30);
+	model->SetVisibility(1);
+	model->SetOpacity(1.0);
+	model->Init();
 
-	virtual vtkPolyData * GetContactSurface() = 0;
-	//! Specify the organs to be checked in the collision detection process
-	vtkSetObjectMacro(Organs, vtkOrganCollection);
-	//! Specify the tools to be checked in the collision detection process
-	vtkSetObjectMacro(Tools, vtkToolCollection);
+	model->Update();
 
-	//! Return the contacts obtained after collision detection has been performed
-	vtkGetObjectMacro(Contacts, vtkContactCollection);
-	//! Get total number of contacts detected
-	vtkIdType GetNumberOfContacts(){return this->Contacts->GetNumberOfItems();}
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-protected:
+	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+	renWin->SetSize(500,500);
+	renWin->AddRenderer(renderer);
 
-	//! Collection of Organs
-	vtkOrganCollection * Organs;
-	//! Collection of Tools
-	vtkToolCollection * Tools;
-	//! Collection of Contacts
-	vtkContactCollection * Contacts;
+	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	iren->SetRenderWindow(renWin);
 
-private:
-	vtkCollisionDetectionLibrary(const vtkCollisionDetectionLibrary &); //NotImplemented
-	void operator =(const vtkCollisionDetectionLibrary &); //Not Implemented
+	vtkActor * actor = model->GetActor();
 
-	//!Clear the CollisionDetectionLibrary
-	/*!
-	* Pure virtual method. Should be defined in the implementation classes
-	*/
-	virtual void Reset() = 0;
-};
+	renderer->AddActor(actor);
+	renderer->SetBackground(1,1,1);
 
+	renderer->ResetCamera();
+	iren->Initialize();
 
-#endif
+	renWin->Render();
+
+	iren->Start();
+
+	return 0;
+}
+
 
