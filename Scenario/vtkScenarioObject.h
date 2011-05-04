@@ -67,6 +67,8 @@ public:
 
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkScenarioObject,vtkPolyDataAlgorithm);
+	//! Create new organ
+	static vtkScenarioObject * New();
 	//!Return the class name
 	const char *GetClassName() {return "vtkScenarioObject";}
 	//!Print class values

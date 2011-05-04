@@ -27,7 +27,6 @@ vtkToolScissors.cxx
 )
 
 SET_SOURCE_FILES_PROPERTIES(
-vtkScenarioObject
 vtkTool
 vtkToolLaparoscopy
 vtkToolEndovascular

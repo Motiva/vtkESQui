@@ -66,11 +66,6 @@ vtkOrgan::~vtkOrgan()
 }
 
 //--------------------------------------------------------------------------
-//void vtkOrgan::Init()
-//{
-//}
-
-//--------------------------------------------------------------------------
 void vtkOrgan::PrintSelf(ostream& os,vtkIndent indent) {
 	this->Superclass::PrintSelf(os,indent);
 }

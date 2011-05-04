@@ -41,6 +41,7 @@ POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkScenarioObject.h"
 
+#include "vtkObjectFactory.h"
 #include "vtkAppendPolyData.h"
 #include "vtkInformation.h"
 #include "vtkInformationVector.h"
@@ -51,6 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkCollisionCollection.h"
 
 vtkCxxRevisionMacro(vtkScenarioObject, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkScenarioObject);
 
 //--------------------------------------------------------------------------
 vtkScenarioObject::vtkScenarioObject() {
