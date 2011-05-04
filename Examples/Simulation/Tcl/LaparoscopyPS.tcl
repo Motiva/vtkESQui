@@ -1,5 +1,5 @@
 puts "----------------------------------------------"
-puts "|    ESQuiLap Precission & Speed Exercise    |"
+puts "|    vtkESQui Precission & Speed Exercise    |"
 puts "----------------------------------------------\n"
 
 puts "Loading VTK in progress ...\n"
@@ -25,38 +25,41 @@ proc run {} {
 	global timeout
 	scene
 	movement
-	after 100 collision
+	#after 100 collision
 }
 
 proc movement {} {
 	global id ids alpha
-	set organ [scenario GetOrgan [lindex $ids $id]]
+	set j [expr $id + 1]
+	set organ ball_${j}
 	incr alpha 5
 	set rad [expr $alpha * 0.01745311]
 	set x [expr 0.1 * sin ($rad)]
 	set y [expr 0.1 * cos ($rad)]
-	$organ Translate 0.0 $x $y
+	$organ Translate $x $y 0.0
 	after 20 movement
 }
 
 # Modify scenario
 proc scene {} {
-	global timeout id ids
+	global timeout id ids ball_1
 	incr id
 	set id [expr $id % 3]
 	foreach j $ids {
-		set o [scenario GetOrgan $j]
+		set o ball_${j}
 		if {[expr [$o IsDisabled]] == 0} {
 			if {[expr [lindex $ids $id]] == $j} {
 				#Show ball
+				puts "Show $j"
 				$o Show
 			} else {
 				#Hide ball
 				$o Hide
+				puts "Hide $j"
 			}
 		}
 	}
-	if {[expr [ [scenario GetOrgan [lindex $ids $id]] IsDisabled ] ] == 1} {
+	if {[expr [ [scenario GetObject [lindex $ids $id]] IsDisabled ] ] == 1} {
 		#If ball is disabled jump to next step immediately 
 		after 10 scene
 	} else { 
@@ -101,17 +104,18 @@ proc collision {} {
 
 #catch {package require vtkesquiHaptics}
 #catch {::vtk::load_component vtkesquiHapticsTCL}
-
 set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp"
 set fn0t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg"
 set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp"
-set fn1t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/aluminium.jpg"
-#set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/RightLever.vtp"
+set fn0c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick_col.vtp"
+set fn1c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip_col_lr.vtp"
 set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
-set fn3t0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg"
-set fn3t1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg"
-set fn3t2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/bothball.jpg"
+set fn3c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col_bb.vtp"
+set fn3tb "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/bothball.jpg"
+set fn3tl "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg"
+set fn3tr "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg"
 set fn4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
+set fn4c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach_col.vtp"
 set fn4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg"
 
 ###  Render Window Definitions  ###
@@ -129,168 +133,154 @@ iren SetRenderWindow renWin
 vtkScenario scenario
 scenario SetRenderWindow renWin
 
-###  Load Deformable Model  ###
-#Create a cavity organ
-vtkOrgan cavity
-#Set organ identifier
-cavity SetId 0
-cavity SetName "Cavity"
-
-#Set source data filename
-cavity SetFileName $fn4
-cavity SetTextureFileName $fn4t
-
-#Set geometric parameters
-cavity SetPosition 0.0 0.0 0.0
-cavity SetOrientation 0.0 0.0 0.0
-cavity SetOrigin 0.0 0.0 0.0
-
-#Set tool scale  size
-cavity SetScale 1.0 1.0 1.0
-
-#Set organ type
-#cavity SetOrganType vtkOrgan::Deformable
-
-#Set Deformation Model
-vtkPSSInterface ps1
-ps1 SetDeltaT 0.01
-ps1 SetGravity 0.0 0.0 0.0
-
-#Set particle-spring system specific parameters
-ps1 SetSpringCoefficient 100
-ps1 SetDampingCoefficient 5
-ps1 SetDistanceCoefficient 20
-ps1 SetMass 1
-ps1 SetRigidityFactor 2
-#ps1 SetSolverType vtkParticleSpringSystem::RungeKutta4
-
-#Set boundary conditions
-set boundary {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239}
-foreach j $boundary {
-	#ps1 Set
-	puts "$j"
-}
-
-cavity SetDeformationModel ps1
-
-#Add organ to the scenario
-scenario AddOrgan cavity
-
-#Create a Organ
-vtkOrgan ball
-#Set organ identifier
-ball SetId 1
-ball SetName "LeftBall"
-
-#Set source data filename
-ball SetFileName $fn3
-ball SetTextureFileName $fn3t0
-
-#Set geometric parameters
-ball SetPosition 0.0 0.0 -4.0
-ball SetOrientation 0.0 -90.0 0.0
-ball SetOrigin 0.0 0.0 -4.0
-
-#Set tool scale  size
-ball SetScale 0.5 0.5 0.5
-
-#Add organ to the scenario
-scenario AddOrgan ball
-
-#Create a Organ
-vtkOrgan ball1
-#Set organ identifier
-ball1 SetId 2
-ball1 SetName "RightBall"
-
-#Set source data filename
-ball1 SetFileName $fn3
-ball1 SetTextureFileName $fn3t1
-
-#Set geometric parameters
-ball1 SetPosition -3.0 0.0 -3.0
-ball1 SetOrientation 0.0 -90.0 0.0
-ball1 SetOrigin -3.0 0.0 -3.0
-
-#Set tool scale  size
-ball1 SetScale 0.5 0.5 0.5
-
-#Add organ to the scenario
-scenario AddOrgan ball1
-
-#Create a Organ
-vtkOrgan ball2
-#Set organ identifier
-ball2 SetId 3
-ball2 SetName "BothBall"
-
-#Set source data filename
-ball2 SetFileName $fn3
-ball2 SetTextureFileName $fn3t2
-
-#Set geometric parameters
-ball2 SetPosition 3.0 0.0 -3.0
-ball2 SetOrientation 0.0 -90.0 0.0
-ball2 SetOrigin 3.0 0.0 -3.0
-
-#Set tool scale  size
-ball2 SetScale 0.5 0.5 0.5
-
-#Add organ to the scenario
-scenario AddOrgan ball2
-
 ### Tools ###
-#Add new tool To the scenario
-#Create a Tool
-vtkToolProbe leftProbe
-#Set tool identifier
-leftProbe SetId 0
-#Set source data filename
-leftProbe SetStickFileName $fn0
-leftProbe SetTipFileName $fn1
-#Set texture filename
-leftProbe SetStickTextureFileName $fn0t
-leftProbe SetTipTextureFileName $fn1t
-#Set tip color
-leftProbe SetColor 1 0.0 1.0 0.0
-#Set geometric parameters
-leftProbe SetPosition -3 0 0
-leftProbe SetOrientation 0 10 0
-leftProbe SetOrigin 0 0 4
+#Add new tool to the scenario 
+#Left Probe
+vtkVisualizationModel vis_stick 
+vis_stick SetName "vis_stick"
+vis_stick SetFileName $fn0
+vis_stick SetTextureFileName $fn0t
+vis_stick SetOrigin 0.0 0.0 6.0
+vis_stick SetVisibility 1
+vis_stick SetColor 1.0 1.0 1.0
 
-#Set tool scale  size
-leftProbe SetScale 1.0 1.0 1.0
-leftProbe SetDeltaT 0.01
+vtkCollisionModel col_stick 
+col_stick SetName "col_stick"
+col_stick SetFileName $fn0c
+col_stick SetOrigin 0 0 6
+col_stick SetVisibility 0
+col_stick SetColor 0.0 0.0 1.0
 
-#Add tool to the scenario
-scenario AddTool leftProbe
+vtkScenarioElement stick 
+stick SetName "stick"
+stick SetVisualizationModel vis_stick
+stick SetCollisionModel col_stick
 
-#Create a Tool
-vtkToolProbe rightProbe
-#Set tool identifier
-rightProbe SetId 1
-#Set source data filename
-rightProbe SetStickFileName $fn0
-rightProbe SetTipFileName $fn1
-#Set texture filename
-rightProbe SetStickTextureFileName $fn0t
-rightProbe SetTipTextureFileName $fn1t
-#Set tip color
-rightProbe SetColor 1 1.0 0.0 0.0
-#Set geometric parameters
-rightProbe SetPosition 3 0 0
-rightProbe SetOrientation 0 -10 0
-rightProbe SetOrigin 0 0 4
+#Second element (tip)
+vtkVisualizationModel vis_tip_l 
+vis_tip_l SetName "vis_tip_r"
+vis_tip_l SetFileName $fn1
+vis_tip_l SetTextureFileName $fn0t
+vis_tip_l SetOrigin 0 0 6
+vis_tip_l SetVisibility 1
+vis_tip_l SetColor 1.0 0.0 0.0
 
-#Set tool scale  size
-rightProbe SetScale 1.0 1.0 1.0
-rightProbe SetDeltaT 0.01
+vtkCollisionModel col_tip_l 
+col_tip_l SetName "col_tip_l"
+col_tip_l SetFileName $fn1c
+col_tip_l SetOrigin 0 0 6
+col_tip_l SetVisibility 0
+col_tip_l SetColor 0.0 0.0 1.0
 
-#Add tool to the scenario
-scenario AddTool rightProbe
+vtkScenarioElement left_tip 
+left_tip SetName "tip_left"
+left_tip SetVisualizationModel vis_tip_l
+left_tip SetCollisionModel col_tip_l
 
+vtkToolProbe leftProbe 
+leftProbe SetStick stick
+leftProbe SetTip left_tip
 
-###  Load Scene Environment  ###
+###  Load Organs (Static balls)  ###
+vtkVisualizationModel vis_ball_1
+vis_ball_1 SetName "sphere_vis_1"
+vis_ball_1 SetFileName $fn3 
+vis_ball_1 SetTextureFileName $fn3tb 
+vis_ball_1 SetVisibility 1 
+vis_ball_1 SetPosition 0 0 -5
+vis_ball_1 SetColor 1.0 1.0 1.0 
+
+vtkCollisionModel col_ball_1
+col_ball_1 SetName "sphere_col_1"
+col_ball_1 SetFileName $fn3c
+col_ball_1 SetVisibility 1
+col_ball_1 SetPosition 0 0 -5
+col_ball_1 SetColor 0.0 0.0 1.0 
+
+vtkScenarioElement el_ball_1  
+el_ball_1 SetName "ball_1"
+el_ball_1 SetVisualizationModel vis_ball_1 
+el_ball_1 SetCollisionModel col_ball_1 
+
+vtkOrgan ball_1  
+ball_1 AddElement el_ball_1 
+
+vtkVisualizationModel vis_ball_2
+vis_ball_2 SetName "sphere_vis_2"
+vis_ball_2 SetFileName $fn3 
+vis_ball_2 SetTextureFileName $fn3tl
+vis_ball_2 SetVisibility 1 
+vis_ball_2 SetPosition -3 0 -5
+vis_ball_2 SetColor 1.0 1.0 1.0 
+
+vtkCollisionModel col_ball_2
+col_ball_2 SetName "sphere_col_2"
+col_ball_2 SetFileName $fn3c
+col_ball_2 SetVisibility 1
+col_ball_2 SetPosition -3 0 -5
+col_ball_2 SetColor 0.0 0.0 1.0 
+
+vtkScenarioElement el_ball_2  
+el_ball_2 SetName "ball_2"
+el_ball_2 SetVisualizationModel vis_ball_2 
+el_ball_2 SetCollisionModel col_ball_2 
+
+vtkOrgan ball_2  
+ball_2 AddElement el_ball_2 
+
+vtkVisualizationModel vis_ball_3
+vis_ball_3 SetName "sphere_vis_3"
+vis_ball_3 SetFileName $fn3 
+vis_ball_3 SetTextureFileName $fn3tr
+vis_ball_3 SetVisibility 1 
+vis_ball_3 SetPosition 3 0 -5
+vis_ball_3 SetColor 1.0 1.0 1.0 
+
+vtkCollisionModel col_ball_3
+col_ball_3 SetName "sphere_col_3"
+col_ball_3 SetFileName $fn3c
+col_ball_3 SetVisibility 1
+col_ball_3 SetPosition 3 0 -5
+col_ball_3 SetColor 0.0 0.0 1.0 
+
+vtkScenarioElement el_ball_3  
+el_ball_3 SetName "ball_3"
+el_ball_3 SetVisualizationModel vis_ball_3 
+el_ball_3 SetCollisionModel col_ball_3 
+
+vtkOrgan ball_3  
+ball_3 AddElement el_ball_3 
+
+#Stomach
+vtkVisualizationModel vis_stomach
+vis_stomach SetName "stomach_vis"
+vis_stomach SetFileName $fn4
+vis_stomach SetTextureFileName $fn4t
+vis_stomach SetVisibility 1
+vis_stomach SetColor 1.0 1.0 1.0
+
+vtkScenarioElement el_stomach
+el_stomach SetName "Stomach"
+el_stomach SetVisualizationModel vis_stomach
+#el_stomach SetCollisionModel col_stomach
+#el_stomach SetDeformationModel def_stomach
+
+vtkOrgan stomach
+stomach AddElement el_stomach
+
+#/**********  Initialize Scenario  ********/
+scenario AddObject leftProbe
+scenario AddObject ball_1
+scenario AddObject ball_2
+scenario AddObject ball_3
+scenario AddObject stomach
+scenario Init
+
+leftProbe Translate -2 0 -2
+leftProbe RotateX 10
+
+#ball_1 RotateY 180
+#ball_1 RotateX -60
 
 ### Lights ###
 [ren1 GetLights] InitTraversal
@@ -298,7 +288,7 @@ vtkLight headLight
 headLight SetLightTypeToHeadlight
 headLight PositionalOn
 headLight SetIntensity 0.5
-headLight SetConeAngle 40
+headLight SetConeAngle 20
 ren1 AddLight headLight
 	
 vtkLight ambientLight 
@@ -322,6 +312,7 @@ $camera SetViewAngle 70
 ### Simulation Setup ###
 vtkSimulationInteractorStyle style
 style SetScenario scenario
+style Init
 iren SetInteractorStyle style
 
 vtkSimulation simulation

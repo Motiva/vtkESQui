@@ -352,7 +352,7 @@ void vtkModel::Restore()
 void vtkModel::Hide()
 {
 	this->Status = Hidden;
-	this->Actor->GetProperty()->SetOpacity(0.0);
+	this->Visibility = 0;
 	this->Modified();
 }
 
@@ -360,7 +360,7 @@ void vtkModel::Hide()
 void vtkModel::Disable()
 {
 	this->Status = Disabled;
-	this->Actor->GetProperty()->SetOpacity(0.0);
+	this->Visibility = 0;
 	this->Modified();
 }
 
@@ -368,7 +368,7 @@ void vtkModel::Disable()
 void vtkModel::Show()
 {
 	this->Status = Visible;
-	this->Actor->GetProperty()->SetOpacity(this->Opacity);
+	this->Visibility = 1;
 	this->Modified();
 }
 

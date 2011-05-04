@@ -26,11 +26,17 @@ proc scene {} {
 #catch {package require vtkesquiHaptics}
 #catch {::vtk::load_component vtkesquiHapticsTCL}
 set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp"
+set fn0t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg"
 set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp"
 set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp"
+set fn0c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick_col.vtp"
+set fn1c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever_col_lr.vtp"
+set fn2c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever_col_lr.vtp"
 set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
+set fn3c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
 set fn3t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg"
 set fn4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
+set fn4c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach_col.vtp"
 set fn4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg"
 
 ###  Render Window Definitions  ###
@@ -48,130 +54,142 @@ iren SetRenderWindow renWin
 vtkScenario scenario
 scenario SetRenderWindow renWin
 
-###  Load Deformable Model  ###
-#Create a Organ
-vtkOrgan organ
-#Set organ identifier
-organ SetId 0
-organ SetName "Sphere"
-
-#Set source data filename
-organ SetFileName $fn3
-organ SetTextureFileName $fn3t
-
-#Set geometric parameters
-organ SetPosition 0.0 0.0 -3.0
-organ SetOrientation 0.0 0.0 0.0
-organ SetOrigin 0.0 0.0 -3.0
-
-#Set tool scale  size
-organ SetScale 1.0 1.0 1.0
-
-#Set organ type (Deformable)
-#organ SetOrganType 1
-
-#Set Deformation Model
-vtkPSSInterface particleSpring
-particleSpring SetDeltaT 0.01
-particleSpring SetGravity 0.0 0.0 0.0
-
-#Set particle-spring system specific parameters
-particleSpring SetSpringCoefficient 100
-particleSpring SetDampingCoefficient 5
-particleSpring SetDistanceCoefficient 20
-particleSpring SetMass 1
-particleSpring SetRigidityFactor 2
-#particleSpring SetSolverType vtkParticleSpringSystem::RungeKutta4
-
-organ SetDeformationModel particleSpring
-
-#Add organ to the scenario
-scenario AddOrgan organ
-
-#Create a cavity organ
-vtkOrgan cavity
-#Set organ identifier
-cavity SetId 1
-cavity SetName "Cavity"
-
-#Set source data filename
-cavity SetFileName $fn4
-cavity SetTextureFileName $fn4t
-
-#Set geometric parameters
-cavity SetPosition 0.0 0.0 0.0
-cavity SetOrientation 0.0 0.0 0.0
-cavity SetOrigin 0.0 0.0 0.0
-
-#Set tool scale  size
-cavity SetScale 1.0 1.0 1.0
-
-#Set organ type
-#cavity SetOrganType vtkOrgan::Deformable
-
-#Set Deformation Model
-vtkPSSInterface ps1
-ps1 SetDeltaT 0.01
-ps1 SetGravity 0.0 0.0 0.0
-
-#Set particle-spring system specific parameters
-ps1 SetSpringCoefficient 100
-ps1 SetDampingCoefficient 5
-ps1 SetDistanceCoefficient 20
-ps1 SetMass 1
-ps1 SetRigidityFactor 2
-#ps1 SetSolverType vtkParticleSpringSystem::RungeKutta4
-
-cavity SetDeformationModel ps1
-
-#Add organ to the scenario
-scenario AddOrgan cavity
-
 ### Tools ###
-#Add new tool To the scenario
-#Create a Tool
-vtkToolGrasper leftGrasper
-#Set tool identifier
-leftGrasper SetId 0
-leftGrasper SetNumberOfPieces 3
-#Set source data filename
-leftGrasper SetStickFileName $fn0
-leftGrasper SetLeftLeverFileName $fn1
-leftGrasper SetRightLeverFileName $fn2
-#Set geometric parameters
-leftGrasper SetPosition -3 0 0
-leftGrasper SetOrientation 0 10 0
-leftGrasper SetOrigin 0 0 4
+#Add new tool to the scenario 
+#Left grasper
+vtkVisualizationModel vis_stick 
+vis_stick SetName "vis_stick"
+vis_stick SetFileName $fn0
+vis_stick SetTextureFileName $fn0t
+vis_stick SetOrigin 0.0 0.0 6.0
+vis_stick SetVisibility 1
+vis_stick SetColor 1.0 1.0 1.0
 
-#Set tool scale  size
-leftGrasper SetScale 1.0 1.0 1.0
-leftGrasper SetDeltaT 0.01
+vtkCollisionModel col_stick 
+col_stick SetName "col_stick"
+col_stick SetFileName $fn0c
+col_stick SetOrigin 0 0 6
+col_stick SetVisibility 0
+col_stick SetColor 0.0 0.0 1.0
 
-#Add tool to the scenario
-scenario AddTool leftGrasper
+vtkScenarioElement stick 
+stick SetName "stick"
+stick SetVisualizationModel vis_stick
+stick SetCollisionModel col_stick
 
-#Create a Tool
-vtkToolGrasper rightGrasper
-#Set tool identifier
-rightGrasper SetId 1
-rightGrasper SetNumberOfPieces 3
-#Set source data filename
-rightGrasper SetStickFileName $fn0
-rightGrasper SetLeftLeverFileName $fn1
-rightGrasper SetRightLeverFileName $fn2
-#Set geometric parameters
-rightGrasper SetPosition 3 0 0
-rightGrasper SetOrientation 0 -10 0
-rightGrasper SetOrigin 0 0 4
+#Second element (left lever)
+vtkVisualizationModel vis_lever_l 
+vis_lever_l SetName "vis_lever_r"
+vis_lever_l SetFileName $fn1
+vis_lever_l SetTextureFileName $fn0t
+vis_lever_l SetOrigin 0 0 6
+vis_lever_l SetVisibility 1
+vis_lever_l SetColor 0.0 1.0 1.0
 
-#Set tool scale  size
-rightGrasper SetScale 1.0 1.0 1.0
-rightGrasper SetDeltaT 0.01
+vtkCollisionModel col_lever_l 
+col_lever_l SetName "col_lever_l"
+col_lever_l SetFileName $fn1c
+col_lever_l SetOrigin 0 0 6
+col_lever_l SetVisibility 0
+col_lever_l SetColor 0.0 0.0 1.0
 
-#Add tool to the scenario
-scenario AddTool rightGrasper
+vtkScenarioElement left_lever 
+left_lever SetName "lever_left"
+left_lever SetVisualizationModel vis_lever_l
+left_lever SetCollisionModel col_lever_l
 
-###  Load Scene Environment  ###
+#Third element (right lever)
+vtkVisualizationModel vis_lever_r 
+vis_lever_r SetName "vis_lever_r"
+vis_lever_r SetFileName $fn2
+vis_lever_r SetOrigin 0 0 6
+vis_lever_r SetTextureFileName $fn0t
+vis_lever_r SetVisibility 1
+vis_lever_r SetColor 0.0 1.0 1.0
+
+vtkCollisionModel col_lever_r 
+col_lever_r SetName "col_lever_r"
+col_lever_r SetFileName $fn2c
+col_lever_r SetOrigin 0 0 6
+col_lever_r SetVisibility 0
+col_lever_r SetColor 0.0 0.0 1.0
+
+vtkScenarioElement right_lever 
+right_lever SetName "lever_right"
+right_lever SetVisualizationModel vis_lever_r
+right_lever SetCollisionModel col_lever_r
+
+vtkToolGrasper leftGrasper 
+leftGrasper SetStick stick
+leftGrasper SetLeftLever left_lever
+leftGrasper SetRightLever right_lever
+
+
+###  Load Organs  ###
+vtkVisualizationModel vis_organ
+vis_organ SetName "sphere_vis"
+vis_organ SetFileName $fn3 
+vis_organ SetTextureFileName $fn3t 
+vis_organ SetVisibility 1 
+vis_organ SetColor 1.0 1.0 1.0 
+
+vtkCollisionModel col_organ
+col_organ SetName "sphere_col"
+col_organ SetFileName $fn3c
+col_organ SetVisibility 1
+col_organ SetColor 0.0 0.0 1.0 
+
+#Deformation model. Particle-Spring system
+vtkPSSInterface def_organ
+def_organ SetName "sphere_def" 
+def_organ SetFileName $fn3 
+def_organ SetVisibility 0 
+def_organ SetColor 0.0 1.0 0.0 
+def_organ SetDeltaT 0.01 
+def_organ SetGravity 0.0 0.0 0.0 
+
+def_organ SetSpringCoefficient 100 
+def_organ SetDampingCoefficient 5 
+def_organ SetDistanceCoefficient 20 
+def_organ SetMass 1 
+def_organ SetRigidityFactor 2 
+
+vtkScenarioElement el_organ  
+el_organ SetName "Sphere"
+el_organ SetVisualizationModel vis_organ 
+el_organ SetCollisionModel col_organ 
+el_organ SetDeformationModel def_organ 
+
+vtkOrgan organ  
+organ AddElement el_organ 
+
+#Stomach
+vtkVisualizationModel vis_stomach
+vis_stomach SetName "stomach_vis"
+vis_stomach SetFileName $fn4
+vis_stomach SetTextureFileName $fn4t
+vis_stomach SetVisibility 1
+vis_stomach SetColor 1.0 1.0 1.0
+
+vtkScenarioElement el_stomach
+el_stomach SetName "Stomach"
+el_stomach SetVisualizationModel vis_stomach
+#el_stomach SetCollisionModel col_stomach
+#el_stomach SetDeformationModel def_stomach
+
+vtkOrgan stomach
+stomach AddElement el_stomach
+
+#/**********  Initialize Scenario  ********/
+scenario AddObject leftGrasper
+scenario AddObject organ
+scenario AddObject stomach
+scenario Init
+
+leftGrasper Translate -2 0 -2
+leftGrasper RotateX 10
+
+organ Translate 0 0 -4
 
 ### Lights ###
 [ren1 GetLights] InitTraversal
@@ -203,6 +221,7 @@ $camera SetViewAngle 70
 ### Simulation Setup ###
 vtkSimulationInteractorStyle style
 style SetScenario scenario
+style Init
 iren SetInteractorStyle style
 
 vtkSimulation simulation

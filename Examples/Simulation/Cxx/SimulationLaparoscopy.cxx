@@ -74,9 +74,9 @@ int main(int argc, char * argv[])
 	const char * fn0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp";
 	const char * fn0c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick_col.vtp";
 	const char * fn1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
-	const char * fn1c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever_col.vtp";
+	const char * fn1c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever_col_lr.vtp";
 	const char * fn2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
-	const char * fn2c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever_col.vtp";
+	const char * fn2c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever_col_lr.vtp";
 	const char * fn0t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 	const char * fn3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
 	const char * fn3c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp";
@@ -153,10 +153,10 @@ int main(int argc, char * argv[])
 	col_lever_l->SetVisibility(0.0);
 	col_lever_l->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> left = vtkSmartPointer<vtkScenarioElement>::New();
-	left->SetName("lever_left");
-	left->SetVisualizationModel(vis_lever_l);
-	left->SetCollisionModel(col_lever_l);
+	vtkSmartPointer<vtkScenarioElement> left_lever = vtkSmartPointer<vtkScenarioElement>::New();
+	left_lever->SetName("lever_left");
+	left_lever->SetVisualizationModel(vis_lever_l);
+	left_lever->SetCollisionModel(col_lever_l);
 
 	//Third element (right lever)
 	vtkSmartPointer<vtkVisualizationModel> vis_lever_r = vtkSmartPointer<vtkVisualizationModel>::New();
@@ -174,15 +174,15 @@ int main(int argc, char * argv[])
 	col_lever_r->SetVisibility(0.0);
 	col_lever_r->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> right = vtkSmartPointer<vtkScenarioElement>::New();
-	right->SetName("lever_right");
-	right->SetVisualizationModel(vis_lever_r);
-	right->SetCollisionModel(col_lever_r);
+	vtkSmartPointer<vtkScenarioElement> right_lever = vtkSmartPointer<vtkScenarioElement>::New();
+	right_lever->SetName("lever_right");
+	right_lever->SetVisualizationModel(vis_lever_r);
+	right_lever->SetCollisionModel(col_lever_r);
 
 	vtkSmartPointer<vtkToolGrasper> leftGrasper = vtkSmartPointer<vtkToolGrasper>::New();
 	leftGrasper->SetStick(stick);
-	leftGrasper->SetLeftLever(left);
-	leftGrasper->SetRightLever(right);
+	leftGrasper->SetLeftLever(left_lever);
+	leftGrasper->SetRightLever(right_lever);
 
 	/**********  Load Organs ********/
 	vtkSmartPointer<vtkVisualizationModel> vis_organ = vtkSmartPointer<vtkVisualizationModel>::New();
@@ -195,7 +195,7 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkCollisionModel> col_organ = vtkSmartPointer<vtkCollisionModel>::New();
 	col_organ->SetName("sphere_col");
 	col_organ->SetFileName(fn3c);
-	col_organ->SetVisibility(0);
+	col_organ->SetVisibility(1.0);
 	col_organ->SetColor(0.0, 0.0, 1.0);
 
 	//Deformation model. Particle-Spring system
@@ -266,14 +266,14 @@ int main(int argc, char * argv[])
 
 	/**********  Initialize Scenario  ********/
 	scenario->AddObject(leftGrasper);
-	scenario->AddObject(organ);
+	//scenario->AddObject(organ);
 	scenario->AddObject(stomach);
 	scenario->Init();
 
 	leftGrasper->Translate(position);
 	leftGrasper->RotateX(10);
 
-	organ->Translate(0, 0, -4);
+	//organ->Translate(0, 0, -4);
 	stomach->Translate(0, 0, -2);
 
 	//Debug purposes

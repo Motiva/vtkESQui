@@ -131,7 +131,7 @@ void vtkBioEngInterface::Update()
 				//Avoid collisions between same object elements
 				if(m0->GetObjectId() != m1->GetObjectId())
 				{
-					cout << m0->GetName() << "<->" << m1->GetName() << "\n";
+					//cout << m0->GetName() << "<->" << m1->GetName() << "\n";
 					//Each collision model transformed polydata (mx-GetOutput(1) is set as an input of the CDL
 					this->DetectionFilter->SetInput(0, m0->GetOutput(1));
 					this->DetectionFilter->SetInput(1, m1->GetOutput(1));

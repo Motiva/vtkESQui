@@ -123,7 +123,7 @@ IF(VTK_FOUND)
     Common
     Scenario
     Simulation
-    #Utilities
+    Utilities
   )
 
   IF(VTKESQUI_USE_HAPTICS)
