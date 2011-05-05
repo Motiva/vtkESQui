@@ -12,14 +12,18 @@ puts "Loading vtkESQui in progress ...\n"
 package require vtkesqui
 puts "vtkESQui loaded.\n"
 
+#ball identifiers
+global ids; set ids {2 3 4}
+#active ball identifier index. lindex $ids
 global id; set id 0
-global ids; set ids {1 2 3}
+#round management
 global roundid; set roundid 0
 global rounds; set ids {1 2 3}
 global roundtime; set roundtime 60000
+global timeout; set timeout 5000
+#movement parameters
 global alpha; set alpha 0
 global beta; set beta 0.05
-global timeout; set timeout 5000
 
 # idle loop
 proc run {} {	
@@ -47,18 +51,18 @@ proc scene {} {
 	set alpha [expr $alpha * -1]
 	incr id
 	set id [expr $id % 3]
+	set k [expr [lindex $ids $id]]
 	foreach j $ids {
 		set o ball_${j}
 		if {[expr [$o IsDisabled]] == 0} {
 			if {[expr [lindex $ids $id]] == $j} {
 				#Show ball
-				puts "Show $j"
-				set k $j
+				#puts "Show $j"
 				$o Show
 			} else {
 				#Hide ball
 				$o Hide
-				puts "Hide $j"
+				#puts "Hide $j"
 			}
 		}
 	}
@@ -71,31 +75,44 @@ proc scene {} {
 }
 
 proc collision {} {
-	set contacts [scenario GetContacts]
-	set n [$contacts GetNumberOfItems]
 	set left 0
 	set right 0
+	#Get simulation collisions
+	set collisions [simulation GetCollisions]
+	set n [$collisions GetNumberOfItems]
+	#process collisions
 	if {$n > 0} {
 		for {set i 0} {$i < $n} {incr i} {
-			set c [$contacts GetContact $i]
-			set toolId [$c GetItemId 0]
-			set organId [$c GetItemId 1]
-			if {$organId > 0 } {
-				set o [scenario GetOrgan $organId]
-				set oname [$o GetName]
-				if { [string compare $oname "LeftBall"] == 0} {
-					#LeftBall -> Left Tool
-					if {$toolId == 0} { $o Disable }
-				} elseif { [string compare $oname "RightBall"] == 0} {
-					#RightBall -> Right Tool
-					if {$toolId == 1} { $o Disable }
-				} else {
-					#BothBall -> Right & Left Tool
-					if { $toolId == 0 } then { set left 1 }
-					if { $toolId == 1 } then { set right 1 }
-					#Both tools contacted
-					if {$left == 1 && $right == 1 
-					} then { $o Disable }
+			set c [$collisions GetCollision $i]
+			set tid [$c GetObjectId 0]
+			set oid [$c GetObjectId 1]
+			#puts "$tid $oid"
+			set oname [[scenario GetObject $oid] GetName]
+			if {$tid == 0} {
+				#Left Probe
+				set left 1
+				if {$oid == 2} {
+					#Both ball
+					if {$right == 1} {
+						$oname Disable
+						puts "$oname Disabled"
+					}
+				} elseif {$oid == 3} {
+					$oname Disable
+					puts "$oname Disabled"
+				}
+			} elseif {$tid == 1} {
+				#Right Probe
+				set right 1
+				if {$oid == 2} {
+					#Both ball
+					if {$left == 1} {
+						$oname Disable
+						puts "$oname Disabled"
+					}
+				} elseif {$oid == 4} {
+					$oname Disable
+					puts "$oname Disabled"
 				}
 			}
 		}
@@ -127,7 +144,7 @@ ren1 SetBackground 1.0 1.0 1.0
 
 vtkRenderWindow renWin
 renWin AddRenderer ren1
-renWin SetSize 840 480
+renWin SetSize 720 480
 
 vtkRenderWindowInteractor iren
 iren SetRenderWindow renWin
@@ -139,50 +156,98 @@ scenario SetRenderWindow renWin
 ### Tools ###
 #Add new tool to the scenario 
 #Left Probe
-vtkVisualizationModel vis_stick 
-vis_stick SetName "vis_stick"
-vis_stick SetFileName $fn0
-vis_stick SetTextureFileName $fn0t
-vis_stick SetOrigin 0.0 0.0 6.0
-vis_stick SetVisibility 1
-vis_stick SetColor 1.0 1.0 1.0
+vtkVisualizationModel stick_l_vis 
+stick_l_vis SetName "stick_l_vis"
+stick_l_vis SetFileName $fn0
+stick_l_vis SetTextureFileName $fn0t
+stick_l_vis SetOrigin 0.0 0.0 6.0
+stick_l_vis SetVisibility 1
+stick_l_vis SetColor 1.0 1.0 1.0
 
-vtkCollisionModel col_stick 
-col_stick SetName "col_stick"
-col_stick SetFileName $fn0c
-col_stick SetOrigin 0 0 6
-col_stick SetVisibility 0
-col_stick SetColor 0.0 0.0 1.0
+vtkCollisionModel stick_l_col 
+stick_l_col SetName "stick_l_col"
+stick_l_col SetFileName $fn0c
+stick_l_col SetOrigin 0 0 6
+stick_l_col SetVisibility 0
+stick_l_col SetColor 0.0 0.0 1.0
 
-vtkScenarioElement stick 
-stick SetName "stick"
-stick SetVisualizationModel vis_stick
-stick SetCollisionModel col_stick
+vtkScenarioElement stick_l 
+stick_l SetName "stick_l"
+stick_l SetVisualizationModel stick_l_vis
+stick_l SetCollisionModel stick_l_col
 
 #Second element (tip)
-vtkVisualizationModel vis_tip_l 
-vis_tip_l SetName "vis_tip_r"
-vis_tip_l SetFileName $fn1
-vis_tip_l SetTextureFileName $fn0t
-vis_tip_l SetOrigin 0 0 6
-vis_tip_l SetVisibility 1
-vis_tip_l SetColor 1.0 0.0 0.0
+vtkVisualizationModel tip_l_vis 
+tip_l_vis SetName "vis_tip_r"
+tip_l_vis SetFileName $fn1
+tip_l_vis SetTextureFileName $fn0t
+tip_l_vis SetOrigin 0 0 6
+tip_l_vis SetVisibility 1
+tip_l_vis SetColor 0.0 1.0 0.0
 
-vtkCollisionModel col_tip_l 
-col_tip_l SetName "col_tip_l"
-col_tip_l SetFileName $fn1c
-col_tip_l SetOrigin 0 0 6
-col_tip_l SetVisibility 0
-col_tip_l SetColor 0.0 0.0 1.0
+vtkCollisionModel tip_l_col 
+tip_l_col SetName "tip_l_col"
+tip_l_col SetFileName $fn1c
+tip_l_col SetOrigin 0 0 6
+tip_l_col SetVisibility 0
+tip_l_col SetColor 0.0 0.0 1.0
 
-vtkScenarioElement left_tip 
-left_tip SetName "tip_left"
-left_tip SetVisualizationModel vis_tip_l
-left_tip SetCollisionModel col_tip_l
+vtkScenarioElement tip_l 
+tip_l SetName "tip_left"
+tip_l SetVisualizationModel tip_l_vis
+tip_l SetCollisionModel tip_l_col
 
-vtkToolProbe leftProbe 
-leftProbe SetStick stick
-leftProbe SetTip left_tip
+vtkToolProbe probe_l 
+probe_l SetName "probe_l"
+probe_l SetStick stick_l
+probe_l SetTip tip_l
+
+#Right Probe
+vtkVisualizationModel stick_r_vis 
+stick_r_vis SetName "stick_r_vis"
+stick_r_vis SetFileName $fn0
+stick_r_vis SetTextureFileName $fn0t
+stick_r_vis SetOrigin 0.0 0.0 6.0
+stick_r_vis SetVisibility 1
+stick_r_vis SetColor 1.0 1.0 1.0
+
+vtkCollisionModel stick_r_col 
+stick_r_col SetName "stick_r_col"
+stick_r_col SetFileName $fn0c
+stick_r_col SetOrigin 0 0 6
+stick_r_col SetVisibility 0
+stick_r_col SetColor 0.0 0.0 1.0
+
+vtkScenarioElement stick_r 
+stick_r SetName "stick_r"
+stick_r SetVisualizationModel stick_r_vis
+stick_r SetCollisionModel stick_r_col
+
+#Second element (tip)
+vtkVisualizationModel tip_r_vis 
+tip_r_vis SetName "tip_r_vis"
+tip_r_vis SetFileName $fn1
+tip_r_vis SetTextureFileName $fn0t
+tip_r_vis SetOrigin 0 0 6
+tip_r_vis SetVisibility 1
+tip_r_vis SetColor 1.0 0.0 0.0
+
+vtkCollisionModel tip_r_col 
+tip_r_col SetName "tip_r_col"
+tip_r_col SetFileName $fn1c
+tip_r_col SetOrigin 0 0 6
+tip_r_col SetVisibility 0
+tip_r_col SetColor 0.0 0.0 1.0
+
+vtkScenarioElement tip_r 
+tip_r SetName "tip_r"
+tip_r SetVisualizationModel tip_r_vis
+tip_r SetCollisionModel tip_r_col
+
+vtkToolProbe probe_r 
+probe_r SetName "probe_r"
+probe_r SetStick stick_r
+probe_r SetTip tip_r
 
 ###  Load Organs (Static balls)  ###
 vtkVisualizationModel vis_ball_1
@@ -196,16 +261,17 @@ vis_ball_1 SetColor 1.0 1.0 1.0
 vtkCollisionModel col_ball_1
 col_ball_1 SetName "sphere_col_1"
 col_ball_1 SetFileName $fn3c
-col_ball_1 SetVisibility 1
+col_ball_1 SetVisibility 0
 col_ball_1 SetPosition 0 0 -5
 col_ball_1 SetColor 0.0 0.0 1.0 
 
 vtkScenarioElement el_ball_1  
-el_ball_1 SetName "ball_1"
+el_ball_1 SetName "el_ball_1"
 el_ball_1 SetVisualizationModel vis_ball_1 
 el_ball_1 SetCollisionModel col_ball_1 
 
-vtkOrgan ball_1  
+vtkOrgan ball_1
+ball_1 SetName "ball_1"
 ball_1 AddElement el_ball_1 
 
 vtkVisualizationModel vis_ball_2
@@ -219,16 +285,17 @@ vis_ball_2 SetColor 1.0 1.0 1.0
 vtkCollisionModel col_ball_2
 col_ball_2 SetName "sphere_col_2"
 col_ball_2 SetFileName $fn3c
-col_ball_2 SetVisibility 1
+col_ball_2 SetVisibility 0
 col_ball_2 SetPosition -3 0 -5
 col_ball_2 SetColor 0.0 0.0 1.0 
 
 vtkScenarioElement el_ball_2  
-el_ball_2 SetName "ball_2"
+el_ball_2 SetName "el_ball_2"
 el_ball_2 SetVisualizationModel vis_ball_2 
 el_ball_2 SetCollisionModel col_ball_2 
 
-vtkOrgan ball_2  
+vtkOrgan ball_2
+ball_2 SetName "ball_2"
 ball_2 AddElement el_ball_2 
 
 vtkVisualizationModel vis_ball_3
@@ -242,16 +309,17 @@ vis_ball_3 SetColor 1.0 1.0 1.0
 vtkCollisionModel col_ball_3
 col_ball_3 SetName "sphere_col_3"
 col_ball_3 SetFileName $fn3c
-col_ball_3 SetVisibility 1
+col_ball_3 SetVisibility 0
 col_ball_3 SetPosition 3 0 -5
 col_ball_3 SetColor 0.0 0.0 1.0 
 
 vtkScenarioElement el_ball_3  
-el_ball_3 SetName "ball_3"
+el_ball_3 SetName "el_ball_3"
 el_ball_3 SetVisualizationModel vis_ball_3 
 el_ball_3 SetCollisionModel col_ball_3 
 
-vtkOrgan ball_3  
+vtkOrgan ball_3
+ball_3 SetName "ball_3"
 ball_3 AddElement el_ball_3 
 
 #Stomach
@@ -272,15 +340,19 @@ vtkOrgan stomach
 stomach AddElement el_stomach
 
 #/**********  Initialize Scenario  ********/
-scenario AddObject leftProbe
+scenario AddObject probe_l
+scenario AddObject probe_r
 scenario AddObject ball_1
 scenario AddObject ball_2
 scenario AddObject ball_3
 scenario AddObject stomach
 scenario Init
 
-leftProbe Translate -2 0 -2
-leftProbe RotateX 10
+probe_l Translate -3 0 -2
+#probe_l RotateX 10
+
+probe_r Translate  3 0 -2
+#probe_r RotateX -10
 
 #ball_1 RotateY 180
 #ball_1 RotateX -60
@@ -290,27 +362,27 @@ leftProbe RotateX 10
 vtkLight headLight
 headLight SetLightTypeToHeadlight
 headLight PositionalOn
-headLight SetIntensity 0.5
-headLight SetConeAngle 20
+headLight SetIntensity 0.8
+headLight SetConeAngle 50
 ren1 AddLight headLight
 	
 vtkLight ambientLight 
-ambientLight SetIntensity 0.8
-ambientLight SetLightTypeToHeadlight
+ambientLight SetIntensity 0.2
+#ambientLight SetLightTypeToHeadlight
 ambientLight PositionalOff
 ren1 AddLight ambientLight
-ren1 SetAmbient 0.5 0.5 0.5
+#ren1 SetAmbient 0.5 0.5 0.5
 	
 ### Camera Definitions ###
 set camera [ren1 GetActiveCamera]
 $camera SetPosition 0 0 2
 $camera SetFocalPoint 0 0 -6
 $camera Yaw 0
-$camera Elevation 20
-$camera Pitch -15
+$camera Elevation 10
+$camera Pitch -10
 $camera Dolly 1
 $camera ParallelProjectionOff
-$camera SetViewAngle 70
+$camera SetViewAngle 60
 
 ### Simulation Setup ###
 vtkSimulationInteractorStyle style
