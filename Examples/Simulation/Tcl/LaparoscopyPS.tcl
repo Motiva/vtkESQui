@@ -18,6 +18,7 @@ global roundid; set roundid 0
 global rounds; set ids {1 2 3}
 global roundtime; set roundtime 60000
 global alpha; set alpha 0
+global beta; set beta 0.05
 global timeout; set timeout 5000
 
 # idle loop
@@ -25,7 +26,7 @@ proc run {} {
 	global timeout
 	scene
 	movement
-	#after 100 collision
+	after 100 collision
 }
 
 proc movement {} {
@@ -35,14 +36,15 @@ proc movement {} {
 	incr alpha 5
 	set rad [expr $alpha * 0.01745311]
 	set x [expr 0.1 * sin ($rad)]
-	set y [expr 0.1 * cos ($rad)]
+	set y [expr 0.025 * cos ($rad)]
 	$organ Translate $x $y 0.0
-	after 20 movement
+	after 15 movement
 }
 
 # Modify scenario
 proc scene {} {
-	global timeout id ids ball_1
+	global timeout id ids alpha
+	set alpha [expr $alpha * -1]
 	incr id
 	set id [expr $id % 3]
 	foreach j $ids {
@@ -51,6 +53,7 @@ proc scene {} {
 			if {[expr [lindex $ids $id]] == $j} {
 				#Show ball
 				puts "Show $j"
+				set k $j
 				$o Show
 			} else {
 				#Hide ball
@@ -59,7 +62,7 @@ proc scene {} {
 			}
 		}
 	}
-	if {[expr [ [scenario GetObject [lindex $ids $id]] IsDisabled ] ] == 1} {
+	if {[expr [ball_${k} IsDisabled]] == 1} {
 		#If ball is disabled jump to next step immediately 
 		after 10 scene
 	} else { 
@@ -114,8 +117,8 @@ set fn3c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_co
 set fn3tb "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/bothball.jpg"
 set fn3tl "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg"
 set fn3tr "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg"
-set fn4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
-set fn4c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach_col.vtp"
+set fn4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/cavity.vtp"
+set fn4c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/cavity_col.vtp"
 set fn4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg"
 
 ###  Render Window Definitions  ###
