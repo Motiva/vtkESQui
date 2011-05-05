@@ -92,15 +92,16 @@ protected:
 	//! Collection of collisions obtained
 	vtkCollisionCollection * Collisions;
 
+	//! Clear previous executions of the collision detection process
+	/*!
+	* Should be called every time collision detection is performed
+	*/
+	void Reset();
+
 private:
 	vtkCollisionDetection(const vtkCollisionDetection &); //NotImplemented
 	void operator =(const vtkCollisionDetection &); //Not Implemented
 
-	//!Clear the CollisionDetectionLibrary
-	/*!
-	* Pure virtual method. Should be defined in the implementation classes
-	*/
-	virtual void Clear() = 0;
 };
 
 

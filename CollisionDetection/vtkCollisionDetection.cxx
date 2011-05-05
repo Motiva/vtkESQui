@@ -86,4 +86,16 @@ int vtkCollisionDetection::GetNumberOfCollisions()
 	return this->Collisions->GetNumberOfItems();
 }
 
+//--------------------------------------------------------------------------
+void vtkCollisionDetection::Reset()
+{
+	//Clear collisions from previous executions
+	this->Collisions->InitTraversal();
+	while(vtkCollision * collision = this->Collisions->GetNextCollision())
+	{
+		if(collision) collision->Delete();
+		collision = this->Collisions->GetNextCollision();
+	}
+	this->Collisions->RemoveAllItems();
+}
 

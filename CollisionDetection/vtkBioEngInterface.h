@@ -86,12 +86,6 @@ private:
 	vtkBioEngInterface(const vtkBioEngInterface &); //NotImplemented
 	void operator =(const vtkBioEngInterface &); //Not Implemented
 
-	//! Clear previous executions of the collision detection process
-	/*!
-	* Should be called every time collision detection is performed
-	*/
-	void Clear();
-
 	//!Collision detection filter
 	vtkCollisionDetectionFilter *DetectionFilter;
 

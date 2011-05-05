@@ -208,6 +208,7 @@ int vtkScenarioElement::RequestData(
 		this->CollisionModel->Modified();
 		this->CollisionModel->Update();
 
+		//cout << "Coll: " << this->CollisionModel->GetCollisions()->GetNumberOfItems() << endl;
 		this->UpdateProgress(0.25);
 
 		//Update deformation model with detected collisions
@@ -225,15 +226,18 @@ int vtkScenarioElement::RequestData(
 				//FIXME: Visualization == Deformation
 				c->SetPointId(1, id);
 				c->SetPoint(1, p);
-				this->DeformationModel->AddCollision(c);
+				//If displacement is zero (object is not moving) collision is ignored
+				if(vtkMath::Norm(c->GetDisplacement())>=0)
+				{
+					this->DeformationModel->AddCollision(c);
+				}
 			}
 
 			this->DeformationModel->Modified();
 			this->DeformationModel->Update();
 		}
-		this->CollisionModel->RemoveAllCollisions();
-
 		this->UpdateProgress(0.50);
+		this->CollisionModel->RemoveAllCollisions();
 	}
 
 	this->VisualizationModel->Modified();

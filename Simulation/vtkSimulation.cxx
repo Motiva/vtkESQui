@@ -131,9 +131,15 @@ void vtkSimulation::SetScenario(vtkScenario * s)
 }
 
 //----------------------------------------------------------------------------
-vtkScenario * vtkSimulation::GetScenarior()
+vtkScenario * vtkSimulation::GetScenario()
 {
 	return this->Scenario;
+}
+
+//----------------------------------------------------------------------------
+vtkCollisionCollection * vtkSimulation::GetCollisions()
+{
+	return this->CollisionDetection->GetCollisions();
 }
 
 //----------------------------------------------------------------------------

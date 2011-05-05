@@ -229,18 +229,19 @@ public:
 	virtual void Reset();
 	virtual void Restore();
 
-	//! Hide scenario object.
-	/*!
-	 * Must be implemented in inherited classes
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void Hide();
 	//! Show/Display object.
 	/*!
 	 * Must be implemented in inherited classes
 	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Show();
+
+	//! Hide scenario object.
+	/*!
+	 * Must be implemented in inherited classes
+	 * Note: this function must be implemented in inheriting classes
+	 */
+	virtual void Hide();
 
 	//! Disable object.
 	/*!
@@ -293,7 +294,7 @@ public:
 	* \param collisions List of vtkCollision objects
 	* \sa InsertNextCollision( vtkCollision* collision )
 	*/
-	void InsertCollisions( vtkCollisionCollection* collisions );
+	void SetCollisions( vtkCollisionCollection* collisions );
 
 	//!Get organ collisions
 	vtkCollisionCollection * GetCollisions();

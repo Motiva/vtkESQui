@@ -48,6 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkScenario;
 class vtkRenderWindowInteractor;
 class vtkCollisionDetection;
+class vtkCollisionCollection;
 class vtkCallbackCommand;
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
@@ -91,7 +92,10 @@ public:
 	void SetScenario(vtkScenario * s);
 
 	//!Return the scenario of the simulation
-	vtkScenario * GetScenarior();
+	vtkScenario * GetScenario();
+
+	//!Return the collision collection
+	vtkCollisionCollection * GetCollisions();
 
 	//!Set haptic device timer refresh rate (s)
 	vtkSetMacro(HapticTimerRate, double);

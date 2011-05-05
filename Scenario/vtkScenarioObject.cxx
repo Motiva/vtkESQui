@@ -48,6 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkScenarioElement.h"
 #include "vtkScenarioElementCollection.h"
+#include "vtkCollisionModel.h"
 #include "vtkCollision.h"
 #include "vtkCollisionCollection.h"
 
@@ -122,6 +123,9 @@ int vtkScenarioObject::RequestData(vtkInformation *vtkNotUsed(request),
 
 	// get the input and output
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
+	//Reset previous collisions
+	this->Collisions->RemoveAllItems();
 
 	this->Elements->InitTraversal();
 	while (vtkScenarioElement * e =this->Elements->GetNextElement())
@@ -243,6 +247,17 @@ void vtkScenarioObject::Restore()
 }
 
 //--------------------------------------------------------------------------
+void vtkScenarioObject::Show()
+{
+	this->Status = Visible;
+	this->Elements->InitTraversal();
+	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+	{
+		e->Show();
+	}
+}
+
+//--------------------------------------------------------------------------
 void vtkScenarioObject::Hide()
 {
 	this->Status = Hidden;
@@ -265,17 +280,6 @@ void vtkScenarioObject::Disable()
 	}
 }
 
-//--------------------------------------------------------------------------
-void vtkScenarioObject::Show()
-{
-	this->Status = Visible;
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->Show();
-	}
-}
-
 //Collision management
 //--------------------------------------------------------------------------
 void vtkScenarioObject::InsertNextCollision(vtkCollision * collision)
@@ -284,8 +288,9 @@ void vtkScenarioObject::InsertNextCollision(vtkCollision * collision)
 }
 
 //--------------------------------------------------------------------------
-void vtkScenarioObject::InsertCollisions( vtkCollisionCollection* collisions )
+void vtkScenarioObject::SetCollisions( vtkCollisionCollection* collisions )
 {
+	if(this->Collisions) this->Collisions->Delete();
 	this->Collisions->DeepCopy(collisions);
 }
 
