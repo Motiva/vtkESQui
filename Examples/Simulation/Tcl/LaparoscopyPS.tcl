@@ -124,11 +124,11 @@ proc collision {} {
 
 #catch {package require vtkesquiHaptics}
 #catch {::vtk::load_component vtkesquiHapticsTCL}
-set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick.vtp"
+set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick.vtp"
 set fn0t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg"
-set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip.vtp"
-set fn0c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Stick_col.vtp"
-set fn1c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/Tip_col_lr.vtp"
+set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp"
+set fn0c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick_col.vtp"
+set fn1c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col_lr.vtp"
 set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
 set fn3c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col_bb.vtp"
 set fn3tb "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/bothball.jpg"

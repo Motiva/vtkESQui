@@ -69,16 +69,16 @@ using namespace std;
 
 int main(int argc, char * argv[])
 {
-	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp";
-	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp";
+	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
+	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
 	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
 
-	const char * fnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
-	const char * cfnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp";
+	const char * fnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l.vtp";
+	const char * cfnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp";
 	const char * tfnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 
-	const char * fnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
-	const char * cfnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp";
+	const char * fnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r.vtp";
+	const char * cfnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp";
 	const char * tfnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 
 	double origin[3];

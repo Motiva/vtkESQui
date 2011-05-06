@@ -7,11 +7,9 @@ SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
-    #vtkESQuiLap
-    SimulationLaparoscopy
     SimulationInteractor
+    SimulationLaparoscopy
     #SimulationLaparoscopyVR
-    #vtkESQuiSRMLExample
 )
 
 #-----------------------------------------------------------------------------

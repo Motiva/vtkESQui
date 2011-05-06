@@ -25,13 +25,13 @@ proc scene {} {
 
 #catch {package require vtkesquiHaptics}
 #catch {::vtk::load_component vtkesquiHapticsTCL}
-set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick.vtp"
+set fn0 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp"
 set fn0t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg"
-set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever.vtp"
-set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever.vtp"
-set fn0c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/Stick_col.vtp"
-set fn1c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/LeftLever_col_lr.vtp"
-set fn2c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/RightLever_col_lr.vtp"
+set fn1 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l.vtp"
+set fn2 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r.vtp"
+set fn0c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp"
+set fn1c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col_lr.vtp"
+set fn2c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col_lr.vtp"
 set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
 set fn3c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
 set fn3t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg"
