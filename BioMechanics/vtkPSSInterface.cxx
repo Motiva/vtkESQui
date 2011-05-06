@@ -114,9 +114,6 @@ void vtkPSSInterface::Init()
 			this->ParticleSpringSystem->SetParticleStatus(c->GetPointId(), c->GetValue());
 		}
 	}
-
-	this->ParticleSpringSystem->Print(cout);
-	//this->Mapper->SetInput(this->GetOutput());
 }
 
 // VTK specific method: This method is called when the pipeline is calculated.

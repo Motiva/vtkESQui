@@ -50,6 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
 
 #include "vtkSRMLImporter.h"
 #include "vtkSimulation.h"
@@ -82,7 +83,8 @@ int TestvtkSRMLImporter(int argc, char * argv[])
 	vtkSRMLImporter * Importer = vtkSRMLImporter::New();
 	Importer->SetDebug(1);
 
-	Importer->SetFileName("test.srml");
+	Importer->SetDataPath("/home/jballesteros/Workspace/data/vtkESQuiData");
+	Importer->SetFileName("/home/jballesteros/Workspace/data/vtkESQuiData/SRML/Laparoscopy/lap_basic.srml");
 	Importer->SetSimulation(Simulation);
 	Importer->Read();
 

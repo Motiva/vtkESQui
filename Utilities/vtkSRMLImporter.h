@@ -58,13 +58,16 @@ class vtkCamera;
 class vtkLight;
 class vtkActor;
 
-class vtkTool;
-class vtkToolGrasper;
-class vtkOrgan;
-class vtkBioMechanicalModel;
-
 class vtkSimulation;
 class vtkScenario;
+class vtkScenarioObject;
+class vtkScenarioElement;
+
+class vtkTool;
+class vtkToolGrasper;
+class vtkToolProbe;
+class vtkOrgan;
+class vtkModel;
 
 //! Import an SRML scenario file into vtkESQui platform
 
@@ -122,12 +125,16 @@ protected:
 	//! Import specific scenario props
 	virtual void ImportProperties (vtkRenderer * renderer);
 
-	//! Import tools from the SRML file
-	void ImportTools();
-	//! Import organs from the SRML file
-	void ImportOrgans();
+	//! Import scenario objects
+	void ImportScenarioObjects();
+	//! Import scenario object elements
+	void SetScenarioElements(vtkScenarioObject * object, vtkXMLDataElement * item);
+	//! Import scenario element models
+	void SetElementModels(vtkScenarioElement * object, vtkXMLDataElement * item);
+	//! Import scenario element generic model
+	void SetModelData(vtkModel * object, vtkXMLDataElement * item);
 	//! Import the extras from the SRML file
-	void ImportExtras();
+	//void ImportExtras();
 	//! Import haptic device information
 	void ImportHaptic();
 
@@ -202,25 +209,25 @@ private:
 	 * \param tool scenario tool object
 	 * \param item parsed XMLDataElement that contains element info
 	 */
-	void SetToolData(vtkTool * tool, vtkXMLDataElement * item);
+	//void SetToolData(vtkTool * tool, vtkXMLDataElement * item);
 	//! Set specific laparoscopic grasper values
 	/*!
 	 * \param tool grasper tool object
 	 * \param item parsed XMLDataElement that contains element info
 	 */
-	void SetToolGrasperData(vtkToolGrasper * tool, vtkXMLDataElement * item);
+	//void SetToolGrasperData(vtkToolGrasper * tool, vtkXMLDataElement * item);
 	//! Set specific organ values
 	/*!
 	 * \param organ organ object
 	 * \param item parsed XMLDataElement that contains element info
 	 */
-	void SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item);
+	//void SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item);
 	//! Set initial biomechanical model properties
 	/*!
 	 * \param model biomechanical model
 	 * \param item parsed XMLDataElement that contains element info
 	 */
-	void SetDeformationModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item);
+	//void SetDeformationModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item);
 
 	//! Generate full path of filename
 	const char * ExpandDataFileName(const char * fname);

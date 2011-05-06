@@ -10,7 +10,7 @@ SET(UKIT UTILITIES)  #Uppercase Kit Name
 # Kit_SRCS variable.
 SET (Kit_SRCS 
 vtk3DSImporterEsqui.cxx
-#vtkSRMLImporter.cxx
+vtkSRMLImporter.cxx
 )
 
 # Set your list of libraries here.

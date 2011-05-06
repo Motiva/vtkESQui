@@ -149,6 +149,7 @@ void vtkToolLaparoscopy::PrintSelf(ostream& os,vtkIndent indent) {
 
 	this->Superclass::PrintSelf(os, indent);
 
+	os << indent << "ToolModel: " << this->ToolModel << "\n";
 	os << indent << "Depth: " << this->Depth << "\n";
 	os << indent << "Pitch: " << this->PitchAngle << "\n";
 	os << indent << "Yaw: " << this->YawAngle << "\n";

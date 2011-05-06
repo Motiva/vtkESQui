@@ -57,7 +57,7 @@ vtkStandardNewMacro(vtkOrgan);
 //----------------------------------------------------------------------------
 vtkOrgan::vtkOrgan()
 {
-	this->Type = vtkScenarioObject::Organ;
+	this->ObjectType = vtkScenarioObject::Organ;
 }
 
 //--------------------------------------------------------------------------

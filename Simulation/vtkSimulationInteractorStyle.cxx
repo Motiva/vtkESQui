@@ -115,11 +115,12 @@ void vtkSimulationInteractorStyle::Init()
 		objects->InitTraversal();
 		while(vtkScenarioObject * o = objects->GetNextObject())
 		{
-			if(o->GetType() == vtkScenarioObject::Tool)
+			if(o->GetObjectType() == vtkScenarioObject::Tool)
 			{
 				this->ToolIds->InsertNextId(o->GetId());
 			}
 		}
+		if(this->GetNumberOfTools() > 0) this->ActiveToolId = this->GetToolId(0);
 	}
 }
 
@@ -132,18 +133,66 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 
 	if(this->GetNumberOfTools() > 0)
 	{
-
-		vtkTool * t = vtkTool::SafeDownCast(this->Scenario->GetObject(this->ActiveToolId));
-
-		//handle a "normal" key
+		//Select control mode: camera/tool
 		if(key.compare("c") == 0)
 		{
-			vtkDebugMacro("Camera Mode On/Off");
 			this->Mode = !this->Mode;
 		}
-		if(this->Mode)
+
+		if(!this->Mode)
 		{
-			if(t->GetToolType() == vtkTool::Laparoscopy)
+			//Camera Mode
+			vtkDebugMacro("Camera Mode On");
+			if(key.compare("Up") == 0)
+			{
+				this->Camera->Elevation(1);
+			}
+			if(key.compare("Down") == 0)
+			{
+				vtkDebugMacro("RotateX (Down)");
+				this->Camera->Elevation(-1);
+			}
+			if(key.compare("Left") == 0)
+			{
+				vtkDebugMacro("RotateY (Left)");
+				this->Camera->Azimuth(1);
+			}
+			if(key.compare("Right") == 0)
+			{
+				vtkDebugMacro("RotateY (Right)");
+				this->Camera->Azimuth(-1);
+			}
+		}
+		else
+		{
+			//Tool control mode
+			vtkDebugMacro("Tool Mode On");
+			//Tool selection
+			if(key.compare("0") == 0)
+			{
+				vtkDebugMacro("Select Tool (0)");
+				this->ActiveToolId = this->GetToolId(0);
+			}
+			if(key.compare("1") == 0)
+			{
+				vtkDebugMacro("Select Tool (1)");
+				if (this->GetNumberOfTools() > 1)
+				{
+					this->ActiveToolId = this->GetToolId(1);
+				}
+			}
+			if(key.compare("2") == 0)
+			{
+				vtkDebugMacro("Select Tool (2)");
+				if (this->GetNumberOfTools() > 2)
+				{
+					this->ActiveToolId = this->GetToolId(2);
+				}
+			}
+
+			vtkTool * t = vtkTool::SafeDownCast(this->Scenario->GetObject(this->ActiveToolId));
+
+			if(t && t->GetToolType() == vtkTool::Laparoscopy)
 			{
 				vtkToolLaparoscopy * tool = vtkToolLaparoscopy::SafeDownCast(t);
 
@@ -202,28 +251,6 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 					vtkOrgan * o = vtkOrgan::SafeDownCast(this->Scenario->GetObject(1));
 					o->RotateX(-15);
 				}
-				if(key.compare("0") == 0)
-				{
-					vtkDebugMacro("Select Tool (0)");
-					this->ActiveToolId = this->GetToolId(0);
-				}
-				if(key.compare("1") == 0)
-				{
-					vtkDebugMacro("Select Tool (1)");
-					if (this->GetNumberOfTools() > 1)
-					{
-						this->ActiveToolId = this->GetToolId(1);
-					}
-				}
-				if(key.compare("2") == 0)
-				{
-					vtkDebugMacro("Select Tool (2)");
-					if (this->GetNumberOfTools() > 2)
-					{
-						this->ActiveToolId = this->GetToolId(2);
-					}
-				}
-
 				//Specific grasper movements
 				if(tool->GetToolModel() == vtkToolLaparoscopy::Grasper){
 					vtkToolGrasper * grasper = vtkToolGrasper::SafeDownCast(t);
@@ -238,28 +265,6 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 						grasper->Close();
 					}
 				}
-			}
-		}
-		else{
-			//Camera Mode
-			if(key.compare("Up") == 0)
-			{
-				this->Camera->Elevation(1);
-			}
-			if(key.compare("Down") == 0)
-			{
-				vtkDebugMacro("RotateX (Down)");
-				this->Camera->Elevation(-1);
-			}
-			if(key.compare("Left") == 0)
-			{
-				vtkDebugMacro("RotateY (Left)");
-				this->Camera->Azimuth(1);
-			}
-			if(key.compare("Right") == 0)
-			{
-				vtkDebugMacro("RotateY (Right)");
-				this->Camera->Azimuth(-1);
 			}
 		}
 		if(key.compare("q") == 0)

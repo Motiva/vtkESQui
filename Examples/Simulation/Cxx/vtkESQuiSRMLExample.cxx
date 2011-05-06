@@ -109,15 +109,11 @@ int main(int argc, char * argv[])
 	vtkScenario * Scenario = vtkScenario::New();
 	Scenario->SetRenderWindow(renWin);
 
-	/**********  Simulation Setup  ********/
-	//vtkSimulationManager *SimulationManager = vtkSimulationManager::New();
-	//SimulationManager->SetLibraryName("vtkbioeng");
-	//SimulationManager->SetScenario(Scenario);
-	//SimulationManager->Init();
-
+	/**********  Simulation Definitions  ********/
 	vtkSimulation * Simulation = vtkSimulation::New();
 	Simulation->SetScenario(Scenario);
 
+	/**********  Interactor Style Definitions  ********/
 	vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
 	style->SetScenario(Scenario);
 	iren->SetInteractorStyle(style);

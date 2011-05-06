@@ -71,9 +71,9 @@ void vtkToolProbe::Init()
 		//Remove any remaining item
 		this->Elements->RemoveAllItems();
 		//Elements must be inserted in this order
-		this->Stick->SetName("Stick");
+		if(!this->Stick->GetName()) this->Stick->SetName("Stick");
 		this->AddElement(this->Stick);
-		this->Tip->SetName("Tip");
+		if(!this->Tip->GetName()) this->Tip->SetName("Tip");
 		this->AddElement(this->Tip);
 	}
 	else

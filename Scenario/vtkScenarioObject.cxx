@@ -67,7 +67,6 @@ vtkScenarioObject::vtkScenarioObject() {
 	this->Renderer = NULL;
 	this->Initialized = 0;
 
-	this->Type = Tool;
 	this->Status = Visible;
 
 	this->Elements = vtkScenarioElementCollection::New();
@@ -97,8 +96,8 @@ void vtkScenarioObject::Init()
 			vtkScenarioElement * e = this->GetElement(id);
 			e->SetObjectId(this->Id);
 			e->SetId(id);
-			if(this->Type == Tool) e->SetType(vtkScenarioElement::Tool);
-			else if(this->Type == Organ) e->SetType(vtkScenarioElement::Organ);
+			if(this->ObjectType == Tool) e->SetType(vtkScenarioElement::Tool);
+			else if(this->ObjectType == Organ) e->SetType(vtkScenarioElement::Organ);
 
 			//Initialize object elements
 			if(!e->IsInitialized()) e->Init();
@@ -318,7 +317,7 @@ void vtkScenarioObject::PrintSelf(ostream& os,vtkIndent indent) {
 	os << indent << "Id: " << this->Id << "\n";
 	if(this->Name) os << indent << "Name: " << this->Name << "\n";
 	else os << indent << "Name: \n";
-	os << indent << "Type: " << this->Type << "\n";
+	os << indent << "Type: " << this->ObjectType << "\n";
 	os << indent << "Status: " << this->Status << "\n";
 	os << indent << "NumberOfElements: " << this->Elements->GetNumberOfElements() << "\n";
 }

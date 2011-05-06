@@ -69,6 +69,7 @@ vtkModel::vtkModel()
 	this->Name = NULL;
 	this->FileName = NULL;
 	this->Initialized = 0;
+	this->Status = Visible;
 
 	this->Scale[0] = this->Scale[1] = this->Scale[2] = 1.0;
 	this->Origin[0]=this->Origin[1]=this->Origin[2]=0.0;
