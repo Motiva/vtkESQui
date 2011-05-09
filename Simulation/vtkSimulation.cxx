@@ -46,6 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 
+#include "vtkSimulationInteractorStyle.h"
 #include "vtkScenario.h"
 #include "vtkScenarioObject.h"
 #include "vtkScenarioObjectCollection.h"
@@ -125,6 +126,18 @@ vtkRenderWindowInteractor * vtkSimulation::GetInteractor()
 }
 
 //----------------------------------------------------------------------------
+void vtkSimulation::SetInteractorStyle(vtkSimulationInteractorStyle * style)
+{
+	this->InteractorStyle = style;
+}
+
+//----------------------------------------------------------------------------
+vtkSimulationInteractorStyle * vtkSimulation::GetInteractorStyle()
+{
+	return this->InteractorStyle;
+}
+
+//----------------------------------------------------------------------------
 void vtkSimulation::SetScenario(vtkScenario * s)
 {
 	this->Scenario = s;
@@ -167,6 +180,7 @@ void vtkSimulation::Init() {
 	}
 #endif
 
+	//Configure simulation loop
 	this->Callback->SetCallback(func);
 	this->Callback->SetClientData(this);
 
@@ -204,9 +218,17 @@ void vtkSimulation::Init() {
 
 	this->RenderTimerId = this->Interactor->CreateRepeatingTimer(1000*this->RenderTimerRate);
 
-	//Init Scenario
+	//Initialize scenario
 	this->Scenario->Init();
 
+	//Initialize simulation interactor style
+	if(this->InteractorStyle) {
+		this->InteractorStyle->SetScenario(this->Scenario);
+		this->InteractorStyle->Init();
+		this->Interactor->SetInteractorStyle(this->InteractorStyle);
+	}
+
+	//Initialize collision detection process
 	this->CollisionDetection = vtkBioEngInterface::New();
 	this->CollisionDetection->Init();
 

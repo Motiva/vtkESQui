@@ -85,10 +85,15 @@ int main(int argc, char * argv[])
 			vtkSmartPointer<vtkScenario>::New();
 	Scenario->SetRenderWindow(renWin);
 
+	/**********  Interactor Style Definitions  ********/
+	vtkSmartPointer<vtkSimulationInteractorStyle> Style =
+			vtkSmartPointer<vtkSimulationInteractorStyle>::New();
+
 	/**********  Simulation Definitions  ********/
 	vtkSmartPointer<vtkSimulation> Simulation =
 			vtkSmartPointer<vtkSimulation>::New();
 	Simulation->SetScenario(Scenario);
+	Simulation->SetInteractorStyle(Style);
 
 	/**********  Simulation Import from SRML File  ********/
 	vtkSmartPointer<vtkSRMLImporter> Importer =
@@ -97,16 +102,6 @@ int main(int argc, char * argv[])
 	Importer->SetFileName(fn);
 	Importer->SetSimulation(Simulation);
 	Importer->Read();
-
-	//Initialize scenario with imported values
-	Scenario->Init();
-
-	/**********  Interactor Style Definitions  ********/
-	vtkSmartPointer<vtkSimulationInteractorStyle> style =
-			vtkSmartPointer<vtkSimulationInteractorStyle>::New();
-	style->SetScenario(Scenario);
-	style->Init();
-	iren->SetInteractorStyle(style);
 
 	//Initialize simulation with imported values
 	Simulation->Init();

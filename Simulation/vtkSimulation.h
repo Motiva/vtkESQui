@@ -47,6 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 class vtkScenario;
 class vtkRenderWindowInteractor;
+class vtkSimulationInteractorStyle;
 class vtkCollisionDetection;
 class vtkCollisionCollection;
 class vtkCallbackCommand;
@@ -84,6 +85,18 @@ public:
 	* \sa SetInteractor(vtkRenderWindowInteractor *iren)
 	*/
 	vtkRenderWindowInteractor * GetInteractor();
+
+	//! Set simulation interactor style
+	/*!
+	* \sa GetInteractorStyle()
+	*/
+	void SetInteractorStyle(vtkSimulationInteractorStyle * style);
+
+	//!Get simulation interactor style
+	/*!
+	* \sa SetInteractor(vtkSimulationInteractorStyle *style)
+	*/
+	vtkSimulationInteractorStyle * GetInteractorStyle();
 
 	//! Set the simulation scenario: organs, tools, etc...
 	/*!
@@ -195,6 +208,9 @@ private:
 
 	//!Window interactor to control simulation display
 	vtkRenderWindowInteractor *Interactor;
+
+	//!Window interactor style to control simulation objects
+	vtkSimulationInteractorStyle *InteractorStyle;
 
 	//!collision detection library
 	vtkCollisionDetection* CollisionDetection;
