@@ -78,8 +78,8 @@ vtkDeformationModel::~vtkDeformationModel() {
 //--------------------------------------------------------------------------
 void vtkDeformationModel::SetCollisions(vtkCollisionCollection * c)
 {
-	if(this->Collisions) this->Collisions->Delete();
-	this->Collisions = c;
+	this->Collisions->RemoveAllItems();
+	this->Collisions->DeepCopy(c);
 }
 
 //--------------------------------------------------------------------------

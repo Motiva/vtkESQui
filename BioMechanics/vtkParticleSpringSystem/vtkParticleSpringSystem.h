@@ -178,8 +178,6 @@ protected:
 	//! Contact Point Displacements
 	vtkDoubleArray * CollisionDisplacements;
 
-	//vtkContactCollection * Contacts;
-
 private:
 	vtkParticleSpringSystem(const vtkParticleSpringSystem&);            // Not implemented.
 	void operator=(const vtkParticleSpringSystem&);           // Not implemented.

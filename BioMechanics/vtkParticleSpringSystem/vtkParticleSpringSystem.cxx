@@ -185,26 +185,22 @@ int vtkParticleSpringSystem::RequestData(
 	// Solve motion equation
 	this->Step();
 
+	output->ShallowCopy(input);
+
 	//Update output points
-	vtkPoints * points = input->GetPoints();
+	vtkPoints * points = output->GetPoints();
 	//vtkPoints * points = output->GetPoints();
-	for (int i=0; i < input->GetNumberOfPoints(); i++)
+	for (int i=0; i < output->GetNumberOfPoints(); i++)
 	{
 		vtkParticle * particle = this->Particles->GetParticle(i);
 		points->SetPoint(i, particle->GetPosition());
 	}
 
-	output->ShallowCopy(input);
-
 	//TODO: Check why input is not updated on each step (volume computation)
-	//Compute System properties
-	//vtkPolyData * surface = vtkPolyData::New();
-	//surface->ShallowCopy(output);
-
-	//this->SystemProperties->SetInput(surface);
+	//this->SystemProperties->SetInput(output);
 	//this->Volume = this->SystemProperties->GetVolume();
 
-	//surface->Delete();
+	//cout << this->Volume << endl;
 	return 1;
 }
 
