@@ -54,8 +54,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkMetaImageWriter.h"
 #include "vtkXMLPolyDataReader.h"
 #include "vtkPolyData.h"
+#include "vtkPolyDataMapper.h"
 #include "vtkTransform.h"
 #include "vtkActor.h"
+#include "vtkProperty.h"
+#include "vtkMath.h"
 
 #include "vtkCollision.h"
 #include "vtkCollisionCollection.h"
@@ -77,6 +80,8 @@ vtkEDMInterface::vtkEDMInterface()
 	this->ImageData = vtkImageData::New();
 	this->Deformed = vtkPolyData::New();
 	this->NumberOfIterations = 0;
+	this->ImageOrigin[0]= this->ImageOrigin[1] = this->ImageOrigin[2] = 0;
+	this->ImageSpacing[0]= this->ImageSpacing[1] = this->ImageSpacing[2] = 1;
 
 }
 
@@ -90,21 +95,26 @@ vtkEDMInterface::~vtkEDMInterface()
 //--------------------------------------------------------------------------
 void vtkEDMInterface::Init()
 {
-	this->Deformed->ShallowCopy(this->Reader->GetOutput());
+	this->Superclass::Init();
 
-	//Prepare white image data
+	//Save input data
+	vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
+	this->Deformed->ShallowCopy(input);
+
+	//TODO: Check imageData generation
+
+	//Generate image source
 	double spacing[3];
-	spacing[0] = spacing[1] = spacing[2] = 0.5;
-	this->ImageData->SetSpacing(spacing);
+	spacing[0] = spacing[1] = spacing[2] = 1;
 
-	this->Deformed->Update();
-
-	double * bounds = this->Deformed->GetBounds();
+	double * bounds = input->GetBounds();
 	int dim[3];
 	for (int i = 0; i < 3; i++)
 	{
 		dim[i] = static_cast<int>(ceil((bounds[i * 2 + 1] - bounds[i * 2]) / spacing[i]));
 	}
+
+	this->ImageData->SetSpacing(spacing);
 	this->ImageData->SetDimensions(dim);
 	this->ImageData->SetExtent(0, dim[0]-1, 0, dim[1]-1, 0, dim[2]-1);
 
@@ -116,7 +126,7 @@ void vtkEDMInterface::Init()
 	this->ImageData->SetScalarTypeToUnsignedChar();
 	this->ImageData->AllocateScalars();
 
-	// fill the image with foreground voxels:
+	//Fill the image with foreground voxels:
 	unsigned char inval = 255;
 	unsigned char outval = 0;
 	vtkIdType count = this->ImageData->GetNumberOfPoints();
@@ -125,8 +135,7 @@ void vtkEDMInterface::Init()
 		this->ImageData->GetPointData()->GetScalars()->SetTuple1(i, inval);
 	}
 
-	//Define conversion
-	this->ImageStencilFilter->SetInput(this->Deformed);
+	this->ImageStencilFilter->SetInput(input);
 	this->ImageStencilFilter->SetOutputOrigin(origin);
 	this->ImageStencilFilter->SetOutputSpacing(spacing);
 	this->ImageStencilFilter->SetOutputWholeExtent(this->ImageData->GetExtent());
@@ -137,17 +146,21 @@ void vtkEDMInterface::Init()
 	this->Stencil->ReverseStencilOff();
 	this->Stencil->SetBackgroundValue(outval);
 
+	//Reset collisions
+	this->Collisions->RemoveCollisions();
 	//Compute forces
 	this->ForceFilter->SetInput(this->Stencil->GetOutput());
 	this->MagnitudeFilter->SetInput(this->ForceFilter->GetOutput());
 	this->SobelFilter->SetInput(this->MagnitudeFilter->GetOutput());
 
-	//Set deformable mesh inputs
+	//Save Image source
+	this->ImageSource = this->SobelFilter->GetOutput();
+
 	this->DeformableMesh->IterateFromZeroOff();
-	this->DeformableMesh->SetScaleFactor(0.001);
-	this->DeformableMesh->SetNumberOfIterations(this->NumberOfIterations);
-	this->DeformableMesh->SetInput(0, this->Reader->GetOutput());
-	this->DeformableMesh->SetInputConnection(1, this->SobelFilter->GetOutputPort());
+	this->DeformableMesh->SetScaleFactor(this->WarpScaleFactor);
+	this->DeformableMesh->SetInput(this->Deformed);
+	this->DeformableMesh->SetInput(1, this->ImageSource);
+
 }
 
 // VTK specific method: This method is called when the pipeline is calculated.
@@ -158,62 +171,63 @@ int vtkEDMInterface::RequestData(
 		vtkInformationVector *outputVector) {
 
 	// Get the info objects
-	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
 	// Get the input and output
-	//vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-
-	/*this->Collisions->InitTraversal();
-	double point[3];
-	while(vtkCollision * contact = this->Collisions->GetNextCollision())
+	if(this->Collisions->GetNumberOfItems() > 0)
 	{
-		if(contact->GetCollisionType() == vtkCollision::ToolOrgan)
+		//Set deformed mesh to last state
+		//this->Deformed->DeepCopy(this->DeformableMesh->GetOutput());
+		this->Deformed->DeepCopy(input);
+		vtkPoints * points = this->Deformed->GetPoints();
+		double point[3];
+
+		this->Collisions->InitTraversal();
+		while(vtkCollision * collision = this->Collisions->GetNextCollision())
 		{
-			//Apply displacement
-			vtkIdType id = contact->GetPointId(1);
-			this->Deformed->GetPoint(id, point);
-			double * d = contact->GetDisplacement();
-			cout << point[0] << ", "<< point[1] << ", " << point[2] << "\n";
-			point[0] += d[0];
-			point[1] += d[1];
-			point[2] += d[2];
-			//cout << point[0] << ", "<< point[1] << ", " << point[2] << "\n";
-			this->Deformed->GetPoints()->SetPoint(id, point);
+			if(collision->GetCollisionType() == vtkCollision::ToolOrgan)
+			{
+				//Get collided point
+				vtkIdType id = collision->GetPointId(1);
+				points->GetPoint(id, point);
+				//Add displacement
+				vtkMath::Add(point, collision->GetDisplacement(), point);
+				points->SetPoint(id, point);
+			}
 		}
+		//Reset collisions
+		this->Collisions->RemoveCollisions();
+
+		//Reset deformable mesh
+		this->DeformableMesh->SetInput(0, this->Deformed);
+		this->DeformableMesh->SetInput(1, this->ImageSource);
+		this->DeformableMesh->SetNumberOfIterations(0);
 	}
 
-	//Reset contacts
-	this->Collisions->RemoveCollisions();*/
+	int n = this->DeformableMesh->GetNumberOfIterations();
+	if(n < this->NumberOfIterations)
+	{
+		//Increment iteration
+		this->DeformableMesh->SetNumberOfIterations(n+1);
+	}
 
-	this->Deformed->ShallowCopy(this->Reader->GetOutput());
-
-	this->ImageData->Update();
-
-	this->ImageStencilFilter->Update();
-
-	this->Stencil->Update();
-
-	//vtkMetaImageWriter * writer = vtkMetaImageWriter::New();
-	//writer->SetFileName("edm.mhd");
-	//writer->SetInput(this->Stencil->GetOutput());
-	//writer->Write();
-
-
+	//Update model
 	this->DeformableMesh->Update();
 
-	//this->SobelFilter->Update();
-	//this->SobelFilter->GetOutput()->Print(cout);
-	//writer->SetFileName("sobel.mhd");
-	//writer->SetInput(this->SobelFilter->GetOutput());
-	//writer->Write();
+	//Set visualization parameters
+	this->Actor->GetProperty()->SetColor(this->Color);
+	this->Actor->GetProperty()->SetOpacity(this->Opacity);
+	this->Actor->SetVisibility(this->Visibility);
 
-	this->Actor->SetUserMatrix(this->Transform->GetMatrix());
+	this->Mapper->SetInput(this->DeformableMesh->GetOutput());
+	//this->Mapper->Modified();
+	//this->Mapper->Update();
 
 	output->ShallowCopy(this->DeformableMesh->GetOutput());
-	//output->ShallowCopy(this->Deformed);
 
 	return 1;
 }
@@ -221,5 +235,5 @@ int vtkEDMInterface::RequestData(
 //--------------------------------------------------------------------------
 void vtkEDMInterface::PrintSelf(ostream& os, vtkIndent indent)
 {
-  this->Superclass::PrintSelf(os,indent);
+	this->Superclass::PrintSelf(os,indent);
 }

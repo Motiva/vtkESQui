@@ -68,26 +68,15 @@ public:
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-	//!Initialize the Biomechanical Model
+	//!Initialize the Deformation Model
 	virtual void Init();
 
 	//
 	vtkSetMacro(NumberOfIterations, int);
 	vtkGetMacro(NumberOfIterations, int);
-	//! Set the distance coefficient
-	/*vtkSetMacro(DistanceCoefficient, double);
-	//! Set the damping coefficient
-	vtkSetMacro(DampingCoefficient, double);
-	//! Set the damping coefficient
-	vtkSetMacro(SpringCoefficient, double);
-	//! Set the mass value
-	vtkSetMacro(Mass, double);
-	//! Set the time step
-	vtkSetMacro(DeltaT, double);
-	//! Set the neighborhood size
-	vtkSetMacro(RigidityFactor, int);
-	//! Set motion equation solver type.
-	vtkSetMacro(SolverType, vtkParticleSpringSystem::MotionEquationSolverType);*/
+
+	vtkSetMacro(WarpScaleFactor, double);
+	vtkGetMacro(WarpScaleFactor, double);
 
 protected:
 	vtkEDMInterface();
@@ -100,7 +89,7 @@ private:
 	//!Explicit deformable mesh
 	vtkDeformableMesh * DeformableMesh;
 
-	//!Deformed Polydata
+	//!Source Mesh Polydata
 	vtkPolyData * Deformed;
 
 	//!Force vector computation
@@ -115,14 +104,26 @@ private:
 	//!Image Data
 	vtkImageData * ImageData;
 
+	//!Generated Image Source
+	vtkImageData * ImageSource;
+
 	//!Image stencil filter
 	vtkPolyDataToImageStencil * ImageStencilFilter;
 
 	//!Image stencil
 	vtkImageStencil * Stencil;
 
+	//!Image origin
+	double ImageOrigin[3];
+
+	//Image spacing
+	double ImageSpacing[3];
+
 	//! Number of iterations
 	int NumberOfIterations;
+
+	//! Warp scaling factor
+	double WarpScaleFactor;
 
 	//!Sobel filter computes vector field
 	// EDM specific parameters

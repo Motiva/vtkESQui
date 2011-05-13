@@ -47,17 +47,64 @@ public:
 
 			if (tid == this->FastTimerId)
 			{
+				cout << "New collision\n";
+				vtkPolyData * mesh = vtkPolyData::SafeDownCast(this->DeformationModel->GetInput());
+
+				//Locate collision points
+					vtkPointLocator * locator = vtkPointLocator::New();
+					double bounds[6];
+					mesh->GetBounds(bounds);
+
+					double p[3] = {bounds[0], 0, 0};
+
+					locator->SetDataSet(mesh);
+
+					vtkIdList * list = vtkIdList::New();
+					vtkDoubleArray * directions = vtkDoubleArray::New();
+					directions->SetNumberOfComponents(3);
+
+					locator->FindClosestNPoints(5, p, list);
+
+					//Set Collisions
+					double dir[3];
+					dir[0] = 2;
+					dir[1] = 0.5;
+					dir[2] = 0;
+
+					for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
+					{
+						double * point = mesh->GetPoint(list->GetId(i));
+						directions->InsertNextTuple(dir);
+						vtkIdType id = list->GetId(i);
+
+						//Insert collision info
+						vtkCollision * collision = vtkCollision::New();
+						collision->SetCollisionType(vtkCollision::ToolOrgan);
+						collision->SetElementId(0, 0);
+						collision->SetElementId(1, 0);
+
+						//Organ cell point
+						collision->SetPointId(1, id);
+						collision->SetPoint(1, point);
+						//collision->InsertCellId(0, organCellId);
+						collision->SetDisplacement(dir);
+
+						//collision->Print(cout);
+
+						this->DeformationModel->AddCollision(collision);
+					}
 
 			}
 			else if (tid == this->FasterTimerId)
 			{
 				vtkTimerLog * timer = vtkTimerLog::New();
 				timer->StartTimer();
-				int n = this->DeformationModel->GetNumberOfIterations();
-				this->DeformationModel->SetNumberOfIterations(n+1);
-				//this->DeformationModel->Modified();
+				this->DeformationModel->Modified();
 				this->DeformationModel->Update();
 				timer->StopTimer();
+
+				vtkActor *a = this->DeformationModel->GetActor();
+				cout << a->GetMapper()->GetInput()->GetNumberOfPoints() << endl;
 
 				std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
 
@@ -127,107 +174,64 @@ int TestvtkEDMInterface(int argc, char * argv[])
 	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
 	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
 
-	vtkEDMInterface* EDM = vtkEDMInterface::New();
+	vtkSmartPointer<vtkEDMInterface> EDM = vtkSmartPointer<vtkEDMInterface>::New();
+	EDM->SetNumberOfIterations(500);
+	EDM->SetWarpScaleFactor(0.001);
 	EDM->SetInput(mesh);
 	EDM->Init();
 
-	vtkRenderer * renderer = vtkRenderer::New();
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	//Locate collision points
-	vtkPointLocator * locator = vtkPointLocator::New();
-	double bounds[6];
-	mesh->GetBounds(bounds);
-
-	double p[3] = {bounds[0], 0, 0};
-
-	locator->SetDataSet(mesh);
-
-	vtkIdList * list = vtkIdList::New();
-	vtkDoubleArray * directions = vtkDoubleArray::New();
-	directions->SetNumberOfComponents(3);
-
-	//list->InsertNextId(0);
-	locator->FindClosestNPoints(10, p, list);
-
-	//Set Collisions
-	vtkCollisionCollection * collisions = vtkCollisionCollection::New();
-
-	double dir[3];
-	dir[0] = 5;//-0.1;
-	dir[1] = 0.1;
-	dir[2] = 0;//0.05;
-
-	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
-	{
-		double * point = mesh->GetPoint(list->GetId(i));
-		directions->InsertNextTuple(dir);
-		vtkIdType id = list->GetId(i);
-
-		//Insert collision info
-		vtkCollision * collision = vtkCollision::New();
-		collision->SetElementId(0, 0);
-		collision->SetElementId(1, 0);
-
-		//Organ cell point
-		collision->SetPointId(1, id);
-		collision->SetPoint(1, point);
-		//collision->InsertCellId(0, organCellId);
-		collision->SetDisplacement(dir);
-
-		collision->Print(cout);
-
-		collisions->InsertNextCollision(collision);
-	}
-
-	//Set a fictional force
-	EDM->SetCollisions(collisions);
-
-	vtkRenderWindow * renWin = vtkRenderWindow::New();
+	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
 	renWin->SetSize(500,500);
 	renWin->AddRenderer(renderer);
 
-	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
+	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	iren->SetRenderWindow(renWin);
 
-	vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
+	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	mapper->SetInput(mesh);
 	mapper->ScalarVisibilityOff();
 
-	vtkActor * actor = vtkActor::New();
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
-	actor->GetProperty()->SetColor(0,1,0);
-	actor->GetProperty()->SetOpacity(0.3);
+	actor->GetProperty()->SetRepresentationToSurface();
+	actor->GetProperty()->SetColor(0.5,1,0);
+	actor->GetProperty()->SetOpacity(.3);
 
-	vtkPolyDataMapper * mapper2 = vtkPolyDataMapper::New();
+	vtkSmartPointer<vtkPolyDataMapper> mapper2 = vtkSmartPointer<vtkPolyDataMapper>::New();
 	mapper2->SetInput(EDM->GetOutput());
 	mapper2->ScalarVisibilityOff();
 
-	vtkActor * actor2 = vtkActor::New();
+	vtkSmartPointer<vtkActor> actor2 = vtkSmartPointer<vtkActor>::New();
 	actor2->SetMapper(mapper2);
 	actor2->GetProperty()->SetColor(1,0,0);
 	actor2->GetProperty()->SetRepresentationToWireframe();
 
 	renderer->AddActor(actor);
-	renderer->AddActor(actor2);
+	renderer->AddActor(EDM->GetActor());
 	renderer->SetBackground(1,1,1);
 
 	renderer->ResetCamera();
-	//renderer->GetActiveCamera()->Azimuth(90);
 	iren->Initialize();
 
 	renWin->Render();
 
 	// Sign up to receive TimerEvent:
 	//
-	vtkEDMTimerCallback *cb = vtkEDMTimerCallback::New();
+	vtkSmartPointer<vtkEDMTimerCallback> cb = vtkSmartPointer<vtkEDMTimerCallback>::New();
 	iren->AddObserver(vtkCommand::TimerEvent, cb);
 	int tid;
 
 	cb->SetDeformationModel(EDM);
 
 	//Create a faster timer for DeformationModel update
-	tid = iren->CreateRepeatingTimer(10);
+	tid = iren->CreateRepeatingTimer(50);
 	cb->SetFasterTimerId(tid);
+
+	//Create a collision every 5 seconds
+	tid = iren->CreateRepeatingTimer(5000);
+	cb->SetFastTimerId(tid);
 
 	// Create a slower repeating timer to trigger Render calls.
 	// (This fires at the rate of approximately 25 frames per second.)
@@ -237,14 +241,6 @@ int TestvtkEDMInterface(int argc, char * argv[])
 
 	iren->Start();
 
-	EDM->Delete();
-	mapper->Delete();
-	actor->Delete();
-	mapper2->Delete();
-	actor2->Delete();
-	renderer->Delete();
-	renWin->Delete();
-	iren->Delete();
 	return 0;
 }
 

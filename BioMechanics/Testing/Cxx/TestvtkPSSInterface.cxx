@@ -29,13 +29,12 @@
 
 #include "vtkPSSInterface.h"
 
-
-class vtkTimerCallback : public vtkCommand
+class vtkPSSTimerCallback : public vtkCommand
 {
 public:
-	static vtkTimerCallback *New()
+	static vtkPSSTimerCallback *New()
 	{
-		vtkTimerCallback *cb = new vtkTimerCallback;
+		vtkPSSTimerCallback *cb = new vtkPSSTimerCallback;
 		cb->FastTimerId = 0;
 		cb->FasterTimerId = 0;
 		cb->RenderTimerId = 0;
@@ -50,17 +49,63 @@ public:
 
 			if (tid == this->FastTimerId)
 			{
+				cout << "new collision\n";
 
+				vtkPolyData * mesh = vtkPolyData::SafeDownCast(this->DeformationModel->GetInput());
+
+				//Locate collision points
+				vtkPointLocator * locator = vtkPointLocator::New();
+				double bounds[6];
+				mesh->GetBounds(bounds);
+
+				double p[3] = {bounds[0], 0, 0};
+
+				locator->SetDataSet(mesh);
+
+				vtkIdList * list = vtkIdList::New();
+				vtkDoubleArray * directions = vtkDoubleArray::New();
+				directions->SetNumberOfComponents(3);
+
+				locator->FindClosestNPoints(5, p, list);
+
+				//Set Collisions
+				double dir[3];
+				dir[0] = 0.2;//-0.1;
+				dir[1] = 0.05;
+				dir[2] = 0;//0.05;
+
+				for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
+				{
+					double * point = mesh->GetPoint(list->GetId(i));
+					directions->InsertNextTuple(dir);
+					vtkIdType id = list->GetId(i);
+
+					//Insert collision info
+					vtkCollision * collision = vtkCollision::New();
+					collision->SetCollisionType(vtkCollision::ToolOrgan);
+					collision->SetElementId(0, 0);
+					collision->SetElementId(1, 0);
+
+					//Organ cell point
+					collision->SetPointId(1, id);
+					collision->SetPoint(1, point);
+					//collision->InsertCellId(0, organCellId);
+					collision->SetDisplacement(dir);
+
+					collision->Print(cout);
+
+					this->DeformationModel->AddCollision(collision);
+				}
 			}
 			else if (tid == this->FasterTimerId)
 			{
 				vtkTimerLog * timer = vtkTimerLog::New();
 				timer->StartTimer();
-				this->BMM->Modified();
-				this->BMM->Update();
+				this->DeformationModel->Modified();
+				this->DeformationModel->Update();
 				timer->StopTimer();
 
-				//std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
+				std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
 
 			}
 			else if (tid == this->RenderTimerId)
@@ -89,9 +134,9 @@ public:
 		this->RenderTimerId = tid;
 	}
 
-	void SetBMM(vtkPSSInterface * bmm)
+	void SetDeformationModel(vtkPSSInterface * DeformationModel)
 	{
-		this->BMM = bmm;
+		this->DeformationModel = DeformationModel;
 	}
 
 	void SetCollisionIds(vtkIdList * list)
@@ -105,7 +150,7 @@ private:
 
 	vtkIdList * List;
 
-	vtkPSSInterface * BMM;
+	vtkPSSInterface * DeformationModel;
 };
 
 int TestvtkPSSInterface(int argc, char * argv[])
@@ -139,52 +184,6 @@ int TestvtkPSSInterface(int argc, char * argv[])
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	//Locate collision points
-	vtkSmartPointer<vtkPointLocator> locator = vtkSmartPointer<vtkPointLocator>::New();
-	double bounds[6];
-	mesh->GetBounds(bounds);
-
-	double p[3] = {bounds[0], 0, 0};
-
-	locator->SetDataSet(mesh);
-
-	vtkSmartPointer<vtkIdList> list = vtkSmartPointer<vtkIdList>::New();
-	vtkSmartPointer<vtkDoubleArray> directions = vtkSmartPointer<vtkDoubleArray>::New();
-	directions->SetNumberOfComponents(3);
-
-	locator->FindClosestNPoints(3, p, list);
-
-	//Set Collisions
-	vtkSmartPointer<vtkCollisionCollection> collisions = vtkSmartPointer<vtkCollisionCollection>::New();
-
-	double dir[3];
-	dir[0] = 0.2;//-0.1;
-	dir[1] = 0.05;
-	dir[2] = 0;//0.05;
-
-	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
-	{
-		double * point = mesh->GetPoint(list->GetId(i));
-		directions->InsertNextTuple(dir);
-		vtkIdType id = list->GetId(i);
-
-		//Insert collision info
-		vtkCollision * collision = vtkCollision::New();
-		collision->SetElementId(0, 0);
-		collision->SetElementId(1, 0);
-
-		//Organ cell point
-		collision->SetPointId(1, id);
-		collision->SetPoint(1, point);
-		//collision->InsertCellId(0, organCellId);
-		collision->SetDisplacement(dir);
-
-		collisions->InsertNextCollision(collision);
-	}
-
-	//Set a fictional force
-	pss->SetCollisions(collisions);
-
 	vtkSmartPointer<vtkRenderWindow> renWin =
 			vtkSmartPointer<vtkRenderWindow>::New();
 	renWin->SetSize(500,500);
@@ -215,15 +214,19 @@ int TestvtkPSSInterface(int argc, char * argv[])
 
 	// Sign up to receive TimerEvent:
 	//
-	vtkTimerCallback * cb = vtkTimerCallback::New();
+	vtkPSSTimerCallback * cb = vtkPSSTimerCallback::New();
 	iren->AddObserver(vtkCommand::TimerEvent, cb);
 	int tid;
 
-	cb->SetBMM(pss);
+	cb->SetDeformationModel(pss);
 
-	//Create a faster timer for BMM update
-	tid = iren->CreateRepeatingTimer(10);
+	//Create a faster timer for DeformationModel update
+	tid = iren->CreateRepeatingTimer(50);
 	cb->SetFasterTimerId(tid);
+
+	//Create a collision every 5 seconds
+	tid = iren->CreateRepeatingTimer(5000);
+	cb->SetFastTimerId(tid);
 
 	// Create a slower repeating timer to trigger Render calls.
 	// (This fires at the rate of approximately 25 frames per second.)

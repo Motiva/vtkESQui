@@ -22,11 +22,6 @@ vtkDeformationModel
 ABSTRACT
 )
 
-#SET_SOURCE_FILES_PROPERTIES(
-#vtkBioMechanicalModel
-#WRAP_EXCLUDE
-#)
-
 # Set your list of libraries here.
 SET(KIT_LIBS ${PROJECT_NAME}Common
 vtkCommon
