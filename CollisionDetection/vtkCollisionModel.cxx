@@ -106,8 +106,8 @@ int vtkCollisionModel::FillOutputPortInformation(int port, vtkInformation* info)
 //--------------------------------------------------------------------------
 void vtkCollisionModel::SetCollisions(vtkCollisionCollection * c)
 {
-	if(this->Collisions) this->Collisions->Delete();
-	this->Collisions = c;
+	this->Collisions->RemoveAllItems();
+	this->Collisions->DeepCopy(c);
 }
 
 //--------------------------------------------------------------------------

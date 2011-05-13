@@ -50,6 +50,7 @@ vtkStandardNewMacro(vtkCollision);
 
 //--------------------------------------------------------------------------
 vtkCollision::vtkCollision() {
+	this->CollisionType = ToolTool;
 	this->ObjectIds = vtkIdList::New();
 	this->ObjectIds->SetNumberOfIds(2);
 	this->ElementIds = vtkIdList::New();

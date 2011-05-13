@@ -117,7 +117,6 @@ void vtkBioEngInterface::Update()
 				if((m0->GetObjectId() != m1->GetObjectId())
 						&& (m0->IsVisible() && m1->IsVisible()))
 				{
-					//cout << m0->GetName() << "<->" << m1->GetName() << "\n";
 					//Each collision model transformed polydata (mx-GetOutput(1) is set as an input of the CDL
 					this->DetectionFilter->SetInput(0, m0->GetOutput(1));
 					this->DetectionFilter->SetInput(1, m1->GetOutput(1));
@@ -134,7 +133,12 @@ void vtkBioEngInterface::Update()
 					double d[3];
 					m0->GetVelocity(d);
 					vtkMath::MultiplyScalar(d, m0->GetDeltaT());
-
+					//Use second collided model (m1) if the first one (m0) is static
+					if(vtkMath::Norm(d) == 0)
+					{
+						m1->GetVelocity(d);
+						vtkMath::MultiplyScalar(d, m1->GetDeltaT());
+					}
 
 					for(int i =0; i < numberOfCollisions; i++)
 					{
@@ -208,6 +212,7 @@ void vtkBioEngInterface::Update()
 						if(m1->GetCollisions()->FindCollision(collision) < 0)
 						{
 							//Not found -> Insert collision in the model
+							m0->AddCollision(collision);
 							m1->AddCollision(collision);
 							//Insert global collision
 							this->Collisions->InsertNextCollision(collision);
