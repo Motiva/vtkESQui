@@ -73,6 +73,7 @@ vtkSimulationInteractorStyle::vtkSimulationInteractorStyle()
 	this->ToolIds = vtkIdList::New();
 	this->ActiveToolId = 0;
 	this->Scale = 0.1;
+	this->Initialized = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -108,19 +109,23 @@ int vtkSimulationInteractorStyle::GetNumberOfTools()
 //--------------------------------------------------------------------------
 void vtkSimulationInteractorStyle::Init()
 {
-	if(this->Scenario)
+	if(!this->Initialized)
 	{
-		this->Camera = this->Scenario->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
-		vtkScenarioObjectCollection * objects = this->Scenario->GetObjects();
-		objects->InitTraversal();
-		while(vtkScenarioObject * o = objects->GetNextObject())
+		if(this->Scenario)
 		{
-			if(o->GetObjectType() == vtkScenarioObject::Tool)
+			this->Camera = this->Scenario->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
+			vtkScenarioObjectCollection * objects = this->Scenario->GetObjects();
+			objects->InitTraversal();
+			while(vtkScenarioObject * o = objects->GetNextObject())
 			{
-				this->ToolIds->InsertNextId(o->GetId());
+				if(o->GetObjectType() == vtkScenarioObject::Tool)
+				{
+					this->ToolIds->InsertNextId(o->GetId());
+				}
 			}
+			if(this->GetNumberOfTools() > 0) this->ActiveToolId = this->GetToolId(0);
+			this->Initialized = 1;
 		}
-		if(this->GetNumberOfTools() > 0) this->ActiveToolId = this->GetToolId(0);
 	}
 }
 

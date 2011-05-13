@@ -126,5 +126,7 @@ private:
 	vtkIdList * ToolIds;
 	//! Active tool identifier
 	vtkIdType ActiveToolId;
+	//! Initialization flag
+	bool Initialized;
 };
 #endif

@@ -325,12 +325,10 @@ int main(int argc, char * argv[])
 
 	/**********  Simulation Setup  ********/
 	vtkSmartPointer<vtkSimulationInteractorStyle> style = vtkSmartPointer<vtkSimulationInteractorStyle>::New();
-	style->SetScenario(scenario);
-	style->Init();
-	iren->SetInteractorStyle(style);
 
 	vtkSimulation * simulation = vtkSimulation::New();
 	simulation->SetScenario(scenario);
+	simulation->SetInteractorStyle(style);
 	simulation->SetRenderTimerRate(0.02);
 	simulation->SetSimulationTimerRate(0.01);
 	simulation->SetHapticTimerRate(0.001);
