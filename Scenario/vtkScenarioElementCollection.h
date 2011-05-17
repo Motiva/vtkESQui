@@ -51,7 +51,7 @@ class vtkScenarioElement;
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioElementCollection : public vtkCollection
 {
 public:
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkScenarioElementCollection,vtkCollection);
 	//! Create new element storage collection
 	static vtkScenarioElementCollection *New() {return new vtkScenarioElementCollection;}
@@ -60,44 +60,44 @@ public:
 	//! Print collection values
 	virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Insert (replace) an element into the collection
+	//! Insert (replace) an element into the collection
 	/*!
-	* Element will be added at the specified id replacing its old value.
-	* \param id index of the list where the element will be added
-	* \param ScenarioElement vtkScenarioElement object to be inserted
-	* \sa InsertNextScenarioElement(vtkScenarioElement * ScenarioElement);
-	*/
+	 * Element will be added at the specified id replacing its old value.
+	 * \param id index of the list where the element will be added
+	 * \param ScenarioElement vtkScenarioElement object to be inserted
+	 * \sa InsertNextScenarioElement(vtkScenarioElement * ScenarioElement);
+	 */
 	void ReplaceElement(vtkIdType id, vtkScenarioElement * ScenarioElement);
 
-	//!Insert element at the end of the collection
+	//! Insert element at the end of the collection
 	/*!
-	* \param ScenarioElement vtkScenarioElement object to be inserted
-	* \sa ReplaceScenarioElement(vtkIdType id, vtkScenarioElement * ScenarioElement)
-	*/
+	 * \param ScenarioElement vtkScenarioElement object to be inserted
+	 * \sa ReplaceScenarioElement(vtkIdType id, vtkScenarioElement * ScenarioElement)
+	 */
 	void AddElement(vtkScenarioElement * ScenarioElement);
 
-	//!Remove an element of the collection at the specified id
+	//! Remove an element of the collection at the specified id
 	/*!
-	* \param id index of the element in the collection
-	* \sa ReplaceScenarioElement(vtkIdType id, vtkScenarioElement * ScenarioElement)
-	* \sa AddScenarioElement(vtkScenarioElement * ScenarioElement)
-	*/
+	 * \param id index of the element in the collection
+	 * \sa ReplaceScenarioElement(vtkIdType id, vtkScenarioElement * ScenarioElement)
+	 * \sa AddScenarioElement(vtkScenarioElement * ScenarioElement)
+	 */
 	void RemoveElement(vtkIdType id);
 
-	//!Return element located the specified id
+	//! Return element located the specified id
 	/*!
-	* Get the element in the list with the position id. NULL is returned when the collection is exhausted.
-	* \param id list index where the element is stored
-	*/
+	 * Get the element in the list with the position id. NULL is returned when the collection is exhausted.
+	 * \param id list index where the element is stored
+	 */
 	vtkScenarioElement * GetElement(vtkIdType id);
 
-	//!Return element on the collection
+	//! Return element on the collection
 	/*!
-	* Get the element at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
-	*/
+	 * Get the element at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+	 */
 	vtkScenarioElement * GetNextElement();
 
-	//!Return number of elements in the collection
+	//! Return number of elements in the collection
 	vtkIdType GetNumberOfElements();
 
 protected:

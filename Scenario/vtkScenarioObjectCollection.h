@@ -51,7 +51,7 @@ class vtkScenarioObject;
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioObjectCollection : public vtkCollection
 {
 public:
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkScenarioObjectCollection,vtkCollection);
 	//! Create new object storage collection
 	static vtkScenarioObjectCollection *New() {return new vtkScenarioObjectCollection;}
@@ -60,44 +60,44 @@ public:
 	//! Print collection values
 	virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Insert (replace) an object into the collection
+	//! Insert (replace) an object into the collection
 	/*!
-	* Object will be added at the specified id replacing its old value.
-	* \param id index of the list where the object will be added
-	* \param ScenarioObject vtkScenarioObject object to be inserted
-	* \sa InsertNextScenarioObject(vtkScenarioObject * ScenarioObject);
-	*/
+	 * Object will be added at the specified id replacing its old value.
+	 * \param id index of the list where the object will be added
+	 * \param ScenarioObject vtkScenarioObject object to be inserted
+	 * \sa InsertNextScenarioObject(vtkScenarioObject * ScenarioObject);
+	 */
 	void ReplaceObject(vtkIdType id, vtkScenarioObject * ScenarioObject);
 
-	//!Insert object at the end of the collection
+	//! Insert object at the end of the collection
 	/*!
-	* \param ScenarioObject vtkScenarioObject object to be inserted
-	* \sa ReplaceScenarioObject(vtkIdType id, vtkScenarioObject * ScenarioObject)
-	*/
+	 * \param ScenarioObject vtkScenarioObject object to be inserted
+	 * \sa ReplaceScenarioObject(vtkIdType id, vtkScenarioObject * ScenarioObject)
+	 */
 	void AddObject(vtkScenarioObject * ScenarioObject);
 
-	//!Remove an object of the collection at the specified id
+	//! Remove an object of the collection at the specified id
 	/*!
-	* \param id index of the object in the collection
-	* \sa ReplaceScenarioObject(vtkIdType id, vtkScenarioObject * ScenarioObject)
-	* \sa AddScenarioObject(vtkScenarioObject * ScenarioObject)
-	*/
+	 * \param id index of the object in the collection
+	 * \sa ReplaceScenarioObject(vtkIdType id, vtkScenarioObject * ScenarioObject)
+	 * \sa AddScenarioObject(vtkScenarioObject * ScenarioObject)
+	 */
 	void RemoveObject(vtkIdType id);
 
-	//!Return object located the specified id
+	//! Return object located the specified id
 	/*!
-	* Get the object in the list with the position id. NULL is returned when the collection is exhausted.
-	* \param id list index where the object is stored
-	*/
+	 * Get the object in the list with the position id. NULL is returned when the collection is exhausted.
+	 * \param id list index where the object is stored
+	 */
 	vtkScenarioObject * GetObject(vtkIdType id);
 
-	//!Return object on the collection
+	//! Return object on the collection
 	/*!
-	* Get the object at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
-	*/
+	 * Get the object at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+	 */
 	vtkScenarioObject * GetNextObject();
 
-	//!Return number of objects in the collection
+	//! Return number of objects in the collection
 	vtkIdType GetNumberOfObjects();
 
 protected:

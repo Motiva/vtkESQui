@@ -353,12 +353,8 @@ void vtkSRMLImporter::ImportActors (vtkRenderer * renderer)
 	}
 	else
 	{
-		//File Info will be imported using vtk classes
-		if(this->RenderWindow)
-		{
-			//TODO: Import without the ESQUI structure
-		}
-		else return;
+		vtkErrorMacro("A scenario must be assigned to the importer");
+		return;
 	}
 }
 
@@ -397,7 +393,6 @@ void vtkSRMLImporter::ImportScenarioObjects()
 
 		if(this->GetDebug()) object->Print(cout);
 
-		//TODO: Complete with the rest of the tools
 		vtkDebugMacro("Object successfully imported.");
 	}
 }
@@ -418,7 +413,7 @@ void vtkSRMLImporter::SetScenarioElements(vtkScenarioObject * object, vtkXMLData
 		object->AddElement(element);
 
 		if(this->GetDebug()) element->Print(cout);
-		//TODO: Complete with the rest of the tools
+
 		vtkDebugMacro("Element successfully imported.");
 	}
 }

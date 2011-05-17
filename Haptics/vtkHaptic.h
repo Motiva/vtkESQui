@@ -45,7 +45,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiHapticsWin32Header.h"
 #include "vtkObject.h"
 
-//! Generic Haptic Class
+//! Generic haptic class for interface implementation
+/*!
+ * This generic class serves as base for haptic devices interfaces. The
+ * following interfaces has been implemented:\n
+ *  - vtkIHP: Xitact IHP. Laparoscopic and arthroscopic techniques.
+ *  - vtkVSP: Xitact VSP. Endovascular techniques.
+ *  - vtkLSW: Immersion LSW. Laparoscopic techniques.
+ */
 
 class VTK_ESQUI_HAPTICS_EXPORT vtkHaptic: public vtkObject {
 

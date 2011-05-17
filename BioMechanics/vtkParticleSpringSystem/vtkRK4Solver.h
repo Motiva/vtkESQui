@@ -67,7 +67,7 @@ public:
 	//! Compute next step for every particle
 	/*!
 	* \param particles collection of particles
-	* \param dt time step
+	* \param deltaT time step
 	*/
 	virtual void ComputeNextStep(vtkParticleCollection * particles, double deltaT);
 

@@ -168,7 +168,6 @@ int vtkToolGrasper::RequestData(vtkInformation *vtkNotUsed(request),
 			std::cout << "Tool("<<id<< ") Right pedal is pressed...\n";
 		}
 
-		//TODO: Obtain Force from contact
 		//Set Tool Feedback Forces
 		float force [3];
 		force[0] = force[1] = force[2] = 0;

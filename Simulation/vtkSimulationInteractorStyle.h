@@ -49,9 +49,12 @@ class vtkIdList;
 class vtkCamera;
 class vtkScenario;
 
-//! Implementation of the simulation interactor
+//! Implementation of the simulation interactor style.
 /*!
- * Defines a keyboard layout for simulation control
+ * Defines a standard keyboard layout for simulation control in laparoscopic
+ * techniques.
+ * Mouse and keyboard events are handled and further actions, such as
+ * rotations or translations, implemented.
  */
 class VTK_ESQUI_SIMULATION_EXPORT vtkSimulationInteractorStyle : public vtkInteractorStyleTrackballCamera {
 
@@ -65,59 +68,89 @@ public:
 	//! Return class name
 	const char *GetClassName() {return "vtkSimulationInteractorStyle";};
 
-	//! Initialization
+	//! Initialization of the simulation style
 	void Init();
 
 	//! Handle onKeyPress event
 	virtual void OnKeyPress();
 
+	//! Handle onMouseMove event
 	virtual void OnMouseMove();
 
 	//! Handle onLeftButtonDown event
 	virtual void OnLeftButtonDown();
+	//! Handle onLeftButtonUp event
 	virtual void OnLeftButtonUp();
 
+	//! Handle onMiddleButtonDown event
 	virtual void OnMiddleButtonDown();
+	//! Handle onMiddleButtonUp event
 	virtual void OnMiddleButtonUp();
 
+	//! Handle onRightButtonDown event
 	virtual void OnRightButtonDown();
+	//! Handle onRightButtonUp event
 	virtual void OnRightButtonUp();
 
-	//! Set Interactor Scenario
+	//! Set interactor scenario
+	/*!
+	 * \sa vtkScenario * GetScenario()
+	 */
 	void SetScenario(vtkScenario * s);
-	//! Get Interactor Scenario
+
+	//! Get interactor scenario
+	/*!
+	 * \sa SetScenario(vtkScenario * s)
+	 */
 	vtkScenario * GetScenario();
 
 	//! Set currently active tool id
+	/*!
+	 * \sa int GetActiveToolId()
+	 */
 	vtkSetMacro(ActiveToolId, vtkIdType);
 	//! Get currently active tool id
+	/*!
+	 * \sa SetActiveToolId(int)
+	 */
 	vtkGetMacro(ActiveToolId, vtkIdType);
 
 	//! Set movement scale factor
+	/*!
+	 * \sa double GetScale()
+	 */
 	vtkSetMacro(Scale, double);
 	//! Get movement scale
+	/*!
+	 * \sa SetScale(double)
+	 */
 	vtkGetMacro(Scale, double);
 
 protected:
 	vtkSimulationInteractorStyle();
 	~vtkSimulationInteractorStyle();
 
-private:
-	vtkSimulationInteractorStyle (const vtkSimulationInteractorStyle &);//NotImplemented
-	void operator =(const vtkSimulationInteractorStyle &);//Not Implemented
-
+	// Returns stroed tool identifier
 	int GetToolId(int id);
 
+	//! Number of tools to be handled
 	int GetNumberOfTools();
 
+	//! Scenario to be controled
 	vtkScenario * Scenario;
 
+	//! Scenario camera
 	vtkCamera * Camera;
 
+	//! Last mouse event position
 	int PreviousPosition[2];
+
+	//! Movement scale
 	double Scale;
 
+	//! Left button pressed flag
 	bool LeftButtonPressed;
+	//! Right button pressed flag
 	bool RightButtonPressed;
 
 	//! Camera/Tool Mode
@@ -128,5 +161,9 @@ private:
 	vtkIdType ActiveToolId;
 	//! Initialization flag
 	bool Initialized;
+
+private:
+	vtkSimulationInteractorStyle (const vtkSimulationInteractorStyle &);//NotImplemented
+	void operator =(const vtkSimulationInteractorStyle &);//Not Implemented
 };
 #endif

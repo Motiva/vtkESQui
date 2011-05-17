@@ -101,7 +101,7 @@ void vtkScenarioElement::SetRenderWindow(vtkRenderWindow * r){
 }
 
 //--------------------------------------------------------------------------
-vtkRenderWindow * vtkScenarioElement::GetRenderWindow(vtkRenderWindow * r){
+vtkRenderWindow * vtkScenarioElement::GetRenderWindow(){
 	return this->RenderWindow;
 }
 

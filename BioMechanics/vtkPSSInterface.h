@@ -47,7 +47,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkParticleSpringSystem.h"
 
-//! Interface to the abstract vtkBiomechanicalModel class for a particle-spring system
+//! Interface class for a particle-spring deformation system.
+/*!
+ * This class, based in vtkDeformationModel class, adapts the access to the
+ * external vtkParticleSpringSystem package.
+ */
 
 class VTK_ESQUI_BIOMECHANICS_EXPORT vtkPSSInterface : public vtkDeformationModel
 {
@@ -63,7 +67,19 @@ public:
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-	//!Initialize the Bio-Mechanical Model
+	//!Initialize the Deformation Model
+	/*!
+	 * The model has to be initialized in order to be updated. Some parameters
+	 * must be previously defined:\n
+	 * - Input: vtkPolyData object
+	 * - DistanceCoefficient: Maximum distance between points
+	 * - DampingCoefficient: (d) oscillation coefficient
+	 * - SpringCoefficient: (K) spring coefficient
+	 * - Mass: unit mass of each particle
+	 * - RigidityFactor: n-neighborhood connectivity
+	 * - DeltaT: time step of deformation process
+	 * - SolverType: motion equation solver type
+	 */
 	virtual void Init();
 
 	//! Set the distance coefficient
@@ -85,9 +101,6 @@ protected:
 	vtkPSSInterface();
 	~vtkPSSInterface();
 
-private:
-	vtkPSSInterface(const vtkPSSInterface&);  // Not implemented.
-	void operator=(const vtkPSSInterface&);  // Not implemented.
 
 	//!Particle-spring system mesh
 	vtkParticleSpringSystem * ParticleSpringSystem;
@@ -97,23 +110,50 @@ private:
 	double DistanceCoefficient;
 	//! Damping coefficient.
 	/*!
-	 * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
-	 * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
-	 * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
+	 * Damping coefficient behaviour:\n
+	 * - < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
+	 * - = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
+	 * - > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
 	 */
 	double DampingCoefficient;
-	//! Spring Coefficient K
+	//! Spring Coefficient
+	/*!
+	 * Commonly known as K, defines the spring rigidity.
+	 */
 	double SpringCoefficient;
-	//! Mass value on each point
+	//! Mass of each particle
+	/*!
+	 * Mass value for every particle of the system. All particles must be set to the same value.
+	 * By default is set to 1.
+	 */
 	double Mass;
-	//! calculation time step
+	//! Calculation time step
+	/*!
+	 * Deformation process time interval. The configuration is crucial, for greater values the system
+	 * could become unstable.
+	 */
 	double DeltaT;
-	//! Neighborhood size factor
+	//! Rigidity factor
+	/*!
+	 * This parameter defines how the particles are interconnected.
+	 * By default its value is 1, so every particle is connected to its neighbor.
+	 * If value is set to 2, then every particle is connected to the neighbors of its neighbors an so.
+	 */
 	int RigidityFactor;
+
 	//! Motion equation solver type
-	
+	/*!
+	 * There are several motion equation solvers available:
+	 * - Euler
+	 * - Modified Euler
+	 * - Verlet
+	 * - Runge-Kutta 4-5
+	 */
 	vtkMotionEquationSolver::MotionEquationSolverType SolverType;
 	
+private:
+	vtkPSSInterface(const vtkPSSInterface&);  // Not implemented.
+	void operator=(const vtkPSSInterface&);  // Not implemented.
 };
 
 #endif

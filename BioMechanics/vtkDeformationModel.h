@@ -52,7 +52,14 @@ class vtkCollisionCollection;
 class vtkBoundaryCondition;
 class vtkBoundaryConditionCollection;
 
-//! Class vtkDeformationModel defines a visualization mesh (PolyData) with its texture. Inherits from vtkModel
+//! vtkDeformationModel object defines a deformation model based on a mesh (vtkPolyData).
+/*!
+ * This class inherits from vtkModel base class. As it is specified in vtkModel,
+ * at least an input mesh should be defined. Optionally a source mesh for
+ * synchronization purposes may be defined.
+ * An interface based on this class must be implemented to access available
+ * deformation models: vtkParticleSpringSystem, vtkExplicitDeformableModel, etc...
+ */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkDeformationModel: public vtkModel {
 
@@ -61,41 +68,77 @@ public:
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkDeformationModel, vtkModel);
 
-	//!Create a new Scenario object
-	//static vtkDeformationModel * New();
-
 	//!Return the class name
 	const char *GetClassName() {return "vtkDeformationModel";}
 
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Initialize the Deformation Model
+	//!Initialize the deformation model
+	/*!
+	 * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
+	 * - Input: vtkPolyData object \n
+	 */
 	virtual void Init();
 
 	//!Set the detected collisions
+	/*!
+	 * Set a collection of collisions to the model. Any collision previously added will be removed.
+	 * \param collisions collection of collisions
+	 * \sa vtkCollisionCollection * GetCollisions()
+	 */
 	void SetCollisions(vtkCollisionCollection * collisions);
 
 	//!Get the detected contacts
+	/*!
+	 * \return collection of collisions
+	 * \sa SetCollisions(vtkCollisionCollection * collisions)
+	 */
 	vtkCollisionCollection * GetCollisions();
 
 	//!Add a collision to the model
+	/*!
+	 * Add a single collision to the model. Previously added collisions are kept.
+	 * \param c collision to be added
+	 * \sa RemoveCollision(vtkIdType id)
+	 */
 	void AddCollision(vtkCollision * c);
 
 	//!Remove the collision at the specified id
+	/*!
+	 * Remove a single collision from the model at the specified id
+	 * \param id collision identifier
+	 * \sa AddCollision(vtkCollision * c)
+	 */
 	void RemoveCollision(vtkIdType id);
 
 	//!Remove all collisions from the model
+	/*!
+	 * All previously defined collisions are removed from the model. Collision collection object is not deleted.
+	 */
 	void RemoveAllCollisions();
 
 	//!Insert a condition into the deformation model
+	/*!
+	 * Add a single condition to the model at the end of the collection
+	 * \param condition condition to be added
+	 * \sa InsertBoundaryConditions(vtkBoundaryConditionCollection * collection);
+	 */
 	virtual void InsertNextBoundaryCondition(vtkBoundaryCondition * condition) ;
 
 	//!Insert a collection of conditions into the deformation model
+	/*!
+	 * Add a collection of conditions to the model.
+	 * \param collection collection of conditions to be added
+	 * \sa InsertNextBoundaryCondition(vtkBoundaryCondition * condition) ;
+	 */
 	virtual void InsertBoundaryConditions(vtkBoundaryConditionCollection * collection);
 
 	//!Remove conditions of the deformation model
-	virtual void DeleteBoundaryConditions();
+	/*!
+	 * All previously defined conditions are removed from the model. Condition collection object is not deleted.
+	 */
+	virtual void RemoveBoundaryConditions();
 
 	//! Set Gravity Force (m/s2)
 	vtkSetVector3Macro(Gravity, double);
@@ -112,15 +155,15 @@ protected:
 
 	//!Model collisions.
 	/*!
-	 * This acts as pointer to the collision model collection of collisions
+	 * This acts as pointer to the deformation model collection of collisions
 	 */
 	vtkCollisionCollection * Collisions;
 
 	//!Boundary conditions
+	/*!
+	 * This acts as pointer to the deformation model collection of conditions
+	 */
 	vtkBoundaryConditionCollection * BoundaryConditions;
-
-	//! Process the algorithm request (Update).
-	//virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 private:
 	vtkDeformationModel (const vtkDeformationModel &);

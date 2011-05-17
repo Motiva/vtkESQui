@@ -48,7 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkCollisionDetectionFilter;
 class vtkMatrix4x4;
 
-//! Interface to the collision detection library
+//! Interface to the vtkbioeng collision detection library.
 
 class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkBioEngInterface: public vtkCollisionDetection
 {
@@ -81,18 +81,18 @@ protected:
 	//! Default destructor
 	~vtkBioEngInterface();
 
+	//!Collision detection filter
+	vtkCollisionDetectionFilter *DetectionFilter;
+
+	//!Rotation matrix
+	vtkMatrix4x4 *Matrix0;
+	//!Rotation matrix
+	vtkMatrix4x4 *Matrix1;
+
 private:
 
 	vtkBioEngInterface(const vtkBioEngInterface &); //NotImplemented
 	void operator =(const vtkBioEngInterface &); //Not Implemented
-
-	//!Collision detection filter
-	vtkCollisionDetectionFilter *DetectionFilter;
-
-	//!Calculation matrix
-	vtkMatrix4x4 *Matrix0;
-	//!Calculation matrix
-	vtkMatrix4x4 *Matrix1;
 
 };
 

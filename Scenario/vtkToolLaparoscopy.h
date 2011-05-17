@@ -51,25 +51,27 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLSW.h"
 #endif
 
-//! Class vtkToolLaparoscopy, abstract the use of a surgical laparoscopic tool
+//! vtkToolLaparoscopy class implements a surgical laparoscopic tool.
 /*!
- * vtkToolLaparoscopy abstracts the use of a surgical tool during the simulation exercise.
- * This provide an easy use of surgical tools collections.
+ * This class inherits from vtkTool, and serves as base class for specific
+ * laparoscopic techniques tools: vtkToolProbe, vtkToolGrasper, etc...\n
+ * A few laparoscopic specific movements (rotation, insertion, opening etc...)
+ * has been defined to control the tool.
  */
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolLaparoscopy: public vtkTool {
 
 public:
 
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkToolLaparoscopy,vtkTool);
 
-	//!Return the class name
+	//! Return the class name
 	const char *GetClassName() {return "vtkToolLaparoscopy";}
 
-	//!Print class values
+	//! Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Tool type definition
+	//! Tool type definition
 	enum vtkToolLaparoscopyModel{
 		Probe = 0,
 		Grasper = 1,
@@ -78,40 +80,40 @@ public:
 		Dummy = 4
 	};
 
-	//!Set tool model
+	//! Set tool model
 	vtkSetMacro(ToolModel, vtkToolLaparoscopy::vtkToolLaparoscopyModel);
-	//!Return tool model
+	//! Return tool model
 	vtkGetMacro(ToolModel, vtkToolLaparoscopy::vtkToolLaparoscopyModel);
 
-	//!Abstract initialization function
+	//! Abstract initialization function
 	/*!
-	* This method initializes the tool physical values, scale, position, etc...
-	*/
+	 * This method initializes the tool physical values, scale, position, etc...
+	 */
 	virtual void Init();
 
-	//!Assign the haptic force as vector
+	//! Assign the haptic force as vector
 	/*!
-	* \param Force force vector of components
-	*/
+	 * \param Force force vector of components
+	 */
 	void SetForceFeedback(float Force[]);
 
-	//!Assign the haptic force components individually
+	//! Assign the haptic force components individually
 	/*!
-	* \param x x component of the force
-	* \param y y component of the force
-	* \param z z component of the force
-	*/
+	 * \param x x component of the force
+	 * \param y y component of the force
+	 * \param z z component of the force
+	 */
 	void SetForceFeedback(float x, float y, float z) {
 		this->ForceFeedback[0] = x;
 		this->ForceFeedback[1] = y;
 		this->ForceFeedback[2] = z;
 	}
 
-	//!Return the haptic force in float vector
+	//! Return the haptic force in float vector
 	/*!
-	* \sa SetForceFeedback(float Force[])
-	* \sa SetForceFeedback(float x, float y, float z)
-	*/
+	 * \sa SetForceFeedback(float Force[])
+	 * \sa SetForceFeedback(float x, float y, float z)
+	 */
 	void GetForceFeedback( float Force[] ) const
 	{
 		Force[0] = this->ForceFeedback[0];
@@ -119,23 +121,23 @@ public:
 		Force[2] = this->ForceFeedback[2];
 	}
 
-	//!Return the x component of the haptic force
+	//! Return the x component of the haptic force
 	/*!
-	* \sa SetForceFeedback(float Force[])
-	* \sa SetForceFeedback(float x, float y, float z)
-	*/
+	 * \sa SetForceFeedback(float Force[])
+	 * \sa SetForceFeedback(float x, float y, float z)
+	 */
 	float GetXFeedbackForce() {return this->ForceFeedback[0];}
-	//!Return the y component of the haptic force
+	//! Return the y component of the haptic force
 	/*!
-	* \sa SetForceFeedback(float Force[])
-	* \sa SetForceFeedback(float x, float y, float z)
-	*/
+	 * \sa SetForceFeedback(float Force[])
+	 * \sa SetForceFeedback(float x, float y, float z)
+	 */
 	float GetYFeedbackForce() {return this->ForceFeedback[1];}
-	//!Return the z component of the haptic force
+	//! Return the z component of the haptic force
 	/*!
-	* \sa SetForceFeedback(float Force[])
-	* \sa SetForceFeedback(float x, float y, float z)
-	*/
+	 * \sa SetForceFeedback(float Force[])
+	 * \sa SetForceFeedback(float x, float y, float z)
+	 */
 	float GetZFeedbackForce() {return this->ForceFeedback[2];}
 
 	//! Return tool contact force
@@ -143,15 +145,13 @@ public:
 
 	//! Pull back tool
 	/*!
-	 *Set the tool depth position back.
-	 *\param step Z axis value (local coordinate system)
-	*/
+	 * Set the tool depth position back.
+	 */
 	virtual void Pull();
 
 	//! Pull back tool
 	/*!
-	 *Set the tool depth position forward.
-	 *\param step Z axis value (local coordinate system)
+	 * Set the tool depth position forward.
 	 */
 	virtual void Push();
 

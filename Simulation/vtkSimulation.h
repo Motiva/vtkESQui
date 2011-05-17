@@ -56,13 +56,19 @@ class vtkCallbackCommand;
 #include "vtkHaptic.h"
 #endif
 
-//! Implementation of the simulation process.
+//! Implementation of the vtkESQui simulation process.
 /*!
- * Periodically executes the simulation and haptic manager and updates the whole scenario.
+ * Simulation process is executed with timer callback function that handles
+ * three timed threaded loops at different rates:
+ * - Scenario
+ * - Collision
+ * - Interaction
  */
+
 class VTK_ESQUI_SIMULATION_EXPORT vtkSimulation: public vtkObject
 {
 public:
+
 	//! Type revision macro
 	vtkTypeRevisionMacro(vtkSimulation, vtkObject);
 	//! Create new vtkSimulation object
@@ -71,31 +77,31 @@ public:
 	//! Return class name
 	const char *GetClassName() { return "vtkSimulation"; }
 
-	//!Print the attributes value
+	//! Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//! Set simulation render window interactor
 	/*!
-	* \sa GetInteractor()
-	*/
+	 * \sa GetInteractor()
+	 */
 	void SetInteractor(vtkRenderWindowInteractor * i);
 
-	//!Get simulation render window interactor
+	//! Get simulation render window interactor
 	/*!
-	* \sa SetInteractor(vtkRenderWindowInteractor *iren)
-	*/
+	 * \sa SetInteractor(vtkRenderWindowInteractor *iren)
+	 */
 	vtkRenderWindowInteractor * GetInteractor();
 
 	//! Set simulation interactor style
 	/*!
-	* \sa GetInteractorStyle()
-	*/
+	 * \sa GetInteractorStyle()
+	 */
 	void SetInteractorStyle(vtkSimulationInteractorStyle * style);
 
-	//!Get simulation interactor style
+	//! Get simulation interactor style
 	/*!
-	* \sa SetInteractor(vtkSimulationInteractorStyle *style)
-	*/
+	 * \sa SetInteractor(vtkSimulationInteractorStyle *style)
+	 */
 	vtkSimulationInteractorStyle * GetInteractorStyle();
 
 	//! Set the simulation scenario: organs, tools, etc...
@@ -104,38 +110,37 @@ public:
 	 */
 	void SetScenario(vtkScenario * s);
 
-	//!Return the scenario of the simulation
+	//! Return the scenario of the simulation
 	vtkScenario * GetScenario();
 
-	//!Return the collision collection
+	//! Return the collision collection
 	vtkCollisionCollection * GetCollisions();
 
-	//!Set haptic device timer refresh rate (s)
+	//! Set haptic device timer refresh rate (s)
 	vtkSetMacro(HapticTimerRate, double);
 
-	//!Set simulation refresh rate (s)
+	//! Set simulation refresh rate (s)
 	vtkSetMacro(SimulationTimerRate, double);
 
-	//!Set render refresh rate (s)
+	//! Set render refresh rate (s)
 	vtkSetMacro(RenderTimerRate, double);
 
-	//!Get haptic device timer refresh rate (s)
+	//! Get haptic device timer refresh rate (s)
 	vtkGetMacro(HapticTimerRate, double);
 
-	//!Get simulation refresh rate (s)
+	//! Get simulation refresh rate (s)
 	vtkGetMacro(SimulationTimerRate, double);
 
-	//!Get render refresh rate (s)
+	//! Get render refresh rate (s)
 	vtkGetMacro(RenderTimerRate, double);
 
-	//Get timer identifiers for event handling
-	//!Get haptic device timer identifier
+	//! Get haptic device timer identifier
 	vtkGetMacro(HapticTimerId, vtkIdType);
 
-	//!Get simulation timer identifier
+	//! Get simulation timer identifier
 	vtkGetMacro(SimulationTimerId, vtkIdType);
 
-	//!Get render timer identifier
+	//! Get render timer identifier
 	vtkGetMacro(RenderTimerId, vtkIdType);
 
 	//! Set the use of haptic in the simulation
@@ -143,7 +148,7 @@ public:
 	//! Get the use of haptic in the simulation
 	vtkGetMacro(UseHaptic, bool);
 
-	//!Enable the use of haptic
+	//! nable the use of haptic
 	vtkBooleanMacro(UseHaptic, bool);
 
 	//! Set the verbose mode
@@ -188,11 +193,6 @@ protected:
 	vtkSimulation();
 	~vtkSimulation();
 
-private:
-
-	vtkSimulation (const vtkSimulation &); //Not Implemented
-	void operator =(const vtkSimulation &); //Not Implemented
-
 	//!Simulation callback command. Acts as a multirate timer
 	vtkCallbackCommand * Callback;
 
@@ -223,6 +223,11 @@ private:
 
 	//! Gravitational force
 	double Gravity[3];
+
+private:
+
+	vtkSimulation (const vtkSimulation &); //Not Implemented
+	void operator =(const vtkSimulation &); //Not Implemented
 
 };
 #endif

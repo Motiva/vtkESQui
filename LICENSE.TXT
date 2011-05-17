@@ -15,7 +15,9 @@ Rodriguez Florido (ITC and CTM-ULPGC).
 
 The first version of the package was implemented by the Bachelor Thesis of 
 Norberto Sanchez Escobar. Some Improvements of this package were done by 
-the Master Thesis of Graciela Santana Sosa, both at the CTM-ULPGC lab supported by the Institute of Technology (ITC). Also, Raul Santana (CTM-ULPGC) developed code for this package.
+the Master Thesis of Graciela Santana Sosa, both at the CTM-ULPGC lab 
+supported by the Institute of Technology (ITC). Also, Raul Santana (CTM-ULPGC) 
+developed code for this package.
 
 The final stable version of the package, with a new design and structure,
 has been implemented by Jorge Ballesteros (member of the MOTIVA and funded

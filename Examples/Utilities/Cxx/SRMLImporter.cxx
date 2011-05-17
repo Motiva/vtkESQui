@@ -63,7 +63,7 @@ int main(int argc, char * argv[])
 
 	if (argc > 1)
 	{
-		path = argv[1];
+		fn = argv[1];
 	}
 
 	/**********  Render Window Definitions  ********/

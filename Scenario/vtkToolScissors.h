@@ -45,13 +45,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolLaparoscopy.h"
 
-//! Implementation class of grasper
+//! Implementation class of surgical laparoscopic scissors.
 /*!
-	vtkToolScissors is the class that implements the grasper tool, inside the scene.
-	Contains methods for position control of the tool in the scene and collision detection.
-	Scissors are composed of 3 pieces: 1 stick and 2 graspers (vtkPiece)
-	Inherits vtkToolLaparascopy class
-*/
+ * This class, that inherits from vtkToolLaparascopy, defines surgical
+ * scissors, inside the scenario.\n
+ * Contains methods for position control of the tool in the scene and
+ * collision detection.\n
+ * Laparoscopic scissors are composed of 3 elements:\n
+ *  - Stick
+ *  - 2 Blades.
+ */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolScissors: public vtkToolLaparoscopy
 {
@@ -72,7 +75,7 @@ public:
 	//!Initialize the tool from VTK file
 	/*!
 		This function initializes the tool whose mesh is described on a VTK file
-	*/
+	 */
 	virtual void Init();
 
 	//!Update the tool
@@ -81,28 +84,31 @@ public:
 	 */
 	virtual void Update();
 
-	//! Set the tool's aperture according with the value given in the "Aperture" parameter
+	//! Set the tool's opening according with the value given in the "Opening" parameter
 	/*!
-		This function set the tool's aperture in function of the value given in the "Aperture" parameter.
-		The aperture is established modifying the tool's mesh position.
-		The "Aperture" parameter can take any value between "0" $ "1": "0" -> to close the tool "1" -> to open the tool
+	 * This function set the tool's opening in function of the value given in the "Opening" parameter.
+	 * The opening is established modifying the tool's mesh position.
+	 * \sa double GetOpening()
 	 */
 	void SetOpening(double opening);
-	//!Get pincer opening
+	//!Get scissors opening
+	/*!
+	 * \sa SetOpening(double)
+	 */
 	vtkGetMacro(Opening, double);
 
 	//! Open the grasper moving piece actors
 	/*!
 		Piece actors are transformed to perform tool opening
 		Bounding boxes are recalculated.
-	*/
+	 */
 	void Open();
 
 	//! Close the grasper moving piece actors
 	/*!
 		Piece actors are transformed to perform tool closing
 		Bounding boxes are recalculated.
-	*/
+	 */
 	void Close();
 
 	//!Return whether the grasper is closed or not
@@ -149,6 +155,11 @@ private:
 	void operator =(const vtkToolScissors &); //Not Implemented
 
 	//! Tool pieces opening
+	/*!
+	 * The "Opening" parameter can take any value between [0,1]:
+	 * - "0" -> to close the tool
+	 * - "1" -> to open the tool
+	 */
 	double Opening;
 
 };

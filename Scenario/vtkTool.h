@@ -54,49 +54,68 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkContact;
 class vtkContactCollection;
 
-//! Class vtkTool, abstract the use of a surgical tool
+//! Implementation class for scenario tool definition.
 /*!
-vtkTool abstracts the use of a surgical tool during the simulation exercise.
-This provide an easy use of surgical tools collections.
-*/
+ * In vtkESQui a tool is considered an scenario object, so vtkScenarioObject
+ * serves as its base class.\n
+ * This class serves as base class for specific surgical technique tools:
+ * vtkToolLaparoscopy, vtkToolEndovascular, etc...\n
+ * As a vtkModel based class, at least a visualization model has to be defined.
+ *  If the tool is deformable, a deformation and a collision model must also
+ * be defined.
+ */
+
 class VTK_ESQUI_SCENARIO_EXPORT vtkTool: public vtkScenarioObject {
 
 public:
 
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkTool,vtkScenarioObject);
 
-	//!Return the class name
+	//! Return the class name
 	const char *GetClassName() {return "vtkTool";}
 
-	//!Print class values
+	//! Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
-	
-	//!Tool type definition
+
+	//! Tool type definition
 	enum vtkToolType{
 		Laparoscopy = 0,
 		Endovascular = 1,
 		Arthroscopy = 2,
 		Camera = 3
 	};
-	
-	//!Set tool type
+
+	//! Set tool type
+	/*!
+	 * \sa vtkToolType GetToolType()
+	 */
 	vtkSetMacro(ToolType, vtkTool::vtkToolType);
+
 	//!Return tool type
+	/*!
+	 * \sa SetToolType(vtkToolType)
+	 */
 	vtkGetMacro(ToolType, vtkTool::vtkToolType);
 
 	// **** Haptic Management Methods **** //
 
 	//! Set the use of haptic device
+	/*!
+	 * \sa bool GetUseHaptic()
+	 */
 	vtkSetMacro(UseHaptic, bool);
 	//! Get the use of haptic device
+	/*!
+	 * \sa SetUseHaptic(bool)
+	 */
 	vtkGetMacro(UseHaptic, bool);
 
 	//!Enable/Disable haptic device use
 	vtkBooleanMacro(UseHaptic, bool);
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
-	
+
 	//BTX
 	//! Set the haptic device for the tool
 	void SetHapticDevice(vtkHaptic *haptic) {this->Haptic = haptic;}

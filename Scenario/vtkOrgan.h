@@ -60,7 +60,15 @@ class vtkTexture;
 class vtkBioMechanicalModel;
 class vtkCollisionModel;
 
-//! Implementation class for organ definition
+//! Implementation class for scenario organ definition.
+/*!
+ * In vtkESQui an organ is considered an scenario object, so vtkScenarioObject
+ * serves as its base class.\n
+ * As a vtkModel based class, at least a visualization model has to be defined.
+ *  If the organ is deformable, a deformation and a collision model must also
+ * be defined.
+ */
+
 class VTK_ESQUI_SCENARIO_EXPORT vtkOrgan: public vtkScenarioObject
 {
 public:
@@ -75,20 +83,20 @@ public:
 
 	//!Set force factor.
 	/*!
-	* Used for estimating haptic force process
-	* \sa GetForceFactor()
-	*/
+	 * Used for estimating haptic force process
+	 * \sa GetForceFactor()
+	 */
 	vtkSetMacro(ForceFactor, double);
 
 	//!GetfForce factor.
 	/*!
-	* \sa SetForceFactor(double value)
-	*/
+	 * \sa SetForceFactor(double value)
+	 */
 	vtkGetMacro(ForceFactor, double);
 
 protected:
 
-	//!Force estimation
+	//!Force factor estimation
 	double ForceFactor;
 
 	vtkOrgan();

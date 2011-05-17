@@ -66,8 +66,6 @@ vtkToolEndovascular::~vtkToolEndovascular() {
 void vtkToolEndovascular::Init()
 {
 	Superclass::Init();
-
-	//TODO:This should not be defined. Use present variable Orientation
 	double * orientation = this->GetElement(0)->GetOrientation();
 	this->YawAngle = orientation[0];
 	this->PitchAngle = orientation[1];

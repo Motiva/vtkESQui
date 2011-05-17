@@ -51,21 +51,28 @@ class vtkTextureMapToSphere;
 class vtkTransformTextureCoords;
 
 
-//! Class vtkVisualizationModel defines a visualization mesh (PolyData) with its texture. Inherits from vtkModel
+//! vtkVisualizationModel object defines a visualization mesh (vtkPolyData)
+/*!
+ * This class inherits from vtkModel base class. As it is specified in vtkModel,
+ * at least an input mesh should be defined. Optionally a source mesh for
+ * synchronization purposes may be defined.
+ * To enhance visualization user experience a mesh texture can be specified
+ * through the TextureFileName attribute.
+ */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkVisualizationModel: public vtkModel {
 
 public:
 
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkVisualizationModel, vtkModel);
-	//!Create a new Scenario object
+	//! Create a new Scenario object
 	static vtkVisualizationModel * New();
 
-	//!Return the class name
+	//! Return the class name
 	const char *GetClassName() {return "vtkVisualizationModel";}
 
-	//!Print class values
+	//! Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//! Assign texture model filename
@@ -74,16 +81,16 @@ public:
 	 */
 	vtkSetStringMacro(TextureFileName);
 
-	//!Return model texture filename
+	//! Return model texture filename
 	/*!
 	 *\sa SetTextureFileName(const char * name)
 	 */
 	vtkGetStringMacro(TextureFileName);
 
-	//!Abstract initialization function
+	//! Abstract initialization function
 	/*!
-	* This method initializes the tool physical values, scale, position, etc...
-	*/
+	 * This method initializes the tool physical values, scale, position, etc...
+	 */
 	virtual void Init();
 
 protected:
@@ -98,19 +105,19 @@ private:
 	vtkVisualizationModel (const vtkVisualizationModel &);
 	void operator =(const vtkVisualizationModel &);
 
-	//!Visualization texture filename
+	//! Visualization texture filename
 	char * TextureFileName;
 
-	//!Visualization mesh texture
+	//! Visualization mesh texture
 	vtkTexture * Texture;
 
-	//!Texture file reader
+	//! Texture file reader
 	vtkJPEGReader * TextureReader;
 
-	//!Texture mapper
+	//! Texture mapper
 	vtkTextureMapToSphere * TextureMap;
 
-	//!Transformation of texture coords
+	//! Transformation of texture coords
 	vtkTransformTextureCoords * TextureCoords;
 
 };

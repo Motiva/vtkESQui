@@ -51,7 +51,15 @@ class vtkModelCollection;
 
 class vtkPolyData;
 
-//! Generic interface of the Collision Detection Library
+//! Generic base class for collision detection library interfaces
+/*!
+ * This class serves as a base class for the collision detection libraries.
+ * Scenario object models, vtkCollisionModel must be assigned before process
+ * execution. The result of the procedure is collection of collisions,
+ * vtkCollisionCollection, between scenario objects.
+ * vtkBioEngInterface, an interface based on this class, has been implemented
+ * to access the available deformation model, vtkbioeng.
+ */
 
 class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollisionDetection: public vtkObject
 {
@@ -87,9 +95,17 @@ public:
 
 protected:
 
-	//! Collection of elements to check
+	//! Collection of models
+	/*!
+	 * Every model contained in these collection will be processed in the collision detection process.
+	 */
 	vtkModelCollection * Models;
-	//! Collection of collisions obtained
+
+	//! Collection of collisions
+	/*!
+	 * After the collision detection process has been executed the collisions between models
+	 * are stored in this collection.
+	 */
 	vtkCollisionCollection * Collisions;
 
 	//! Clear previous executions of the collision detection process
@@ -103,7 +119,6 @@ private:
 	void operator =(const vtkCollisionDetection &); //Not Implemented
 
 };
-
 
 #endif
 

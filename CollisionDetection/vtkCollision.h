@@ -48,9 +48,17 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkPoints;
 class vtkIdList;
 
-//!This class acts as data container storing all the useful information of an element-element collision.
+
+//!This class contains the required information to define a collision.
 /*!
- * All the information (ids, points, cells...) is stored in pairs, one for each collided element.
+ * vtkCollision acts as data container storing all the useful information
+ * of a scenario collision:\n
+ *  - Type
+ *  - Value
+ *  - Point Identifier
+ *  - Point Position
+ *  All the information is stored in pair, one for each scenario object
+ *  collided.
  */
 
 class VTK_ESQUI_COMMON_EXPORT vtkCollision : public vtkObject {
@@ -81,98 +89,104 @@ public:
 
 	//! Set the id of the object at the i position
 	/*!
-	 * \param i object index
-	 * \param id object identifier
+	 * \param id collection index
+	 * \param objectId object identifier
 	 * \sa GetObjectId()
 	 */
-	void SetObjectId(int i, vtkIdType id);
+	void SetObjectId(int id, vtkIdType objectId);
 
 	//! Get the index of the object
 	/*!
-	 * \param object index
+	 * \param id collection index
 	 * \return Identifying key of the object
-	 * \sa SetObjectId(int i, vtkIdType id)
+	 * \sa SetObjectId(int id, vtkIdType objectid)
 	 */
-	vtkIdType GetObjectId(int i);
+	vtkIdType GetObjectId(int id);
 
 	//! Set the id of the element at the i position
 	/*!
-	 * \param i element index
-	 * \param id element identifier
+	 * \param id collection index
+	 * \param elementId element identifier
 	 * \sa GetElementId()
 	 */
-	void SetElementId(int i, vtkIdType id);
+	void SetElementId(int id, vtkIdType elementId);
 
 	//! Get the index of the element
 	/*!
-	 * \param element index
+	 * \param id collection index
 	 * \return Identifying key of the element
-	 * \sa SetElementId(int i, vtkIdType id)
+	 * \sa SetElementId(int id, vtkIdType elementId)
 	 */
-	vtkIdType GetElementId(int i);
+	vtkIdType GetElementId(int id);
 
 	//! Set the element mesh point identifier where the collision has occurred
 	/*!
-	 * \param i index of the element in the collection
-	 * \param id point id of the mesh
+	 * \param id index of the element in the collection
+	 * \param pointId mesh point identifier
 	 * \sa GetPointId()
 	 */
-	void SetPointId(int i, int id);
+	void SetPointId(int id, int pointId);
 
 	//! Get the collided point identifier
 	/*!
-	 * \param i index of the element in the collection
+	 * \param id index of the element in the collection
 	 * \return point id of the organ mesh
-	 * \sa SetPointId(int i, int id)
+	 * \sa SetPointId(int id, int pointId)
 	 */
-	int GetPointId(int i);
+	int GetPointId(int id);
 	
 	//! Set the organ mesh point position of the collision
 	/*!
-	 * \param i index of the element in the collection
+	 * \param id index of the element in the collection
 	 * \param x x coordinate of the collision point
 	 * \param y y coordinate of the collision point
 	 * \param z z coordinate of the collision point
-	 * \sa GetVertexPosition()
+	 * \sa GetPoint(int id)
 	 */
-	void SetPoint(int i, double x, double y, double z);
+	void SetPoint(int id, double x, double y, double z);
 
 	//! Set the collided point position
 	/*!
-	 * \param i index of the element in the collection
+	 * \param id index of the element in the collection
 	 * \param point[] [x, y, z] coordinates vector of the collision point
-	 * \sa GetVertexPosition()
+	 * \sa GetPoint(int id)
 	 */
-	void SetPoint(int i, double point[3]);
+	void SetPoint(int id, double point[3]);
 	//! Returns collided point position
 	/*!
-	 * \param i index of the element in the collection
+	 * \param id index of the element in the collection
 	 * \return pointer to position [x, y, z] coordinates vector of the collision point
-	 * \sa SetVertexPosition(double position[3])
-	 * \sa SetVertexPosition(double x, double y, double z)
+	 * \sa SetPoint(int id, double point[3])
+	 * \sa SetPoint(int id, double x, double y, double z)
 	 */
-	double * GetPoint(int i);
+	double * GetPoint(int id);
 
-	//! Set the collisioned cell of the deformable model
+	//! Set the collided cell of the deformable model
 	/*!
-	 * \param i index of the element in the collection
+	 * \param id index of the element in the collection
 	 * \param value organ cell id
 	 * \sa GetCellId()
 	 */
-	void SetCellId(int i, vtkIdType value);
+	void SetCellId(int id, vtkIdType value);
 
-	//! Get the collisioned cell of the deformable model
+	//! Get the collided cell of the deformable model
 	/*!
-	 * \param i index of the element in the collection
+	 * \param id index of the element in the collection
 	 * \return cell id of the organ mesh
 	 * \sa SetCellId(int value)
 	 */
-	int GetCellId(int i);
+	int GetCellId(int id);
 
 	//! Set the scalar distance
+	/*!
+	 * \sa double GetDistance
+	 */
 	vtkSetMacro(Distance, double);
 
 	//! Get the scalar distance
+	/*!
+	 * \sa SetDistance(double)
+	 */
 	vtkGetMacro(Distance, double);
 
 	//! Set the displacement vector of the collision
@@ -187,38 +201,32 @@ public:
 protected:
 	vtkCollision();
 	~vtkCollision();
-private:
 
 	//! Collision Type
 	vtkCollisionType CollisionType;
 
-	// Identificadores de cada uno de los elementos colisionados
-	//! Collided elements ids
+	//! Collided elements identifiers
 	vtkIdList * ElementIds;
 
-	// Identificadores de cada uno de los objetos colisionados
-	//! Collided objects ids
+	//! Collided objects identifiers
 	vtkIdList * ObjectIds;
 
-	// Posición donde se debe mover el vertice para sacarlo de la herramienta
 	//! Collision point on both objects
 	vtkPoints * Points;
 
-	// Identificadores de los objetos en colisión
-	//! Point ids of the collided elements.
+	//! Point identifiers of the collided elements.
 	vtkIdList * PointIds;
 
-	// Id de la celda del vertice colisionado
-	//! Clashed vertex cell Id
+	//! Clashed point cell identifier
 	vtkIdList * CellIds;
 
-	// Distancia escalar entre los puntos
-	//! Scalar distance
+	//! Scalar distance between points
 	double Distance;
 
-	// Vector desplazamiento de la colisión
-	//! Displacement Vector of the collision
+	//! Displacement vector of the collision
 	double Displacement[3];
+
+private:
 
 	vtkCollision (const vtkCollision &);//NotImplemented
 	void operator =(const vtkCollision &);//Not Implemented

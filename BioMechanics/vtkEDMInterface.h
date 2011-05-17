@@ -52,8 +52,13 @@ class vtkImageStencil;
 class vtkImageMagnitude;
 class vtkImageSobel3D;
 
-//! Interface to the abstract vtkBiomechanicalModel class for an explicit deformable model
-
+//! Interface class for a explicit deformation system.
+/*!
+ * This deformatiom model uses a level set technique adapting the input mesh
+ * to a vtkImageData input.\n
+ * vtkEDMInterface class, based in vtkDeformationModel class, adapts the access to the
+ * external vtkExplicitDeformableSystem package.
+ */
 class VTK_ESQUI_BIOMECHANICS_EXPORT vtkEDMInterface : public vtkDeformationModel
 {
 public:
@@ -69,27 +74,46 @@ public:
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 	//!Initialize the Deformation Model
+	/*!
+	 * The model has to be initialized in order to be updated. Some parameters must be previously defined: \n
+	 * - Input: vtkPolyData object
+	 * - NumberOfIterations: Maximum number of iterations
+	 * - WarpScaleFactor: Deformation scale factor
+	 */
 	virtual void Init();
 
-	//
+	//!Set maximum number of iterations
+	/*!
+	 * This parameter sets the model to be executed a number of iterations.
+	 * \sa int GetNumberOfIterations()
+	 */
 	vtkSetMacro(NumberOfIterations, int);
+	//!Get maximum number of iterations
+	/*!
+	 * \sa SetNumberOfIterations(int)
+	 */
 	vtkGetMacro(NumberOfIterations, int);
 
+	//!Set the warp scale factor
+	/*!
+	 * This parameter sets how fast the model recovers its original shape after being deformed.
+	 * \sa double GetWarpScaleFactor()
+	 */
 	vtkSetMacro(WarpScaleFactor, double);
+	//!Get the warp scale factor
+	/*!
+	 * \sa SetWarpScaleFactor(double)
+	 */
 	vtkGetMacro(WarpScaleFactor, double);
 
 protected:
 	vtkEDMInterface();
 	~vtkEDMInterface();
 
-private:
-	vtkEDMInterface(const vtkEDMInterface&);  // Not implemented.
-	void operator=(const vtkEDMInterface&);  // Not implemented.
-
-	//!Explicit deformable mesh
+	//!Explicit deformable mesh filter
 	vtkDeformableMesh * DeformableMesh;
 
-	//!Source Mesh Polydata
+	//!Source mesh polydata
 	vtkPolyData * Deformed;
 
 	//!Force vector computation
@@ -101,7 +125,7 @@ private:
 	//!Sobel filter
 	vtkImageSobel3D * SobelFilter;
 
-	//!Image Data
+	//!Image data
 	vtkImageData * ImageData;
 
 	//!Generated Image Source
@@ -125,28 +149,9 @@ private:
 	//! Warp scaling factor
 	double WarpScaleFactor;
 
-	//!Sobel filter computes vector field
-	// EDM specific parameters
-	//! Distance coefficient.
-	//double DistanceCoefficient;
-	//! Damping coefficient.
-	/*!
-	 * < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
-	 * = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
-	 * > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
-	 */
-	//double DampingCoefficient;
-	//! Spring Coefficient K
-	//double SpringCoefficient;
-	//! Mass value on each point
-	//double Mass;
-	//! calculation time step
-	//double DeltaT;
-	//! Neighborhood size factor
-	//int RigidityFactor;
-	//! Motion equation solver type
-	
-	//vtkParticleSpringSystem::MotionEquationSolverType SolverType;
+private:
+	vtkEDMInterface(const vtkEDMInterface&);  // Not implemented.
+	void operator=(const vtkEDMInterface&);  // Not implemented.
 	
 };
 

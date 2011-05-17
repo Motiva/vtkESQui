@@ -45,19 +45,24 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkObject.h"
 
-//#include "vtkCollisionDetectionLibrary.h"
-
 class vtkRenderWindow;
 class vtkRenderer;
 
 class vtkScenarioObject;
 class vtkScenarioObjectCollection;
 
-//!Implementation of the simulation scenario.
+//!Implementation of a surgical simulation scenario.
 /*!
- * The elements in the scenario (objects, tools...) are stored in collections.
- * Any scenario item should be predefined (all of its required parameters set) before being inserted/added to the scenario.
+ * In vtkESQui framework a surgical scenario is implemented with this
+ * class.\n
+ * All the elements in the scenario (objects, tools...) are stored in a
+ * collection, Objects. Any scenario object should be previously defined
+ * (all of its required parameters set) before being inserted/added to the
+ * scenario.\n
+ * Apart from scenario objects, a vtkRenderWindow object must be assigned
+ * before object initialization for displaying purposes.
  */
+
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenario: public vtkObject
 {
 
@@ -85,47 +90,47 @@ public:
 
 	//!Set the collection of objects of the scenario
 	/*!
-	* \param collection collection of objects to be inserted to the scenario
-	* \sa GetObjects()
-	*/
+	 * \param collection collection of objects to be inserted to the scenario
+	 * \sa GetObjects()
+	 */
 	void SetObjects(vtkScenarioObjectCollection * collection);
 
 	//!Get the collection of objects of the scenario
 	/*!
-	* \sa SetObjects(vtkScenarioObjectCollection * collection)
-	*/
+	 * \sa SetObjects(vtkScenarioObjectCollection * collection)
+	 */
 	vtkScenarioObjectCollection * GetObjects();
 
 	//!Insert object to the scenario
 	/*!
-	* The object will be inserted at the end of the list
-	* \param object vtkScenarioObject object to be inserted
-	* \return position of the added object.
-	* \sa InsertObject(vtkScenarioObject * object)
-	*/
+	 * The object will be inserted at the end of the list
+	 * \param object vtkScenarioObject object to be inserted
+	 * \return position of the added object.
+	 * \sa InsertObject(vtkScenarioObject * object)
+	 */
 	void AddObject(vtkScenarioObject * object);
 
 	//!Insert an object in the specified position
 	/*!
-	* If the given position is not empty, the content is replaced by the new model
-	* \param index index of the list where the object will be added
-	* \param object vtkScenarioObject object to be inserted
-	* \sa InsertNextObject(vtkScenarioObject * object)
-	*/
+	 * If the given position is not empty, the content is replaced by the new model
+	 * \param index index of the list where the object will be added
+	 * \param object vtkScenarioObject object to be inserted
+	 * \sa InsertNextObject(vtkScenarioObject * object)
+	 */
 	void ReplaceObject(vtkIdType index, vtkScenarioObject * object);
 
 	//!Delete the object at the specified id from the scenario
 	/*!
-	* It will only remove the object from the collection, it does not free memory
-	* \param index index of the object to be removed
-	*/
+	 * It will only remove the object from the collection, it does not free memory
+	 * \param index index of the object to be removed
+	 */
 	void RemoveObject(vtkIdType index);
 
 	//!Return the object at the specified position
 	/*!
-	* \param id index of the object to be returned
-	* \return vtkScenarioObject object
-	*/
+	 * \param id index of the object to be returned
+	 * \return vtkScenarioObject object
+	 */
 	vtkScenarioObject * GetObject(vtkIdType id);
 
 	//!Return number of objects in the scenario
@@ -139,15 +144,15 @@ public:
 
 	//!Assign the render window of the scenario
 	/*!
-	* \param Renderer render window for displaying purposes
-	* \sa GetRenderWindow()
-	*/
+	 * \param window render window for displaying purposes
+	 * \sa GetRenderWindow()
+	 */
 	void SetRenderWindow(vtkRenderWindow *window);
 
 	//!Return the render window of the scenario
 	/*!
-	* \sa SetRenderWindow(vtkRenderWindow *Renderer)
-	*/
+	 * \sa SetRenderWindow(vtkRenderWindow *Renderer)
+	 */
 	vtkRenderWindow *GetRenderWindow();
 
 	//! Check if scenario has been initialized
@@ -158,8 +163,8 @@ public:
 
 	//!Update the whole Scenario
 	/*!
-	* Collision Detection is processed. If any contact has occurred the related tools and objects will be updated
-	*/
+	 * Collision Detection is processed. If any contact has occurred the related tools and objects will be updated
+	 */
 	void Update();
 
 protected:
@@ -167,10 +172,6 @@ protected:
 	vtkScenario();
 	~vtkScenario();
 
-private:
-
-	vtkScenario(const vtkScenario&);
-	void operator=(const vtkScenario&);
 
 	//! Name of the scenario
 	char* Name;
@@ -185,11 +186,14 @@ private:
 
 	//!Collection of the scenario objects
 	vtkScenarioObjectCollection * Objects;
-	//!Collection of Extras
-	//vtkPropCollection * Extras;
 
 	//!Enable collision detection
 	bool Collision;
+
+private:
+
+	vtkScenario(const vtkScenario&);
+	void operator=(const vtkScenario&);
 
 };
 

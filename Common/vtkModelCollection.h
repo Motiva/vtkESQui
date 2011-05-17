@@ -47,49 +47,55 @@ POSSIBILITY OF SUCH DAMAGE.
 
 class vtkModel;
 
-//!Collection of Models
+//! Collection of scenario object models.
+/*!
+ * vtkModelCollection is an object for creating and manipulating lists
+ * of scenario element models. The lists are unsorted and allow duplicate
+ * entries.
+ */
 class VTK_ESQUI_SCENARIO_EXPORT vtkModelCollection : public vtkCollection
 {
 public:
 	//!Type revision macro
 	vtkTypeRevisionMacro(vtkModelCollection,vtkCollection);
-	//! Create new Model storage collection
+	//! Create new model storage collection
 	static vtkModelCollection *New() {return new vtkModelCollection;}
 	//! Return classname
 	const char *GetClassName() {return "vtkModelCollection";}
 	//! Print collection values
 	virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Insert a Model into the collection
+	//!Insert a model into the collection
 	/*!
-	* Model will be added at the specified id
-	* \param id index of the list where the Model will be added
-	* \param Model vtkModel object to be inserted
-	* \sa InsertNextModel(vtkModel * Model);
-	*/
-	void InsertModel(vtkIdType id, vtkModel * Model);
+	 * \param id index of the list where the model will be added
+	 * \param model vtkModel object to be inserted
+	 * \sa InsertNextModel(vtkModel * model);
+	 */
+	void InsertModel(vtkIdType id, vtkModel * model);
 
-	//!Insert Model at the end of the collection
+	//!Insert model at the end of the collection
 	/*!
-	* \param Model vtkModel object to be inserted
-	* \sa InsertModel(vtkIdType id, vtkModel * Model)
-	*/
-	void AddModel(vtkModel * Model);
+	 * \param model vtkModel object to be inserted
+	 * \sa InsertModel(vtkIdType id, vtkModel * model)
+	 */
+	void AddModel(vtkModel * model);
 
-	//!Return Model located the specified id
+	//!Return model located the specified id
 	/*!
-	* Get the Model in the list with the position id. NULL is returned when the collection is exhausted.
-	* \param id list index where the Model is stored
-	*/
+	 * NULL is returned when the collection is exhausted.
+	 * \return model in the list with the position identifier.
+	 * \param id list index where the model is stored
+	 */
 	vtkModel * GetModel(vtkIdType id);
 
-	//!Return Model on the collection
+	//!Return model on the collection
 	/*!
-	* Get the Model at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
-	*/
+	 * Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+	 * \return model at the pointer position.
+	 */
 	vtkModel * GetNextModel();
 
-	//!Return number of Models in the collection
+	//!Return number of models in the collection
 	vtkIdType GetNumberOfModels();
 
 protected:

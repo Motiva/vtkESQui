@@ -69,7 +69,12 @@ class vtkToolProbe;
 class vtkOrgan;
 class vtkModel;
 
-//! Import an SRML scenario file into vtkESQui platform
+//! Import an SRML scenario file into vtkESQui framework.
+/*!
+ * The following parameters should be defined before import process:
+ * - FileName: SRML file name (with full path)
+ * - DataPath: Base path for SRML referenced data files.
+ */
 
 class VTK_ESQUI_UTILITIES_EXPORT vtkSRMLImporter: public vtkImporter
 {
@@ -85,18 +90,37 @@ public:
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 	//! Set the Simulation
+	/*!
+	 * \sa vtkSimulation GetSimulation()
+	 */
 	void SetSimulation(vtkSimulation * simulation);
+
 	//! Get the Simulation
+	/*!
+	 * \sa SetSimulation(vtkSimulation *)
+	 */
 	vtkSimulation * GetSimulation();
 
 	//! Set the name of the input file.
+	/*!
+	 * \sa const char * GetFileName()
+	 */
 	vtkSetStringMacro(FileName);
+	/*!
+	 * \sa SetFileName(const char *)
+	 */
 	//! Get the name of the input file.
 	vtkGetStringMacro(FileName);
 
-	//! Set the data path.
+	//! Set the data base path.
+	/*!
+	 * \sa const char * GetDataPath()
+	 */
 	vtkSetStringMacro(DataPath);
-	//! Get the data path.
+	//! Get the data base path.
+	/*!
+	 * \sa SetDataPath(const char *)
+	 */
 	vtkGetStringMacro(DataPath);
 
 protected:	
@@ -104,12 +128,17 @@ protected:
 	vtkSRMLImporter();
 	~vtkSRMLImporter();
 
-	// Description:
 	//! Set the simulation scenario
-	//vtkSetObjectMacro(Scenario, vtkScenario);
+	/*!
+	 * \param scenario simulation scenario
+	 * \sa vtkScenario * GetScenario()
+	 */
 	void SetScenario(vtkScenario * scenario);
+
 	//! Get the simulation scenario
-	//vtkGetObjectMacro(Scenario, vtkScenario);
+	/*!
+	 * \sa SetScenario(vtkScenario * scenario);
+	 */
 	vtkScenario * GetScenario();
 
 	//! Starts the Import process
@@ -133,8 +162,6 @@ protected:
 	void SetElementModels(vtkScenarioElement * object, vtkXMLDataElement * item);
 	//! Import scenario element generic model
 	void SetModelData(vtkModel * object, vtkXMLDataElement * item);
-	//! Import the extras from the SRML file
-	//void ImportExtras();
 	//! Import haptic device information
 	void ImportHaptic();
 
@@ -204,30 +231,6 @@ private:
 	 * \param item parsed XMLDataElement that contains element info
 	 */
 	void SetActorData(vtkActor * actor, vtkXMLDataElement * item);
-	//! Set specific tool values
-	/*!
-	 * \param tool scenario tool object
-	 * \param item parsed XMLDataElement that contains element info
-	 */
-	//void SetToolData(vtkTool * tool, vtkXMLDataElement * item);
-	//! Set specific laparoscopic grasper values
-	/*!
-	 * \param tool grasper tool object
-	 * \param item parsed XMLDataElement that contains element info
-	 */
-	//void SetToolGrasperData(vtkToolGrasper * tool, vtkXMLDataElement * item);
-	//! Set specific organ values
-	/*!
-	 * \param organ organ object
-	 * \param item parsed XMLDataElement that contains element info
-	 */
-	//void SetOrganData(vtkOrgan * organ, vtkXMLDataElement * item);
-	//! Set initial biomechanical model properties
-	/*!
-	 * \param model biomechanical model
-	 * \param item parsed XMLDataElement that contains element info
-	 */
-	//void SetDeformationModelData(vtkBioMechanicalModel * model, vtkXMLDataElement * item);
 
 	//! Generate full path of filename
 	const char * ExpandDataFileName(const char * fname);

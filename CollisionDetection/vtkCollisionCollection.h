@@ -134,7 +134,6 @@ protected:
 	vtkCollisionCollection() {};
 	~vtkCollisionCollection() {};
 
-
 private:
 	vtkCollisionCollection(const vtkCollisionCollection&);  // Not implemented.
 	void operator=(const vtkCollisionCollection&);				// Not implemented.

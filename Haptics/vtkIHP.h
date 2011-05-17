@@ -46,7 +46,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkHaptic.h"
 #include "XiTrocarInterface.h"
 
-//! Class vtkIHP, wraps the IHP haptic device
+//! vtkIHP class wraps the access to the IHP haptic device.
+/*!
+ * This interface enables the interaction with the Xitact IHP haptic device.\n
+ * In a cyclic process the haptic is synchronously checked for changes.
+ * Device physical attributes are saved and then sent to the simulation
+ * process.\n
+ * Access method to device initialization has also been implemented.
+ */
+
 class VTK_ESQUI_HAPTICS_EXPORT vtkIHP:public vtkHaptic
 {
 

@@ -140,7 +140,7 @@ void vtkDeformationModel::InsertBoundaryConditions(vtkBoundaryConditionCollectio
 }
 
 //--------------------------------------------------------------------------
-void vtkDeformationModel::DeleteBoundaryConditions()
+void vtkDeformationModel::RemoveBoundaryConditions()
 {
 	this->BoundaryConditions->RemoveBoundaryConditions();
 	this->Modified();

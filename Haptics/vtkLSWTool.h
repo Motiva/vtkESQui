@@ -100,7 +100,14 @@ typedef struct {
 } vtkLSWDataTool; 	// Estructura usada para almacenar datos utiles en el caculo de posiciones
 					// y fuerzas de las herramientas.
 
-//! Immersion LSW tool class.
+//! Immersion LSW tool interface class.
+/*!
+ * This interface has been implemented to access each of the Immersion haptic
+ * device tools independently.\n
+ * The haptic device could not be used unless a SetData command is sent to it.
+ * Once the tool has been initialized it could be accessed from a vtkESQui
+ * simulation process.
+ */
 
 class VTK_ESQUI_HAPTICS_EXPORT vtkLSWTool: public vtkObject
 {

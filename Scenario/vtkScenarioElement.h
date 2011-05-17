@@ -57,26 +57,29 @@ class vtkCollisionModel;
 class vtkDeformationModel;
 class vtkCollisionCollection;
 
-//! Class vtkScenarioElement, abstract the use of a surgical Element
+//! vtkScenarioElement class implements the use of a surgical scenario element
 /*!
- * vtkScenarioElement abstracts the use of a surgical Element during the simulation exercise.
- * This provide an easy use of surgical Elements collections.
+ * This class contains all the required attributes to define a scenario
+ * element, providing an easy use of element models collections.\n
+ * Every element has at least a visualization model (vtkVisualizationModel),
+ * and optionally a collision model (vtkCollisionModel) and a deformation
+ * model (vtkDeformatioModel_).
  */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioElement: public vtkPolyDataAlgorithm {
 
 public:
 
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkScenarioElement,vtkPolyDataAlgorithm);
 	//! Create new object
 	static vtkScenarioElement * New();
-	//!Return the class name
+	//! Return the class name
 	const char *GetClassName() {return "vtkScenarioElement";}
-	//!Print class values
+	//! Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Enumeration of piece types
+	//! Enumeration of piece types
 	enum vtkScenarioElementType
 	{
 		Tool = 0,
@@ -84,7 +87,7 @@ public:
 		Extra = 2
 	};
 
-	//!Enumeration of Element status
+	//! Enumeration of Element status
 	enum vtkScenarioElementStatus
 	{
 		Visible = 0,
@@ -92,7 +95,7 @@ public:
 		Disabled = 2
 	};
 
-	//!Abstract initialization function
+	//! Abstract initialization function
 	/*!
 	 * This method initializes the Element physical values, scale, position, etc...
 	 */
@@ -116,7 +119,6 @@ public:
 	 */
 	vtkSetMacro(ObjectId, int);
 
-	//!Get the  object id of the model
 	//! Returns the identifying key of the object
 	/*!
 	 *\sa SetObjectId(vtkIdType Id)
@@ -153,7 +155,7 @@ public:
 	 */
 	vtkSetStringMacro(Name);
 
-	//!Return Element scale
+	//! Return Element scale
 	/*!
 	 *\sa SetName(const char * name)
 	 */
@@ -165,7 +167,7 @@ public:
 	 */
 	vtkSetVector3Macro(Scale, double);
 
-	//!Return Element scale
+	//! Return Element scale
 	/*!
 	 *\sa SetScale(double)
 	 */
@@ -177,43 +179,29 @@ public:
 	 */
 	vtkSetMacro(DeltaT, double);
 
-	//!Return simulation time step
+	//! Return simulation time step
 	/*!
 	 *\sa SetDeltaT(double)
 	 */
 	vtkGetMacro(DeltaT, double);
 
 	// **** Graphical Purposes Methods **** //
-	//! Set the object origin Point.
-	/*!
-	 * Reference point where the rotation calculus are made
-	 */
-	//vtkSetVector3Macro(Origin, double);
 	//! Get the object origin Point.
 	/*!
 	 * Reference point where the rotation calculus are made
 	 */
 	vtkGetVector3Macro(Origin, double);
 
-	//! Set object orientation angles.
-	/*!
-	 * (yaw, pitch, roll) (WXYZ)
-	 */
-	//vtkSetVector3Macro(Orientation, double);
 	//! Get object orientation angles. (yaw, pitch, roll) (WXYZ)
 	/*!
 	 * (yaw, pitch, roll) (WXYZ)
 	 */
 	vtkGetVector3Macro(Orientation, double);
 
-	//!Set the Object position (WXYZ)
-	//vtkSetVector3Macro(Position, double);
-	//!Get the Object position (WXYZ)
+	//! Get the Object position (WXYZ)
 	vtkGetVector3Macro(Position, double);
 
-	//!Set the Object velocity (WXYZ)
-	//vtkSetVector3Macro(Velocity, double);
-	//!Get the Object velocity (WXYZ)
+	//! Get the Object velocity (WXYZ)
 	vtkGetVector3Macro(Velocity, double);
 
 	//! Get the object direction unit vector (WXYZ)
@@ -222,141 +210,180 @@ public:
 	//! Set the render window of the Element
 	/*!
 	 * Assign the render window for the Element
+	 * \param r scenario render window
+	 * \sa vtkRenderWindow GetRenderWindow()
 	 */
 	void SetRenderWindow(vtkRenderWindow * r);
 
 	//! Get the render window of the Element
 	/*!
-	 *Return the render window of the Element
+	 * \return the render window of the Element
+	 * \sa SetRenderWindow(vtkRenderWindow * r)
 	 */
-	vtkRenderWindow * GetRenderWindow(vtkRenderWindow * r);
+	vtkRenderWindow * GetRenderWindow();
 
-	//! Set the visualization model of the element
+	//! Set models of the element
+	/*!
+	 * \param m collection of models
+	 * \sa vtkModelCollection * GetModels()
+	 */
 	void SetModels(vtkModelCollection * m);
 
-	//! Get the Visualization Model of the element
+	//! Get models of the element
+	/*!
+	 * \return collection of element models
+	 * \sa SetModels(vtkModelCollection * m)
+	 */
 	vtkModelCollection * GetModels();
 
 	//! Set the visualization model of the element
+	/*!
+	 * \param m visualization model
+	 * \sa vtkVisualizationModel * GetVisualizationModel()
+	 */
 	void SetVisualizationModel(vtkVisualizationModel * m);
 
-	//! Get the Visualization Model of the element
+	//! Get the visualization Model of the element
+	/*!
+	 * \return element visualization model
+	 * \sa SetVisualizationModel(vtkVisualizationModel * m)
+	 */
 	vtkVisualizationModel * GetVisualizationModel();
 
-	//! Set the Collision model of the element
+	//! Set the collision model of the element
+	/*!
+	 * \param m collision model
+	 * \sa vtkCollisionModel * GetCollisionModel()
+	 */
 	void SetCollisionModel(vtkCollisionModel * m);
 
-	//! Get the Collision Model of the element
+	//! Get the collision model of the element
+	/*!
+	 * NULL is returned if no collision model has been defined
+	 * \return element collision model
+	 * \sa SetCollisionModel(vtkCollisionModel * m)
+	 */
 	vtkCollisionModel * GetCollisionModel();
 
-	//! Set the Deformation model of the element
+	//! Set the deformation model of the element
+	/*!
+	 * \param m deformation model
+	 * \sa vtkDeformationModel * GetDeformationModel()
+	 */
 	void SetDeformationModel(vtkDeformationModel * m);
 
-	//! Get the Deformation Model of the element
+	//! Get the deformation model of the element
+	/*!
+	 * NULL is returned if no deformation model has been defined
+	 * \return element deformation model
+	 * \sa SetDeformationModel(vtkDeformationModel * m)
+	 */
 	vtkDeformationModel * GetDeformationModel();
 
 	//! Implements the translation of the Element (Local coordinate system)
 	/*!
-		The X & Y parameters contains the relative movement in the horizontal and vertical axes respectively
-		\param x x position of the Element
-		\param y y position of the Element
-		\param z z position of the Element
+	 * The X & Y parameters contains the relative movement in the horizontal and vertical axes respectively
+	 * \param x x position of the element
+	 * \param y y position of the element
+	 * \param z z position of the element
 	 */
 	virtual void Translate(double x, double y, double z);
 
-	//! Implements the translation of the Element (Local coordinate system)
+	//! Implements the translation of the element (Local coordinate system)
 	/*!
-			\param vector position vector of the translation
+	 * \param vector position vector of the translation
 	 */
 	virtual void Translate(double * vector);
 
-	//! Implements the lateral movements of the model  (Global coordinate system)
+	//! Implements the lateral movements of the element models (Global coordinate system)
 	/*!
-			The X parameter contains the relative movement in the horizontal axes
-			\param a a orientation angle
-			\param x x component
-			\param y y component
-			\param z z component
-			Note: this function must be implemented in inheriting classes
+	 * The X parameter contains the relative movement in the horizontal axes
+	 * \param a a orientation angle
+	 * \param x x component
+	 * \param y y component
+	 * \param z z component
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void RotateWXYZ(double a, double x, double y, double z);
 
-	//! Implements the lateral movements of the Element  (Local coordinate system)
+	//! Implements the lateral movements of the element  (Local coordinate system)
 	/*!
-		The X parameter contains the relative movement in the horizontal axes
-		\param x x orientation angle
-		Note: this function must be implemented in inheriting classes
+	 * The X parameter contains the relative movement in the horizontal axes
+	 * \param x x orientation angle
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void RotateX(double x);
 
-	//! Implements the lateral movements of the Element  (Local coordinate system)
+	//! Implements the lateral movements of the element  (Local coordinate system)
 	/*!
-		The Y parameter contains the relative movement in the vertical axes
-		\param y y orientation angle
-		Note: this function must be implemented in inheriting classes
+	 * The Y parameter contains the relative movement in the vertical axes
+	 * \param y y orientation angle
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void RotateY(double y);
 
-	//! Rotate the Element on its own axes  (Local coordinate system)
+	//! Rotate the element on its own axes  (Local coordinate system)
 	/*!
-		This function rotate the Element on its own axis the value of an angle given
-		by the "Rotation" variable the rotation is produced acting on the actors who compose the Element.
-		\param rotation rotation angle (radians)
-		Note: this function must be implemented in inheriting classes
+	 * This function rotate the element on its own axis the value of an angle given
+	 * by the "Rotation" variable the rotation is produced acting on the actors who compose the element.
+	 * \param rotation rotation angle (radians)
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void RotateZ(double rotation);
 
+	//! Reset all element models to their original state
 	virtual void Reset();
+	//! Restore all element models to their last position/orientation
 	virtual void Restore();
 
-	//! Hide scenario Element.
+	//! Hide scenario element.
 	/*!
 	 * Must be implemented in inherited classes
 	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Hide();
-	//! Show/Display Element.
+	//! Show/Display element.
 	/*!
 	 * Must be implemented in inherited classes
 	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Show();
 
-	//! Disable Element.
+	//! Disable element.
 	/*!
 	 * Must be implemented in inherited classes
 	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Disable();
 
-	//! Check if Element is visible
+	//! Check if element is visible
 	/*!
-	 * When an Element is disabled it will:
+	 * When an element is disabled it will:
 	 * - be visible.
 	 * - be computed in collision detection.
 	 * - be used in simulation.
 	 */
 	bool IsVisible();
 
-	//! Check if Element is hidden
+	//! Check if element is hidden
 	/*!
-	 * When an Element is disabled it will NOT:
+	 * When an element is disabled it will NOT:
 	 * - be visible.
 	 * - be computed in collision detection.
 	 * It will be used in simulation.
 	 */
 	bool IsHidden();
 
-	//! Check if Element is disabled.
+	//! Check if element is disabled.
 	/*!
-	 * When an Element is disabled it will NOT:
+	 * When an element is disabled it will NOT:
 	 * - be visible.
 	 * - be computed in collision detection.
 	 * - be used in simulation.
 	 */
 	bool IsDisabled();
 
-	//!Check if element has been initialized
+	//! Check if element has been initialized
 	bool IsInitialized();
 
 protected:
@@ -378,25 +405,25 @@ protected:
 	//! Element State
 	vtkScenarioElementStatus Status;
 
-	//!Visualization model
+	//! Visualization model
 	vtkVisualizationModel * VisualizationModel;
 
-	//!Collision model
+	//! Collision model
 	vtkCollisionModel * CollisionModel;
 
-	//!Deformation model
+	//! Deformation model
 	vtkDeformationModel * DeformationModel;
 
-	//!Collection of models
+	//! Collection of models
 	vtkModelCollection * Models;
 
-	//!Collision hash map
+	//! Collision hash map
 	//vtkIdList * CollisionHashMap;
 
-	//!Deformation hash map
+	//! Deformation hash map
 	//vtkIdList * DeformationHashMap;
 
-	//! model initialization flag
+	//! Model initialization flag
 	bool Initialized;
 
 	//**** Element basic parameters ****//
@@ -419,15 +446,13 @@ protected:
 	double Scale[3];
 
 	//**** Common rendering objects ****//
-	//!Render Window of the Element
+	//! Render Window of the Element
 	vtkRenderWindow * RenderWindow;
 
-	//!Renderer of the Element
+	//! Renderer of the Element
 	vtkRenderer * Renderer;
 
 private:
-
-	//void BuildHashMap(vtkPolyData * a, vtkPolyData * b, vtkIdList * map);
 
 	vtkScenarioElement (const vtkScenarioElement &);
 	void operator =(const vtkScenarioElement &);

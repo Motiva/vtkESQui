@@ -1,0 +1,100 @@
+<!ELEMENT Simulation (Scenario, Haptic*)>
+<!ELEMENT Haptic (#PCDATA)>
+<!ELEMENT Scenario (Environment, Objects*)>
+<!ELEMENT Environment (Cameras, Lights)>
+<!ELEMENT Cameras (Camera+)>
+<!ELEMENT Camera (#PCDATA)>
+<!ELEMENT Lights (Light+)>
+<!ELEMENT Light (#PCDATA)>
+<!ELEMENT Objects (Object+)>
+<!ELEMENT Object (Elements)>
+<!ELEMENT Elements (Element+)>
+<!ELEMENT Element (Models)>
+<!ELEMENT Models (Model+)>
+<!ELEMENT Model (Interface?)>
+<!ELEMENT Interface (#PCDATA)>
+
+<!ATTLIST Simulation Name #IMPLIED>
+<!ATTLIST Simulation Type #IMPLIED>
+<!ATTLIST Simulation UseHaptic #REQUIRED>
+<!ATTLIST Simulation RenderRate #REQUIRED>
+<!ATTLIST Simulation HapticRate #REQUIRED>
+<!ATTLIST Simulation SimulationRate #REQUIRED>
+<!ATTLIST Simulation Gravity #REQUIRED>
+
+<!ATTLIST Haptic Name #IMPLIED>
+<!ATTLIST Haptic Type #REQUIRED>
+<!ATTLIST Haptic NumberOfTools #REQUIRED>
+
+<!ATTLIST Scenario Name #IMPLIED>
+
+<!ATTLIST Environment Name #IMPLIED>
+<!ATTLIST Environment Ambient #REQUIRED>
+<!ATTLIST Environment Background #REQUIRED>
+
+<!ATTLIST Cameras Name #IMPLIED>
+
+<!ATTLIST Camera Name #IMPLIED>
+<!ATTLIST Camera Id #REQUIRED>
+<!ATTLIST Camera Position #REQUIRED>
+<!ATTLIST Camera FocalPoint #REQUIRED>
+<!ATTLIST Camera Orientation #REQUIRED>
+<!ATTLIST Camera ViewAngle #REQUIRED>
+<!ATTLIST Camera ParallelProjection #REQUIRED>
+<!ATTLIST Camera Yaw #REQUIRED>
+<!ATTLIST Camera Elevation #REQUIRED>
+<!ATTLIST Camera Pitch #REQUIRED>
+<!ATTLIST Camera Dolly #REQUIRED>
+
+<!ATTLIST Lights Name #IMPLIED>
+
+<!ATTLIST Light Name #IMPLIED>
+<!ATTLIST Light Id #REQUIRED>
+<!ATTLIST Light LightType #REQUIRED>
+<!ATTLIST Light Positional #REQUIRED>
+<!ATTLIST Light Intensity #REQUIRED>
+<!ATTLIST Light AmbientColor #REQUIRED>
+<!ATTLIST Light DiffuseColor #REQUIRED>
+<!ATTLIST Light SpecularColor #REQUIRED>
+<!ATTLIST Light ConeAngle #REQUIRED>
+
+<!ATTLIST Objects Name #IMPLIED>
+
+<!ATTLIST Object Name #IMPLIED>
+<!ATTLIST Object Type #REQUIRED>
+<!ATTLIST Object Status #REQUIRED>
+<!ATTLIST Object Id #REQUIRED>
+
+<!ATTLIST Elements Name #IMPLIED>
+
+<!ATTLIST Element Name #IMPLIED>
+<!ATTLIST Element Type #REQUIRED>
+<!ATTLIST Element Status #REQUIRED>
+<!ATTLIST Element Id #REQUIRED>
+
+<!ATTLIST Models Name #IMPLIED>
+
+<!ATTLIST Model Name #IMPLIED>
+<!ATTLIST Model Type #REQUIRED>
+<!ATTLIST Model Status #REQUIRED>
+<!ATTLIST Model Id #REQUIRED>
+<!ATTLIST Model FileName #REQUIRED>
+<!ATTLIST Model Scale #REQUIRED>
+<!ATTLIST Model Origin #REQUIRED>
+<!ATTLIST Model Orientation #REQUIRED>
+<!ATTLIST Model Position #REQUIRED>
+<!ATTLIST Model Color #REQUIRED>
+<!ATTLIST Model Opacity #REQUIRED>
+<!ATTLIST Model Visibility #REQUIRED>
+<!ATTLIST Model TextureFileName #IMPLIED>
+
+<!ATTLIST Interface Type #REQUIRED>
+<!ATTLIST Interface DeltaT #REQUIRED>
+<!ATTLIST Interface Gravity #REQUIRED>
+<!ATTLIST Interface Spring #REQUIRED>
+<!ATTLIST Interface Damping #REQUIRED>
+<!ATTLIST Interface Distance #REQUIRED>
+<!ATTLIST Interface Mass #REQUIRED>
+<!ATTLIST Interface Rigidity #REQUIRED>
+<!ATTLIST Interface Solver #REQUIRED>
+

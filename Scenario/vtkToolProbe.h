@@ -45,40 +45,43 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolLaparoscopy.h"
 
-//! Implementation class of probe
+//! Implementation class of a surgical laparoscopic probe.
 /*!
-	vtkToolProbe is the class that implements the probe tool, inside the scene.
-	Contains methods for position control of the tool in the scene and collision detection.
-	Probe are composed of 2 pieces: 1 stick and 1 tip (vtkPiece)
-	Inherits vtkToolLaparascopy class
-*/
+ * This class, that inherits from vtkToolLaparascopy, defines a surgical
+ * probe, inside the scenario.\n
+ * Contains methods for position control of the tool in the scene and
+ * collision detection.\n
+ * A laparoscopic probe is composed of 2 elements:\n
+ *  - Stick
+ *  - Tip.
+ */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolProbe: public vtkToolLaparoscopy
 {
 public:
 
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkToolProbe,vtkToolLaparoscopy);
-	//!Create new vtkToolProbe object
+	//! Create new vtkToolProbe object
 	static vtkToolProbe *New();
-	//!Return class name
+	//! Return class name
 	const char *GetClassName() { return "vtkToolProbe"; }
-	//!Print the attributes value
+	//! Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! set the stick element to the object
+	//! Set the stick element to the object
 	void SetStick(vtkScenarioElement * e);
 
 	//! Set the left lever element to the object
 	void SetTip(vtkScenarioElement * e);
 
-	//!Initialize the tool from VTK file
+	//! Initialize the tool from VTK file
 	/*!
-		This function initializes the tool whose mesh is described on a VTK file
-	*/
+	 * This function initializes the tool whose mesh is described on a VTK file
+	 */
 	virtual void Init();
 
-	//!Update the tool
+	//! Update the tool
 	/*!
 	 * This function update the tool values
 	 */
@@ -98,13 +101,15 @@ protected:
 	vtkToolProbe();
 	~vtkToolProbe();
 
+	//! Stick element
+	vtkScenarioElement * Stick;
+	//! Tip element
+	vtkScenarioElement * Tip;
+
 private:
 
 	vtkToolProbe (const vtkToolProbe &); //Not Implemented
 	void operator =(const vtkToolProbe &); //Not Implemented
-
-	vtkScenarioElement * Stick;
-	vtkScenarioElement * Tip;
 
 };
 #endif

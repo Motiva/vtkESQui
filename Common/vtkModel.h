@@ -52,15 +52,19 @@ class vtkTransform;
 class vtkActor;
 class vtkSmoothPolyDataFilter;
 
-//!This class represents an abstract model.
+//!This class represents an abstract model on a scenario element.
 /*!
- * It has 2 inputs. By default the input data will be read from a vtp file specified in FileName.
- * There is second optional parameter, source.
- * 1 output.
+ * It acts as a base class for visualization, collision and deformation models.
+ * vtkModel class has 2 inputs. By default the input data will be read from a
+ * vtp file specified in FileName attribute.
+ * A second optional parameter is available, the source mesh. Main input will
+ * be adapted to the source mesh (point positions will be synchronized)
+ * The output displays the transformed mesh according to transformation
+ * matrix values.
  */
 
 class VTK_ESQUI_COMMON_EXPORT vtkModel : public vtkPolyDataAlgorithm {
-	
+
 public:
 	//! Type revision macro
 	vtkTypeRevisionMacro(vtkModel,vtkPolyDataAlgorithm);
@@ -75,32 +79,50 @@ public:
 	//!Tool type definition
 	enum vtkModelType{
 		Visualization = 0,
-		Collision = 1,
-		Deformation = 2
+				Collision = 1,
+				Deformation = 2
 	};
 
 	//!Enumeration of model status
 	enum vtkModelStatus
 	{
 		Active = 0,
-		Visible = 1,
-		Hidden = 2,
-		Disabled = 3
+				Visible = 1,
+				Hidden = 2,
+				Disabled = 3
 	};
 
 	//!Set model id
+	/*!
+	 * \sa vtkIdType GetId()
+	 */
 	vtkSetMacro(Id, vtkIdType);
 	//!Return model id
+	/*!
+	 * \sa SetInput(vtkIdType)
+	 */
 	vtkGetMacro(Id, vtkIdType);
 
 	//!Set the object id of the model
+	/*!
+	 * \sa int GetObjectId()
+	 */
 	vtkSetMacro(ObjectId, int);
 	//!Get the  object id of the model
+	/*/
+	 * \sa SetObjectId(int)
+	 */
 	vtkGetMacro(ObjectId, int);
 
 	//!Set model type
+	/*!
+	 * \sa vtlModelType GetModelType()
+	 */
 	vtkSetMacro(ModelType, vtkModel::vtkModelType);
 	//!Return model type
+	/*!
+	 * \sa SetModelType(vtkModelType)
+	 */
 	vtkGetMacro(ModelType, vtkModel::vtkModelType);
 
 	//! Assign the model state
@@ -188,15 +210,27 @@ public:
 	vtkGetVector3Macro(Color, double);
 
 	//! Set model opacity
+	/*!
+	 * \sa double GetOpacity()
+	 */
 	vtkSetMacro(Opacity, double);
 
 	//! Get model opacity
+	/*!
+	 * \sa SetOpacity(double)
+	 */
 	vtkGetMacro(Opacity, double);
 
 	//! Set model visibility
+	/*!
+	 * \sa double GetVisibility()
+	 */
 	vtkSetMacro(Visibility, bool);
 
 	//! Get model visibilty
+	/*!
+	 * \sa double GetVisibility()
+	 */
 	vtkGetMacro(Visibility, bool);
 
 	vtkBooleanMacro(Visibility, bool);
@@ -207,9 +241,9 @@ public:
 	 */
 	vtkTransform * GetTransform();
 
-	//!Get dataSet mapper
+	//!Get dataset mapper
 	/*!
-	 * Dataset mapper of the piece actor
+	 * Dataset mapper of the model actor
 	 */
 	vtkPolyDataMapper * GetMapper();
 
@@ -220,61 +254,76 @@ public:
 	vtkActor * GetActor();
 
 	//! Specify the source object for mesh synchronization purposes
+	/*!
+	 * This is an optional input. If source is set, the model primary mesh
+	 * will be synchronized to this source mesh whenever a change is made on it.
+	 * \sa vtkPolyData* GetSource()
+	 */
 	virtual void SetSource(vtkPolyData *source);
 
 	//! Return the source object for mesh synchronization purposes
+	/*!
+	 * \sa SetSource(vtkPolyData *)
+	 */
 	virtual vtkPolyData *GetSource();
 
 	//! Get synchronization hash map
 	vtkIdList * GetHashMap();
 
-	void Init();
+	//!Virtual initialization function
+	/*!
+	 * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
+	 * - Input: vtkPolyData object \n
+	 */
+	virtual void Init();
 
 	virtual void Translate(double x, double y, double z);
 
 	//! Implements the translation of the model (Local coordinate system)
 	/*!
-		\param vector position vector of the translation
+	 * \param vector position vector of the translation
 	 */
 	virtual void Translate(double * vector);
 
 	//! Implements the lateral movements of the model  (Global coordinate system)
 	/*!
-		The X parameter contains the relative movement in the horizontal axes
-		\param a a orientation angle
-		\param x x component
-		\param y y component
-		\param z z component
-		Note: this function must be implemented in inheriting classes
+	 * The X parameter contains the relative movement in the horizontal axes
+	 * \param a a orientation angle
+	 * \param x x component
+	 * \param y y component
+	 * \param z z component
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void RotateWXYZ(double a, double x, double y, double z);
 
 	//! Implements the lateral movements of the model  (Local coordinate system)
 	/*!
-			The X parameter contains the relative movement in the horizontal axes
-			\param x x orientation angle
-			Note: this function must be implemented in inheriting classes
+	 * The X parameter contains the relative movement in the horizontal axes
+	 * \param x x orientation angle
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void RotateX(double x);
 
 	//! Implements the lateral movements of the model  (Local coordinate system)
 	/*!
-			The Y parameter contains the relative movement in the vertical axes
-			\param y y orientation angle
-			Note: this function must be implemented in inheriting classes
+	 * The Y parameter contains the relative movement in the vertical axes
+	 * \param y y orientation angle
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void RotateY(double y);
 
 	//! Rotate the model on its own axes  (Local coordinate system)
 	/*!
-			This function rotate the model on its own axis the value of an angle given
-			by the "Rotation" variable the rotation is produced acting on the actors who compose the model.
-			\param rotation rotation angle (radians)
-			Note: this function must be implemented in inheriting classes
+	 * This function rotate the model on its own axis the value of an angle given
+	 * by the "Rotation" variable the rotation is produced acting on the actors who compose the model.
+	 * \param rotation rotation angle (radians)
+	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void RotateZ(double rotation);
 
+	//! Reset model to its origin
 	virtual void Reset();
+	//! Restore model to its last position/orientation
 	virtual void Restore();
 
 	//! Hide scenario model.

@@ -48,7 +48,15 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkPoints;
 class vtkIdList;
 
-//!This class acts as data container storing all the useful information of aboundary condition.
+//!This class contains the required information to define a boundary condition.
+/*!
+ * vtkBoundaryCondition acts as data container storing all the useful
+ * information of a boundary condition:\n
+ *  - Type
+ *  - Value
+ *  - Point Identifier
+ *  - Point Position
+ */
 
 class VTK_ESQUI_BIOMECHANICS_EXPORT vtkBoundaryCondition : public vtkObject {
 	
@@ -64,7 +72,10 @@ public:
 	const char *GetClassName() {return "vtkBoundaryCondition";};
 
 	
-	//!Condition type definition
+	//! Condition type definition
+	/*!
+	 * This enumeration contains the types of boundary conditions supported
+	 */
 	enum vtkBoundaryConditionType{
 		Dirichlet = 0,
 		Neumann = 1,
@@ -72,29 +83,56 @@ public:
 	};
 	
 
-	//!Set condition type
+	//! Set boundary condition type.
+	/*!
+	* \sa vtkBoundaryCondition::vtkBoundaryConditionType GetType()
+	*/
 	vtkSetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);
-	//!Return condition type
+	//! Return condition type
+	/*!
+	 * \sa SetType(vtkBoundaryCondition::vtkBoundaryConditionType)
+	 */
 	vtkGetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);
 
-	//!Set condition id
+	//! Set condition identifier key
+	/*!
+	 * \sa vtkIdType GetId()
+	 */
 	vtkSetMacro(Id, vtkIdType);
-	//!Return condition id
+	//! Return condition identifier
+	/*!
+	 * \return identifier key of the condition
+	 * \sa vtkIdType SetId(vtkIdType)
+	 */
 	vtkGetMacro(Id, vtkIdType);
 
-	//!Set condition value
+	//! Set condition value
+	/*!
+	 * \sa double GetValue()
+	 */
 	vtkSetMacro(Value, double);
-	//!Return condition value
+	//! Return condition value
+	/*!
+	 * \return numeric value of the condition
+	 * \sa vtkIdType SetValue(double)
+	 */
 	vtkGetMacro(Value, double);
 
-	//!Set condition value
+	//! Set identifier of the point in which the condition is applied
+	/*!
+	 * \sa vtkIdType GetPointId()
+	 */
 	vtkSetMacro(PointId, vtkIdType);
-	//!Return condition value
+	//! Return condition value
+	/*!
+	 * \return point identifier of the condition
+	 * \sa SetPointId(vtkIdType)
+	 */
 	vtkGetMacro(PointId, vtkIdType);
 
-	//!Set condition point coordinates
+	//! Set condition point coordinates
 	vtkSetVector3Macro(Point, double);
-	//!Return condition point coordinates
+	//! Return condition point coordinates
 	vtkGetVector3Macro(Point, double);
 
 	//! Performs a full detailed copy of the contact
@@ -103,12 +141,11 @@ public:
 protected:
 	vtkBoundaryCondition();
 	~vtkBoundaryCondition();
-private:
 
-	//! Condition Type
+	//! Condition type
 	vtkBoundaryConditionType Type;
 
-	//! Condition Id
+	//! Condition identifier
 	vtkIdType Id;
 
 	//! Condition point coordinates
@@ -119,6 +156,7 @@ private:
 
 	//! Condition value
 	double Value;
+private:
 
 	vtkBoundaryCondition (const vtkBoundaryCondition &);//NotImplemented
 	void operator =(const vtkBoundaryCondition &);//Not Implemented

@@ -159,11 +159,6 @@ protected:
 	//! Size of particle neighborhood. The big
 	vtkIdType RigidityFactor;
 
-	//System Properties
-	//! System properties: volume, area, etc...
-	vtkMassProperties * SystemProperties;
-	//! Volume of the mesh
-	double Volume;
 	//!Gravity
 	double Gravity[3];
 

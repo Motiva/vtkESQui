@@ -386,12 +386,10 @@ $camera SetViewAngle 60
 
 ### Simulation Setup ###
 vtkSimulationInteractorStyle style
-style SetScenario scenario
-style Init
-iren SetInteractorStyle style
 
 vtkSimulation simulation
 simulation SetScenario scenario
+simulation SetInteractorStyle style
 simulation SetRenderTimerRate 0.02
 simulation SetSimulationTimerRate 0.01
 simulation SetHapticTimerRate 0.001

@@ -34,9 +34,7 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->Mass = 0;
 	this->Residual = 1e-6;
 	this->RigidityFactor = 1;
-	this->Volume = 0;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
-	this->SystemProperties = NULL;
 	this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
 	this->CollisionIds = NULL;
 	this->CollisionDisplacements = NULL;
@@ -143,9 +141,7 @@ void vtkParticleSpringSystem::Init()
 		break;
 	}
 
-	//System Properties
-	this->SystemProperties = vtkMassProperties::New();
-
+	//TODO: Use vtk based linear solvers. http://www.vtk.org/doc/nightly/html/classvtkInitialValueProblemSolver.html
 	//Initialize motion equation solver
 	this->Solver->SetDeformationModel(this);
 	this->Solver->SetNumberOfParticles(this->Particles->GetNumberOfItems());
@@ -196,11 +192,6 @@ int vtkParticleSpringSystem::RequestData(
 		points->SetPoint(i, particle->GetPosition());
 	}
 
-	//TODO: Check why input is not updated on each step (volume computation)
-	//this->SystemProperties->SetInput(output);
-	//this->Volume = this->SystemProperties->GetVolume();
-
-	//cout << this->Volume << endl;
 	return 1;
 }
 
@@ -375,5 +366,4 @@ void vtkParticleSpringSystem::PrintSelf(ostream& os, vtkIndent indent)
 	os << indent << "Mass: " << this->Mass << endl;
 	os << indent << "Residual: " << this->Residual << endl;
 	os << indent << "RigidityFactor: " << this->RigidityFactor << endl;
-	os << indent << "Volume: " << this->Volume << endl;
 }

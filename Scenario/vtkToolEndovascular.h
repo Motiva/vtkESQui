@@ -51,54 +51,56 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLSW.h"
 #endif
 
-//! Class vtkToolEndovascular, abstract the use of a surgical endovascular tool
+//! vtkToolEndovascular class implements a surgical endovascular tool.
 /*!
- * vtkToolEndovascular abstracts the use of a surgical tool during the simulation exercise.
- * This provide an easy use of surgical tools collections.
+ * This class inherits from vtkTool, and serves as base class for specific
+ * endovascular techniques tools: vtkToolCatheter, etc...\n
+ * A few specific movements (rotation, insertion, etc...) has been defined
+ * to control the tool.
  */
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolEndovascular: public vtkTool {
 
 public:
 
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkToolEndovascular,vtkTool);
 
-	//!Return the class name
+	//! Return the class name
 	const char *GetClassName() {return "vtkToolEndovascular";}
 
-	//!Print class values
+	//! Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
 
-	//!Abstract initialization function
+	//! Abstract initialization function
 	/*!
-	* This method initializes the tool physical values, scale, position, etc...
-	*/
+	 * This method initializes the tool physical values, scale, position, etc...
+	 */
 	virtual void Init();
 
-	//!Assign the haptic force as vector
+	//! Assign the haptic force as vector
 	/*!
-	* \param Force force vector of components
-	*/
+	 * \param Force force vector of components
+	 */
 	void SetForceFeedback(float Force[]);
 
-	//!Assign the haptic force components individually
+	//! Assign the haptic force components individually
 	/*!
-	* \param x x component of the force
-	* \param y y component of the force
-	* \param z z component of the force
-	*/
+	 * \param x x component of the force
+	 * \param y y component of the force
+	 * \param z z component of the force
+	 */
 	void SetForceFeedback(float x, float y, float z) {
 		this->ForceFeedback[0] = x;
 		this->ForceFeedback[1] = y;
 		this->ForceFeedback[2] = z;
 	}
 
-	//!Return the haptic force in float vector
+	//! Return the haptic force in float vector
 	/*!
-	* \sa SetForceFeedback(float Force[])
-	* \sa SetForceFeedback(float x, float y, float z)
-	*/
+	 * \sa SetForceFeedback(float Force[])
+	 * \sa SetForceFeedback(float x, float y, float z)
+	 */
 	void GetForceFeedback( float Force[] ) const
 	{
 		Force[0] = this->ForceFeedback[0];
@@ -106,23 +108,23 @@ public:
 		Force[2] = this->ForceFeedback[2];
 	}
 
-	//!Return the x component of the haptic force
+	//! Return the x component of the haptic force
 	/*!
-	* \sa SetForceFeedback(float Force[])
-	* \sa SetForceFeedback(float x, float y, float z)
-	*/
+	 * \sa SetForceFeedback(float Force[])
+	 * \sa SetForceFeedback(float x, float y, float z)
+	 */
 	float GetXFeedbackForce() {return this->ForceFeedback[0];}
-	//!Return the y component of the haptic force
+	//! Return the y component of the haptic force
 	/*!
-	* \sa SetForceFeedback(float Force[])
-	* \sa SetForceFeedback(float x, float y, float z)
-	*/
+	 * \sa SetForceFeedback(float Force[])
+	 * \sa SetForceFeedback(float x, float y, float z)
+	 */
 	float GetYFeedbackForce() {return this->ForceFeedback[1];}
-	//!Return the z component of the haptic force
+	//! Return the z component of the haptic force
 	/*!
-	* \sa SetForceFeedback(float Force[])
-	* \sa SetForceFeedback(float x, float y, float z)
-	*/
+	 * \sa SetForceFeedback(float Force[])
+	 * \sa SetForceFeedback(float x, float y, float z)
+	 */
 	float GetZFeedbackForce() {return this->ForceFeedback[2];}
 
 	//! Return tool contact force
@@ -140,25 +142,25 @@ public:
 	Set the tool depth position. The modification is made by transforming the tool's
 	mesh (vtkPolyData).
 	\param step Z axis value (local coordinate system)
-	*/
+	 */
 	virtual void AddDepth(double step);
 
 	//! Rotate the tool in degrees from current orientation about the X axis using the right hand rule.
 	/*!
-	* Standard laparoscopic tool X-axis rotation. Mobile pieces are processed in implementation classes
-	*/
+	 * Standard laparoscopic tool X-axis rotation. Mobile pieces are processed in implementation classes
+	 */
 	virtual void RotateX(double angle);
 
 	//! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
 	/*!
-	* Standard laparoscopic tool Y-axis rotation. Mobile pieces are processed in implementation classes
-	*/
+	 * Standard laparoscopic tool Y-axis rotation. Mobile pieces are processed in implementation classes
+	 */
 	virtual void RotateY(double angle);
 
 	//! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
 	/*!
-	* Standard laparoscopic tool Z-axis rotation. Mobile pieces are processed in implementation classes
-	*/
+	 * Standard laparoscopic tool Z-axis rotation. Mobile pieces are processed in implementation classes
+	 */
 	virtual void RotateZ(double angle);
 
 protected:

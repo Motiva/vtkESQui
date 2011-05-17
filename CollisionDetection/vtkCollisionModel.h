@@ -51,7 +51,13 @@ class vtkCollisionCollection;
 class vtkSphereSource;
 class vtkGlyph3D;
 
-//! Class vtkCollisionModel defines a visualization mesh (PolyData) with its texture. Inherits from vtkModel
+//! vtkCollisionModel object defines a collision model based on a mesh (vtkPolyData).
+/*!
+ * This class inherits from vtkModel base class. As it is specified in vtkModel,
+ * at least an input mesh should be defined. Optionally a source mesh for
+ * synchronization purposes may be defined.
+ * Collision model must be synchronized with deformation model if present.
+ */
 
 class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollisionModel: public vtkModel {
 
@@ -67,6 +73,13 @@ public:
 
 	//!Print class values
 	void PrintSelf(ostream& os, vtkIndent indent);
+
+	//!Virtual initialization function
+	/*!
+	 * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
+	 * - Input: vtkPolyData object \n
+	 */
+	virtual void Init();
 
 	//!Set the model direction (WXYZ)
 	vtkSetVector3Macro(Direction, double);
@@ -90,22 +103,37 @@ public:
 	//!Get the visualization sphere radius
 	vtkGetMacro(Radius, double);
 
-	//!Set the detected collisions
+	//!Set detected collisions on the model
+	/*!
+	 * Any previously added collision will be removed from the collection
+	 * \param collisions collection of collisions
+	 * \sa vtkCollisionCollection * GetCollisions()
+	 */
 	void SetCollisions(vtkCollisionCollection * collisions);
-	//!Get the detected contacts
+	//!Get detected collisions on the model
+	/*!
+	 * \return pointer to collection of collisions
+	 * \sa SetCollisions(vtkCollisionCollection * collisions);
+	 */
 	vtkCollisionCollection * GetCollisions();
 
-	//!Add a collision to the model
+	//!Add a single collision to the model
+	/*!
+	 * Previously added collisions remain in the collection
+	 * \param c collision to be added to the collection
+	 * \sa RemoveCollision(vtkIdType id)
+	 */
 	void AddCollision(vtkCollision * c);
 
-	//!Remove the collision at the specified id
+	//!Remove the collision at the specified identifier
+	/*!
+	 * \param id collision identifier
+	 * \sa AddCollision(vtkCollision * c)
+	 */
 	void RemoveCollision(vtkIdType id);
 
 	//!Remove all collisions from the model
 	void RemoveAllCollisions();
-
-	//!Virtual initialization function
-	virtual void Init();
 
 protected:
 
@@ -116,20 +144,16 @@ protected:
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-private:
-	vtkCollisionModel (const vtkCollisionModel &);
-	void operator =(const vtkCollisionModel &);
-
 	//! Unit direction vector
 	double Direction[3];
-	//! Velocity
+	//! Velocity vector
 	double Velocity[3];
-	//! Acceleration
+	//! Acceleration vector
 	double Acceleration[3];
 	//! Simulation time step
 	double DeltaT;
 
-	//! Sphere Radius
+	//! Glyph sphere radius
 	double Radius;
 
 	//!Transform filter of the model
@@ -141,8 +165,12 @@ private:
 	//! Glyphs display of points
 	vtkGlyph3D * Glyphs;
 
-	//! Collection of contacts
+	//! Collection of collisions
 	vtkCollisionCollection * Collisions;
+
+private:
+	vtkCollisionModel (const vtkCollisionModel &);
+	void operator =(const vtkCollisionModel &);
 
 };
 

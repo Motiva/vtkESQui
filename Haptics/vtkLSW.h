@@ -54,7 +54,16 @@ static const unsigned VTK_CORRECT_LSW = 1;
 static const unsigned VTK_DETECT_FAILURE_LSW = 0;
 static const unsigned VTK_CALIBRATE_FAILURE_LSW = -1;
 
-//! Class vtkLSW, wraps the LSW haptic device
+//! vtkLSW class wraps the access to the LSW haptic device.
+/*!
+ * This interface enables the interaction with the Immersion LSW haptic
+ * device.\n
+ * In a cyclic process the haptic is synchronously checked for changes.
+ * Device physical attributes are saved and then sent to the simulation
+ * process.\n
+ * Access method to device initialization has also been implemented.
+ */
+
 class VTK_ESQUI_HAPTICS_EXPORT vtkLSW:public vtkHaptic
 {
 
@@ -130,14 +139,14 @@ private:
 
 	bool StopFlag;
 	bool ForceCalculationMethodActive;
-	// Objeto vtkLSWTool para abstraer el control de la herramienta derecha de la LSW
-	//! vtkLSWTool object to abstract the LSW's right tool
+
+	//! vtkLSWTool object to access to the LSW's right tool
 	vtkLSWTool* LSWRightTool;
-	// Objeto vtkLSWTool para abstraer el control de la herramienta izquierda de la LSW
-	//! vtkLSWTool object to abstract the LSW's left tool
+
+	//! vtkLSWTool object to access to the LSW's left tool
 	vtkLSWTool* LSWLeftTool;
-	// Objeto de la ImmSurgicalWorkstation API de la LSW, hace de interfaz con la LSW
-	//! ImmSurgicalWorkstation object,
+
+	//! ImmSurgicalWorkstation object.
 	ImmSurgicalWorkstation* LSWDevice;
 
 protected:

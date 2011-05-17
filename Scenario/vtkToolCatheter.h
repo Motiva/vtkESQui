@@ -45,10 +45,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolEndovascular.h"
 
-//! Implementation class of a catheter
+//! Implementation class of an endovascular catheter tool.
 /*!
- * vtkToolCatheter is the class that implements a endovascular catheter inside the scene.
- * Contains methods for position control of the tool in the scene and collision detection.
+ * This class inherits from vtkToolEndovascular_.Contains methods for position
+ * control of the tool in the scene and collision detection.
  */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolCatheter: public vtkToolEndovascular

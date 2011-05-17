@@ -45,28 +45,31 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkToolLaparoscopy.h"
 
-//! Implementation class of grasper
+//! Implementation class of a surgical laparoscopic grasper.
 /*!
-	vtkToolGrasper is the class that implements the grasper tool, inside the scene.
-	Contains methods for position control of the tool in the scene and collision detection.
-	Grasper are composed of 3 pieces: 1 stick and 2 graspers (vtkPiece)
-	Inherits vtkToolLaparascopy class
-*/
+ * This class, that inherits from vtkToolLaparascopy, defines a surgical
+ * grasper, inside the scenario.\n
+ * Contains methods for position control of the tool in the scene and
+ * collision detection.\n
+ * A laparoscopic grasper is composed of 3 elements:\n
+ *  - Stick
+ *  - 2 Levers.
+ */
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkToolGrasper: public vtkToolLaparoscopy
 {
 public:
 
-	//!Type revision macro
+	//! Type revision macro
 	vtkTypeRevisionMacro(vtkToolGrasper,vtkToolLaparoscopy);
-	//!Create new vtkToolGrasper object
+	//! Create new vtkToolGrasper object
 	static vtkToolGrasper *New();
-	//!Return class name
+	//! Return class name
 	const char *GetClassName() { return "vtkToolGrasper"; }
-	//!Print the attributes value
+	//! Print the attributes value
 	void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! set the stick element to the object
+	//! Set the stick element to the object
 	void SetStick(vtkScenarioElement * e);
 
 	//! Set the left lever element to the object
@@ -75,40 +78,41 @@ public:
 	//! Set the right lever element to the object
 	void SetRightLever(vtkScenarioElement * e);
 
-	//! Set the tool's aperture according with the value given in the "Aperture" parameter
+	//! Set the tool's opening according with the value given in the "Opening" parameter
 	/*!
-		This function set the tool's aperture in function of the value given in the "Aperture" parameter.
-		The aperture is established modifying the tool's mesh position.
-		The "Aperture" parameter can take any value between "0" $ "1": "0" -> to close the tool "1" -> to open the tool
+	 * This function set the tool's aperture in function of the value given in the "Opening" parameter.
+	 * The opening is established modifying the tool's mesh position.
+	 * \sa double GetOpening()
 	 */
 	void SetOpening(double opening);
 	//!Get pincer opening
+	/*!
+	 * \sa SetOpening(double)
+	 */
 	vtkGetMacro(Opening, double);
 
-	//!Initialize the tool from VTK file
+	//! Initialize the tool from VTK file
 	/*!
-		This function initializes the tool whose mesh is described on a VTK file
-	*/
+	 * This function initializes the tool whose mesh is described on a VTK file
+	 */
 	virtual void Init();
 
-	//! Open the grasper moving piece actors
+	//! Open the grasper moving piece models
 	/*!
-		Piece actors are transformed to perform tool opening
-		Bounding boxes are recalculated.
-	*/
+	 * Piece models are transformed to perform tool opening
+	 */
 	void Open();
 
-	//! Close the grasper moving piece actors
+	//! Close the grasper moving piece models
 	/*!
-		Piece actors are transformed to perform tool closing
-		Bounding boxes are recalculated.
-	*/
+	 * Piece models are transformed to perform tool closing
+	 */
 	void Close();
 
 	//!Return whether the grasper is closed or not
 	bool IsClosed(){return (this->Opening <= 0.);}
 
-	//! Sets the grasper' depth in its own coordinate system
+	//! Sets the grasper's depth in its own coordinate system
 	void SetDepth(double position);
 
 	//! Rotate the grasper in degrees from current orientation about the X axis using the right hand rule.
@@ -146,19 +150,30 @@ protected:
 	//! Process the algorithm request (Update).
 	virtual int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
 
+	//! Stick element
+	vtkScenarioElement * Stick;
+	//! Left lever element
+	vtkScenarioElement * LeftLever;
+	//! Right lever element
+	vtkScenarioElement * RightLever;
+
+	//! Grasper opening ratio
+	/*!
+	 * The "Opening" parameter can take any value between "0" $ "1":
+	 * - "0" -> to close the tool
+	 * - "1" -> to open the tool
+	 */
+	double Opening;
+
+	//! Grasper opening angle
+	/*!
+	 * Angle value is given in radians
+	 */
+	double OpeningAngle;
 private:
 
 	vtkToolGrasper (const vtkToolGrasper &); //Not Implemented
 	void operator =(const vtkToolGrasper &); //Not Implemented
-
-	vtkScenarioElement * Stick;
-	vtkScenarioElement * LeftLever;
-	vtkScenarioElement * RightLever;
-
-	//! Tool pieces opening
-	double Opening;
-	
-	double OpeningAngle;
 
 };
 #endif

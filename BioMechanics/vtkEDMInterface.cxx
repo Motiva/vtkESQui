@@ -102,7 +102,6 @@ void vtkEDMInterface::Init()
 	this->Deformed->ShallowCopy(input);
 
 	//TODO: Check imageData generation
-
 	//Generate image source
 	double spacing[3];
 	spacing[0] = spacing[1] = spacing[2] = 1;
