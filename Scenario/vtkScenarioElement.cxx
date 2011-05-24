@@ -218,8 +218,12 @@ int vtkScenarioElement::RequestData(
 			collisions->InitTraversal();
 			while(vtkCollision * c = collisions->GetNextCollision())
 			{
-				//Sync collision-deformation point ids
-				int id = this->CollisionModel->GetHashMap()->GetId(c->GetPointId(1));
+				int objectId = 0;
+				if(c->GetObjectId(1) == this->GetObjectId())
+				{
+					objectId = 1;
+				}
+				int id = this->CollisionModel->GetHashMap()->GetId(c->GetPointId(objectId));
 				double * p = this->VisualizationModel->GetOutput()->GetPoint(id);
 				//c->Print(cout);
 				//cout << "p[" << id << "]: (" << p[0] << ", " << p[1] << ", " << p[2] << ")\n";

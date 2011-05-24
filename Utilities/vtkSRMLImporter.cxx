@@ -692,7 +692,6 @@ void vtkSRMLImporter::ImportHaptic()
 	item->GetScalarAttribute("NumberOfTools", numberOfTools);
 
 	haptic->SetName(type);
-	haptic->SetNumberOfTools(numberOfTools);
 
 	this->Simulation->SetHapticDevice(haptic);
 

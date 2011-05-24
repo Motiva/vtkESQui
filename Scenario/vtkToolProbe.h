@@ -81,12 +81,6 @@ public:
 	 */
 	virtual void Init();
 
-	//! Update the tool
-	/*!
-	 * This function update the tool values
-	 */
-	virtual void Update();
-
 	//! Sets the probe yaw angle
 	void Yaw(double angle);
 

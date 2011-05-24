@@ -8,10 +8,9 @@ SET(UKIT ESQUIHAPTICSEXAMPLES)  #Uppercase Kit Name
 
 #VSP and IHP Examples cannot be compiled simultaneously due to dll conflicts
 SET(Kit_SRCS
-    vtkIHPEsquiExample
-    vtkIHPExample
-    vtkLSWExample
-    vtkVSPExample
+    HapticIHPExample
+    HapticLSWExample
+    HapticVSPExample
  )
  
 #-----------------------------------------------------------------------------

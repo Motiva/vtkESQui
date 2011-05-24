@@ -129,61 +129,6 @@ int vtkToolGrasper::RequestData(vtkInformation *vtkNotUsed(request),
 	// get the input and output
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-#ifndef VTKESQUI_USE_NO_HAPTICS
-	if(UseHaptic)
-	{
-		vtkIHP * ihp = vtkIHP::SafeDownCast(this->Haptic);
-		vtkIdType id = this->GetId();
-
-		//Trocar state
-		float * state = ihp->GetTrocarState(id);
-
-		//Trocar's direction angles
-
-		//Haptic coordinate system differs  from VTK system
-		// |  Haptic  |  VTK  |
-		// |      X      |    Y    |
-		// |      Y      |    Z    |
-		// |      Z      |    X    |
-		this->Yaw(ihp->GetTrocarYaw(id));
-		this->Pitch(ihp->GetTrocarPitch(id));
-		this->Roll(ihp->GetToolRoll(id));
-
-		//Tool-in-the-trocar parameters
-
-		//Set tool's depth
-		this->SetDepth(20*ihp->GetToolDepth(id));
-
-		//Set tool's opening.
-		this->SetOpening(ihp->GetToolOpening(id));
-
-		//Display tool buttons/pedal state
-		if(ihp->GetToolButtonState(id)){
-			std::cout << "Tool("<<id<< ") Main button is pressed...\n";
-		}
-		if(ihp->GetLeftPedalState()){
-			std::cout << "Tool("<<id<< ") Left pedal is pressed...\n";
-		}
-		if(ihp->GetRightPedalState()){
-			std::cout << "Tool("<<id<< ") Right pedal is pressed...\n";
-		}
-
-		//Set Tool Feedback Forces
-		float force [3];
-		force[0] = force[1] = force[2] = 0;
-
-		if(this->GetDepth() > 3)
-		{
-			std::cout << "Tool Depth > 3. Force Applied" << std::endl;
-			force[2] = 1;
-		}
-		else force[2] = 0;
-
-		ihp->SetToolTipForce(id, force);
-		ihp->ApplyForce(id);
-	}
-#endif
-
 	this->AppendFilter->Update();
 
 	output->ShallowCopy(this->AppendFilter->GetOutput());
@@ -246,7 +191,7 @@ void vtkToolGrasper::RotateX(double angle)
 	this->SetOpening(o);
 
 	//Yaw angle value is updated
-	this->YawAngle += angle;
+	//this->YawAngle += angle;
 }
 
 //----------------------------------------------------------------------------
@@ -260,7 +205,7 @@ void vtkToolGrasper::RotateY(double angle)
 	this->SetOpening(o);
 
 	// Pitch angle value is updated
-	this->PitchAngle += angle;
+	//this->PitchAngle += angle;
 }
 
 //----------------------------------------------------------------------------
@@ -273,7 +218,7 @@ void vtkToolGrasper::RotateZ(double angle)
 	//Grasper' opening state is restored
 	this->SetOpening(o);
 
-	this->RollAngle += angle;
+	//this->RollAngle += angle;
 }
 
 //----------------------------------------------------------------------------

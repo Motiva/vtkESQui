@@ -26,7 +26,6 @@ vtkIO
 
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
-#${PROJECT_NAME}UtilitiesTCL
 ${PROJECT_NAME}CommonTCL
 ${PROJECT_NAME}ScenarioTCL
 ${PROJECT_NAME}CollisionDetectionTCL

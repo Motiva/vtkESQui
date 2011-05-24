@@ -42,13 +42,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkCollisionCollection_h
 #define __vtkCollisionCollection_h
 
-#include "vtkESQuiCommonWin32Header.h"
+#include "vtkESQuiCollisionDetectionWin32Header.h"
 #include "vtkCollection.h"
 
 class vtkCollision;
 
 //! Implementation of a collection of collisions
-class VTK_ESQUI_COMMON_EXPORT vtkCollisionCollection: public vtkCollection
+class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollisionCollection: public vtkCollection
 {
 public:
 	//! Type revision macro

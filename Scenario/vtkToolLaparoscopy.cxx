@@ -54,7 +54,6 @@ vtkToolLaparoscopy::vtkToolLaparoscopy() {
 	this->YawAngle = 0;
 	this->PitchAngle = 0;
 	this->RollAngle = 0;
-	this->UseHaptic = 0;
 	this->ForceFeedback[0] = this->ForceFeedback[1] = this->ForceFeedback[2] = 0;
 }
 
@@ -141,6 +140,39 @@ void vtkToolLaparoscopy::SetForceFeedback(float Force[]){
 	this->ForceFeedback[0] = Force[0];
 	this->ForceFeedback[1] = Force[1];
 	this->ForceFeedback[2] = Force[2];
+}
+
+//----------------------------------------------------------------------------
+void vtkToolLaparoscopy::Yaw(double angle)
+{
+	double step = angle - this->YawAngle;
+	if(step != 0)
+	{
+		this->RotateY(step);
+		this->YawAngle = angle;
+	}
+}
+
+//----------------------------------------------------------------------------
+void vtkToolLaparoscopy::Pitch(double angle)
+{
+	double step = angle - this->PitchAngle;
+	if(step != 0)
+	{
+		this->RotateX(step);
+		this->PitchAngle = angle;
+	}
+}
+
+//----------------------------------------------------------------------------
+void vtkToolLaparoscopy::Roll(double angle)
+{
+	double step = angle - this->RollAngle;
+	if(step != 0)
+	{
+		this->RotateZ(step);
+		this->RollAngle = angle;
+	}
 }
 
 //--------------------------------------------------------------------------

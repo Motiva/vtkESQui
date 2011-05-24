@@ -76,7 +76,8 @@ public:
 	//! Return class name
 	const char *GetClassName() {return "vtkModel";};
 
-	//!Tool type definition
+	//!Tool type definitiion
+	//BTX
 	enum vtkModelType{
 		Visualization = 0,
 				Collision = 1,
@@ -91,6 +92,7 @@ public:
 				Hidden = 2,
 				Disabled = 3
 	};
+
 
 	//!Set model id
 	/*!

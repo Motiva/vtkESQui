@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkModelCollection_h
 #define __vtkModelCollection_h
 
-#include "vtkESQuiScenarioWin32Header.h"
+#include "vtkESQuiCommonWin32Header.h"
 #include "vtkCollection.h"
 
 class vtkModel;
@@ -53,7 +53,7 @@ class vtkModel;
  * of scenario element models. The lists are unsorted and allow duplicate
  * entries.
  */
-class VTK_ESQUI_SCENARIO_EXPORT vtkModelCollection : public vtkCollection
+class VTK_ESQUI_COMMON_EXPORT vtkModelCollection : public vtkCollection
 {
 public:
 	//!Type revision macro

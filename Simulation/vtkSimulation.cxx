@@ -54,6 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkScenarioElementCollection.h"
 #include "vtkCollisionModel.h"
 #include "vtkBioEngInterface.h"
+#include "vtkTool.h"
 
 void func ( vtkObject* caller, long unsigned int eventId, void* clientData, void* callData )
 {
@@ -158,28 +159,6 @@ vtkCollisionCollection * vtkSimulation::GetCollisions()
 //----------------------------------------------------------------------------
 void vtkSimulation::Init() {
 
-	//Init haptic device
-#ifndef VTKESQUI_USE_NO_HAPTICS
-	if(this->UseHaptic)
-	{
-		int connected = this->HapticDevice->Init();
-		if(connected > 0){
-			vtkDebugMacro("Haptic device is connected...");
-			for(int i = 0; i < this->HapticDevice->GetNumberOfTools(); i++)
-			{
-				vtkTool * tool =  this->Scenario->GetTool(i);
-				tool->UseHapticOn();
-				tool->SetHapticDevice(this->HapticDevice);
-			}
-		}
-		else
-		{
-			vtkErrorMacro("Haptic device is not connected...");
-			exit(0);
-		}
-	}
-#endif
-
 	//Configure simulation loop
 	this->Callback->SetCallback(func);
 	this->Callback->SetClientData(this);
@@ -248,6 +227,31 @@ void vtkSimulation::Init() {
 			}
 		}
 	}
+
+#ifndef VTKESQUI_USE_NO_HAPTICS
+	if(this->UseHaptic)
+	{
+		//Init haptic device
+		int connected = this->HapticDevice->Init();
+		if(connected > 0){
+			vtkDebugMacro("Haptic device is connected...");
+			//Set tools to be controlled by the device
+			objects->InitTraversal();
+			while(vtkScenarioObject * o = objects->GetNextObject())
+			{
+				if(o && o->GetObjectType() == vtkScenarioObject::Tool)
+				{
+					this->HapticDevice->AddTool(vtkTool::SafeDownCast(o));
+				}
+			}
+		}
+		else
+		{
+			vtkErrorMacro("Haptic device is not connected...");
+			exit(0);
+		}
+	}
+#endif
 }
 
 //----------------------------------------------------------------------------

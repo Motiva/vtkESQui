@@ -40,19 +40,23 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 #include "vtkHaptic.h"
-
 #include "vtkObjectFactory.h"
+
+#include "vtkScenarioObjectCollection.h"
+#include "vtkScenarioObject.h"
+#include "vtkTool.h"
 
 vtkCxxRevisionMacro(vtkHaptic, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 vtkHaptic::vtkHaptic() {
 	this->Name = "";
-	this->NumberOfTools = 0;
+	this->Tools = vtkScenarioObjectCollection::New();
 }
 
 //--------------------------------------------------------------------------
 vtkHaptic::~vtkHaptic() {
+	this->Tools->Delete();
 }
 
 //--------------------------------------------------------------------------
@@ -67,16 +71,56 @@ const char * vtkHaptic::GetName()
 	return this->Name;
 }
 
-//--------------------------------------------------------------------------
-void vtkHaptic::SetNumberOfTools(int numberOfTools)
+//----------------------------------------------------------------------------
+void vtkHaptic::SetTools(vtkScenarioObjectCollection * collection)
 {
-	this->NumberOfTools = numberOfTools;
+	this->Tools->RemoveAllItems();
+
+	collection->InitTraversal();
+	while(vtkScenarioObject * tool = collection->GetNextObject())
+	{
+		if(tool->GetObjectType() == vtkScenarioObject::Tool)
+		{
+			this->AddTool(vtkTool::SafeDownCast(tool));
+		}
+	}
+
 }
 
-//--------------------------------------------------------------------------
-int vtkHaptic::GetNumberOfTools()
+//----------------------------------------------------------------------------
+vtkScenarioObjectCollection * vtkHaptic::GetTools()
 {
-	return this->NumberOfTools;
+	return this->Tools;
+}
+
+//----------------------------------------------------------------------------
+void vtkHaptic::AddTool(vtkTool * tool)
+{
+	this->Tools->AddObject(tool);
+}
+
+//----------------------------------------------------------------------------
+void vtkHaptic::ReplaceTool(vtkIdType index, vtkTool* tool)
+{
+	this->Tools->ReplaceObject(index, tool);
+}
+
+//----------------------------------------------------------------------------
+void vtkHaptic::RemoveTool(vtkIdType index)
+{
+	this->Tools->RemoveItem(index);
+}
+
+//----------------------------------------------------------------------------
+vtkIdType vtkHaptic::GetNumberOfTools()
+{
+	return this->Tools->GetNumberOfItems();
+}
+
+//----------------------------------------------------------------------------
+vtkTool * vtkHaptic::GetTool(vtkIdType id)
+{
+	return vtkTool::SafeDownCast(this->Tools->GetObject(id));
 }
 
 //--------------------------------------------------------------------------

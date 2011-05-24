@@ -24,6 +24,7 @@ ABSTRACT
 
 # Set your list of libraries here.
 SET(KIT_LIBS ${PROJECT_NAME}Common
+${PROJECT_NAME}CollisionDetection
 vtkCommon
 vtkFiltering
 vtkHybrid
@@ -34,6 +35,7 @@ vtkExplicitDeformableModel
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
 ${PROJECT_NAME}CommonTCL
+${PROJECT_NAME}CollisionDetectionTCL
 vtkFilteringTCL
 vtkCommonTCL
 vtkHybridTCL
@@ -64,9 +66,9 @@ vtkHybridTCL
 #-----------------------------------------------------------------------------
 # Include common Haptics CMake code. 
 # Note: Should be located before KitCommonBlock INCLUDE command
-IF(VTKESQUI_USE_HAPTICS)
-  INCLUDE(${VTKESQUI_CMAKE_DIR}/HapticCommonBlock.cmake)
-ENDIF(VTKESQUI_USE_HAPTICS)
+#IF(VTKESQUI_USE_HAPTICS)
+#  INCLUDE(${VTKESQUI_CMAKE_DIR}/HapticCommonBlock.cmake)
+#ENDIF(VTKESQUI_USE_HAPTICS)
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------

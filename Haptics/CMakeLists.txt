@@ -9,8 +9,8 @@ SET(UKIT HAPTICS)  #Uppercase Kit Name
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
 SET (Kit_SRCS 
-vtkLSW.cxx
 vtkHaptic.cxx
+vtkLSW.cxx
 vtkLSWTool.cxx
 vtkVSP.cxx
 vtkIHP.cxx
@@ -20,19 +20,21 @@ SET_SOURCE_FILES_PROPERTIES(
 vtkHaptic
 ABSTRACT
 )
-SET_SOURCE_FILES_PROPERTIES(
-vtkLSWTool.cxx
-WRAP_EXCLUDE
-)
+#SET_SOURCE_FILES_PROPERTIES(
+#vtkLSWTool.cxx
+#WRAP_EXCLUDE
+#)
 
 # Set your list of libraries here.
 SET(KIT_LIBS 
 vtkCommon
+${PROJECT_NAME}Scenario
 )
 
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
 vtkCommonTCL
+${PROJECT_NAME}ScenarioTCL
 )
 
 #

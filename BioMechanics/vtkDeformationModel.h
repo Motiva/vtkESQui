@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkDeformationModel
 #define __vtkDeformationModel
 
-#include "vtkESQuiScenarioWin32Header.h"
+#include "vtkESQuiBioMechanicsWin32Header.h"
 #include "vtkModel.h"
 
 class vtkPolyData;
@@ -61,7 +61,7 @@ class vtkBoundaryConditionCollection;
  * deformation models: vtkParticleSpringSystem, vtkExplicitDeformableModel, etc...
  */
 
-class VTK_ESQUI_SCENARIO_EXPORT vtkDeformationModel: public vtkModel {
+class VTK_ESQUI_BIOMECHANICS_EXPORT vtkDeformationModel: public vtkModel {
 
 public:
 

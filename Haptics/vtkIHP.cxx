@@ -44,6 +44,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 #include "vtkMath.h"
 
+#include "vtkScenarioObjectCollection.h"
+#include "vtkScenarioObject.h"
+#include "vtkTool.h"
+#include "vtkToolGrasper.h"
+#include "vtkToolProbe.h"
+
 vtkCxxRevisionMacro(vtkIHP, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkIHP);
 
@@ -117,6 +123,70 @@ int vtkIHP::Init()
 void vtkIHP::Update()
 {
 	this->UpdateDevice();
+
+	//Scenario tools will be updated
+	this->Tools->InitTraversal();
+	vtkIdType id = 0;
+	while(vtkScenarioObject * o = this->Tools->GetNextObject())
+	{
+		vtkTool * t = vtkTool::SafeDownCast(o);
+		if(t && t->GetToolType() ==  vtkTool::Laparoscopy)
+		{
+			vtkToolLaparoscopy * tool = vtkToolLaparoscopy::SafeDownCast(t);
+
+			//Trocar state
+			float * state = this->GetTrocarState(id);
+
+			//Trocar's direction angles
+			//Haptic coordinate system differs  from VTK system
+			// |  Haptic  |  VTK  |
+			// |      X      |    Y    |
+			// |      Y      |    Z    |
+			// |      Z      |    X    |
+			tool->Yaw(this->GetTrocarYaw(id));
+			tool->Pitch(this->GetTrocarPitch(id));
+			tool->Roll(this->GetToolRoll(id));
+
+			//Tool-in-the-trocar parameters
+			//Set tool's depth
+			tool->SetDepth(20*this->GetToolDepth(id));
+
+			if(tool->GetToolModel() == vtkToolLaparoscopy::Grasper){
+				vtkToolGrasper * grasper = vtkToolGrasper::SafeDownCast(t);
+				//Set tool's opening.
+				grasper->SetOpening(this->GetToolOpening(id));
+			}
+
+			//Display tool buttons/pedal state
+			if(this->GetToolButtonState(id)){
+				std::cout << "Tool("<<id<< ") Main button is pressed...\n";
+			}
+			if(this->GetLeftPedalState()){
+				std::cout << "Tool("<<id<< ") Left pedal is pressed...\n";
+			}
+			if(this->GetRightPedalState()){
+				std::cout << "Tool("<<id<< ") Right pedal is pressed...\n";
+			}
+
+			//Set Tool Feedback Forces
+			float force [3];
+			force[0] = force[1] = force[2] = 0;
+
+			if(tool->GetDepth() > 3)
+			{
+				std::cout << "Tool Depth > 3. Force Applied" << std::endl;
+				force[2] = 1;
+			}
+			else force[2] = 0;
+
+			this->SetToolTipForce(id, force);
+			this->ApplyForce(id);
+
+			id++;
+		}
+	}
+
+	// Flush forces to the haptic device
 	this->FlushForces();
 }
 

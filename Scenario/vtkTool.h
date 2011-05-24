@@ -45,12 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkScenarioObject.h"
 
-#ifndef VTKESQUI_USE_NO_HAPTICS
-#include "vtkHaptic.h"
-#include "vtkIHP.h"
-#include "vtkLSW.h"
-#endif
-
 class vtkContact;
 class vtkContactCollection;
 
@@ -98,38 +92,6 @@ public:
 	 */
 	vtkGetMacro(ToolType, vtkTool::vtkToolType);
 
-	// **** Haptic Management Methods **** //
-
-	//! Set the use of haptic device
-	/*!
-	 * \sa bool GetUseHaptic()
-	 */
-	vtkSetMacro(UseHaptic, bool);
-	//! Get the use of haptic device
-	/*!
-	 * \sa SetUseHaptic(bool)
-	 */
-	vtkGetMacro(UseHaptic, bool);
-
-	//!Enable/Disable haptic device use
-	vtkBooleanMacro(UseHaptic, bool);
-
-#ifndef VTKESQUI_USE_NO_HAPTICS
-
-	//BTX
-	//! Set the haptic device for the tool
-	void SetHapticDevice(vtkHaptic *haptic) {this->Haptic = haptic;}
-
-	//! Get the haptic device for the tool
-	vtkHaptic *GetHapticDevice() {return this->Haptic;}
-
-protected:
-	//! The haptic device for the tool
-	vtkHaptic * Haptic;
-	//ETX
-#endif
-
-
 protected:
 
 	vtkTool();
@@ -137,9 +99,6 @@ protected:
 
 	//! Tool Type
 	vtkToolType ToolType;
-
-	//! Enable haptic device control
-	bool UseHaptic;
 
 private:
 	vtkTool (const vtkTool &);

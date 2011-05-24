@@ -77,9 +77,9 @@ vtkHybridTCL
 #-----------------------------------------------------------------------------
 # Include common Haptics CMake code. 
 # Note: Should be located before KitCommonBlock INCLUDE command
-IF(VTKESQUI_USE_HAPTICS)
-  INCLUDE(${VTKESQUI_CMAKE_DIR}/HapticCommonBlock.cmake)
-ENDIF(VTKESQUI_USE_HAPTICS)
+#IF(VTKESQUI_USE_HAPTICS)
+#  INCLUDE(${VTKESQUI_CMAKE_DIR}/HapticCommonBlock.cmake)
+#ENDIF(VTKESQUI_USE_HAPTICS)
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------

@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkCollision_h
 #define __vtkCollision_h
 
-#include "vtkESQuiCommonWin32Header.h"
+#include "vtkESQuiCollisionDetectionWin32Header.h"
 #include "vtkObject.h"
 
 class vtkPoints;
@@ -61,7 +61,7 @@ class vtkIdList;
  *  collided.
  */
 
-class VTK_ESQUI_COMMON_EXPORT vtkCollision : public vtkObject {
+class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollision : public vtkObject {
 	
 public:
 	//! Type revision macro

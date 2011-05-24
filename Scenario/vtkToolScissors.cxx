@@ -67,68 +67,6 @@ void vtkToolScissors::Init()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolScissors::Update()
-{
-	this->Superclass::Update();
-
-#ifndef VTKESQUI_USE_NO_HAPTICS
-	if(UseHaptic)
-	{
-		vtkIHP * ihp = vtkIHP::SafeDownCast(this->Haptic);
-		vtkIdType id = this->GetId();
-
-		//Trocar state
-		float * state = ihp->GetTrocarState(id);
-
-		//Trocar's direction angles
-
-		//Haptic coordinate system differs  from VTK system
-		// |  Haptic  |  VTK  |
-		// |      X      |    Y    |
-		// |      Y      |    Z    |
-		// |      Z      |    X    |
-		this->Yaw(ihp->GetTrocarYaw(id));
-		this->Pitch(ihp->GetTrocarPitch(id));
-		this->Roll(ihp->GetToolRoll(id));
-
-		//Tool-in-the-trocar parameters
-
-		//Set tool's depth
-		this->SetDepth(20*ihp->GetToolDepth(id));
-
-		//Set tool's opening.
-		this->SetOpening(ihp->GetToolOpening(id));
-
-		//Display tool buttons/pedal state
-		if(ihp->GetToolButtonState(id)){
-			std::cout << "Tool("<<id<< ") Main button is pressed...\n";
-		}
-		if(ihp->GetLeftPedalState()){
-			std::cout << "Tool("<<id<< ") Left pedal is pressed...\n";
-		}
-		if(ihp->GetRightPedalState()){
-			std::cout << "Tool("<<id<< ") Right pedal is pressed...\n";
-		}
-
-		//Set Tool Feedback Forces
-		float force [3];
-		force[0] = force[1] = force[2] = 0;
-
-		if(this->GetDepth() > 3)
-		{
-			std::cout << "Tool Depth > 3. Force Applied" << std::endl;
-			force[2] = 1;
-		}
-		else force[2] = 0;
-
-		ihp->SetToolTipForce(id, force);
-		ihp->ApplyForce(id);
-	}
-#endif
-
-}
-
-//----------------------------------------------------------------------------
 void vtkToolScissors::Open(){
 	if(this->IsClosed()) {
 		this->SetOpening(1);

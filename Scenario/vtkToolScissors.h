@@ -78,12 +78,6 @@ public:
 	 */
 	virtual void Init();
 
-	//!Update the tool
-	/*!
-	 * This function update the tool values
-	 */
-	virtual void Update();
-
 	//! Set the tool's opening according with the value given in the "Opening" parameter
 	/*!
 	 * This function set the tool's opening in function of the value given in the "Opening" parameter.

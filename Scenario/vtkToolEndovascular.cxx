@@ -53,7 +53,6 @@ vtkToolEndovascular::vtkToolEndovascular() {
 	this->YawAngle = 0;
 	this->PitchAngle = 0;
 	this->RollAngle = 0;
-	this->UseHaptic = 0;
 	this->ForceFeedback[0] = this->ForceFeedback[1] = this->ForceFeedback[2] = 0;
 }
 

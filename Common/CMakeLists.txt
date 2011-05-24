@@ -15,6 +15,7 @@ vtkTimerCallback.cxx
 )
 
 SET_SOURCE_FILES_PROPERTIES(
+vtkModel.cxx
 vtkTimerCallback
 WRAP_EXCLUDE
 )

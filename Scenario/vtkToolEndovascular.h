@@ -45,12 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiScenarioWin32Header.h"
 #include "vtkTool.h"
 
-#ifndef VTKESQUI_USE_NO_HAPTICS
-#include "vtkHaptic.h"
-#include "vtkIHP.h"
-#include "vtkLSW.h"
-#endif
-
 //! vtkToolEndovascular class implements a surgical endovascular tool.
 /*!
  * This class inherits from vtkTool, and serves as base class for specific
