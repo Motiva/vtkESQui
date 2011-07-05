@@ -149,7 +149,6 @@ void vtkParticleSpringSystem::Init()
 	this->Solver->Init();
 
 	//Initialize contact objects
-	//this->Contacts = vtkContactCollection::New();
 	this->CollisionIds = vtkIdList::New();
 	this->CollisionDisplacements = vtkDoubleArray::New();
 	this->CollisionDisplacements->SetNumberOfComponents(3);
