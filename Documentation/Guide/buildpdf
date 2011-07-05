@@ -1,0 +1,2 @@
+#!/bin/bash
+rst2pdf guide_en.rst -b 1 -s guide.style
