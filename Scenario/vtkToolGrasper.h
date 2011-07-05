@@ -148,7 +148,7 @@ protected:
 	~vtkToolGrasper();
 
 	//! Process the algorithm request (Update).
-	virtual int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
+	//virtual int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
 
 	//! Stick element
 	vtkScenarioElement * Stick;

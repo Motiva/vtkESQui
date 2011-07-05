@@ -119,7 +119,7 @@ void vtkToolGrasper::SetRightLever(vtkScenarioElement * e)
 }
 
 //--------------------------------------------------------------------------
-int vtkToolGrasper::RequestData(vtkInformation *vtkNotUsed(request),
+/*int vtkToolGrasper::RequestData(vtkInformation *vtkNotUsed(request),
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector)
 {
@@ -134,7 +134,7 @@ int vtkToolGrasper::RequestData(vtkInformation *vtkNotUsed(request),
 	output->ShallowCopy(this->AppendFilter->GetOutput());
 
 	return 1;
-}
+}*/
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Open(){

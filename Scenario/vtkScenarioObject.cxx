@@ -72,7 +72,7 @@ vtkScenarioObject::vtkScenarioObject() {
 	this->Elements = vtkScenarioElementCollection::New();
 	this->Collisions = vtkCollisionCollection::New();
 
-	this->AppendFilter = vtkAppendPolyData::New();
+	//this->AppendFilter = vtkAppendPolyData::New();
 
 }
 
@@ -81,7 +81,7 @@ vtkScenarioObject::~vtkScenarioObject()
 {
 	if(this->Elements) this->Elements->Delete();
 	if(this->Collisions) this->Collisions->Delete();
-	if(this->AppendFilter) this->AppendFilter->Delete();
+	//if(this->AppendFilter) this->AppendFilter->Delete();
 }
 
 //--------------------------------------------------------------------------
@@ -89,7 +89,7 @@ void vtkScenarioObject::Init()
 {
 	if(!this->Initialized)
 	{
-		this->AppendFilter->RemoveAllInputs();
+		//this->AppendFilter->RemoveAllInputs();
 		for (int id=0; id<this->GetNumberOfElements(); id++)
 		{
 			//Set common parameters
@@ -103,7 +103,7 @@ void vtkScenarioObject::Init()
 			if(!e->IsInitialized()) e->Init();
 
 			//Set input for appended output
-			this->AppendFilter->AddInput(e->GetOutput());
+			//this->AppendFilter->AddInput(e->GetOutput());
 		}
 
 		this->Initialized = 1;
@@ -130,11 +130,12 @@ int vtkScenarioObject::RequestData(vtkInformation *vtkNotUsed(request),
 	while (vtkScenarioElement * e =this->Elements->GetNextElement())
 	{
 		e->Modified();
+		e->Update();
 	}
 
-	this->AppendFilter->Update();
+	//this->AppendFilter->Update();
 
-	output->ShallowCopy(this->AppendFilter->GetOutput());
+	//output->ShallowCopy(this->AppendFilter->GetOutput());
 
 	return 1;
 }

@@ -359,7 +359,7 @@ protected:
 	vtkRenderer * Renderer;
 
 	//!Append PolyData filter
-	vtkAppendPolyData * AppendFilter;
+	//vtkAppendPolyData * AppendFilter;
 
 private:
 	vtkScenarioObject (const vtkScenarioObject &);
