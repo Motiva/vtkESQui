@@ -2,7 +2,10 @@
 Debug
 
 # Doxygen html folder
-Doxygen/html
+Documentation/Doxygen/html
+
+# Documentation files
+*.pdf
 
 # CVS folders
 CVS
