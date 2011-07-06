@@ -31,26 +31,26 @@ SUBDIRS(
   Filters 
 )
 
-OPTION( BUILD_DOCUMENTATION 
-        "Build Doxygen documentation"
-        OFF )
+#OPTION( BUILD_DOCUMENTATION 
+#        "Build Doxygen documentation"
+#        OFF )
 
-OPTION( BUILD_PARAVIEW_PLUGINS
-        "Build paraview plugin (filters and sources)"
-        OFF )
+#OPTION( BUILD_PARAVIEW_PLUGINS
+#        "Build paraview plugin (filters and sources)"
+#        OFF )
 
 OPTION( BUILD_EXAMPLES
         "Build examples"
         OFF )
 
 
-IF( BUILD_DOCUMENTATION )
-   SUBDIRS(Documentation)
-ENDIF( BUILD_DOCUMENTATION )
+#IF( BUILD_DOCUMENTATION )
+#   SUBDIRS(Documentation)
+#ENDIF( BUILD_DOCUMENTATION )
 
-IF( BUILD_PARAVIEW_PLUGINS)
-   SUBDIRS(Plugins)
-ENDIF( BUILD_PARAVIEW_PLUGINS)
+#IF( BUILD_PARAVIEW_PLUGINS)
+#   SUBDIRS(Plugins)
+#ENDIF( BUILD_PARAVIEW_PLUGINS)
 
 IF( BUILD_EXAMPLES )
    SUBDIRS(Examples)

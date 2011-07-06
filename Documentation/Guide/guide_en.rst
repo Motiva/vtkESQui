@@ -136,7 +136,7 @@ Download
 
 There are multiple ways to get the software:
 
-* Download the latest release at http://motivando.me/vtkESqui.html
+* Download the latest release at http://motivando.me/vtkESQui.html
 * Insight Journal
 * Access the git source-code repository::
  
@@ -231,7 +231,7 @@ Framework
 
 The following diagram shows in a glimpse the architecture of the platform:
 
-.. image:: ../html/classvtkSimulation__coll__graph.png
+.. image:: ../Doxygen/html/classvtkSimulation__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -260,7 +260,7 @@ vtkModel
 
 This class represents an abstract model on a scenario element. It acts as a base class for visualization, collision and deformation models. 
 
-.. image:: ../html/classvtkModel__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkModel__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -283,7 +283,7 @@ vtkVisualizationModel object defines a visualization mesh (vtkPolyData)
 
 This class inherits from vtkModel_ base class. As it is specified in vtkModel, at least an input mesh should be defined. Optionally a source mesh for synchronization purposes may be defined.
 
-.. image:: ../html/classvtkVisualizationModel__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkVisualizationModel__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -296,7 +296,7 @@ vtkScenarioElement class implements the use of a surgical scenario element
 
 This class contains all the required attributes to define a scenario element, providing an easy use of element models collections.
 
-.. image:: ../html/classvtkScenarioElement__coll__graph.png
+.. image:: ../Doxygen/html/classvtkScenarioElement__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -318,13 +318,13 @@ This class contains all the required attributes to define a scenario object, pro
 
 The following graph shows the inheritance hierarchy of this class:
 
-.. image:: ../html/classvtkScenarioObject__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkScenarioObject__inherit__graph.png
    :scale: 200%
    :align: center
 
 Every scenario object is formed a collection of scenario elements, *Elements*, implemented in the vtkScenarioElement_ class. At least one scenario element per scenario object must be defined.
 
-.. image:: ../html/classvtkScenarioObject__coll__graph.png
+.. image:: ../Doxygen/html/classvtkScenarioObject__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -344,7 +344,7 @@ Implementation class for scenario organ definition.
 
 In vtkESQui an organ is considered an scenario object, so vtkScenarioObject_ serves as its base class.
 
-.. image:: ../html/classvtkOrgan__coll__graph.png
+.. image:: ../Doxygen/html/classvtkOrgan__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -359,7 +359,7 @@ Implementation class for scenario tool definition.
 
 In vtkESQui a tool is considered an scenario object, so vtkScenarioObject serves as its base class. This class is inherited by specific surgical technique tool implementations: vtkToolLaparoscopy_, vtkToolEndovascular_, etc...
 
-.. image:: ../html/classvtkTool__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkTool__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -372,7 +372,7 @@ vtkToolEndovascular class implements a surgical endovascular tool.
 
 This class inherits from vtkTool_, and serves as base class for specific endovascular techniques tools: vtkToolCatheter_, etc...
 
-.. image:: ../html/classvtkToolEndovascular__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkToolEndovascular__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -383,7 +383,7 @@ vtkToolCatheter
 
 Implementation class of an endovascular catheter tool.
 
-.. image:: ../html/classvtkToolCatheter__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkToolCatheter__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -398,7 +398,7 @@ vtkToolLaparoscopy class implements a surgical laparoscopic tool.
 
 This class inherits from vtkTool_, and serves as base class for specific laparoscopic techniques tools: vtkToolProbe_, vtkToolGrasper_, etc...
 
-.. image:: ../html/classvtkToolLaparoscopy__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkToolLaparoscopy__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -411,7 +411,7 @@ Implementation class of a surgical laparoscopic probe.
 
 This class, that inherits from vtkToolLaparoscopy_, defines a surgical laparoscopic probe, inside the scenario.
 
-.. image:: ../html/classvtkToolProbe__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkToolProbe__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -439,7 +439,7 @@ Implementation class of a surgical laparoscopic grasper.
 
 This class, that inherits from vtkToolLaparoscopy_, defines a surgical laparoscopic grasper, inside the scenario.
 
-.. image:: ../html/classvtkToolGrasper__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkToolGrasper__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -467,7 +467,7 @@ Implementation class of surgical laparoscopic scissors.
 
 This class, that inherits from vtkToolLaparoscopy_, defines surgical laparoscopic scissors, inside the scenario.
 
-.. image:: ../html/classvtkToolScissors__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkToolScissors__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -487,7 +487,7 @@ In *vtkESQui* framework a surgical scenario is implemented with this class.
 
 All the elements in the scenario (objects, tools...) are stored in a collection, *Objects*. Any scenario object should be previously defined (all of its required parameters set) before being inserted/added to the scenario.
 
-.. image:: ../html/classvtkScenario__coll__graph.png
+.. image:: ../Doxygen/html/classvtkScenario__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -511,13 +511,13 @@ vtkDeformationModel
 
 vtkDeformationModel object defines a deformation model based on a mesh (vtkPolyData).
 
-.. image:: ../html/classvtkDeformationModel__coll__graph.png
+.. image:: ../Doxygen/html/classvtkDeformationModel__coll__graph.png
    :scale: 200%
    :align: center
 
 This class inherits from vtkModel_ base class. As it is specified in vtkModel, at least an input mesh should be defined. Optionally a source mesh for synchronization purposes may be defined.
 
-.. image:: ../html/classvtkDeformationModel__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkDeformationModel__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -549,7 +549,7 @@ Interface class for a particle-spring deformation system.
 
 This class, based in vtkDeformationModel_ class, adapts the access to the external vtkParticleSpringSystem package.
 
-.. image:: ../html/classvtkPSSInterface__coll__graph.png
+.. image:: ../Doxygen/html/classvtkPSSInterface__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -581,7 +581,7 @@ Interface class for a explicit deformation system. This deformatiom model uses a
 
 vtkEDMInterface class, based in vtkDeformationModel_ class, adapts the access to the external vtkExplicitDeformable package.
 
-.. image:: ../html/classvtkPSSInterface__coll__graph.png
+.. image:: ../Doxygen/html/classvtkPSSInterface__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -613,7 +613,7 @@ vtkCollisionModel object defines a collision model based on a mesh (vtkPolyData)
 
 This class inherits from vtkModel base class. As it is specified in vtkModel_, at least an input mesh should be defined. Optionally a source mesh for synchronization purposes may be defined.
 
-.. image:: ../html/classvtkCollisionModel__coll__graph.png
+.. image:: ../Doxygen/html/classvtkCollisionModel__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -647,7 +647,7 @@ Generic base class for collision detection library interfaces
 
 This class serves as a base class for the collision detection libraries. Scenario object models, vtkCollisionModel_ must be assigned before process execution. The result of the procedure is collection of collisions, vtkCollisionCollection_, between scenario objects.
 
-.. image:: ../html/classvtkCollisionDetection__coll__graph.png
+.. image:: ../Doxygen/html/classvtkCollisionDetection__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -668,7 +668,7 @@ vtkHaptic
 
 Generic haptic class for haptic device interface implementation.
 
-.. image:: ../html/classvtkHaptic__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkHaptic__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -683,7 +683,7 @@ vtkIHP
 
 vtkIHP class wraps the access to the IHP haptic device. This interface enables the interaction with the Xitact IHP haptic device.
 
-.. image:: ../html/classvtkIHP__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkIHP__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -696,7 +696,7 @@ vtkVSP
 
 vtkVSP class wraps the access to the VSP haptic device. This interface enables the interaction with the Xitact VSP haptic device.
 
-.. image:: ../html/classvtkVSP__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkVSP__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -709,7 +709,7 @@ vtkLSW
 
 vtkLSW class wraps the access to the LSW haptic device. This interface enables the interaction with the Immersion LSW haptic device.
 
-.. image:: ../html/classvtkLSW__inherit__graph.png
+.. image:: ../Doxygen/html/classvtkLSW__inherit__graph.png
    :scale: 200%
    :align: center
 
@@ -762,7 +762,7 @@ vtkSimulationInteractorStyle
 
 Implementation of the simulation interactor style. Defines a standard keyboard layout for simulation control in laparoscopic techniques.
 
-.. image:: ../html/classvtkSimulationInteractorStyle__coll__graph.png
+.. image:: ../Doxygen/html/classvtkSimulationInteractorStyle__coll__graph.png
    :scale: 200%
    :align: center
 
