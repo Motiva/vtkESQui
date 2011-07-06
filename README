@@ -1,0 +1,130 @@
+NAME
+  vtkESQui
+
+DESCRIPTION
+ *vtkESQui* is a surgical simulation software platform. The purpose of this project to provide a framework which allows, in an easy way, to build a virtual simulation of minimallly invasive surgical techniques.
+This platform, is a vtk-based software project that has been implemented in C++. The distribution follows the standard structure for vtk's projects. There are a few access layers to ease the use of the platform, such as: Tcl and Python.
+
+In vtkESQui platform, there are two ways of controlling the simulation objects, let's say simulation interactors:
+
+ * Keyboard + Mouse: Depending on the type of simulation, a mouse movement combined with akeyboard layout is used to control the objects (tools).
+ * Haptic Devices: In case an haptic device is available, it can be used to handle the simulation instruments.
+
+Import of surgical scenarios into the *vtkESQui* framework is done from an SRML file, that contains all the information required to define a surgical simulation:
+
+ * Simulation: Simulation parameters such as: type, time rates, etc...
+ * Environment
+
+  * Camera: position, orientation...
+  * Lights: intensity, color...
+
+ * Objects: scenario objects such as: organs, tools, etc...
+
+  * Elements
+
+Installation
+============
+
+Now it is time to get your own copy of *vtkESQui* properly installed and fully working in your computer.
+
+Requirements
+------------
+
+In order to use this software the following packages must be installed:
+
+* *VTK*. version > 5.6. http://www.vtk.org
+* *Tcl/Tk*. version > 8.4. http://www.tcl.tk
+* *CMake*. version > 2.5. http://www.cmake.org
+
+This software has been compiled and tested in:
+
+* Windows: (Visual Studio 2005 and Visual Studio 2008)
+* Unix: (gcc > 4.4).
+
+Configuring
+-----------
+
+As a vtk-based project, *vtkESQui* configuration and compilation is done using *CMake* (http://cmake.org). *CMake* is a cross-platform, open-source build system that automatically generates makefiles and workspaces for later compilation.
+
+1. Once the source code has been downloaded and extracted/saved into a directory, let's name it VTKESQUI_DIR, a new binary directory has to be created.
+
+ In Unix-like systems:: 
+
+  $ mkdir vtkESQuiBin
+  $ cd vtkESQuiBin
+  $ ccmake ../VTKESQUI_DIR
+
+ In Windows, the CMake GUI is used to define source and binary dir.
+
+2. Follow the *ccmake* configuration. Don't forget to set the VTK_DIR path (the folder where you have compiled vtk and you have your VTKConfig.cmake file), and the Tcl/Tk libraries path. If you would like to use the software with haptic devices (LWS-Immersion Corp, IHP,etc), please set the *CMake* variable VTKESQUI_USE_HAPTICS to ON. The wrapping and other configuration are done by default (they are included in the CMakelist.txt file).
+
+3. Finally, after setting the *CMake* options:
+
+   In Unix-like systems:
+    Press 'c' to configurate project and then 'g' to generate the makefiles
+   In Windows:
+    Press Configure button and then Generate button.
+
+Building
+--------
+
+Once you have succesfully configured the project, the building process is started by:
+
+ In Unix::
+
+  $ make
+ 
+ If anything went wrong, you may have vtkESQui platform compiled. If you want to install vtkESQui in your operating system you must type::
+
+  $ make install
+
+ In Windows you must import the project in Visual Studio, and compile it as usual.
+
+Setting up the environment
+--------------------------
+
+Set the environment variables: LD_LIBRARY_PATH and TCLLIBPATH to the path where are the (.so/dlls) vtk/wrapping libraries. If you have other Tcl/Tk versions, you should declare the TK_LIBRARY and TCL_LIBRARY variables.
+
+i.e. (under linux)::
+
+ export LD_LIBRARY_PATH=/usr/local/lib/vtk-5.9:/home/user/software/ESQUI/EsquiBin/bin/
+ export TCLLIBPATH=/home/user/software/ESQUI/ESQUI/Wrapping/Tcl
+
+LICENSE
+/*==========================================================================
+--------------------------------------------------
+Program: ESQUI
+Info and Bugs: {marf,jballesteros}@itccanarias.org
+url: http://motivando.me 
+--------------------------------------------------
+
+Copyright (c) 2006-2007, Center for Technology in Medicine (CTM), University of Las Palmas de Gran Canaria (ULPGC), Canary Islands, Spain. Copyright (c) 2007-2010, Institute of Technology at CanaryIslands (ITC), Canary Islands, Spain.
+
+This software has been proposed, managed and advised by Miguel Angel Rodriguez Florido (ITC and CTM-ULPGC). 
+
+The first version of the package was implemented by the Bachelor Thesis of Norberto Sanchez Escobar. Some Improvements of this package were done by the Master Thesis of Graciela Santana Sosa, both at the CTM-ULPGC lab supported by the Institute of Technology (ITC). Also, Raul Santana (CTM-ULPGC) developed code for this package.
+
+The final stable version of the package, with a new design and structure, has been implemented by Jorge Ballesteros (member of the MOTIVA and funded by the local foundation of health (FUNCIS)) and the ITC.
+
+At this moment, this software is supported by the Institute of Technology at Canary Islands (ITC) under the innovation plan MOTIVA (http://motivando.me).
+
+The software is based in VTK (www.vtk.org) and Tcl/Tk (www.tcl.tk). Both packages used under the terms of the Free Software Foundation license BSD (www.fsf.org).
+
+This software is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License (LGPL) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1) Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2) Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+==========================================================================*/
+
+AUTHOR
+  {marf,jballesteros}@itccanarias.org
+
+URIS
+  http://motivando.me
+
