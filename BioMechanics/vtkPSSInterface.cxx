@@ -70,7 +70,6 @@ vtkPSSInterface::vtkPSSInterface()
 	this->DampingCoefficient = 0;
 	this->DeltaT = 0;
 	this->Mass = 0;
-	this->RigidityFactor = 1;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
 	this->DeltaT = 0;
 	this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
@@ -97,7 +96,6 @@ void vtkPSSInterface::Init()
 	this->ParticleSpringSystem->SetSpringCoefficient(this->SpringCoefficient);//Friction
 	this->ParticleSpringSystem->SetDampingCoefficient(this->DampingCoefficient);//Friction
 	this->ParticleSpringSystem->SetMass(this->Mass);
-	this->ParticleSpringSystem->SetRigidityFactor(this->RigidityFactor);
 	this->ParticleSpringSystem->SetSolverType(this->SolverType);
 	//Initialize system
 	this->ParticleSpringSystem->Init();

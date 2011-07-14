@@ -480,9 +480,6 @@ void vtkSRMLImporter::SetElementModels(vtkScenarioElement * element, vtkXMLDataE
 					double mass;
 					xmlInterface->GetScalarAttribute("Mass", mass);
 					def->SetMass(mass);
-					int value;
-					xmlInterface->GetScalarAttribute("Rigidity", value);
-					def->SetRigidityFactor(value);
 					const char * type = xmlInterface->GetAttribute("Solver");
 					if(strcmp(type, "RK4") == 0)
 					{

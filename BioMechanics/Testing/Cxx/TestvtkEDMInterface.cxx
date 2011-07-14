@@ -156,11 +156,16 @@ private:
 
 int TestvtkEDMInterface(int argc, char * argv[])
 {
-	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/sphere12_12_1.vtp";
+	const char * filename = "";
 
 	if (argc > 1)
 	{
 		filename = argv[1];
+	}
+	else
+	{
+		cout << "This test should at least contain 1 argument.\nUsage: Test $inputFile" << endl;
+		exit(0);
 	}
 
 	vtkSmartPointer<vtkSphereSource> sphereSource =

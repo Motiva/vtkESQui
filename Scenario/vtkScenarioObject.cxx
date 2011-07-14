@@ -118,10 +118,10 @@ int vtkScenarioObject::RequestData(vtkInformation *vtkNotUsed(request),
 
 	//cout << "vtkScenarioObject::RequestData" << endl;
 	// get the info objects
-	vtkInformation *outInfo = outputVector->GetInformationObject(0);
+	//vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
 	// get the input and output
-	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+	//vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 	//Reset previous collisions
 	this->Collisions->RemoveAllItems();

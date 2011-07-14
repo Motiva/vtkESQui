@@ -3,7 +3,7 @@
 #include "vtkRenderWindowInteractor.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
-#include "vtkPolyDataWriter.h"
+#include "vtkXMLPolyDataReader.h"
 #include "vtkDataSetMapper.h"
 #include "vtkPoints.h"
 #include "vtkCellArray.h"
@@ -11,15 +11,13 @@
 #include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkCamera.h"
-
-#include "vtkPolyData.h"
-#include "vtkPolyDataWriter.h"
-#include "vtkXMLPolyDataReader.h"
 #include "vtkTimerLog.h"
 #include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
-
 #include "vtkCommand.h"
+
+#include "vtkSmartPointer.h"
+
 #include "vtkParticleSpringSystem.h"
 
 class vtkTimerCallback : public vtkCommand
@@ -36,6 +34,8 @@ public:
 
 	virtual void Execute(vtkObject *caller, unsigned long eventId, void *callData)
 	{
+		vtkTimerLog * timer = vtkTimerLog::New();
+
 		if (vtkCommand::TimerEvent == eventId)
 		{
 			int tid = * static_cast<int *>(callData);
@@ -46,13 +46,12 @@ public:
 			}
 			else if (tid == this->FasterTimerId)
 			{
-				vtkTimerLog * timer = vtkTimerLog::New();
 				timer->StartTimer();
 				this->BMM->Modified();
 				this->BMM->Update();
 				timer->StopTimer();
 
-				//std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
+				std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
 
 			}
 			else if (tid == this->RenderTimerId)
@@ -102,11 +101,16 @@ private:
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/sphere12_12_1.vtp";
+	const char * filename = "";
 
 	if (argc > 1)
 	{
 		filename = argv[1];
+	}
+	else
+	{
+		cout << "This test should at least contain 1 argument.\nUsage: Test $inputFile" << endl;
+		exit(0);
 	}
 
 	vtkXMLPolyDataReader * reader = vtkXMLPolyDataReader::New();
@@ -120,10 +124,9 @@ int main(int argc, char * argv[])
 	ParticleSpringSystem->SetSolverType(vtkMotionEquationSolver::RungeKutta4);
 	ParticleSpringSystem->SetSpringCoefficient(250);
 	ParticleSpringSystem->SetDistanceCoefficient(10);
-	ParticleSpringSystem->SetDampingCoefficient(2);//Friction
-	ParticleSpringSystem->SetMass(.5);
+	ParticleSpringSystem->SetDampingCoefficient(5);//Friction
+	ParticleSpringSystem->SetMass(.1);
 	ParticleSpringSystem->SetDeltaT(0.001);//10ms
-	ParticleSpringSystem->SetRigidityFactor(2);
 	ParticleSpringSystem->Init();
 
 	vtkRenderer * renderer = vtkRenderer::New();
@@ -157,7 +160,7 @@ int main(int argc, char * argv[])
 	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
 	iren->SetRenderWindow(renWin);
 
-	vtkDataSetMapper * mapper = vtkDataSetMapper::New();
+	vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
 	mapper->SetInput(mesh);
 	mapper->ScalarVisibilityOff();
 
@@ -165,7 +168,7 @@ int main(int argc, char * argv[])
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetColor(0,1,0);
 
-	vtkDataSetMapper * mapper2 = vtkDataSetMapper::New();
+	vtkPolyDataMapper * mapper2 = vtkPolyDataMapper::New();
 	mapper2->SetInput(ParticleSpringSystem->GetOutput());
 	mapper2->ScalarVisibilityOff();
 

@@ -92,8 +92,6 @@ public:
 	vtkSetMacro(Mass, double);
 	//! Set the time step
 	vtkSetMacro(DeltaT, double);
-	//! Set the neighborhood size
-	vtkSetMacro(RigidityFactor, int);
 	//! Set motion equation solver type.
 	vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);
 
@@ -133,13 +131,6 @@ protected:
 	 * could become unstable.
 	 */
 	double DeltaT;
-	//! Rigidity factor
-	/*!
-	 * This parameter defines how the particles are interconnected.
-	 * By default its value is 1, so every particle is connected to its neighbor.
-	 * If value is set to 2, then every particle is connected to the neighbors of its neighbors an so.
-	 */
-	int RigidityFactor;
 
 	//! Motion equation solver type
 	/*!

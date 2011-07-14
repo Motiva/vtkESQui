@@ -95,8 +95,6 @@ public:
 	vtkSetMacro(Mass, double);					// Mass of all points (future work: specify different masses for different "layers")
 	//! Set residual error
 	vtkSetMacro(Residual, double);					// Residual error tolerance on displacement calculus
-	//! Set rigidity factor.
-	vtkSetMacro(RigidityFactor, vtkIdType);		// Rigidity Factor -> neighborhood size
 	//! Set motion equation solver type.
 	vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);		// Motion equation solver type
 
@@ -156,8 +154,6 @@ protected:
 	double Mass;
 	//! Residual error tolerance
 	double Residual;
-	//! Size of particle neighborhood. The big
-	vtkIdType RigidityFactor;
 
 	//!Gravity
 	double Gravity[3];

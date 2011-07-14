@@ -8,7 +8,6 @@
 #include "vtkPoints.h"
 #include "vtkPointData.h"
 #include "vtkDoubleArray.h"
-#include "vtkMassProperties.h"
 #include "vtkCell.h"
 #include "vtkMath.h"
 
@@ -33,7 +32,6 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->DeltaT = 0;
 	this->Mass = 0;
 	this->Residual = 1e-6;
-	this->RigidityFactor = 1;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
 	this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
 	this->CollisionIds = NULL;
@@ -76,8 +74,6 @@ void vtkParticleSpringSystem::Init()
 	}
 
 	vtkIdList * cellPointIds = vtkIdList::New();
-	vtkIdList * neighborCellIds = vtkIdList::New();
-	vtkIdList * neighborPointIds = vtkIdList::New();
 
 	//For each cell get its points
 	for(vtkIdType jd=0; jd<input->GetNumberOfCells();jd++)
@@ -86,43 +82,13 @@ void vtkParticleSpringSystem::Init()
 		//Cell points
 		cellPointIds->Reset();
 		input->GetCellPoints(cellId, cellPointIds);
-		//Structural springs
-		//Default 3 points per cell. 3D cells are unsupported
-		for(int kd=0;kd<cellPointIds->GetNumberOfIds();kd++)
+		//Connect each pair of cell points with a spring
+		//Input cells must be of VTK_LINE type
+		if (input->GetCellType(cellId) == VTK_LINE)
 		{
-			//Connect each pair of cell points with a spring
-			//In case cells are lines only the first 2 points are processed
-			if (input->GetCellType(cellId) == VTK_LINE)
-			{
-				if (kd>0) continue;
-			}
-			vtkIdType nextId = kd+1;
-			if(nextId == 3) nextId = 0;
-			vtkParticle * p0 = this->Particles->GetParticle(cellPointIds->GetId(kd));
-			vtkParticle * p1 = this->Particles->GetParticle(cellPointIds->GetId(nextId));
-
+			vtkParticle * p0 = this->Particles->GetParticle(cellPointIds->GetId(0));
+			vtkParticle * p1 = this->Particles->GetParticle(cellPointIds->GetId(1));
 			this->CreateSpring(p0, p1);
-
-			if(this->RigidityFactor > 1)
-			{
-				//Shearing springs (Rigidity Factor=2)
-				input->GetPointCells(p1->GetId(), neighborCellIds);
-				for(vtkIdType ld=0;ld<neighborCellIds->GetNumberOfIds();ld++)
-				{
-					vtkIdType neighborCellId = neighborCellIds->GetId(ld);
-					input->GetCellPoints(neighborCellId, neighborPointIds);
-					for(vtkIdType md=0;md<neighborPointIds->GetNumberOfIds();md++)
-					{
-						vtkIdType neighborPointId = neighborPointIds->GetId(md);
-						if(neighborPointId != p0->GetId() ||
-								neighborPointId != p1->GetId())
-						{
-							vtkParticle * pn = this->Particles->GetParticle(neighborPointId);
-							this->CreateSpring(p0, pn);
-						}
-					}
-				}
-			}
 		}
 	}
 
@@ -184,7 +150,6 @@ int vtkParticleSpringSystem::RequestData(
 
 	//Update output points
 	vtkPoints * points = output->GetPoints();
-	//vtkPoints * points = output->GetPoints();
 	for (int i=0; i < output->GetNumberOfPoints(); i++)
 	{
 		vtkParticle * particle = this->Particles->GetParticle(i);
@@ -358,11 +323,12 @@ void vtkParticleSpringSystem::PrintSelf(ostream& os, vtkIndent indent)
 {
 	this->Superclass::PrintSelf(os,indent);
 
+	os << indent << "NumberOfParticles: " << this->Particles->GetNumberOfParticles() << endl;
+	os << indent << "NumberOfSprings: " << this->Springs->GetNumberOfItems() << endl;
 	os << indent << "SpringCoefficient: " << this->SpringCoefficient << endl;
 	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << endl;
 	os << indent << "DampingCoefficient: " << this->DampingCoefficient << endl;
 	os << indent << "DeltaT: " << this->DeltaT << endl;
 	os << indent << "Mass: " << this->Mass << endl;
 	os << indent << "Residual: " << this->Residual << endl;
-	os << indent << "RigidityFactor: " << this->RigidityFactor << endl;
 }
