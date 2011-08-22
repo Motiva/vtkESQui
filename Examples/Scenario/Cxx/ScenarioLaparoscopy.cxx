@@ -53,7 +53,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkScenarioObject.h"
 #include "vtkVisualizationModel.h"
 #include "vtkCollisionModel.h"
-#include "vtkPSSInterface.h"
 #include "vtkToolDummy.h"
 
 //!This test perform a test of the vtkToolLaparoscopy class
@@ -86,14 +85,12 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
 	vis->SetName("stick_vis");
 	vis->SetFileName(fn);
-	vis->SetOrigin(0,0,6);
 	vis->SetTextureFileName(tfn);
 	vis->SetOpacity(1.0);
 
 	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
 	col->SetName("stick_col");
 	col->SetFileName(cfn);
-	vis->SetOrigin(0,0,6);
 	col->SetOpacity(1.0);
 	col->SetColor(0.0, 0.0, 1.0);
 
@@ -102,20 +99,19 @@ int main(int argc, char * argv[])
 	stick->SetName("stick");
 	stick->SetVisualizationModel(vis);
 	stick->SetCollisionModel(col);
+	stick->SetOrigin(0,0,6);
 
 	//Second element (tip)
 	vtkSmartPointer<vtkVisualizationModel> visb = vtkSmartPointer<vtkVisualizationModel>::New();
 	visb->SetName("tip_vis");
 	visb->SetFileName(fnb);
 	visb->SetTextureFileName(tfnb);
-	vis->SetOrigin(0,0,6);
 	visb->SetOpacity(1.0);
 	visb->SetColor(1.0, 0.0, 1.0);
 
 	vtkSmartPointer<vtkCollisionModel> colb = vtkSmartPointer<vtkCollisionModel>::New();
 	colb->SetName("tip_col");
 	colb->SetFileName(cfnb);
-	vis->SetOrigin(0,0,6);
 	colb->SetOpacity(1.0);
 	colb->SetColor(0.0, 0.0, 1.0);
 
@@ -124,6 +120,7 @@ int main(int argc, char * argv[])
 	tip->SetName("tip");
 	tip->SetVisualizationModel(visb);
 	tip->SetCollisionModel(colb);
+	tip->SetOrigin(0,0,6);
 
 	vtkSmartPointer<vtkToolDummy> probe = vtkSmartPointer<vtkToolDummy>::New();
 	probe->AddElement(stick);

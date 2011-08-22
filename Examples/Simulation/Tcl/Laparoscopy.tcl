@@ -34,9 +34,11 @@ set fn1c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/
 set fn2c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col_lr.vtp"
 set fn3 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
 set fn3c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
+set fn3d "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp"
 set fn3t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg"
 set fn4 "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp"
 set fn4c "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach_col.vtp"
+set fn4d "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach_def_c10.vtp"
 set fn4t "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg"
 
 ###  Render Window Definitions  ###
@@ -142,7 +144,7 @@ col_organ SetColor 0.0 0.0 1.0
 #Deformation model. Particle-Spring system
 vtkPSSInterface def_organ
 def_organ SetName "sphere_def" 
-def_organ SetFileName $fn3 
+def_organ SetFileName $fn3d 
 def_organ SetVisibility 0 
 def_organ SetColor 0.0 1.0 0.0 
 def_organ SetDeltaT 0.01 
@@ -226,7 +228,7 @@ vtkSimulation simulation
 simulation SetScenario scenario
 simulation SetInteractorStyle style
 simulation SetRenderTimerRate 0.02
-simulation SetSimulationTimerRate 0.01
+simulation SetSimulationTimerRate 0.001
 simulation SetHapticTimerRate 0.001
 simulation Init
 

@@ -96,6 +96,7 @@ print "cell[0] Ids: "+str(cIds.GetNumberOfIds())
 writer = vtk.vtkXMLPolyDataWriter()
 writer.SetInput(mesh)
 writer.SetFileName( opath )
+writer.SetDataModeToAscii()
 writer.Write()
 
 print "Output Mesh \nPoints: "+str( mesh.GetNumberOfPoints() )+"\nCells: "+str( mesh.GetNumberOfCells() )

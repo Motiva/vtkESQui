@@ -409,6 +409,19 @@ void vtkSRMLImporter::SetScenarioElements(vtkScenarioObject * object, vtkXMLData
 		vtkScenarioElement * element = vtkScenarioElement::New();
 		element->SetName(xmlElement->GetAttribute("Name"));
 
+		double array[3];
+		xmlElement->GetVectorAttribute("Scale", 3, array);
+		element->SetScale(array[0], array[1], array[2]);
+
+		xmlElement->GetVectorAttribute("Origin", 3, array);
+		element->SetOrigin(array[0], array[1], array[2]);
+
+		xmlElement->GetVectorAttribute("Orientation", 3, array);
+		element->SetOrientation(array[0], array[1], array[2]);
+
+		xmlElement->GetVectorAttribute("Position", 3, array);
+		element->SetPosition(array[0], array[1], array[2]);
+
 		this->SetElementModels(element, xmlElement);
 		object->AddElement(element);
 
@@ -505,9 +518,9 @@ void vtkSRMLImporter::SetElementModels(vtkScenarioElement * element, vtkXMLDataE
 void vtkSRMLImporter::SetModelData(vtkModel * model, vtkXMLDataElement * xmlItem)
 {
 	const char * status = xmlItem->GetAttribute("Status");
-	if (!strcmp(status, "Hidden"))
+	if (!strcmp(status, "Enabled"))
 	{
-		model->SetStatus(vtkModel::Hidden);
+		model->SetStatus(vtkModel::Enabled);
 	}
 	else if (!strcmp(status, "Disabled"))
 	{
@@ -518,14 +531,6 @@ void vtkSRMLImporter::SetModelData(vtkModel * model, vtkXMLDataElement * xmlItem
 	model->SetFileName(this->ExpandDataFileName(xmlItem->GetAttribute("FileName")));
 
 	double array[3];
-	xmlItem->GetVectorAttribute("Scale", 3, array);
-	model->SetScale(array);
-	xmlItem->GetVectorAttribute("Position", 3, array);
-	model->SetPosition(array[0], array[1], array[2]);
-	xmlItem->GetVectorAttribute("Orientation", 3, array);
-	model->SetOrientation(array[0], array[1], array[2]);
-	xmlItem->GetVectorAttribute("Origin", 3, array);
-	model->SetOrigin(array[0], array[1], array[2]);
 	xmlItem->GetVectorAttribute("Color", 3, array);
 	model->SetColor(array[0], array[1], array[2]);
 

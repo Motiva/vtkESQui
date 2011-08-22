@@ -74,6 +74,7 @@ mesh.SetLines( lines )
 writer = vtk.vtkXMLPolyDataWriter()
 writer.SetInput(mesh)
 writer.SetFileName( opath )
+writer.SetDataModeToAscii()
 writer.Write()
 
 print "Output Mesh \nPoints: "+str( mesh.GetNumberOfPoints() )+"\nCells: "+str( mesh.GetNumberOfCells() )

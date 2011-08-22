@@ -58,6 +58,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRenderWindow.h"
 #include "vtkRenderer.h"
 #include "vtkActor.h"
+#include "vtkAxesActor.h"
 #include "vtkProperty.h"
 #include "vtkCamera.h"
 #include "vtkPolyData.h"
@@ -96,75 +97,66 @@ int main(int argc, char * argv[])
 	vis->SetName("stick_vis");
 	vis->SetFileName(fn);
 	vis->SetTextureFileName(tfn);
-	vis->SetOrigin(origin);
 	vis->SetOpacity(1.0);
 	vis->SetColor(1.0, 1.0, 1.0);
-	vis->Init();
 
 	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
 	col->SetName("vtkbioeng");
 	col->SetFileName(cfn);
-	col->SetOrigin(origin);
 	col->SetOpacity(0.5);
 	col->SetColor(0.0, 0.0, 1.0);
-	col->Init();
 
 	vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
 	stick->SetId(0);
 	stick->SetName("stick");
 	stick->SetVisualizationModel(vis);
 	stick->SetCollisionModel(col);
-	stick->Init();
+	stick->SetPosition(position);
+	stick->SetOrigin(origin);
 
 	//Second element (left lever)
 	vtkSmartPointer<vtkVisualizationModel> visl = vtkSmartPointer<vtkVisualizationModel>::New();
 	visl->SetName("left_vis");
 	visl->SetFileName(fnl);
-	visl->SetOrigin(origin);
 	visl->SetTextureFileName(tfnl);
 	visl->SetOpacity(1.0);
 	visl->SetColor(0.0, 1.0, 1.0);
-	visl->Init();
 
 	vtkSmartPointer<vtkCollisionModel> coll = vtkSmartPointer<vtkCollisionModel>::New();
 	coll->SetName("left_vtkbioeng");
 	coll->SetFileName(cfnl);
-	coll->SetOrigin(origin);
 	coll->SetOpacity(0.5);
 	coll->SetColor(0.0, 0.0, 1.0);
-	coll->Init();
 
 	vtkSmartPointer<vtkScenarioElement> left = vtkSmartPointer<vtkScenarioElement>::New();
 	left->SetId(1);
 	left->SetName("left");
 	left->SetVisualizationModel(visl);
 	left->SetCollisionModel(coll);
-	left->Init();
+	left->SetPosition(position);
+	left->SetOrigin(origin);
 
 	//Third element (right lever)
 	vtkSmartPointer<vtkVisualizationModel> visr = vtkSmartPointer<vtkVisualizationModel>::New();
 	visr->SetName("right_vis");
 	visr->SetFileName(fnr);
-	visr->SetOrigin(origin);
 	visr->SetTextureFileName(tfnr);
 	visr->SetOpacity(1.0);
 	visr->SetColor(1.0, 0.0, 1.0);
-	visr->Init();
 
 	vtkSmartPointer<vtkCollisionModel> colr = vtkSmartPointer<vtkCollisionModel>::New();
 	colr->SetName("right_vtkbioeng");
 	colr->SetFileName(cfnr);
-	colr->SetOrigin(origin);
 	colr->SetOpacity(0.5);
 	colr->SetColor(0.0, 0.0, 1.0);
-	colr->Init();
 
 	vtkSmartPointer<vtkScenarioElement> right = vtkSmartPointer<vtkScenarioElement>::New();
 	right->SetId(2);
 	right->SetName("right");
 	right->SetVisualizationModel(visr);
 	right->SetCollisionModel(colr);
-	right->Init();
+	right->SetPosition(position);
+	right->SetOrigin(origin);
 
 	vtkSmartPointer<vtkToolGrasper> tool = vtkSmartPointer<vtkToolGrasper>::New();
 	tool->SetStick(stick);
@@ -174,7 +166,7 @@ int main(int argc, char * argv[])
 
 	tool->Translate(position);
 	tool->RotateX(-10);
-	//tool->Update();
+	tool->Update();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
@@ -185,14 +177,23 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	iren->SetRenderWindow(renWin);
 
+	vtkAxesActor * axes = vtkAxesActor::New();
+
+	vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
+	vtkActor * actor = vtkActor::New();
+	mapper->SetInput(colr->GetOutput(1));
+	actor->SetMapper(mapper);
+
 	//Visualization of collision meshes is disabled
+	renderer->SetBackground(0.9,0.9,0.9);
+	renderer->AddActor(axes);
 	renderer->AddActor(vis->GetActor());
 	renderer->AddActor(col->GetActor());
 	renderer->AddActor(visl->GetActor());
 	renderer->AddActor(coll->GetActor());
 	renderer->AddActor(visr->GetActor());
 	renderer->AddActor(colr->GetActor());
-	renderer->SetBackground(1,1,1);
+	renderer->AddActor(actor);
 
 	//Adjust Camera
 	vtkCamera * camera = renderer->GetActiveCamera();

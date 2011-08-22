@@ -80,9 +80,11 @@ int main(int argc, char * argv[])
 	const char * fn0t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 	const char * fn3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
 	const char * fn3c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp";
+	const char * fn3d = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp";
 	const char * fn3t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg";
 	const char * fn4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach.vtp";
 	const char * fn4c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach_col.vtp";
+	const char * fn4d = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/stomach_def_c10.vtp";
 	const char * fn4t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg";
 
 	double origin[3];
@@ -93,7 +95,11 @@ int main(int argc, char * argv[])
 	origin[2]=6;
 	position[0]=-2;
 	position[1]=0;
-	position[2]=-2;
+	position[2]=0;
+
+	double simrate = 0.001;
+	double renrate = 0.04;
+	double haprate = 0.001;
 
 	/**********  Render Window Definitions  ********/
 	vtkSmartPointer<vtkRenderer> ren1 =
@@ -119,14 +125,12 @@ int main(int argc, char * argv[])
 	vis_stick->SetName("vis_stick");
 	vis_stick->SetFileName(fn0);
 	vis_stick->SetTextureFileName(fn0t);
-	vis_stick->SetOrigin(origin);
 	vis_stick->SetVisibility(1.0);
 	vis_stick->SetColor(1.0, 1.0, 1.0);
 
 	vtkSmartPointer<vtkCollisionModel> col_stick = vtkSmartPointer<vtkCollisionModel>::New();
 	col_stick->SetName("col_stick");
 	col_stick->SetFileName(fn0c);
-	col_stick->SetOrigin(origin);
 	col_stick->SetVisibility(0.0);
 	col_stick->SetColor(0.0, 0.0, 1.0);
 
@@ -134,20 +138,20 @@ int main(int argc, char * argv[])
 	stick->SetName("stick");
 	stick->SetVisualizationModel(vis_stick);
 	stick->SetCollisionModel(col_stick);
+	stick->SetOrigin(origin);
+	stick->SetPosition(position);
 
 	//Second element (left lever)
 	vtkSmartPointer<vtkVisualizationModel> vis_lever_l = vtkSmartPointer<vtkVisualizationModel>::New();
 	vis_lever_l->SetName("vis_lever_r");
 	vis_lever_l->SetFileName(fn1);
 	vis_lever_l->SetTextureFileName(fn0t);
-	vis_lever_l->SetOrigin(origin);
 	vis_lever_l->SetVisibility(1.0);
 	vis_lever_l->SetColor(0.0, 1.0, 1.0);
 
 	vtkSmartPointer<vtkCollisionModel> col_lever_l = vtkSmartPointer<vtkCollisionModel>::New();
 	col_lever_l->SetName("col_lever_l");
 	col_lever_l->SetFileName(fn1c);
-	col_lever_l->SetOrigin(origin);
 	col_lever_l->SetVisibility(0.0);
 	col_lever_l->SetColor(0.0, 0.0, 1.0);
 
@@ -155,12 +159,13 @@ int main(int argc, char * argv[])
 	left_lever->SetName("lever_left");
 	left_lever->SetVisualizationModel(vis_lever_l);
 	left_lever->SetCollisionModel(col_lever_l);
+	left_lever->SetOrigin(origin);
+	left_lever->SetPosition(position);
 
 	//Third element (right lever)
 	vtkSmartPointer<vtkVisualizationModel> vis_lever_r = vtkSmartPointer<vtkVisualizationModel>::New();
 	vis_lever_r->SetName("vis_lever_r");
 	vis_lever_r->SetFileName(fn2);
-	vis_lever_r->SetOrigin(origin);
 	vis_lever_r->SetTextureFileName(fn0t);
 	vis_lever_r->SetVisibility(1.0);
 	vis_lever_r->SetColor(0.0, 1.0, 1.0);
@@ -168,7 +173,6 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkCollisionModel> col_lever_r = vtkSmartPointer<vtkCollisionModel>::New();
 	col_lever_r->SetName("col_lever_r");
 	col_lever_r->SetFileName(fn2c);
-	col_lever_r->SetOrigin(origin);
 	col_lever_r->SetVisibility(0.0);
 	col_lever_r->SetColor(0.0, 0.0, 1.0);
 
@@ -176,6 +180,8 @@ int main(int argc, char * argv[])
 	right_lever->SetName("lever_right");
 	right_lever->SetVisualizationModel(vis_lever_r);
 	right_lever->SetCollisionModel(col_lever_r);
+	right_lever->SetOrigin(origin);
+	right_lever->SetPosition(position);
 
 	vtkSmartPointer<vtkToolGrasper> leftGrasper = vtkSmartPointer<vtkToolGrasper>::New();
 	leftGrasper->SetStick(stick);
@@ -193,24 +199,23 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkCollisionModel> col_organ = vtkSmartPointer<vtkCollisionModel>::New();
 	col_organ->SetName("sphere_col");
 	col_organ->SetFileName(fn3c);
-	col_organ->SetVisibility(1.0);
+	col_organ->SetVisibility(0.0);
 	col_organ->SetColor(0.0, 0.0, 1.0);
 
 	//Deformation model. Particle-Spring system
 	vtkSmartPointer<vtkPSSInterface> def_organ = vtkSmartPointer<vtkPSSInterface>::New();
 	def_organ->SetName("sphere_def");
-	def_organ->SetFileName(fn3);
+	def_organ->SetFileName(fn3d);
 	def_organ->SetVisibility(0);
 	def_organ->SetColor(0.0, 1.0, 0.0);
-	def_organ->SetDeltaT(0.01);
+	def_organ->SetDeltaT(simrate);
 	def_organ->SetGravity(0.0, 0.0, 0.0);
 
 	//Set particle-spring system specific parameters
-	def_organ->SetSpringCoefficient(100);
+	def_organ->SetSpringCoefficient(300);
 	def_organ->SetDampingCoefficient(5);
 	def_organ->SetDistanceCoefficient(20);
-	def_organ->SetMass(1);
-	def_organ->SetRigidityFactor(2);
+	def_organ->SetMass(.1);
 	def_organ->SetSolverType(vtkMotionEquationSolver::RungeKutta4);
 
 	vtkSmartPointer<vtkScenarioElement> el_organ = vtkSmartPointer<vtkScenarioElement>::New();
@@ -218,6 +223,7 @@ int main(int argc, char * argv[])
 	el_organ->SetVisualizationModel(vis_organ);
 	el_organ->SetCollisionModel(col_organ);
 	el_organ->SetDeformationModel(def_organ);
+	el_organ->SetPosition(0,0,-4);
 
 	vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
 	organ->AddElement(el_organ);
@@ -239,10 +245,10 @@ int main(int argc, char * argv[])
 	//Deformation model. Particle-Spring system
 	vtkSmartPointer<vtkPSSInterface> def_stomach = vtkSmartPointer<vtkPSSInterface>::New();
 	def_stomach->SetName("stomach_def");
-	def_stomach->SetFileName(fn4);
+	def_stomach->SetFileName(fn4d);
 	def_stomach->SetVisibility(0);
 	def_stomach->SetColor(0.0, 1.0, 0.0);
-	def_stomach->SetDeltaT(0.01);
+	def_stomach->SetDeltaT(simrate);
 	def_stomach->SetGravity(0.0, 0.0, 0.0);
 
 	//Set particle-spring system specific parameters
@@ -250,7 +256,6 @@ int main(int argc, char * argv[])
 	def_stomach->SetDampingCoefficient(5);
 	def_stomach->SetDistanceCoefficient(20);
 	def_stomach->SetMass(1);
-	def_stomach->SetRigidityFactor(2);
 	def_stomach->SetSolverType(vtkMotionEquationSolver::RungeKutta4);
 
 	vtkSmartPointer<vtkScenarioElement> el_stomach = vtkSmartPointer<vtkScenarioElement>::New();
@@ -264,15 +269,11 @@ int main(int argc, char * argv[])
 
 	/**********  Initialize Scenario  ********/
 	scenario->AddObject(leftGrasper);
-	//scenario->AddObject(organ);
-	scenario->AddObject(stomach);
+	scenario->AddObject(organ);
+	//scenario->AddObject(stomach);
 	scenario->Init();
 
-	leftGrasper->Translate(position);
-	leftGrasper->RotateX(10);
-
-	//organ->Translate(0, 0, -4);
-	stomach->Translate(0, 0, -2);
+	//stomach->Translate(0, 0, -2);
 
 	//Debug purposes
 	/*vtkSmartPointer<vtkActor> ac0 = vtkSmartPointer<vtkActor>::New();
@@ -329,9 +330,9 @@ int main(int argc, char * argv[])
 	vtkSimulation * simulation = vtkSimulation::New();
 	simulation->SetScenario(scenario);
 	simulation->SetInteractorStyle(style);
-	simulation->SetRenderTimerRate(0.02);
-	simulation->SetSimulationTimerRate(0.01);
-	simulation->SetHapticTimerRate(0.001);
+	simulation->SetRenderTimerRate(renrate);
+	simulation->SetSimulationTimerRate(simrate);
+	simulation->SetHapticTimerRate(haprate);
 	simulation->Init();
 
 	simulation->Run();

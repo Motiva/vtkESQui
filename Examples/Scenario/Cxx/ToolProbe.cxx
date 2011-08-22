@@ -59,6 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRenderWindowInteractor.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderer.h"
+#include "vtkAxesActor.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkCamera.h"
@@ -84,24 +85,21 @@ int main(int argc, char * argv[])
 	vis->SetName("stick_vis");
 	vis->SetFileName(fn);
 	vis->SetTextureFileName(tfn);
-	vis->SetPosition(3.0, 0.0, 0.0);
-	vis->SetOrientation(0, 0, -20);
 	vis->SetOpacity(1.0);
 	vis->SetColor(1.0, 1.0, 1.0);
-	vis->Init();
 
 	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
 	col->SetName("vtkbioeng");
 	col->SetFileName(cfn);
-	col->SetPosition(3.0, 0.0, 0.0);
-	col->SetOrientation(0, 0, -20);
 	col->SetOpacity(0.5);
 	col->SetColor(0.0, 0.0, 1.0);
-	col->Init();
 
 	vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
 	stick->SetId(0);
 	stick->SetName("stick");
+	stick->SetOrigin(0.0, 0.0, 0.0);
+	stick->SetPosition(3.0, 0.0, 0.0);
+	stick->SetOrientation(0, 0, -20);
 	stick->SetVisualizationModel(vis);
 	stick->SetCollisionModel(col);
 	stick->Init();
@@ -111,24 +109,20 @@ int main(int argc, char * argv[])
 	visb->SetName("tip_vis");
 	visb->SetFileName(fnb);
 	visb->SetTextureFileName(tfnb);
-	visb->SetPosition(3.0, 0.0, 0.0);
-	visb->SetOrientation(0, 0, -20);
 	visb->SetOpacity(1.0);
 	visb->SetColor(1.0, 0.0, 1.0);
-	visb->Init();
 
 	vtkSmartPointer<vtkCollisionModel> colb = vtkSmartPointer<vtkCollisionModel>::New();
 	colb->SetName("tip_vtkbioeng");
 	colb->SetFileName(cfnb);
-	colb->SetPosition(3.0, 0.0, 0.0);
-	colb->SetOrientation(0, 0, -20);
 	colb->SetOpacity(0.5);
 	colb->SetColor(0.0, 0.0, 1.0);
-	colb->Init();
 
 	vtkSmartPointer<vtkScenarioElement> tip = vtkSmartPointer<vtkScenarioElement>::New();
 	tip->SetId(1);
 	tip->SetName("tip");
+	tip->SetPosition(3.0, 0.0, 0.0);
+	tip->SetOrientation(0, 0, -20);
 	tip->SetVisualizationModel(visb);
 	tip->SetCollisionModel(colb);
 	tip->Init();
@@ -138,6 +132,7 @@ int main(int argc, char * argv[])
 	tool->SetTip(tip);
 	tool->Init();
 
+	tool->SetDepth(1);
 	tool->Update();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
@@ -149,11 +144,15 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	iren->SetRenderWindow(renWin);
 
+	vtkSmartPointer<vtkAxesActor> axes =
+			vtkSmartPointer<vtkAxesActor>::New();
+
+	renderer->AddActor(axes);
 	renderer->AddActor(vis->GetActor());
 	renderer->AddActor(col->GetActor());
 	renderer->AddActor(visb->GetActor());
 	renderer->AddActor(colb->GetActor());
-	renderer->SetBackground(1,1,1);
+	renderer->SetBackground(.8,.8,.8);
 
 	//Adjust Camera
 	vtkCamera * camera = renderer->GetActiveCamera();

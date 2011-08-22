@@ -155,7 +155,7 @@ private:
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/sphere12_12_1.vtp";
+	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp";
 
 	if (argc > 1)
 	{
@@ -170,6 +170,7 @@ int main(int argc, char * argv[])
 	vtkPolyData * mesh = reader->GetOutput();
 
 	vtkSmartPointer<vtkPSSInterface> pss = vtkSmartPointer<vtkPSSInterface>::New();
+	pss->SetName("ball_def_c10");
 	pss->SetFileName(filename);
 	pss->SetColor(1,0,0);
 	pss->SetOpacity(1.0);
@@ -179,7 +180,6 @@ int main(int argc, char * argv[])
 	pss->SetDampingCoefficient(5);//Friction
 	pss->SetMass(.5);
 	pss->SetDeltaT(0.001);//10ms
-	pss->SetRigidityFactor(2);
 	pss->Init();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();

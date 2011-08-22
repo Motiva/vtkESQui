@@ -7,7 +7,8 @@ SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
-    OrganDummy
+    OrganStatic
+    OrganDeformable
     #ToolCatheter
     ToolProbe
     ToolGrasper
