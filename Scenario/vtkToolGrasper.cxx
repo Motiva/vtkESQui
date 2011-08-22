@@ -75,11 +75,14 @@ void vtkToolGrasper::Init()
 		//Remove any remaining item
 		this->Elements->RemoveAllItems();
 		//Elements must be inserted in this order
-		this->Stick->SetName("Stick");
+		if(!this->Stick->GetName() || strcmp(this->Stick->GetName(), "") == 0)
+			this->Stick->SetName("Stick");
 		this->AddElement(this->Stick);
-		this->LeftLever->SetName("LeftLever");
+		if(!this->LeftLever->GetName() || strcmp(this->LeftLever->GetName(), "") == 0)
+			this->LeftLever->SetName("LeftLever");
 		this->AddElement(this->LeftLever);
-		this->RightLever->SetName("RightLever");
+		if(!this->RightLever->GetName() || strcmp(this->RightLever->GetName(), "") == 0)
+			this->RightLever->SetName("RightLever");
 		this->AddElement(this->RightLever);
 	}
 	else
@@ -152,6 +155,7 @@ void vtkToolGrasper::Close(){
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::SetOpening(double opening) {
+	//cout << "vtkToolGrasper::SetOpening: " << opening << "\n";
 	if(this->Opening != opening)
 	{
 		double step = opening - this->Opening;
@@ -171,6 +175,7 @@ void vtkToolGrasper::SetOpening(double opening) {
 //----------------------------------------------------------------------------
 void vtkToolGrasper::SetDepth(double position)
 {
+	//cout << "vtkToolGrasper::SetDepth: " << position << "\n";
 	double o = this->Opening;
 	//Grasper is clamped before being translated
 	this->SetOpening(0);
@@ -183,6 +188,7 @@ void vtkToolGrasper::SetDepth(double position)
 //----------------------------------------------------------------------------
 void vtkToolGrasper::RotateX(double angle)
 {
+	//cout << "vtkToolGrasper::RotateX: " << angle << "\n";
 	double o = this->Opening;
 	//Grasper is clamped before being rotated
 	this->SetOpening(0);
@@ -197,6 +203,7 @@ void vtkToolGrasper::RotateX(double angle)
 //----------------------------------------------------------------------------
 void vtkToolGrasper::RotateY(double angle)
 {
+	//cout << "vtkToolGrasper::RotateY: " << angle << "\n";
 	double o = this->Opening;
 	//Grasper is clamped before being rotated
 	this->SetOpening(0);
@@ -211,6 +218,7 @@ void vtkToolGrasper::RotateY(double angle)
 //----------------------------------------------------------------------------
 void vtkToolGrasper::RotateZ(double angle)
 {
+	//cout << "vtkToolGrasper::RotateY: " << angle << "\n";
 	double o = this->Opening;
 	//Grasper is clamped before being rotated
 	this->SetOpening(0);

@@ -63,9 +63,10 @@ vtkDeformationModel::vtkDeformationModel() {
 
 	this->SetModelType(vtkModel::Deformation);
 	this->Name = NULL;
-	this->BoundaryConditions = vtkBoundaryConditionCollection::New();
-	this->Collisions = vtkCollisionCollection::New();
-
+	this->BoundaryConditions = NULL;
+	this->Collisions = NULL;
+	this->CollisionModel = NULL;
+	this->VisualizationModel = NULL;
 }
 
 //--------------------------------------------------------------------------
@@ -111,6 +112,9 @@ void vtkDeformationModel::Init()
 {
 	this->Superclass::Init();
 
+	this->BoundaryConditions = vtkBoundaryConditionCollection::New();
+	this->Collisions = vtkCollisionCollection::New();
+
 	//Display as a wire frame
 	this->Actor->GetProperty()->SetRepresentationToWireframe();
 }
@@ -145,6 +149,31 @@ void vtkDeformationModel::RemoveBoundaryConditions()
 	this->BoundaryConditions->RemoveBoundaryConditions();
 	this->Modified();
 }
+
+//--------------------------------------------------------------------------
+void vtkDeformationModel::SetCollisionModel(vtkModel * col)
+{
+	this->CollisionModel = col;
+}
+
+//--------------------------------------------------------------------------
+vtkModel * vtkDeformationModel::GetCollisionModel()
+{
+	return this->CollisionModel;
+}
+
+//--------------------------------------------------------------------------
+void vtkDeformationModel::SetVisualizationModel(vtkModel * vis)
+{
+	this->VisualizationModel = vis;
+}
+
+//--------------------------------------------------------------------------
+vtkModel * vtkDeformationModel::GetVisualizationModel()
+{
+	return this->VisualizationModel;
+}
+
 //--------------------------------------------------------------------------
 void vtkDeformationModel::PrintSelf(ostream& os,vtkIndent indent) {
 

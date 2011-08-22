@@ -57,15 +57,15 @@ class vtkScenarioElementCollection;
 
 //! vtkScenarioObject class implements the use of a surgical scenario object.
 /*!
- * This class contains all the required attributes to define a scenario
- * object, providing an easy use of surgical objects such as: tools,
- * organs, etc...\n
- * Every scenario object is formed a collection of scenario elements,
- * implemented in the vtkScenarioElement class. At least one scenario element
- * per scenario object must be defined.\n
- * In order to manage scenario objects interaction a collection of collisions
- * (see vtkCollisionCollection), has been included in this this class.
- */
+* This class contains all the required attributes to define a scenario
+* object, providing an easy use of surgical objects such as: tools,
+* organs, etc...\n
+* Every scenario object is formed a collection of scenario elements,
+* implemented in the vtkScenarioElement class. At least one scenario element
+* per scenario object must be defined.\n
+* In order to manage scenario objects interaction a collection of collisions
+* (see vtkCollisionCollection), has been included in this this class.
+*/
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioObject: public vtkPolyDataAlgorithm {
 
@@ -84,16 +84,15 @@ public:
 	enum vtkScenarioObjectType
 	{
 		Tool = 0,
-		Organ = 1,
-		Extra = 2
+				Organ = 1,
+				Extra = 2
 	};
 
 	//!Enumeration of object status
 	enum vtkScenarioObjectStatus
 	{
-		Visible = 0,
-		Hidden = 1,
-		Disabled = 2
+		Enabled = 0,
+				Disabled = 1
 	};
 
 	//!Initialization function
@@ -101,74 +100,74 @@ public:
 
 	//! Assign the identifying key of the object
 	/*!
-	 *\sa GetId()
-	 */
+	*\sa GetId()
+	*/
 	vtkSetMacro(Id, vtkIdType);
 
 	//! Returns the identifying key of the object
 	/*!
-	 *\sa SetId(vtkIdType Id)
-	 */
+	*\sa SetId(vtkIdType Id)
+	*/
 	vtkGetMacro(Id, vtkIdType);
 
 	//! Assign the object type
 	/*!
-	 *\sa GetType()
-	 */
+	*\sa GetType()
+	*/
 	vtkSetMacro(ObjectType, vtkScenarioObject::vtkScenarioObjectType);
 
 	//! Returns the type of the object
 	/*!
-	 *\sa SetType(vtkScenarioObjectType)
-	 */
+	*\sa SetType(vtkScenarioObjectType)
+	*/
 	vtkGetMacro(ObjectType, vtkScenarioObject::vtkScenarioObjectType);
 
 	//! Assign the object state
 	/*!
-	 *\sa GetState()
-	 */
+	*\sa GetState()
+	*/
 	vtkSetMacro(Status, vtkScenarioObject::vtkScenarioObjectStatus);
 
 	//! Returns the state of the object
 	/*!
-	 *\sa SetState(vtkScenarioStateType)
-	 */
+	*\sa SetState(vtkScenarioStateType)
+	*/
 	vtkGetMacro(Status, vtkScenarioObject::vtkScenarioObjectStatus);
 
 	//! Assign object name
 	/*!
-	 *\sa GetName()
-	 */
+	*\sa GetName()
+	*/
 	vtkSetStringMacro(Name);
 
 	//!Return object scale
 	/*!
-	 *\sa SetName(const char * name)
-	 */
+	*\sa SetName(const char * name)
+	*/
 	vtkGetStringMacro(Name);
 
 	//! Set the render window of the object
 	/*!
-	 * Assign the render window for the object
-	 */
+	* Assign the render window for the object
+	*/
 	void SetRenderWindow(vtkRenderWindow * r){this->RenderWindow = r;};
 
 	//! Get the render window of the object
 	/*!
-	 * Return the render window of the object
-	 */
+	* Return the render window of the object
+	*/
 	vtkRenderWindow * GetRenderWindow(vtkRenderWindow * r){return this->RenderWindow;};
 
 	//! Set the renderer of the object
 	/*!
-	 * Assign the renderer for the object
-	 */
+	* Assign the renderer for the object
+	*/
 	void SetRenderer(vtkRenderer * r){this->Renderer = r;};
 
 	//! Get the renderer of the object
 	/*!
-	 *Return the renderer of the object
-	 */
+	*Return the renderer of the object
+	*/
 	vtkRenderer * GetRenderer(vtkRenderer * r){return this->Renderer;};
 
 	//! Return the elements of the object
@@ -192,54 +191,54 @@ public:
 	// **** Geometrical Functions **** //
 	//! Implements the translation of the object (Local coordinate system)
 	/*!
-	 * The X & Y parameters contains the relative movement in the horizontal
-	 * and vertical axes respectively.
-	 * \param x x position of the object
-	 * \param y y position of the object
-	 * \param z z position of the object
-	 */
+	* The X & Y parameters contains the relative movement in the horizontal
+	* and vertical axes respectively.
+	* \param x x position of the object
+	* \param y y position of the object
+	* \param z z position of the object
+	*/
 	virtual void Translate(double x, double y, double z);
 
 	//! Implements the translation of the object (Local coordinate system)
 	/*!
-	 * \param vector position vector of the translation
-	 */
+	* \param vector position vector of the translation
+	*/
 	virtual void Translate(double * vector);
 
 	//! Implements the lateral movements of the object  (Global coordinate system)
 	/*!
-	 * The X parameter contains the relative movement in the horizontal axes
-	 * \param a a orientation angle
-	 * \param x x component
-	 * \param y y component
-	 * \param z z component
-	 * Note: this function must be implemented in inheriting classes
-	 */
+	* The X parameter contains the relative movement in the horizontal axes
+	* \param a a orientation angle
+	* \param x x component
+	* \param y y component
+	* \param z z component
+	* Note: this function must be implemented in inheriting classes
+	*/
 	virtual void RotateWXYZ(double a, double x, double y, double z);
 
 	//! Implements the lateral movements of the object  (Local coordinate system)
 	/*!
-	 * The X parameter contains the relative movement in the horizontal axes
-	 * \param x x orientation angle
-	 * Note: this function must be implemented in inheriting classes
-	 */
+	* The X parameter contains the relative movement in the horizontal axes
+	* \param x x orientation angle
+	* Note: this function must be implemented in inheriting classes
+	*/
 	virtual void RotateX(double x);
 
 	//! Implements the lateral movements of the object  (Local coordinate system)
 	/*!
-	 * The Y parameter contains the relative movement in the vertical axes
-	 * \param y y orientation angle
-	 * Note: this function must be implemented in inheriting classes
-	 */
+	* The Y parameter contains the relative movement in the vertical axes
+	* \param y y orientation angle
+	* Note: this function must be implemented in inheriting classes
+	*/
 	virtual void RotateY(double y);
 
 	//! Rotate the object on its own axes  (Local coordinate system)
 	/*!
-	 * This function rotate the object on its own axis the value of an angle given
-	 * by the "Rotation" variable the rotation is produced acting on the actors who compose the object.
-	 * \param rotation rotation angle (radians)
-	 * Note: this function must be implemented in inheriting classes
-	 */
+	* This function rotate the object on its own axis the value of an angle given
+	* by the "Rotation" variable the rotation is produced acting on the actors who compose the object.
+	* \param rotation rotation angle (radians)
+	* Note: this function must be implemented in inheriting classes
+	*/
 	virtual void RotateZ(double rotation);
 
 	//! Reset all object elements to their original state
@@ -249,50 +248,48 @@ public:
 
 	//! Show/Display object.
 	/*!
-	 * Must be implemented in inherited classes
-	 * Note: this function must be implemented in inheriting classes
-	 */
+	* Must be implemented in inherited classes
+	* Note: this function must be implemented in inheriting classes
+	*/
 	virtual void Show();
 
 	//! Hide scenario object.
 	/*!
-	 * Must be implemented in inherited classes
-	 * Note: this function must be implemented in inheriting classes
-	 */
+	* Must be implemented in inherited classes
+	* Note: this function must be implemented in inheriting classes
+	*/
 	virtual void Hide();
+
+	//! Enable object.
+	/*!
+	* Must be implemented in inherited classes
+	* Note: this function must be implemented in inheriting classes
+	*/
+	virtual void Enable();
 
 	//! Disable object.
 	/*!
-	 * Must be implemented in inherited classes
-	 * Note: this function must be implemented in inheriting classes
-	 */
+	* Must be implemented in inherited classes
+	* Note: this function must be implemented in inheriting classes
+	*/
 	virtual void Disable();
 
 	//! Check if object is visible
 	/*!
-	 * When an object is disabled it will:
-	 * - be visible.
-	 * - be computed in collision detection.
-	 * - be used in simulation.
-	 */
-	bool IsVisible(){ return this->Status == Visible;};
-
-	//! Check if object is hidden
-	/*!
-	 * When an object is disabled it will NOT:
-	 * - be visible.
-	 * - be computed in collision detection.
-	 * It will be used in simulation.
-	 */
-	bool IsHidden(){ return this->Status == Hidden;};
+	* When an object is enabled it will:
+	* - be visible.
+	* - be computed in collision detection.
+	* - be used in simulation.
+	*/
+	bool IsEnabled(){ return this->Status == Enabled;};
 
 	//! Check if object is disabled.
 	/*!
-	 * When an object is disabled it will NOT:
-	 * - be visible.
-	 * - be computed in collision detection.
-	 * - be used in simulation.
-	 */
+	* When an object is disabled it will NOT:
+	* - be visible.
+	* - be computed in collision detection.
+	* - be used in simulation.
+	*/
 	bool IsDisabled(){ return this->Status == Disabled;};
 
 	//! Return if object has been initialized
@@ -302,16 +299,16 @@ public:
 
 	//! Add a collision to the list
 	/*!
-	 * \param collision vtkCollision object with the information of the collision( toolId, organId, point, cell... etc)
-	 * \sa InsertCollisions( vtkCollisionCollection* collisions )
-	 */
+	* \param collision vtkCollision object with the information of the collision( toolId, organId, point, cell... etc)
+	* \sa InsertCollisions( vtkCollisionCollection* collisions )
+	*/
 	void InsertNextCollision( vtkCollision* collision );
 
 	//! Add several collisions to the list
 	/*!
-	 * \param collisions List of vtkCollision objects
-	 * \sa InsertNextCollision( vtkCollision* collision )
-	 */
+	* \param collisions List of vtkCollision objects
+	* \sa InsertNextCollision( vtkCollision* collision )
+	*/
 	void SetCollisions( vtkCollisionCollection* collisions );
 
 	//! Get organ collisions
@@ -322,8 +319,8 @@ public:
 
 	//!Remove all collisions
 	/*!
-	 * Remove all collisions from the list. Memory is not freed
-	 */
+	* Remove all collisions from the list. Memory is not freed
+	*/
 	void CleanCollisions();
 
 protected:

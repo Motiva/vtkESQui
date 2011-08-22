@@ -78,8 +78,6 @@ int TestvtkScenarioElement(int argc, char * argv[])
 	vis->SetName("ellipsoid_16_16_1");
 	vis->SetFileName(fn);
 	vis->SetTextureFileName(tfn);
-	vis->SetPosition(3.0, 2.5, 0.0);
-	vis->SetOrientation(25, -15, 30);
 	vis->SetOpacity(1.0);
 	vis->SetColor(1.0, 1.0, 1.0);
 	vis->Init();
@@ -87,8 +85,6 @@ int TestvtkScenarioElement(int argc, char * argv[])
 	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
 	col->SetName("vtkbioeng");
 	col->SetFileName(cfn);
-	col->SetPosition(3.0, 2.5, 0.0);
-	col->SetOrientation(25, -15, 30);
 	col->SetOpacity(0.5);
 	col->SetColor(0.0, 0.0, 1.0);
 	col->Init();
@@ -97,8 +93,6 @@ int TestvtkScenarioElement(int argc, char * argv[])
 	vtkSmartPointer<vtkPSSInterface> def = vtkSmartPointer<vtkPSSInterface>::New();
 	def->SetName("ParticleSpring");
 	def->SetFileName(fn);
-	def->SetPosition(3.0, 2.5, 0.0);
-	def->SetOrientation(25, -15, 30);
 	def->SetOpacity(1.0);
 	def->SetColor(0.0, 1.0, 0.0);
 	def->Init();
@@ -106,6 +100,8 @@ int TestvtkScenarioElement(int argc, char * argv[])
 	vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
 	element->SetId(0);
 	element->SetName("ellipsoid");
+	element->SetPosition(3.0, 2.5, 0.0);
+	element->SetOrientation(25, -15, 30);
 	element->SetVisualizationModel(vis);
 	element->SetCollisionModel(col);
 	element->SetDeformationModel(def);
@@ -113,6 +109,7 @@ int TestvtkScenarioElement(int argc, char * argv[])
 
 	element->RotateZ(35);
 	element->Update();
+	/*
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
@@ -133,7 +130,7 @@ int TestvtkScenarioElement(int argc, char * argv[])
 
 	renWin->Render();
 
-	iren->Start();
+	iren->Start();*/
 
 	return 0;
 }

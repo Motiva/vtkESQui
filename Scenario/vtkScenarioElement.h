@@ -49,6 +49,8 @@ class vtkRenderWindow;
 class vtkRenderer;
 class vtkPolyData;
 class vtkIdList;
+class vtkTransform;
+class vtkMatrix4x4;
 
 class vtkModel;
 class vtkModelCollection;
@@ -90,9 +92,8 @@ public:
 	//! Enumeration of Element status
 	enum vtkScenarioElementStatus
 	{
-		Visible = 0,
-		Hidden = 1,
-		Disabled = 2
+		Enabled = 0,
+		Disabled = 1
 	};
 
 	//! Abstract initialization function
@@ -161,18 +162,6 @@ public:
 	 */
 	vtkGetStringMacro(Name);
 
-	//! Assign Element scale
-	/*!
-	 *\sa GetScale()
-	 */
-	vtkSetVector3Macro(Scale, double);
-
-	//! Return Element scale
-	/*!
-	 *\sa SetScale(double)
-	 */
-	vtkGetVector3Macro(Scale, double);
-
 	//! Assign simulation time step
 	/*!
 	 *\sa GetDeltaT()
@@ -185,27 +174,58 @@ public:
 	 */
 	vtkGetMacro(DeltaT, double);
 
-	// **** Graphical Purposes Methods **** //
-	//! Get the object origin Point.
+	//! Assign element scale
 	/*!
-	 * Reference point where the rotation calculus are made
-	 */
+	*\sa GetScale()
+	*/
+	vtkSetVector3Macro(Scale, double);
+
+	//!Return element scale
+	/*!
+	*\sa SetScale(double)
+	*/
+	vtkGetVector3Macro(Scale, double);
+
+	// **** Graphical Purposes Methods **** //
+	//! Set the element origin Point.
+	/*!
+	* Reference point where the rotation calculus are made
+	*/
+	vtkSetVector3Macro(Origin, double);
+
+	//! Get the element origin Point.
+	/*!
+	* Reference point where the rotation calculus are made
+	*/
 	vtkGetVector3Macro(Origin, double);
 
-	//! Get object orientation angles. (yaw, pitch, roll) (WXYZ)
+	//! Set element orientation angles.
 	/*!
-	 * (yaw, pitch, roll) (WXYZ)
-	 */
+	* (yaw, pitch, roll) (WXYZ)
+	*/
+	vtkSetVector3Macro(Orientation, double);
+
+	//! Get element orientation angles. (yaw, pitch, roll) (WXYZ)
+	/*!
+	* (yaw, pitch, roll) (WXYZ)
+	*/
 	vtkGetVector3Macro(Orientation, double);
 
-	//! Get the Object position (WXYZ)
+	//!Set the element position (WXYZ)
+	vtkSetVector3Macro(Position, double);
+	//!Get the element position (WXYZ)
 	vtkGetVector3Macro(Position, double);
 
 	//! Get the Object velocity (WXYZ)
 	vtkGetVector3Macro(Velocity, double);
 
-	//! Get the object direction unit vector (WXYZ)
-	vtkGetVector3Macro(Direction, double);
+	//!
+	void SetMatrix(vtkMatrix4x4 * m);
+	vtkMatrix4x4 * GetMatrix();
+
+	//!
+	void SetTransform(vtkTransform * m);
+	vtkTransform * GetTransform();
 
 	//! Set the render window of the Element
 	/*!
@@ -338,16 +358,23 @@ public:
 
 	//! Hide scenario element.
 	/*!
-	 * Must be implemented in inherited classes
+	 * Hiding an element does not disable it for simulation purposes. Must be implemented in inherited classes
 	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Hide();
 	//! Show/Display element.
 	/*!
-	 * Must be implemented in inherited classes
+	 * Showing an element does not enable it for simulation purposes. Must be implemented in inherited classes
 	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Show();
+
+	//! Enable element.
+	/*!
+	* Must be implemented in inherited classes
+	* Note: this function must be implemented in inheriting classes
+	*/
+	virtual void Enable();
 
 	//! Disable element.
 	/*!
@@ -356,23 +383,14 @@ public:
 	 */
 	virtual void Disable();
 
-	//! Check if element is visible
+	//! Check if element is enabled
 	/*!
-	 * When an element is disabled it will:
+	 * When an element is enabled it will:
 	 * - be visible.
 	 * - be computed in collision detection.
 	 * - be used in simulation.
 	 */
-	bool IsVisible();
-
-	//! Check if element is hidden
-	/*!
-	 * When an element is disabled it will NOT:
-	 * - be visible.
-	 * - be computed in collision detection.
-	 * It will be used in simulation.
-	 */
-	bool IsHidden();
+	bool IsEnabled();
 
 	//! Check if element is disabled.
 	/*!
@@ -417,12 +435,6 @@ protected:
 	//! Collection of models
 	vtkModelCollection * Models;
 
-	//! Collision hash map
-	//vtkIdList * CollisionHashMap;
-
-	//! Deformation hash map
-	//vtkIdList * DeformationHashMap;
-
 	//! Model initialization flag
 	bool Initialized;
 
@@ -444,6 +456,12 @@ protected:
 
 	//! Scale factor (size)
 	double Scale[3];
+
+	//! Element transform
+	vtkTransform * Transform;
+
+	//! Transformation Matrix
+	vtkMatrix4x4 * Matrix;
 
 	//**** Common rendering objects ****//
 	//! Render Window of the Element

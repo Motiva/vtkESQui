@@ -70,7 +70,7 @@ public:
 
 				//Set Collisions
 				double dir[3];
-				dir[0] = 0.2;//-0.1;
+				dir[0] = 0.1;//-0.1;
 				dir[1] = 0.05;
 				dir[2] = 0;//0.05;
 
@@ -155,17 +155,17 @@ private:
 
 int TestvtkPSSInterface(int argc, char * argv[])
 {
-	const char * filename = "";
+	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c12.vtp";
 
 	if (argc > 1)
 	{
 		filename = argv[1];
 	}
-	else
-	{
-		cout << "This test should at least contain 1 argument.\nUsage: Test $inputFile" << endl;
-		exit(0);
-	}
+	//else
+	//{
+	//	cout << "This test should at least contain 1 argument.\nUsage: Test $inputFile" << endl;
+	//	exit(0);
+	//}
 
 	vtkSmartPointer<vtkXMLPolyDataReader> reader =
 			vtkSmartPointer<vtkXMLPolyDataReader>::New();
@@ -225,7 +225,7 @@ int TestvtkPSSInterface(int argc, char * argv[])
 	cb->SetDeformationModel(pss);
 
 	//Create a faster timer for DeformationModel update
-	tid = iren->CreateRepeatingTimer(50);
+	tid = iren->CreateRepeatingTimer(10);
 	cb->SetFasterTimerId(tid);
 
 	//Create a collision every 5 seconds
@@ -235,7 +235,7 @@ int TestvtkPSSInterface(int argc, char * argv[])
 	// Create a slower repeating timer to trigger Render calls.
 	// (This fires at the rate of approximately 25 frames per second.)
 	//
-	tid = iren->CreateRepeatingTimer(25);
+	tid = iren->CreateRepeatingTimer(40);
 	cb->SetRenderTimerId(tid);
 
 	iren->Start();

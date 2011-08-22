@@ -108,6 +108,17 @@ int vtkCollision::GetPointId(int i){
 }
 
 //--------------------------------------------------------------------------
+void vtkCollision::SetSyncPointId(int i, int id)
+{
+	this->SyncPointIds->SetId(i, id);
+}
+
+//--------------------------------------------------------------------------
+int vtkCollision::GetSyncPointId(int i){
+	return this->SyncPointIds->GetId(i);
+}
+
+//--------------------------------------------------------------------------
 void vtkCollision::SetPoint(int i, double x, double y, double z) {
 	this->Points->SetPoint(i, x, y, z);
 }
@@ -137,6 +148,7 @@ void vtkCollision::DeepCopy(vtkCollision *info) {
 	info->ObjectIds->DeepCopy(this->ObjectIds);
 	info->ElementIds->DeepCopy(this->ElementIds);
 	info->PointIds->DeepCopy(this->PointIds);
+	info->SyncPointIds->DeepCopy(this->SyncPointIds);
 	info->CellIds->DeepCopy(this->CellIds);
 	info->Points->DeepCopy(this->Points);
 	info->Distance = this->Distance;

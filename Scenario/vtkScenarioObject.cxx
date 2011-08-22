@@ -67,13 +67,10 @@ vtkScenarioObject::vtkScenarioObject() {
 	this->Renderer = NULL;
 	this->Initialized = 0;
 
-	this->Status = Visible;
+	this->Status = Enabled;
 
 	this->Elements = vtkScenarioElementCollection::New();
 	this->Collisions = vtkCollisionCollection::New();
-
-	//this->AppendFilter = vtkAppendPolyData::New();
-
 }
 
 //--------------------------------------------------------------------------
@@ -81,7 +78,6 @@ vtkScenarioObject::~vtkScenarioObject()
 {
 	if(this->Elements) this->Elements->Delete();
 	if(this->Collisions) this->Collisions->Delete();
-	//if(this->AppendFilter) this->AppendFilter->Delete();
 }
 
 //--------------------------------------------------------------------------
@@ -89,7 +85,6 @@ void vtkScenarioObject::Init()
 {
 	if(!this->Initialized)
 	{
-		//this->AppendFilter->RemoveAllInputs();
 		for (int id=0; id<this->GetNumberOfElements(); id++)
 		{
 			//Set common parameters
@@ -101,11 +96,7 @@ void vtkScenarioObject::Init()
 
 			//Initialize object elements
 			if(!e->IsInitialized()) e->Init();
-
-			//Set input for appended output
-			//this->AppendFilter->AddInput(e->GetOutput());
 		}
-
 		this->Initialized = 1;
 	}
 }
@@ -132,10 +123,6 @@ int vtkScenarioObject::RequestData(vtkInformation *vtkNotUsed(request),
 		e->Modified();
 		e->Update();
 	}
-
-	//this->AppendFilter->Update();
-
-	//output->ShallowCopy(this->AppendFilter->GetOutput());
 
 	return 1;
 }
@@ -249,7 +236,6 @@ void vtkScenarioObject::Restore()
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Show()
 {
-	this->Status = Visible;
 	this->Elements->InitTraversal();
 	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
 	{
@@ -260,13 +246,23 @@ void vtkScenarioObject::Show()
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Hide()
 {
-	this->Status = Hidden;
 	this->Elements->InitTraversal();
 	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
 	{
 		e->Hide();
 	}
 
+}
+
+//--------------------------------------------------------------------------
+void vtkScenarioObject::Enable()
+{
+	this->Status = Enabled;
+	this->Elements->InitTraversal();
+	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+	{
+		e->Enable();
+	}
 }
 
 //--------------------------------------------------------------------------

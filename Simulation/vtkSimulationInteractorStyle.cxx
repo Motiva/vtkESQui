@@ -136,39 +136,39 @@ void vtkSimulationInteractorStyle::OnKeyPress()
 	vtkRenderWindowInteractor *rwi = this->Interactor;
 	std::string key = rwi->GetKeySym();
 
-	if(this->GetNumberOfTools() > 0)
+	//Select control mode: camera/tool
+	if(key.compare("c") == 0)
 	{
-		//Select control mode: camera/tool
-		if(key.compare("c") == 0)
-		{
-			this->Mode = !this->Mode;
-		}
+		this->Mode = !this->Mode;
+	}
 
-		if(!this->Mode)
+	if(!this->Mode)
+	{
+		//Camera Mode
+		vtkDebugMacro("Camera Mode On");
+		if(key.compare("Up") == 0)
 		{
-			//Camera Mode
-			vtkDebugMacro("Camera Mode On");
-			if(key.compare("Up") == 0)
-			{
-				this->Camera->Elevation(1);
-			}
-			if(key.compare("Down") == 0)
-			{
-				vtkDebugMacro("RotateX (Down)");
-				this->Camera->Elevation(-1);
-			}
-			if(key.compare("Left") == 0)
-			{
-				vtkDebugMacro("RotateY (Left)");
-				this->Camera->Azimuth(1);
-			}
-			if(key.compare("Right") == 0)
-			{
-				vtkDebugMacro("RotateY (Right)");
-				this->Camera->Azimuth(-1);
-			}
+			this->Camera->Elevation(1);
 		}
-		else
+		if(key.compare("Down") == 0)
+		{
+			vtkDebugMacro("RotateX (Down)");
+			this->Camera->Elevation(-1);
+		}
+		if(key.compare("Left") == 0)
+		{
+			vtkDebugMacro("RotateY (Left)");
+			this->Camera->Azimuth(1);
+		}
+		if(key.compare("Right") == 0)
+		{
+			vtkDebugMacro("RotateY (Right)");
+			this->Camera->Azimuth(-1);
+		}
+	}
+	else
+	{
+		if(this->GetNumberOfTools() > 0)
 		{
 			//Tool control mode
 			vtkDebugMacro("Tool Mode On");

@@ -73,26 +73,28 @@ vtkCollisionModel::vtkCollisionModel() {
 
 	this->ModelType = vtkModel::Collision;
 
+	this->VisualizationModel = NULL;
+
 	this->DeltaT = 1.0;
 	this->Velocity[0]=this->Velocity[1]=this->Velocity[2]=0.0;
 	this->Acceleration[0]=this->Acceleration[1]=this->Acceleration[2]=0.0;
 	this->Direction[0]=this->Direction[1]=this->Direction[2]=0.0;
 
-	this->Collisions = vtkCollisionCollection::New();
-
-	this->TransformFilter = vtkTransformPolyDataFilter::New();
-
-	this->Radius = 1.0;
-	this->Sphere = vtkSphereSource::New();
-	this->Glyphs = vtkGlyph3D::New();
+	this->Collisions = NULL;
+	this->Transform = NULL;
+	this->TransformFilter = NULL;
+	this->Sphere = NULL;
+	this->Glyphs = NULL;
+	this->Radius = 0.05;
 }
 
 //--------------------------------------------------------------------------
 vtkCollisionModel::~vtkCollisionModel()
 {
-	this->TransformFilter->Delete();
-	this->Sphere->Delete();
-	this->Glyphs->Delete();
+	if(this->Sphere) this->Sphere->Delete();
+	if(this->Glyphs) this->Glyphs->Delete();
+	if(this->Transform) this->Transform->Delete();
+	if(this->TransformFilter) this->TransformFilter->Delete();
 }
 
 //----------------------------------------------------------------------------
@@ -135,17 +137,40 @@ void vtkCollisionModel::RemoveAllCollisions()
 }
 
 //--------------------------------------------------------------------------
+void vtkCollisionModel::SetVisualizationModel(vtkModel * vis)
+{
+	this->VisualizationModel = vis;
+}
+
+//--------------------------------------------------------------------------
+vtkModel * vtkCollisionModel::GetVisualizationModel()
+{
+	return this->VisualizationModel;
+}
+
+//--------------------------------------------------------------------------
 void vtkCollisionModel::Init()
 {
 	this->Superclass::Init();
+
+	this->Collisions = vtkCollisionCollection::New();
+
+	this->Transform = vtkTransform::New();
+	this->TransformFilter = vtkTransformPolyDataFilter::New();
+
+	if(this->Matrix)
+			this->Transform->SetMatrix(this->Matrix);
+	else this->Matrix = this->Transform->GetMatrix();
 
 	//Filter to apply transformations to the mesh
 	this->TransformFilter->SetInput(this->GetInput());
 	this->TransformFilter->SetTransform(this->Transform);
 
 	// Configure visualization
+	this->Sphere = vtkSphereSource::New();
+	this->Glyphs = vtkGlyph3D::New();
 	this->Glyphs->SetInput(this->GetInput());
-	this->Sphere->SetRadius(0.05);
+	this->Sphere->SetRadius(this->Radius);
 	this->Glyphs->SetSource(this->Sphere->GetOutput());
 	this->Glyphs->ScalingOff();
 
@@ -158,98 +183,73 @@ int vtkCollisionModel::RequestData(
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
 
-	//cout << "vtkCollisionModel::RequestData" << endl;
-
 	// Get the info objects
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 	vtkInformation *outInfo1 = outputVector->GetInformationObject(1);
 
 	// Get the input and output
 	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	//Optional input
-	vtkPolyData * source = 0;
-	if(sourceInfo)
-	{
-		source = vtkPolyData::SafeDownCast(
-			sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
-	}
+
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *outputTx = vtkPolyData::SafeDownCast(outInfo1->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Update object position
-	this->Transform->Update();
-	this->TransformFilter->Update();
+	//cout << this->GetClassName() << "::RequestData (" << this->GetName() << ")\n";
 
-	//Update position & orientation
-	this->Velocity[0] = this->Position[0];
-	this->Velocity[1] = this->Position[1];
-	this->Velocity[2] = this->Position[2];
-	this->Acceleration[0] = this->Velocity[0];
-	this->Acceleration[1] = this->Velocity[1];
-	this->Acceleration[2] = this->Velocity[2];
-
-	//Get transformed values
-	this->Transform->GetPosition(this->Position);
-	this->Transform->GetOrientation(this->Orientation);
-
-	//Update object velocity
-	//Velocity will be calculated from delta(Position)/dt
-	vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
-	vtkMath::MultiplyScalar(this->Velocity, 1/this->DeltaT);
-
-	//Update object acceleration
-	vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
-	vtkMath::MultiplyScalar(this->Acceleration, 1/this->DeltaT);
-
-	//If source is defined -> Synchronize mesh
-	if(source)
+	if(this->Status == Enabled)
 	{
-		if(this->HashMap->GetNumberOfIds() == 0)
-		{
-			//Build collision mesh hash map
-			this->BuildHashMap(input, source);
-		}
-		for(int i=0; i<this->HashMap->GetNumberOfIds(); i++)
-		{
-			double * p = source->GetPoint(this->HashMap->GetId(i));
-			//double * pv = input->GetPoint(i);
-			//cout << "Map[" << i << "]: " << this->CollisionHashMap->GetId(i) <<  endl;
-			input->GetPoints()->SetPoint(i, p);
-			//double * po = input->GetPoint(i);
-			//if(i==20) cout << "ps: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
-		}
-	}
+		//Update object position
+		this->Transform->SetMatrix(this->Matrix);
+		this->Transform->Update();
+		this->TransformFilter->Update();
 
-/*	if(source)
-	{
-		cout << "source is present\n";
-		this->SmoothFilter->SetInput(input);
-		this->SmoothFilter->SetSource(source);
-		this->SmoothFilter->Update();
-		this->Glyphs->SetInput(this->SmoothFilter->GetOutput());
-		output->ShallowCopy(this->SmoothFilter->GetOutput());
+		//If source is defined -> Synchronize mesh
+		if(this->VisualizationModel)
+		{
+			vtkPolyData * source = this->VisualizationModel->GetOutput();
+			if(this->HashMap->GetNumberOfIds() == 0)
+			{
+				//Build collision mesh hash map
+				this->BuildHashMap(input, source);
+			}
+
+			//Synchronize both meshes
+			vtkPoints * points = input->GetPoints();
+			for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
+			{
+				int id = this->HashMap->GetId(i);
+				double * p = source->GetPoint(id);
+				//double * po = points->GetPoint(i);
+				//if(id==122) cout << "ps["<< i << "]: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po["<< id <<"]: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
+				points->SetPoint(i, p[0], p[1], p[2]);
+			}
+		}
+
+		//Set visualization parameters
+		this->Actor->SetVisibility(this->Visibility);
+		if(this->IsVisible())
+		{
+			this->Actor->GetProperty()->SetColor(this->Color);
+			this->Actor->GetProperty()->SetOpacity(this->Opacity);
+			this->Glyphs->Modified();
+			this->Glyphs->Update();
+			this->Mapper->Update();
+		}
+
+		//Transformed mesh for collision detection purposes
+		outputTx->ShallowCopy(this->TransformFilter->GetOutput());
+		//collision visualization mesh
+		output->ShallowCopy(input);
 	}
 	else
 	{
-		this->Glyphs->SetInput(input);
+		//Transformed mesh for collision detection purposes
+		outputTx->ShallowCopy(input);
+		//collision visualization mesh
 		output->ShallowCopy(input);
-	}*/
+	}
 
-	//Set visualization parameters
-	this->Actor->GetProperty()->SetColor(this->Color);
-	this->Actor->GetProperty()->SetOpacity(this->Opacity);
-	this->Actor->SetVisibility(this->Visibility);
 
-	this->Glyphs->Update();
-	this->Mapper->Modified();
-	this->Mapper->Update();
-
-	//collision visualization mesh
-	output->ShallowCopy(input);
-	//Transformed mesh for collision detection purposes
-	outputTx->ShallowCopy(this->TransformFilter->GetOutput());
 
 	return 1;
 }

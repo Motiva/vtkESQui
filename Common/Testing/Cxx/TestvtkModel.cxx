@@ -62,8 +62,6 @@ int TestvtkModel(int argc, char * argv[])
 
 	vtkSmartPointer<vtkModel> model = vtkSmartPointer<vtkModel>::New();
 	model->SetFileName(filename);
-	model->SetPosition(3.0, 2.5, 0.0);
-	model->SetOrientation(25, -15, 30);
 	model->SetColor(0.0 ,1.0 , 0.0);
 	model->Init();
 

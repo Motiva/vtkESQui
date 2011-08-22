@@ -159,7 +159,7 @@ void vtkScenario::Init()
 				vtkModelCollection * models = e->GetModels();
 				models->InitTraversal();
 				while(vtkModel * m = models->GetNextModel()){
-					if(m->GetVisibility()) this->Renderer->AddActor(m->GetActor());
+					this->Renderer->AddActor(m->GetActor());
 				}
 
 			}

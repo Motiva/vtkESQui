@@ -52,6 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkXMLPolyDataReader.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
+#include "vtkIdList.h"
 
 #include "vtkCollision.h"
 #include "vtkCollisionCollection.h"
@@ -112,6 +113,8 @@ void vtkPSSInterface::Init()
 			this->ParticleSpringSystem->SetParticleStatus(c->GetPointId(), c->GetValue());
 		}
 	}
+
+	if (this->Debug) this->Print(cout);
 }
 
 // VTK specific method: This method is called when the pipeline is calculated.
@@ -121,48 +124,73 @@ int vtkPSSInterface::RequestData(
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
 
-	//vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
 	//vtkInformation *inInfo1 = inputVector[1]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	//vtkPolyData *input = vtkPolyData::SafeDownCast(
-	//		inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *input = vtkPolyData::SafeDownCast(
+			inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(
 			outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Update object transform
-	this->Transform->Update();
+	//cout << this->GetClassName() << "::RequestData(" << this->GetName() << ")\n";
 
-	//Get transformed values
-	this->Transform->GetPosition(this->Position);
-	this->Transform->GetOrientation(this->Orientation);
-
-	if(this->Collisions)
+	if(this->Status == Enabled)
 	{
-		this->Collisions->InitTraversal();
-		while(vtkCollision * collision = this->Collisions->GetNextCollision())
+		if(this->Collisions)
 		{
-			if(collision->GetCollisionType() == vtkCollision::ToolOrgan)
+			this->Collisions->InitTraversal();
+			while(vtkCollision * collision = this->Collisions->GetNextCollision())
 			{
-				this->ParticleSpringSystem->InsertCollision(collision->GetPointId(1), collision->GetDisplacement());
+				if(collision->GetCollisionType() == vtkCollision::ToolOrgan)
+				{
+					this->ParticleSpringSystem->InsertCollision(collision->GetPointId(1), collision->GetDisplacement());
+				}
+				//Once a collision has been processed it is removed from collection
+				this->Collisions->RemoveItem(collision);
 			}
-			//Once a collision has been processed it is removed from collection
-			this->Collisions->RemoveItem(collision);
 		}
+
+		//Force recalculation of the output in every step
+		this->ParticleSpringSystem->Modified();
+		this->ParticleSpringSystem->Update();
+
+		vtkPolyData * out = this->ParticleSpringSystem->GetOutput();
+
+		//If source is defined -> Synchronize mesh
+		if(this->VisualizationModel)
+		{
+			vtkPolyData * source = vtkPolyData::SafeDownCast(this->VisualizationModel->GetInput());
+			if(this->HashMap->GetNumberOfIds() == 0)
+			{
+				//Build collision mesh hash map
+				this->BuildHashMap(input, source);
+			}
+
+			//Synchronize/Modify visualization mesh
+			vtkPoints * points = source->GetPoints();
+			for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
+			{
+				int id = this->HashMap->GetId(i);
+				double * p = out->GetPoint(id);
+				points->SetPoint(i, p);
+			}
+		}
+
+		//Set visualization parameters
+		this->Actor->SetVisibility(this->Visibility);
+		if(this->IsVisible())
+		{
+			this->Actor->GetProperty()->SetColor(this->Color);
+			this->Actor->GetProperty()->SetOpacity(this->Opacity);
+
+			this->Mapper->SetInput(out);
+		}
+
+		//Update filter output
+		output->ShallowCopy(out);
 	}
-
-	//Force recalculation of the output in every step
-	this->ParticleSpringSystem->Modified();
-	this->ParticleSpringSystem->Update();
-
-	//Set visualization parameters
-	this->Actor->GetProperty()->SetColor(this->Color);
-	this->Actor->GetProperty()->SetOpacity(this->Opacity);
-	this->Actor->SetVisibility(this->Visibility);
-
-	this->Mapper->SetInput(this->ParticleSpringSystem->GetOutput());
-
-	output->ShallowCopy(this->ParticleSpringSystem->GetOutput());
+	else output->ShallowCopy(input);
 
 	return 1;
 }
@@ -170,10 +198,11 @@ int vtkPSSInterface::RequestData(
 //--------------------------------------------------------------------------
 void vtkPSSInterface::PrintSelf(ostream& os, vtkIndent indent)
 {
-  this->Superclass::PrintSelf(os,indent);
-  os << indent <<  "SpringCoefficient: " << this->SpringCoefficient << endl;
-  os << indent <<  "DampingCoefficient: " << this->DampingCoefficient << endl;
-  os << indent <<  "DistanceCoefficient: " << this->DistanceCoefficient << endl;
-  os << indent <<  "Mass: " << this->Mass << endl;
-  os << indent <<  "DeltaT: " << this->DeltaT << endl;
+	this->Superclass::PrintSelf(os,indent);
+	os << indent << "SpringCoefficient: " << this->SpringCoefficient << endl;
+	os << indent << "DampingCoefficient: " << this->DampingCoefficient << endl;
+	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << endl;
+	os << indent << "Mass: " << this->Mass << endl;
+	os << indent << "DeltaT: " << this->DeltaT << endl;
+	os << indent << "SolverType: " << this->SolverType << endl;
 }

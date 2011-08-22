@@ -49,6 +49,7 @@ class vtkXMLPolyDataReader;
 class vtkPolyData;
 class vtkPolyDataMapper;
 class vtkTransform;
+class vtkMatrix4x4;
 class vtkActor;
 class vtkSmoothPolyDataFilter;
 
@@ -80,17 +81,15 @@ public:
 	//BTX
 	enum vtkModelType{
 		Visualization = 0,
-				Collision = 1,
-				Deformation = 2
+		Collision = 1,
+		Deformation = 2
 	};
 
 	//!Enumeration of model status
 	enum vtkModelStatus
 	{
-		Active = 0,
-				Visible = 1,
-				Hidden = 2,
-				Disabled = 3
+		Enabled = 0,
+		Disabled = 1
 	};
 
 
@@ -163,48 +162,6 @@ public:
 	 */
 	vtkGetStringMacro(FileName);
 
-	//! Assign model scale
-	/*!
-	 *\sa GetScale()
-	 */
-	vtkSetVector3Macro(Scale, double);
-
-	//!Return model scale
-	/*!
-	 *\sa SetScale(double)
-	 */
-	vtkGetVector3Macro(Scale, double);
-
-	// **** Graphical Purposes Methods **** //
-	//! Set the model origin Point.
-	/*!
-	 * Reference point where the rotation calculus are made
-	 */
-	vtkSetVector3Macro(Origin, double);
-
-	//! Get the model origin Point.
-	/*!
-	 * Reference point where the rotation calculus are made
-	 */
-	vtkGetVector3Macro(Origin, double);
-
-	//! Set model orientation angles.
-	/*!
-	 * (yaw, pitch, roll) (WXYZ)
-	 */
-	vtkSetVector3Macro(Orientation, double);
-
-	//! Get model orientation angles. (yaw, pitch, roll) (WXYZ)
-	/*!
-	 * (yaw, pitch, roll) (WXYZ)
-	 */
-	vtkGetVector3Macro(Orientation, double);
-
-	//!Set the model position (WXYZ)
-	vtkSetVector3Macro(Position, double);
-	//!Get the model position (WXYZ)
-	vtkGetVector3Macro(Position, double);
-
 	//! Set model mesh color
 	vtkSetVector3Macro(Color, double);
 
@@ -237,11 +194,18 @@ public:
 
 	vtkBooleanMacro(Visibility, bool);
 
-	//!Get transform function
+	//!Set transform matrix
+	void SetMatrix(vtkMatrix4x4 * m);
+
+	//!Get transform matrix
 	/*!
-	 * Transform function for displaying purposes
+	 * Transformation matrix for displaying purposes
 	 */
-	vtkTransform * GetTransform();
+	//!
+	vtkMatrix4x4 * GetMatrix();
+
+	//void SetTransform(vtkTransform * m);
+	//vtkTransform * GetTransform();
 
 	//!Get dataset mapper
 	/*!
@@ -279,55 +243,6 @@ public:
 	 */
 	virtual void Init();
 
-	virtual void Translate(double x, double y, double z);
-
-	//! Implements the translation of the model (Local coordinate system)
-	/*!
-	 * \param vector position vector of the translation
-	 */
-	virtual void Translate(double * vector);
-
-	//! Implements the lateral movements of the model  (Global coordinate system)
-	/*!
-	 * The X parameter contains the relative movement in the horizontal axes
-	 * \param a a orientation angle
-	 * \param x x component
-	 * \param y y component
-	 * \param z z component
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void RotateWXYZ(double a, double x, double y, double z);
-
-	//! Implements the lateral movements of the model  (Local coordinate system)
-	/*!
-	 * The X parameter contains the relative movement in the horizontal axes
-	 * \param x x orientation angle
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void RotateX(double x);
-
-	//! Implements the lateral movements of the model  (Local coordinate system)
-	/*!
-	 * The Y parameter contains the relative movement in the vertical axes
-	 * \param y y orientation angle
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void RotateY(double y);
-
-	//! Rotate the model on its own axes  (Local coordinate system)
-	/*!
-	 * This function rotate the model on its own axis the value of an angle given
-	 * by the "Rotation" variable the rotation is produced acting on the actors who compose the model.
-	 * \param rotation rotation angle (radians)
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void RotateZ(double rotation);
-
-	//! Reset model to its origin
-	virtual void Reset();
-	//! Restore model to its last position/orientation
-	virtual void Restore();
-
 	//! Hide scenario model.
 	/*!
 	 * Must be implemented in inherited classes
@@ -340,6 +255,13 @@ public:
 	 * Note: this function must be implemented in inheriting classes
 	 */
 	virtual void Show();
+
+	//! Enable model.
+	/*!
+	 * Must be implemented in inherited classes
+	 * Note: this function must be implemented in inheriting classes
+	 */
+	virtual void Enable();
 
 	//! Disable model.
 	/*!
@@ -355,7 +277,7 @@ public:
 	 * - be computed in collision detection.
 	 * - be used in simulation.
 	 */
-	bool IsVisible(){ return this->Status == Visible;};
+	bool IsVisible(){ return this->Visibility == 1;};
 
 	//! Check if model is hidden
 	/*!
@@ -364,7 +286,7 @@ public:
 	 * - be computed in collision detection.
 	 * It will be used in simulation.
 	 */
-	bool IsHidden(){ return this->Status == Hidden;};
+	bool IsHidden(){ return this->Visibility == 0;};
 
 	//! Check if model is disabled.
 	/*!
@@ -408,8 +330,10 @@ protected:
 	//! Model data file reader
 	vtkXMLPolyDataReader * Reader;
 
-	//! Transform function of the model actor
-	vtkTransform * Transform;
+	//! Transform Matrix
+	vtkMatrix4x4 * Matrix;
+
+	//vtkTransform * Transform;
 
 	//! Smoothing filter
 	vtkSmoothPolyDataFilter * SmoothFilter;
@@ -425,15 +349,6 @@ protected:
 
 	//! Model initialization flag
 	bool Initialized;
-
-	//! Scale factor (size)
-	double Scale[3];
-	//! Origin point for transforms
-	double Origin[3];
-	//! Object Position
-	double Position[3];
-	//! Object orientation: Yaw, Pitch, Roll angles
-	double Orientation[3];
 
 	double Color[3];
 

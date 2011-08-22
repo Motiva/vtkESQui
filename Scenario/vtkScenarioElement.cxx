@@ -71,7 +71,7 @@ vtkScenarioElement::vtkScenarioElement() {
 	this->Initialized = 0;
 
 	this->Type = Organ;
-	this->Status = Visible;
+	this->Status = Enabled;
 	this->Scale[0] = this->Scale[1] = this->Scale[2] = 1.0;
 	this->DeltaT = 1.0;
 
@@ -82,11 +82,14 @@ vtkScenarioElement::vtkScenarioElement() {
 	this->Origin[0]=this->Origin[1]=this->Origin[2]=0.0;
 	this->Direction[0]=this->Direction[1]=this->Direction[2]=0.0;
 
+	this->Transform = NULL;
+	this->Matrix = NULL;
+
 	this->CollisionModel = NULL;
 	this->VisualizationModel = NULL;
 	this->DeformationModel = NULL;
 
-	this->Models = vtkModelCollection::New();
+	this->Models = NULL;
 }
 
 //--------------------------------------------------------------------------
@@ -145,36 +148,75 @@ vtkDeformationModel * vtkScenarioElement::GetDeformationModel(){
 	return this->DeformationModel;
 }
 
+//--------------------------------------------------------------------------
+void vtkScenarioElement::SetTransform(vtkTransform * t){
+	this->Transform = t;
+}
+
+//--------------------------------------------------------------------------
+vtkTransform * vtkScenarioElement::GetTransform(){
+	return this->Transform;
+}
+
+//--------------------------------------------------------------------------
+void vtkScenarioElement::SetMatrix(vtkMatrix4x4 * m){
+	this->Matrix = m;
+}
+
+//--------------------------------------------------------------------------
+vtkMatrix4x4 * vtkScenarioElement::GetMatrix(){
+	return this->Matrix;
+}
+
 //----------------------------------------------------------------------------
 void vtkScenarioElement::Init()
 {
 	if(!this->Initialized)
 	{
+		this->Transform = vtkTransform::New();
+		// Translate model to desired position & orientation
+		this->Transform->Translate(this->Position);
+		//Rotate model over itself
+		this->Transform->RotateX(this->Orientation[0]);
+		this->Transform->RotateY(this->Orientation[1]);
+		this->Transform->RotateZ(this->Orientation[2]);
+		//Set scale model
+		this->Transform->Scale(this->Scale);
+		// Set transform matrix
+		this->Matrix = this->Transform->GetMatrix();
+
+		this->Models = vtkModelCollection::New();
+
 		if(this->VisualizationModel)
 		{
 			this->VisualizationModel->SetObjectId(this->ObjectId);
 			this->VisualizationModel->SetId(this->Id);
-			if(!this->VisualizationModel->IsInitialized()) this->VisualizationModel->Init();
 			this->Models->AddModel(this->VisualizationModel);
 
 			if(this->CollisionModel)
 			{
 				this->CollisionModel->SetObjectId(this->ObjectId);
 				this->CollisionModel->SetId(this->Id);
-				if(!this->CollisionModel->IsInitialized()) this->CollisionModel->Init();
+				this->CollisionModel->SetVisualizationModel(this->VisualizationModel);
 				this->Models->AddModel(this->CollisionModel);
 
 				if(this->DeformationModel)
 				{
 					this->DeformationModel->SetObjectId(this->ObjectId);
 					this->DeformationModel->SetId(this->Id);
-					if(!this->DeformationModel->IsInitialized()) this->DeformationModel->Init();
+					//Set source meshes for synchronization
+					this->DeformationModel->SetVisualizationModel(this->VisualizationModel);
+					this->DeformationModel->SetCollisionModel(this->CollisionModel);
 					this->Models->AddModel(this->DeformationModel);
-
-					//Set source mesh for synchronization
-					this->VisualizationModel->SetSource(this->DeformationModel->GetOutput());
-					//Set source mesh for synchronization
-					this->CollisionModel->SetSource(this->VisualizationModel->GetOutput());
+				}
+			}
+			//Set Transform matrix to the models
+			this->Models->InitTraversal();
+			while (vtkModel * model = this->Models->GetNextModel())
+			{
+				if(!model->IsInitialized()){
+					model->SetMatrix(this->Matrix);
+					model->Init();
 				}
 			}
 		}
@@ -195,20 +237,40 @@ int vtkScenarioElement::RequestData(
 
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Update element status
-	if(this->IsHidden()) this->Hide();
-	else if(this->IsVisible()) this->Show();
-
 	this->UpdateProgress(0.10);
 
 	//Update sequence
+	//Save last position & calculate kinematic vales
+	this->Velocity[0] = this->Position[0];
+	this->Velocity[1] = this->Position[1];
+	this->Velocity[2] = this->Position[2];
+	this->Acceleration[0] = this->Velocity[0];
+	this->Acceleration[1] = this->Velocity[1];
+	this->Acceleration[2] = this->Velocity[2];
+
+	//Get transformed values
+	this->Transform->Update();
+
+	this->Transform->GetPosition(this->Position);
+	this->Transform->GetOrientation(this->Orientation);
+
+	//Update object velocity
+	//Velocity will be calculated from delta(Position)/dt
+	vtkMath::Subtract(this->Position, this->Velocity, this->Velocity);
+	vtkMath::MultiplyScalar(this->Velocity, 1/this->DeltaT);
+
+	//Update object acceleration
+	vtkMath::Subtract(this->Velocity, this->Acceleration, this->Acceleration);
+	vtkMath::MultiplyScalar(this->Acceleration, 1/this->DeltaT);
+
 	if(this->CollisionModel)
 	{
 		//Update collision model point positions and compute collisions
+		this->CollisionModel->SetVelocity(this->Velocity);
+		this->CollisionModel->SetAcceleration(this->Acceleration);
 		this->CollisionModel->Modified();
 		this->CollisionModel->Update();
 
-		//cout << "Coll: " << this->CollisionModel->GetCollisions()->GetNumberOfItems() << endl;
 		this->UpdateProgress(0.25);
 
 		//Update deformation model with detected collisions
@@ -216,6 +278,7 @@ int vtkScenarioElement::RequestData(
 		{
 			vtkCollisionCollection * collisions = this->CollisionModel->GetCollisions();
 			collisions->InitTraversal();
+			if(collisions->GetNumberOfItems() > 0) collisions->Print(cout);
 			while(vtkCollision * c = collisions->GetNextCollision())
 			{
 				int objectId = 0;
@@ -223,22 +286,20 @@ int vtkScenarioElement::RequestData(
 				{
 					objectId = 1;
 				}
+
+				// Translate Collision-Deformation point ids
 				int id = this->CollisionModel->GetHashMap()->GetId(c->GetPointId(objectId));
 				double * p = this->VisualizationModel->GetOutput()->GetPoint(id);
-				//c->Print(cout);
-				//cout << "p[" << id << "]: (" << p[0] << ", " << p[1] << ", " << p[2] << ")\n";
-				//FIXME: Visualization == Deformation
 				c->SetPointId(1, id);
 				c->SetPoint(1, p);
+
 				//If displacement is zero (object is not moving) collision is ignored
-				if(vtkMath::Norm(c->GetDisplacement())>=0)
-				{
-					this->DeformationModel->AddCollision(c);
-				}
+				this->DeformationModel->AddCollision(c);
 			}
 
 			this->DeformationModel->Modified();
 			this->DeformationModel->Update();
+
 		}
 		this->UpdateProgress(0.50);
 		this->CollisionModel->RemoveAllCollisions();
@@ -248,11 +309,6 @@ int vtkScenarioElement::RequestData(
 	this->VisualizationModel->Update();
 
 	this->UpdateProgress(0.75);
-
-	//Get transformed localization values
-	this->VisualizationModel->GetPosition(this->Position);
-	this->VisualizationModel->GetOrientation(this->Orientation);
-	this->VisualizationModel->GetOrigin(this->Origin);
 
 	//Get movement parameters
 	if(this->CollisionModel)
@@ -279,88 +335,72 @@ void vtkScenarioElement::Translate(double * vector)
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Translate(double x, double y, double z) {
-	this->Models->InitTraversal();
-	while (vtkModel * model =  this->Models->GetNextModel())
-	{
-		model->Translate(x, y, z);
-	}
-
+	this->Transform->Translate(x, y, z);
 	this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::RotateWXYZ(double a, double x, double y, double z) {
-	this->Models->InitTraversal();
-	while (vtkModel * model =  this->Models->GetNextModel())
-	{
-		model->RotateWXYZ(a, x, y, z);
-	}
+	this->Transform->RotateWXYZ(a, x, y, z);
 	this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::RotateX(double x) {
-	this->Models->InitTraversal();
-	while (vtkModel * model =  this->Models->GetNextModel())
-	{
-		model->RotateX(x);
-	}
+	this->Transform->RotateX(x);
 	this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::RotateY(double y) {
-	this->Models->InitTraversal();
-	while (vtkModel * model =  this->Models->GetNextModel())
-	{
-		model->RotateY(y);
-	}
+	this->Transform->RotateY(y);
 	this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::RotateZ(double z)
 {
-	this->Models->InitTraversal();
-	while (vtkModel * model =  this->Models->GetNextModel())
-	{
-		model->RotateZ(z);
-	}
+	this->Transform->RotateZ(z);
 	this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Reset()
 {
-	this->Models->InitTraversal();
-	while (vtkModel * model =  this->Models->GetNextModel())
-	{
-		model->Reset();
-	}
-	this->Modified();
+	//FIXME: Use matrix inverse to reset position
+	this->Transform->Translate(this->Origin);
+	this->Transform->RotateZ(-this->Orientation[2]);
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Restore()
 {
-	this->Models->InitTraversal();
-	while (vtkModel * model =  this->Models->GetNextModel())
-	{
-		model->Restore();
-	}
-	this->Modified();
+	this->Transform->RotateZ(this->Orientation[2]);
+	vtkMath::MultiplyScalar(this->Origin, -1);
+	this->Transform->Translate(this->Origin);
+	vtkMath::MultiplyScalar(this->Origin, -1);
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Hide()
 {
-	this->Status = Hidden;
 	this->Models->InitTraversal();
 	while (vtkModel * model =  this->Models->GetNextModel())
 	{
 		model->Hide();
 	}
 
+}
+
+//--------------------------------------------------------------------------
+void vtkScenarioElement::Enable()
+{
+	this->Status = Enabled;
+	this->Models->InitTraversal();
+	while (vtkModel * model =  this->Models->GetNextModel())
+	{
+		model->Enable();
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -377,7 +417,6 @@ void vtkScenarioElement::Disable()
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Show()
 {
-	this->Status = Visible;
 	this->Models->InitTraversal();
 	while (vtkModel * model =  this->Models->GetNextModel())
 	{
@@ -385,13 +424,8 @@ void vtkScenarioElement::Show()
 	}
 }
 //--------------------------------------------------------------------------
-bool vtkScenarioElement::IsVisible(){
-	return this->Status == Visible;
-}
-
-//--------------------------------------------------------------------------
-bool vtkScenarioElement::IsHidden(){
-	return this->Status == Hidden;
+bool vtkScenarioElement::IsEnabled(){
+	return this->Status == Enabled;
 }
 
 //--------------------------------------------------------------------------
@@ -405,30 +439,6 @@ bool vtkScenarioElement::IsInitialized()
 {
 	return this->Initialized;
 }
-
-/*void vtkScenarioElement::BuildHashMap(vtkPolyData * a, vtkPolyData * b, vtkIdList * map)
-{
-	//Force data to be updated
-	a->Update();
-	b->Update();
-
-	//Create point locator to generate id map
-	vtkPointLocator * locator = vtkPointLocator::New();
-	locator->SetDataSet(b);
-
-	map->SetNumberOfIds(a->GetNumberOfPoints());
-
-	//cout << this->GetName() << "::HashMap \n";
-	for (int i=0; i<a->GetNumberOfPoints(); i++)
-	{
-		double * point = a->GetPoint(i);
-		vtkIdType id = locator->FindClosestPoint(point);
-		map->SetId(i, id);
-		double * p = b->GetPoint(id);
-		cout << "Map [" << i << "]: " << "("<< point[0] << "," << point[1] << "," << point[2] << ") ["<<
-				id << "]: " << "("<< p[0] << "," << p[1] << "," << p[2] << ")" <<  endl;
-	}
-}*/
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::PrintSelf(ostream& os,vtkIndent indent) {

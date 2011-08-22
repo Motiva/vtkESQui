@@ -219,6 +219,7 @@ void vtkSimulation::Init() {
 		elements->InitTraversal();
 		while(vtkScenarioElement * e = elements->GetNextElement())
 		{
+			e->SetDeltaT(this->SimulationTimerRate);
 			vtkCollisionModel *m = e->GetCollisionModel();
 			if(m)
 			{

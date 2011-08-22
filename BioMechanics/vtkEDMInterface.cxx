@@ -55,6 +55,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkXMLPolyDataReader.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
+#include "vtkIdList.h"
 #include "vtkTransform.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
@@ -177,56 +178,82 @@ int vtkEDMInterface::RequestData(
 	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	if(this->Collisions->GetNumberOfItems() > 0)
+	if(this->Status == Enabled)
 	{
-		//Set deformed mesh to last state
-		//this->Deformed->DeepCopy(this->DeformableMesh->GetOutput());
-		this->Deformed->DeepCopy(input);
-		vtkPoints * points = this->Deformed->GetPoints();
-		double point[3];
-
-		this->Collisions->InitTraversal();
-		while(vtkCollision * collision = this->Collisions->GetNextCollision())
+		if(this->Collisions->GetNumberOfItems() > 0)
 		{
-			if(collision->GetCollisionType() == vtkCollision::ToolOrgan)
+			//Set deformed mesh to last state
+			//this->Deformed->DeepCopy(this->DeformableMesh->GetOutput());
+			this->Deformed->DeepCopy(input);
+			vtkPoints * points = this->Deformed->GetPoints();
+			double point[3];
+
+			this->Collisions->InitTraversal();
+			while(vtkCollision * collision = this->Collisions->GetNextCollision())
 			{
-				//Get collided point
-				vtkIdType id = collision->GetPointId(1);
-				points->GetPoint(id, point);
-				//Add displacement
-				vtkMath::Add(point, collision->GetDisplacement(), point);
-				points->SetPoint(id, point);
+				if(collision->GetCollisionType() == vtkCollision::ToolOrgan)
+				{
+					//Get collided point
+					vtkIdType id = collision->GetPointId(1);
+					points->GetPoint(id, point);
+					//Add displacement
+					vtkMath::Add(point, collision->GetDisplacement(), point);
+					points->SetPoint(id, point);
+				}
+			}
+			//Reset collisions
+			this->Collisions->RemoveCollisions();
+
+			//Reset deformable mesh
+			this->DeformableMesh->SetInput(0, this->Deformed);
+			this->DeformableMesh->SetInput(1, this->ImageSource);
+			this->DeformableMesh->SetNumberOfIterations(0);
+		}
+
+		int n = this->DeformableMesh->GetNumberOfIterations();
+		if(n < this->NumberOfIterations)
+		{
+			//Increment iteration
+			this->DeformableMesh->SetNumberOfIterations(n+1);
+		}
+
+		//Update model
+		this->DeformableMesh->Update();
+
+		vtkPolyData * out = this->DeformableMesh->GetOutput();
+
+		//If source is defined -> Synchronize mesh
+		if(this->VisualizationModel)
+		{
+			vtkPolyData * source = vtkPolyData::SafeDownCast(this->VisualizationModel->GetInput());
+			if(this->HashMap->GetNumberOfIds() == 0)
+			{
+				//Build collision mesh hash map
+				this->BuildHashMap(input, source);
+			}
+
+			//Synchronize/Modify visualization mesh
+			vtkPoints * points = source->GetPoints();
+			for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
+			{
+				int id = this->HashMap->GetId(i);
+				double * p = out->GetPoint(id);
+				points->SetPoint(i, p);
 			}
 		}
-		//Reset collisions
-		this->Collisions->RemoveCollisions();
 
-		//Reset deformable mesh
-		this->DeformableMesh->SetInput(0, this->Deformed);
-		this->DeformableMesh->SetInput(1, this->ImageSource);
-		this->DeformableMesh->SetNumberOfIterations(0);
+		//Set visualization parameters
+		this->Actor->SetVisibility(this->Visibility);
+		if(this->IsVisible())
+		{
+			this->Actor->GetProperty()->SetColor(this->Color);
+			this->Actor->GetProperty()->SetOpacity(this->Opacity);
+			this->Mapper->SetInput(out);
+		}
+
+		output->ShallowCopy(out);
 	}
-
-	int n = this->DeformableMesh->GetNumberOfIterations();
-	if(n < this->NumberOfIterations)
-	{
-		//Increment iteration
-		this->DeformableMesh->SetNumberOfIterations(n+1);
-	}
-
-	//Update model
-	this->DeformableMesh->Update();
-
-	//Set visualization parameters
-	this->Actor->GetProperty()->SetColor(this->Color);
-	this->Actor->GetProperty()->SetOpacity(this->Opacity);
-	this->Actor->SetVisibility(this->Visibility);
-
-	this->Mapper->SetInput(this->DeformableMesh->GetOutput());
-	//this->Mapper->Modified();
-	//this->Mapper->Update();
-
-	output->ShallowCopy(this->DeformableMesh->GetOutput());
+	else output->ShallowCopy(input);
 
 	return 1;
 }

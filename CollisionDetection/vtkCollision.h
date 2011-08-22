@@ -135,6 +135,22 @@ public:
 	 */
 	int GetPointId(int id);
 	
+	//! Set the element sync mesh point identifier where the collision has occurred
+	/*!
+	 * \param id index of the element in the collection
+	 * \param pointId sync mesh point identifier
+	 * \sa GetPointId()
+	 */
+	void SetSyncPointId(int id, int pointId);
+
+	//! Get the collided point identifier
+	/*!
+	 * \param id index of the element in the collection
+	 * \return point id of the organ mesh
+	 * \sa SetPointId(int id, int pointId)
+	 */
+	int GetSyncPointId(int id);
+
 	//! Set the organ mesh point position of the collision
 	/*!
 	 * \param id index of the element in the collection
@@ -211,14 +227,17 @@ protected:
 	//! Collided objects identifiers
 	vtkIdList * ObjectIds;
 
-	//! Collision point on both objects
-	vtkPoints * Points;
+	//! Clashed point cell identifier
+	vtkIdList * CellIds;
 
 	//! Point identifiers of the collided elements.
 	vtkIdList * PointIds;
 
-	//! Clashed point cell identifier
-	vtkIdList * CellIds;
+	//! Collision point on both objects
+	vtkPoints * Points;
+
+	//! Point identifiers of the synchronization meshes.
+	vtkIdList * SyncPointIds;
 
 	//! Scalar distance between points
 	double Distance;

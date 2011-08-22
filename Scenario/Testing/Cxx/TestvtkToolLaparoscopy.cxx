@@ -84,24 +84,20 @@ int TestvtkToolLaparoscopy(int argc, char * argv[])
 	vis->SetName("stick_vis");
 	vis->SetFileName(fn);
 	vis->SetTextureFileName(tfn);
-	vis->SetPosition(3.0, 0.0, 0.0);
-	vis->SetOrientation(0, 0, -20);
 	vis->SetOpacity(1.0);
 	vis->SetColor(1.0, 1.0, 1.0);
-	vis->Init();
 
 	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
 	col->SetName("vtkbioeng");
 	col->SetFileName(cfn);
-	col->SetPosition(3.0, 0.0, 0.0);
-	col->SetOrientation(0, 0, -20);
 	col->SetOpacity(0.5);
 	col->SetColor(0.0, 0.0, 1.0);
-	col->Init();
 
 	vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
 	stick->SetId(0);
 	stick->SetName("stick");
+	stick->SetPosition(3.0, 0.0, 0.0);
+	stick->SetOrientation(0, 0, -20);
 	stick->SetVisualizationModel(vis);
 	stick->SetCollisionModel(col);
 	stick->Init();
@@ -113,24 +109,20 @@ int TestvtkToolLaparoscopy(int argc, char * argv[])
 	visb->SetName("ball_vis");
 	visb->SetFileName(fnb);
 	visb->SetTextureFileName(tfnb);
-	visb->SetPosition(3.0, 0.0, 0.0);
-	visb->SetOrientation(0, 0, -20);
 	visb->SetOpacity(1.0);
 	visb->SetColor(1.0, 0.0, 1.0);
-	visb->Init();
 
 	vtkSmartPointer<vtkCollisionModel> colb = vtkSmartPointer<vtkCollisionModel>::New();
 	colb->SetName("ball_vtkbioeng");
 	colb->SetFileName(cfnb);
-	colb->SetPosition(3.0, 0.0, 0.0);
-	colb->SetOrientation(0, 0, -20);
 	colb->SetOpacity(0.5);
 	colb->SetColor(0.0, 0.0, 1.0);
-	colb->Init();
 
 	vtkSmartPointer<vtkScenarioElement> ball = vtkSmartPointer<vtkScenarioElement>::New();
 	ball->SetId(1);
 	ball->SetName("ball");
+	ball->SetPosition(3.0, 0.0, 0.0);
+	ball->SetOrientation(0, 0, -20);
 	ball->SetVisualizationModel(visb);
 	ball->SetCollisionModel(colb);
 	ball->Init();

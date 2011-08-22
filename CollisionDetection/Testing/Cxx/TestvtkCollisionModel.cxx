@@ -23,8 +23,6 @@ int TestvtkCollisionModel(int argc, char * argv[]){
 
 	vtkSmartPointer<vtkCollisionModel> model = vtkSmartPointer<vtkCollisionModel>::New();
 	model->SetFileName(fnc);
-	model->SetPosition(1.0, 2.0, 0.5);
-	model->SetOrientation(10,0,0);
 	model->SetOpacity(0.5);
 	model->SetColor(0,1,1);
 	model->SetRadius(0.05);

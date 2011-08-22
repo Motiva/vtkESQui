@@ -69,22 +69,17 @@ vtkModel::vtkModel()
 	this->Name = NULL;
 	this->FileName = NULL;
 	this->Initialized = 0;
-	this->Status = Visible;
-
-	this->Scale[0] = this->Scale[1] = this->Scale[2] = 1.0;
-	this->Origin[0]=this->Origin[1]=this->Origin[2]=0.0;
-	this->Position[0]=this->Position[1]=this->Position[2]=0.0;
-	this->Orientation[0]=this->Orientation[1]=this->Orientation[2]=0.0;
+	this->Status = Enabled;
 	this->Color[0]=this->Color[1]=this->Color[2]=1.0;
 	this->Opacity = 1.0;
 	this->Visibility = 1;
 
-	this->Reader = vtkXMLPolyDataReader::New();
-	this->SmoothFilter = vtkSmoothPolyDataFilter::New();
-	this->Transform = vtkTransform::New();
-	this->Actor = vtkActor::New();
-	this->Mapper = vtkPolyDataMapper::New();
-	this->HashMap = vtkIdList::New();
+	this->Matrix = NULL;
+	this->Reader = NULL;
+	this->SmoothFilter = NULL;
+	this->Actor = NULL;
+	this->Mapper = NULL;
+	this->HashMap = NULL;
 
 	//optional second input
 	this->SetNumberOfInputPorts(2);
@@ -94,7 +89,6 @@ vtkModel::vtkModel()
 vtkModel::~vtkModel()
 {
 	if(this->Reader) this->Reader->Delete();
-	if(this->Transform) this->Transform->Delete();
 	if(this->HashMap) this->HashMap->Delete();
 }
 
@@ -139,9 +133,15 @@ int vtkModel::FillOutputPortInformation(int, vtkInformation* info)
 }
 
 //----------------------------------------------------------------------------
-vtkTransform * vtkModel::GetTransform()
+void vtkModel::SetMatrix(vtkMatrix4x4 * m)
 {
-	return this->Transform;
+	this->Matrix = m;
+}
+
+//----------------------------------------------------------------------------
+vtkMatrix4x4 * vtkModel::GetMatrix()
+{
+	return this->Matrix;
 }
 
 //----------------------------------------------------------------------------
@@ -161,7 +161,6 @@ vtkIdList * vtkModel::GetHashMap()
 	return this->HashMap;
 }
 
-
 //--------------------------------------------------------------------------
 void vtkModel::Init()
 {
@@ -169,26 +168,28 @@ void vtkModel::Init()
 	{
 		//Retrieve model input from file
 		if(this->FileName) {
+			this->Reader = vtkXMLPolyDataReader::New();
 			this->Reader->SetFileName(this->FileName);
 			this->Reader->Update();
 			this->SetInputConnection(this->Reader->GetOutputPort());
 		}
 
-		// Translate model to desired position & orientation
-		this->Transform->Translate(this->Position);
-		//Rotate model over itself
-		this->Transform->RotateX(this->Orientation[0]);
-		this->Transform->RotateY(this->Orientation[1]);
-		this->Transform->RotateZ(this->Orientation[2]);
-		//Set scale model
-		this->Transform->Scale(this->Scale);
+		this->SmoothFilter = vtkSmoothPolyDataFilter::New();
+		this->Actor = vtkActor::New();
+		this->Mapper = vtkPolyDataMapper::New();
 
 		//Set smoothed output
 		this->SmoothFilter->SetNumberOfIterations(1);
 
 		//Set actor transformation matrix
-		this->Actor->SetUserMatrix(this->Transform->GetMatrix());
+		if(this->Matrix)
+		{
+			this->Actor->SetUserMatrix(this->Matrix);
+		}
+
 		this->Actor->SetMapper(this->Mapper);
+
+		this->HashMap = vtkIdList::New();
 
 		//Set as initialized
 		this->Initialized = 1;
@@ -219,12 +220,6 @@ int vtkModel::RequestData(
 	vtkPolyData *output = vtkPolyData::SafeDownCast(
 			outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Get transformed values
-	this->Transform->Update();
-
-	this->Transform->GetPosition(this->Position);
-	this->Transform->GetOrientation(this->Orientation);
-
 	//If source is defined -> Synchronize mesh
 	if(source)
 	{
@@ -251,13 +246,15 @@ int vtkModel::RequestData(
 	}
 
 	//Set visualization parameters
-	this->Actor->GetProperty()->SetColor(this->Color);
-	this->Actor->GetProperty()->SetOpacity(this->Opacity);
 	this->Actor->SetVisibility(this->Visibility);
+	if(this->Status == Enabled){
+		this->Actor->GetProperty()->SetColor(this->Color);
+		this->Actor->GetProperty()->SetOpacity(this->Opacity);
 
-	this->Mapper->SetInput(input);
-	this->Mapper->Modified();
-	this->Mapper->Update();
+		this->Mapper->SetInput(input);
+		this->Mapper->Modified();
+		this->Mapper->Update();
+	}
 
 	output->ShallowCopy(input);
 
@@ -290,89 +287,32 @@ void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
 }
 
 //--------------------------------------------------------------------------
-void vtkModel::Translate(double * vector)
-{
-	this->Translate(vector[0], vector[1], vector[2]);
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::Translate(double x, double y, double z) {
-	//cout << "vtkModel::Translate(" << x << ", " << y << ", "<< z << ")" << endl;
-	this->Transform->Translate(x, y, z);
-	this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::RotateWXYZ(double a, double x, double y, double z) {
-	this->Actor->RotateWXYZ(a, x, y, z);
-	this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::RotateX(double x) {
-	//cout << this->GetName() << "::Rx\n";
-	this->Transform->RotateX(x);
-	this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::RotateY(double y) {
-	//cout << this->GetName() << "::Ry\n";
-	this->Transform->RotateY(y);
-	this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::RotateZ(double z)
-{
-	//cout << this->GetName() << "::Rz\n";
-	this->Transform->RotateZ(z);
-	this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::Reset()
-{
-	//cout << this->GetName() << "::Reset\n";
-	this->Transform->Translate(this->Origin);
-	this->Transform->RotateZ(-this->Orientation[2]);
-	this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::Restore()
-{
-	//cout << this->GetName() << "::Restore\n";
-	this->Transform->RotateZ(this->Orientation[2]);
-	vtkMath::MultiplyScalar(this->Origin, -1);
-	this->Transform->Translate(this->Origin);
-	vtkMath::MultiplyScalar(this->Origin, -1);
-	this->Modified();
-}
-//--------------------------------------------------------------------------
 void vtkModel::Hide()
 {
-	this->Status = Hidden;
-	this->Visibility = 0;
-	this->Modified();
+	this->Visibility = 0.0;
+}
+
+//--------------------------------------------------------------------------
+void vtkModel::Show()
+{
+	this->Visibility = 1;
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::Disable()
 {
 	this->Status = Disabled;
-	this->Visibility = 0;
+	this->Hide();
 	this->Modified();
 }
 
 //--------------------------------------------------------------------------
-void vtkModel::Show()
+void vtkModel::Enable()
 {
-	this->Status = Visible;
-	this->Visibility = 1;
+	this->Status = Enabled;
+	this->Show();
 	this->Modified();
 }
-
 
 //--------------------------------------------------------------------------
 void vtkModel::PrintSelf(ostream&os, vtkIndent indent)
@@ -383,10 +323,6 @@ void vtkModel::PrintSelf(ostream&os, vtkIndent indent)
 	os << indent << "Status: " << this->Status << "\n";
 	if(this->Name) os << indent << "Name: " << this->Name << "\n";
 	if(this->FileName) os << indent << "FileName: " << this->FileName << "\n";
-	os << indent << "Scale: " << this->Scale[0] << ", " << this->Scale[1] << ", " << this->Scale[2] << endl;
-	os << indent << "Origin: " << this->Origin[0] << ", " << this->Origin[1] << ", " << this->Origin[2] << endl;
-	os << indent << "Orientation: " << this->Orientation[0] << ", " << this->Orientation[1] << ", " << this->Orientation[2] <<  endl;
-	os << indent << "Position: " << this->Position[0] << ", " << this->Position[1] << ", " << this->Position[2] << endl;
 	os << indent << "Color: " << this->Color[0] << ", " << this->Color[1] << ", " << this->Color[2] << endl;
 	os << indent << "Opacity: " << this->Opacity << endl;
 

@@ -64,8 +64,6 @@ int TestvtkVisualizationModel(int argc, char * argv[])
 	vtkSmartPointer<vtkVisualizationModel> model = vtkSmartPointer<vtkVisualizationModel>::New();
 	model->SetFileName(filename);
 	model->SetTextureFileName(tfilename);
-	model->SetPosition(3.0, 2.5, 0.0);
-	model->SetOrientation(25, -15, 30);
 	model->SetVisibility(1);
 	model->SetOpacity(1.0);
 	model->Init();

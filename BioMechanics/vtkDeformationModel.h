@@ -81,6 +81,11 @@ public:
 	 */
 	virtual void Init();
 
+	//! Set Gravity Force (m/s2)
+	vtkSetVector3Macro(Gravity, double);
+	//! Get Gravity Force (m/s2)
+	vtkGetVector3Macro(Gravity, double);
+
 	//!Set the detected collisions
 	/*!
 	 * Set a collection of collisions to the model. Any collision previously added will be removed.
@@ -140,10 +145,17 @@ public:
 	 */
 	virtual void RemoveBoundaryConditions();
 
-	//! Set Gravity Force (m/s2)
-	vtkSetVector3Macro(Gravity, double);
-	//! Get Gravity Force (m/s2)
-	vtkGetVector3Macro(Gravity, double);
+	//! Set Collision model for synchronization purposes
+	void SetCollisionModel(vtkModel * col);
+
+	//! Get Collision model for synchronization purposes
+	vtkModel * GetCollisionModel();
+
+	//! Set visualization model for synchronization purposes
+	void SetVisualizationModel(vtkModel * vis);
+
+	//! Get visualization model for synchronization purposes
+	vtkModel * GetVisualizationModel();
 
 protected:
 
@@ -164,6 +176,12 @@ protected:
 	 * This acts as pointer to the deformation model collection of conditions
 	 */
 	vtkBoundaryConditionCollection * BoundaryConditions;
+
+	//! Collision Model
+	vtkModel * CollisionModel;
+
+	//! Visualization Model
+	vtkModel * VisualizationModel;
 
 private:
 	vtkDeformationModel (const vtkDeformationModel &);

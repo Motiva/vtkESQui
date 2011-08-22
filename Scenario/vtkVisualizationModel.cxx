@@ -129,45 +129,19 @@ int vtkVisualizationModel::RequestData(
 	}
 	vtkPolyData *output = vtkPolyData::SafeDownCast(
 			outInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-	//Get transformed values
-	this->Transform->Update();
-
-	this->Transform->GetPosition(this->Position);
-	this->Transform->GetOrientation(this->Orientation);
-
-	//If source is defined -> Synchronize mesh
-	if(source)
+	if(this->Status == Enabled)
 	{
-		//cout << "source is present\n";
-		/*this->SmoothFilter->SetInput(input);
-			this->SmoothFilter->SetSource(source);
-			this->SmoothFilter->Update();
-			this->Mapper->SetInput(this->SmoothFilter->GetOutput());
-			this->Mapper->Update();
-			output->ShallowCopy(this->SmoothFilter->GetOutput());*/
-
-		if(this->HashMap->GetNumberOfIds() == 0)
+		//Set visualization parameters
+		this->Actor->SetVisibility(this->Visibility);
+		if(this->IsVisible())
 		{
-			this->BuildHashMap(input, source);
-		}
+			this->Actor->GetProperty()->SetColor(this->Color);
+			this->Actor->GetProperty()->SetOpacity(this->Opacity);
 
-		vtkPoints * points = input->GetPoints();
-		for(int i=0; i < points->GetNumberOfPoints(); i++){
-			double * p = source->GetPoint(this->HashMap->GetId(i));
-			points->SetPoint(i, p);
-			//double * po = input->GetPoint(i);
-			//if(i==20) cout << "ps: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
+			this->Mapper->Modified();
+			this->Mapper->Update();
 		}
 	}
-
-	//Set visualization parameters
-	this->Actor->GetProperty()->SetColor(this->Color);
-	this->Actor->GetProperty()->SetOpacity(this->Opacity);
-	this->Actor->SetVisibility(this->Visibility);
-
-	this->Mapper->Modified();
-	this->Mapper->Update();
 
 	output->ShallowCopy(input);
 

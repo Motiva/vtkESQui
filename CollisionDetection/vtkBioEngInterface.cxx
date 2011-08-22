@@ -115,7 +115,7 @@ void vtkBioEngInterface::Update()
 				vtkCollisionModel * m1 = vtkCollisionModel::SafeDownCast(this->Models->GetModel(jd));
 				//Avoid collisions between same object elements
 				if((m0->GetObjectId() != m1->GetObjectId())
-						&& (m0->IsVisible() && m1->IsVisible()))
+						&& (!m0->IsDisabled() && !m1->IsDisabled()))
 				{
 					//Each collision model transformed polydata (mx-GetOutput(1) is set as an input of the CDL
 					this->DetectionFilter->SetInput(0, m0->GetOutput(1));
@@ -195,11 +195,13 @@ void vtkBioEngInterface::Update()
 
 						//Tool cell point
 						collision->SetCellId(0, cellIds->GetId(0));
+						//Set visualization (hashmap) point id
 						collision->SetPointId(0, pointIds0->GetId(pointIds->GetId(0)));
 						collision->SetPoint(0, points0->GetPoint(pointIds->GetId(0)));
 
 						//Organ cell point
 						collision->SetCellId(1, cellIds->GetId(1));
+						//Set visualization (hashmap) point id
 						collision->SetPointId(1, pointIds1->GetId(pointIds->GetId(1)));
 						collision->SetPoint(1, points1->GetPoint(pointIds->GetId(1)));
 
@@ -209,7 +211,7 @@ void vtkBioEngInterface::Update()
 						collision->SetDisplacement(d);
 
 						// Find collision in the collection whenever the collision has a displacement
-						if(m1->GetCollisions()->FindCollision(collision) < 0)
+						if(vtkMath::Norm(d) > 0 && m1->GetCollisions()->FindCollision(collision) < 0)
 						{
 							//Not found -> Insert collision in the model
 							m0->AddCollision(collision);
