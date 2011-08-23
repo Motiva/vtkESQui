@@ -153,6 +153,7 @@ IF(VTK_FOUND)
          ON)
 
     IF (VTKESQUI_WRAP_PYTHON)
+      SET(VTK_WRAP_PYTHON_FIND_LIBS ON)
       INCLUDE(${VTK_CMAKE_DIR}/vtkWrapPython.cmake)
       IF (WIN32)
         IF (NOT BUILD_SHARED_LIBS)

@@ -25,7 +25,7 @@ ENDIF (VTKESQUI_WRAP_TCL)
 # source files
 #
 IF (VTKESQUI_WRAP_PYTHON)
-  #INCLUDE(KitCommonPythonWrapBlock)
+  INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonPythonWrapBlock.cmake)
 ENDIF (VTKESQUI_WRAP_PYTHON)
 
 # if we are wrapping into Java then add the library and extra
