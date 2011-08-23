@@ -95,6 +95,8 @@ public:
 	//! Set motion equation solver type.
 	vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);
 
+	virtual void AddDisplacement(vtkIdType pointId, double * force);
+
 protected:
 	vtkPSSInterface();
 	~vtkPSSInterface();

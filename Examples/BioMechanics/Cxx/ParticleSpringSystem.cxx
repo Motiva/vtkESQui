@@ -18,14 +18,10 @@
 #include "vtkXMLPolyDataReader.h"
 
 #include "vtkTimerLog.h"
-#include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
 
 #include "vtkSmartPointer.h"
 #include "vtkCommand.h"
-
-#include "vtkCollision.h"
-#include "vtkCollisionCollection.h"
 
 #include "vtkPSSInterface.h"
 
@@ -60,41 +56,20 @@ public:
 
 				double p[3] = {bounds[0], 0, 0};
 
-				locator->SetDataSet(mesh);
-
 				vtkIdList * list = vtkIdList::New();
-				vtkDoubleArray * directions = vtkDoubleArray::New();
-				directions->SetNumberOfComponents(3);
-
+				locator->SetDataSet(mesh);
 				locator->FindClosestNPoints(5, p, list);
 
 				//Set Collisions
-				double dir[3];
-				dir[0] = 0.2;//-0.1;
-				dir[1] = 0.05;
-				dir[2] = 0;//0.05;
+				double force[3];
+				force[0] = 0.15;//-0.1;
+				force[1] = 0.05;
+				force[2] = 0;//0.05;
 
 				for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
 				{
-					double * point = mesh->GetPoint(list->GetId(i));
-					directions->InsertNextTuple(dir);
-					vtkIdType id = list->GetId(i);
-
-					//Insert collision info
-					vtkCollision * collision = vtkCollision::New();
-					collision->SetCollisionType(vtkCollision::ToolOrgan);
-					collision->SetElementId(0, 0);
-					collision->SetElementId(1, 0);
-
-					//Organ cell point
-					collision->SetPointId(1, id);
-					collision->SetPoint(1, point);
-					//collision->InsertCellId(0, organCellId);
-					collision->SetDisplacement(dir);
-
-					collision->Print(cout);
-
-					this->DeformationModel->AddCollision(collision);
+					int id = list->GetId(i);
+					this->DeformationModel->AddDisplacement(id, force);
 				}
 			}
 			else if (tid == this->FasterTimerId)
@@ -179,7 +154,7 @@ int main(int argc, char * argv[])
 	pss->SetDistanceCoefficient(10);
 	pss->SetDampingCoefficient(5);//Friction
 	pss->SetMass(.5);
-	pss->SetDeltaT(0.001);//10ms
+	pss->SetDeltaT(0.001);//1ms
 	pss->Init();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
@@ -221,7 +196,7 @@ int main(int argc, char * argv[])
 	cb->SetDeformationModel(pss);
 
 	//Create a faster timer for DeformationModel update
-	tid = iren->CreateRepeatingTimer(50);
+	tid = iren->CreateRepeatingTimer(1);
 	cb->SetFasterTimerId(tid);
 
 	//Create a collision every 5 seconds
@@ -231,7 +206,7 @@ int main(int argc, char * argv[])
 	// Create a slower repeating timer to trigger Render calls.
 	// (This fires at the rate of approximately 25 frames per second.)
 	//
-	tid = iren->CreateRepeatingTimer(25);
+	tid = iren->CreateRepeatingTimer(40);
 	cb->SetRenderTimerId(tid);
 
 	iren->Start();

@@ -7,7 +7,6 @@ CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})
 TARGET_LINK_LIBRARIES(${KIT}CxxTests 
     ${PROJECT_NAME}BioMechanics
-    ${PROJECT_NAME}CollisionDetection
     vtkCommon)
 
 SET (TestsToRun ${Tests})

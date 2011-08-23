@@ -20,8 +20,8 @@
 #include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
 
-#include "vtkCollision.h"
-#include "vtkCollisionCollection.h"
+//#include "vtkCollision.h"
+//#include "vtkCollisionCollection.h"
 
 #include "vtkCommand.h"
 
@@ -73,25 +73,8 @@ public:
 
 					for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
 					{
-						double * point = mesh->GetPoint(list->GetId(i));
-						directions->InsertNextTuple(dir);
-						vtkIdType id = list->GetId(i);
-
-						//Insert collision info
-						vtkCollision * collision = vtkCollision::New();
-						collision->SetCollisionType(vtkCollision::ToolOrgan);
-						collision->SetElementId(0, 0);
-						collision->SetElementId(1, 0);
-
-						//Organ cell point
-						collision->SetPointId(1, id);
-						collision->SetPoint(1, point);
-						//collision->InsertCellId(0, organCellId);
-						collision->SetDisplacement(dir);
-
-						//collision->Print(cout);
-
-						this->DeformationModel->AddCollision(collision);
+						int id = list->GetId(i);
+						this->DeformationModel->AddDisplacement(id, dir);
 					}
 
 			}

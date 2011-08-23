@@ -26,6 +26,7 @@ ENDIF(VTKESQUI_USE_HAPTICS)
  # Set your list of libraries here.
 SET(KIT_LIBS 
     ${PROJECT_NAME}Scenario
+    ${PROJECT_NAME}BioMechanics
     ${PROJECT_NAME}CollisionDetection
     vtkRendering
 	vtkGraphics 
@@ -36,7 +37,8 @@ SET(KIT_LIBS
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
     ${PROJECT_NAME}ScenarioTCL
-    ${PROJECT_NAME}SimulationTCL
+    ${PROJECT_NAME}BioMechanicsTCL
+    ${PROJECT_NAME}CollisionDetectionTCL
     vtkRenderingTCL
     vtkGraphicsTCL
 	vtkCommonTCL

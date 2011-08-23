@@ -278,7 +278,7 @@ int vtkScenarioElement::RequestData(
 		{
 			vtkCollisionCollection * collisions = this->CollisionModel->GetCollisions();
 			collisions->InitTraversal();
-			if(collisions->GetNumberOfItems() > 0) collisions->Print(cout);
+			//if(collisions->GetNumberOfItems() > 0) collisions->Print(cout);
 			while(vtkCollision * c = collisions->GetNextCollision())
 			{
 				int objectId = 0;
@@ -289,12 +289,12 @@ int vtkScenarioElement::RequestData(
 
 				// Translate Collision-Deformation point ids
 				int id = this->CollisionModel->GetHashMap()->GetId(c->GetPointId(objectId));
-				double * p = this->VisualizationModel->GetOutput()->GetPoint(id);
-				c->SetPointId(1, id);
-				c->SetPoint(1, p);
+				//double * p = this->VisualizationModel->GetOutput()->GetPoint(id);
+				//c->SetPointId(1, id);
+				//c->SetPoint(1, p);
 
 				//If displacement is zero (object is not moving) collision is ignored
-				this->DeformationModel->AddCollision(c);
+				this->DeformationModel->AddDisplacement(id, c->GetDisplacement());
 			}
 
 			this->DeformationModel->Modified();

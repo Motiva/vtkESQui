@@ -252,7 +252,7 @@ int main(int argc, char * argv[])
 	def_stomach->SetGravity(0.0, 0.0, 0.0);
 
 	//Set particle-spring system specific parameters
-	def_stomach->SetSpringCoefficient(100);
+	def_stomach->SetSpringCoefficient(300);
 	def_stomach->SetDampingCoefficient(5);
 	def_stomach->SetDistanceCoefficient(20);
 	def_stomach->SetMass(1);
@@ -261,8 +261,10 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkScenarioElement> el_stomach = vtkSmartPointer<vtkScenarioElement>::New();
 	el_stomach->SetName("Sphere");
 	el_stomach->SetVisualizationModel(vis_stomach);
-	el_stomach->SetCollisionModel(col_stomach);
-	el_stomach->SetDeformationModel(def_stomach);
+	//el_stomach->SetCollisionModel(col_stomach);
+	//el_stomach->SetDeformationModel(def_stomach);
+	el_stomach->SetPosition(0,0,-4);
+	el_stomach->SetOrientation(-30, 0, 0);
 
 	vtkSmartPointer<vtkOrgan> stomach = vtkSmartPointer<vtkOrgan>::New();
 	stomach->AddElement(el_stomach);

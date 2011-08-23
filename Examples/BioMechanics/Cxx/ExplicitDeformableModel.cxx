@@ -17,11 +17,7 @@
 #include "vtkSphereSource.h"
 
 #include "vtkTimerLog.h"
-#include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
-
-#include "vtkCollision.h"
-#include "vtkCollisionCollection.h"
 
 #include "vtkCommand.h"
 
@@ -47,7 +43,6 @@ public:
 
 			if (tid == this->FastTimerId)
 			{
-				cout << "New collision\n";
 				vtkPolyData * mesh = vtkPolyData::SafeDownCast(this->DeformationModel->GetInput());
 
 				//Locate collision points
@@ -57,43 +52,23 @@ public:
 
 					double p[3] = {bounds[0], 0, 0};
 
-					locator->SetDataSet(mesh);
-
 					vtkIdList * list = vtkIdList::New();
-					vtkDoubleArray * directions = vtkDoubleArray::New();
-					directions->SetNumberOfComponents(3);
-
+					locator->SetDataSet(mesh);
 					locator->FindClosestNPoints(5, p, list);
 
 					//Set Collisions
-					double dir[3];
-					dir[0] = 2;
-					dir[1] = 0.5;
-					dir[2] = 0;
+					double force[3];
+					force[0] = 2;
+					force[1] = 0.5;
+					force[2] = 0;
 
 					for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
 					{
-						double * point = mesh->GetPoint(list->GetId(i));
-						directions->InsertNextTuple(dir);
-						vtkIdType id = list->GetId(i);
-
-						//Insert collision info
-						vtkCollision * collision = vtkCollision::New();
-						collision->SetCollisionType(vtkCollision::ToolOrgan);
-						collision->SetElementId(0, 0);
-						collision->SetElementId(1, 0);
-
-						//Organ cell point
-						collision->SetPointId(1, id);
-						collision->SetPoint(1, point);
-						//collision->InsertCellId(0, organCellId);
-						collision->SetDisplacement(dir);
-
-						//collision->Print(cout);
-
-						this->DeformationModel->AddCollision(collision);
+						int id = list->GetId(i);
+						this->DeformationModel->AddDisplacement(id, force);
 					}
 
+					cout << "Force applied...\n";
 			}
 			else if (tid == this->FasterTimerId)
 			{
@@ -103,11 +78,7 @@ public:
 				this->DeformationModel->Update();
 				timer->StopTimer();
 
-				vtkActor *a = this->DeformationModel->GetActor();
-				cout << a->GetMapper()->GetInput()->GetNumberOfPoints() << endl;
-
-				std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
-
+				std::cout << "[Test] Rate: " << 1/(timer->GetElapsedTime()) << "\n";
 			}
 			else if (tid == this->RenderTimerId)
 			{
@@ -209,7 +180,8 @@ int main(int argc, char * argv[])
 	actor2->GetProperty()->SetRepresentationToWireframe();
 
 	renderer->AddActor(actor);
-	renderer->AddActor(EDM->GetActor());
+	renderer->AddActor(actor2);
+	//renderer->AddActor(EDM->GetActor());
 	renderer->SetBackground(1,1,1);
 
 	renderer->ResetCamera();

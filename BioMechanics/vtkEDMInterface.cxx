@@ -60,6 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkMath.h"
+#include "vtkDoubleArray.h"
 
 #include "vtkCollision.h"
 #include "vtkCollisionCollection.h"
@@ -80,6 +81,7 @@ vtkEDMInterface::vtkEDMInterface()
 	this->SobelFilter = vtkImageSobel3D::New();
 	this->ImageData = vtkImageData::New();
 	this->Deformed = vtkPolyData::New();
+	this->Reset = 0;
 	this->NumberOfIterations = 0;
 	this->ImageOrigin[0]= this->ImageOrigin[1] = this->ImageOrigin[2] = 0;
 	this->ImageSpacing[0]= this->ImageSpacing[1] = this->ImageSpacing[2] = 1;
@@ -102,7 +104,7 @@ void vtkEDMInterface::Init()
 	vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
 	this->Deformed->ShallowCopy(input);
 
-	//TODO: Automate imageData generation
+	//FIXME: Automate imageData generation
 	//Generate image source
 	double spacing[3];
 	spacing[0] = spacing[1] = spacing[2] = 1;
@@ -146,8 +148,6 @@ void vtkEDMInterface::Init()
 	this->Stencil->ReverseStencilOff();
 	this->Stencil->SetBackgroundValue(outval);
 
-	//Reset collisions
-	this->Collisions->RemoveCollisions();
 	//Compute forces
 	this->ForceFilter->SetInput(this->Stencil->GetOutput());
 	this->MagnitudeFilter->SetInput(this->ForceFilter->GetOutput());
@@ -180,34 +180,17 @@ int vtkEDMInterface::RequestData(
 
 	if(this->Status == Enabled)
 	{
-		if(this->Collisions->GetNumberOfItems() > 0)
+		if(this->Reset)
 		{
-			//Set deformed mesh to last state
-			//this->Deformed->DeepCopy(this->DeformableMesh->GetOutput());
+			//Reset deformed mesh to initial state (undeformed)
 			this->Deformed->DeepCopy(input);
-			vtkPoints * points = this->Deformed->GetPoints();
-			double point[3];
-
-			this->Collisions->InitTraversal();
-			while(vtkCollision * collision = this->Collisions->GetNextCollision())
-			{
-				if(collision->GetCollisionType() == vtkCollision::ToolOrgan)
-				{
-					//Get collided point
-					vtkIdType id = collision->GetPointId(1);
-					points->GetPoint(id, point);
-					//Add displacement
-					vtkMath::Add(point, collision->GetDisplacement(), point);
-					points->SetPoint(id, point);
-				}
-			}
-			//Reset collisions
-			this->Collisions->RemoveCollisions();
 
 			//Reset deformable mesh
 			this->DeformableMesh->SetInput(0, this->Deformed);
 			this->DeformableMesh->SetInput(1, this->ImageSource);
 			this->DeformableMesh->SetNumberOfIterations(0);
+
+			this->Reset = 0;
 		}
 
 		int n = this->DeformableMesh->GetNumberOfIterations();
@@ -256,6 +239,24 @@ int vtkEDMInterface::RequestData(
 	else output->ShallowCopy(input);
 
 	return 1;
+}
+
+void vtkEDMInterface::AddDisplacement(vtkIdType pointId, double * value)
+{
+	//Note that forces applied must not be big, so the mesh could recover from it
+	//New point position must be stored in memory
+	vtkPoints * points = this->Deformed->GetPoints();
+	double point[3];
+
+	//Get collided point
+	vtkIdType id = pointId;
+	points->GetPoint(id, point);
+
+	//Add displacement
+	vtkMath::Add(point, value, point);
+	points->SetPoint(id, point);
+
+	this->Reset = 1;
 }
 
 //--------------------------------------------------------------------------

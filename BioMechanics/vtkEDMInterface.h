@@ -51,6 +51,7 @@ class vtkPolyDataToImageStencil;
 class vtkImageStencil;
 class vtkImageMagnitude;
 class vtkImageSobel3D;
+class vtkDoubleArray;
 
 //! Interface class for a explicit deformation system.
 /*!
@@ -106,6 +107,8 @@ public:
 	 */
 	vtkGetMacro(WarpScaleFactor, double);
 
+	virtual void AddDisplacement(vtkIdType pointId, double * force);
+
 protected:
 	vtkEDMInterface();
 	~vtkEDMInterface();
@@ -142,6 +145,9 @@ protected:
 
 	//Image spacing
 	double ImageSpacing[3];
+
+	//! Mesh reset flag
+	bool Reset;
 
 	//! Number of iterations
 	int NumberOfIterations;

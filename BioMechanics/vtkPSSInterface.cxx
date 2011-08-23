@@ -54,8 +54,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkProperty.h"
 #include "vtkIdList.h"
 
-#include "vtkCollision.h"
-#include "vtkCollisionCollection.h"
 #include "vtkBoundaryCondition.h"
 #include "vtkBoundaryConditionCollection.h"
 
@@ -137,20 +135,6 @@ int vtkPSSInterface::RequestData(
 
 	if(this->Status == Enabled)
 	{
-		if(this->Collisions)
-		{
-			this->Collisions->InitTraversal();
-			while(vtkCollision * collision = this->Collisions->GetNextCollision())
-			{
-				if(collision->GetCollisionType() == vtkCollision::ToolOrgan)
-				{
-					this->ParticleSpringSystem->InsertCollision(collision->GetPointId(1), collision->GetDisplacement());
-				}
-				//Once a collision has been processed it is removed from collection
-				this->Collisions->RemoveItem(collision);
-			}
-		}
-
 		//Force recalculation of the output in every step
 		this->ParticleSpringSystem->Modified();
 		this->ParticleSpringSystem->Update();
@@ -193,6 +177,11 @@ int vtkPSSInterface::RequestData(
 	else output->ShallowCopy(input);
 
 	return 1;
+}
+
+void vtkPSSInterface::AddDisplacement(vtkIdType pointId, double * value)
+{
+	this->ParticleSpringSystem->InsertCollision(pointId, value);
 }
 
 //--------------------------------------------------------------------------

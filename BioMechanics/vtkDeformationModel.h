@@ -47,8 +47,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 class vtkPolyData;
 
-class vtkCollision;
-class vtkCollisionCollection;
 class vtkBoundaryCondition;
 class vtkBoundaryConditionCollection;
 
@@ -86,42 +84,14 @@ public:
 	//! Get Gravity Force (m/s2)
 	vtkGetVector3Macro(Gravity, double);
 
-	//!Set the detected collisions
+	//!Add a displacement to the model
 	/*!
-	 * Set a collection of collisions to the model. Any collision previously added will be removed.
-	 * \param collisions collection of collisions
-	 * \sa vtkCollisionCollection * GetCollisions()
-	 */
-	void SetCollisions(vtkCollisionCollection * collisions);
-
-	//!Get the detected contacts
-	/*!
-	 * \return collection of collisions
-	 * \sa SetCollisions(vtkCollisionCollection * collisions)
-	 */
-	vtkCollisionCollection * GetCollisions();
-
-	//!Add a collision to the model
-	/*!
-	 * Add a single collision to the model. Previously added collisions are kept.
-	 * \param c collision to be added
+	 * Add a force to the deformation model.
+	 * \param pointId point identifier
+	 * \param force force vector
 	 * \sa RemoveCollision(vtkIdType id)
 	 */
-	void AddCollision(vtkCollision * c);
-
-	//!Remove the collision at the specified id
-	/*!
-	 * Remove a single collision from the model at the specified id
-	 * \param id collision identifier
-	 * \sa AddCollision(vtkCollision * c)
-	 */
-	void RemoveCollision(vtkIdType id);
-
-	//!Remove all collisions from the model
-	/*!
-	 * All previously defined collisions are removed from the model. Collision collection object is not deleted.
-	 */
-	void RemoveAllCollisions();
+	virtual void AddDisplacement(vtkIdType pointId, double* value) = 0;
 
 	//!Insert a condition into the deformation model
 	/*!
@@ -164,12 +134,6 @@ protected:
 
 	//! Gravitation force
 	double Gravity[3];
-
-	//!Model collisions.
-	/*!
-	 * This acts as pointer to the deformation model collection of collisions
-	 */
-	vtkCollisionCollection * Collisions;
 
 	//!Boundary conditions
 	/*!

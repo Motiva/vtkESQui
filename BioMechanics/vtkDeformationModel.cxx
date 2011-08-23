@@ -50,8 +50,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkActor.h"
 #include "vtkProperty.h"
 
-#include "vtkCollisionCollection.h"
-#include "vtkCollision.h"
 #include "vtkBoundaryConditionCollection.h"
 #include "vtkBoundaryCondition.h"
 
@@ -64,7 +62,6 @@ vtkDeformationModel::vtkDeformationModel() {
 	this->SetModelType(vtkModel::Deformation);
 	this->Name = NULL;
 	this->BoundaryConditions = NULL;
-	this->Collisions = NULL;
 	this->CollisionModel = NULL;
 	this->VisualizationModel = NULL;
 }
@@ -73,38 +70,6 @@ vtkDeformationModel::vtkDeformationModel() {
 vtkDeformationModel::~vtkDeformationModel() {
 
 	if(this->BoundaryConditions) this->BoundaryConditions->Delete();
-	if(this->Collisions) this->Collisions->Delete();
-}
-
-//--------------------------------------------------------------------------
-void vtkDeformationModel::SetCollisions(vtkCollisionCollection * c)
-{
-	this->Collisions->RemoveAllItems();
-	this->Collisions->DeepCopy(c);
-}
-
-//--------------------------------------------------------------------------
-vtkCollisionCollection * vtkDeformationModel::GetCollisions()
-{
-	return this->Collisions;
-}
-
-//--------------------------------------------------------------------------
-void vtkDeformationModel::AddCollision(vtkCollision * c)
-{
-	this->Collisions->AddItem(c);
-}
-
-//--------------------------------------------------------------------------
-void vtkDeformationModel::RemoveCollision(vtkIdType id)
-{
-	this->Collisions->RemoveItem(id);
-}
-
-//--------------------------------------------------------------------------
-void vtkDeformationModel::RemoveAllCollisions()
-{
-	this->Collisions->RemoveAllItems();
 }
 
 //--------------------------------------------------------------------------
@@ -113,7 +78,6 @@ void vtkDeformationModel::Init()
 	this->Superclass::Init();
 
 	this->BoundaryConditions = vtkBoundaryConditionCollection::New();
-	this->Collisions = vtkCollisionCollection::New();
 
 	//Display as a wire frame
 	this->Actor->GetProperty()->SetRepresentationToWireframe();
