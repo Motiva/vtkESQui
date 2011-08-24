@@ -24,10 +24,7 @@ ABSTRACT
 
 # Set your list of libraries here.
 SET(KIT_LIBS ${PROJECT_NAME}Common
-#${PROJECT_NAME}CollisionDetection
 vtkCommon
-vtkFiltering
-vtkHybrid
 vtkParticleSpringSystem
 vtkExplicitDeformableModel
 )
@@ -35,10 +32,13 @@ vtkExplicitDeformableModel
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
 ${PROJECT_NAME}CommonTCL
-#${PROJECT_NAME}CollisionDetectionTCL
-vtkFilteringTCL
 vtkCommonTCL
-vtkHybridTCL
+)
+
+# Set your list of Python libraries here.
+SET(KIT_PYTHON_LIBS 
+${PROJECT_NAME}CommonPythonD
+vtkCommonPythonD
 )
 
 #

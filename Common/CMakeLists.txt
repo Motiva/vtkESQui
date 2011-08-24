@@ -15,7 +15,7 @@ vtkTimerCallback.cxx
 )
 
 SET_SOURCE_FILES_PROPERTIES(
-vtkModel.cxx
+#vtkModel.cxx
 vtkTimerCallback
 WRAP_EXCLUDE
 )
@@ -23,13 +23,16 @@ WRAP_EXCLUDE
 # Set your list of libraries here.
 SET(KIT_LIBS 
 vtkCommon
-vtkRendering 
 )
 
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
 vtkCommonTCL
-vtkRenderingTCL
+)
+
+# Set your list of Python libraries here.
+SET(KIT_PYTHON_LIBS 
+vtkCommonPythonD
 )
 
 #

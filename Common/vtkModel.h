@@ -91,7 +91,7 @@ public:
 		Enabled = 0,
 		Disabled = 1
 	};
-
+	//ETX
 
 	//!Set model id
 	/*!

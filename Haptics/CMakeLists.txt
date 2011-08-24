@@ -32,9 +32,15 @@ ${PROJECT_NAME}Scenario
 )
 
 # Set your list of TCL libraries here.
-SET(KIT_TCL_LIBS 
+SET(KIT_TCL_LIBS
+${PROJECT_NAME}ScenarioTCL 
 vtkCommonTCL
-${PROJECT_NAME}ScenarioTCL
+)
+
+# Set your list of Python libraries here.
+SET(KIT_PYTHON_LIBS 
+${PROJECT_NAME}ScenarioPythonD
+vtkCommonPythonD
 )
 
 #

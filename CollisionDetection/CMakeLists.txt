@@ -16,7 +16,6 @@ vtkCollisionDetection.cxx
 vtkBioEngInterface.cxx
 )
 
-
 SET_SOURCE_FILES_PROPERTIES(
 vtkCollisionDetection
 ABSTRACT
@@ -26,15 +25,19 @@ ABSTRACT
 SET(KIT_LIBS ${PROJECT_NAME}Common
     vtkBioeng 
     vtkCommon
-    vtkFiltering
 )
 
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
 ${PROJECT_NAME}CommonTCL
 vtkBioengTCL
-vtkFilteringTCL
 vtkCommonTCL
+)
+
+# Set your list of Python libraries here.
+SET(KIT_PYTHON_LIBS 
+${PROJECT_NAME}CommonPythonD
+vtkCommonPythonD
 )
 
 #
