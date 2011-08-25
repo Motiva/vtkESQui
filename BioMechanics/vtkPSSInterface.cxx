@@ -179,9 +179,9 @@ int vtkPSSInterface::RequestData(
 	return 1;
 }
 
-void vtkPSSInterface::AddDisplacement(vtkIdType pointId, double * value)
+void vtkPSSInterface::AddDisplacement(vtkIdType pointId, double * vector)
 {
-	this->ParticleSpringSystem->InsertCollision(pointId, value);
+	this->ParticleSpringSystem->InsertCollision(pointId, vector);
 }
 
 //--------------------------------------------------------------------------

@@ -96,6 +96,12 @@ vtkEDMInterface::~vtkEDMInterface()
 }
 
 //--------------------------------------------------------------------------
+void vtkEDMInterface::SetImageSpacing(double spacing)
+{
+	this->SetImageSpacing(spacing, spacing, spacing);
+}
+
+//--------------------------------------------------------------------------
 void vtkEDMInterface::Init()
 {
 	this->Superclass::Init();
@@ -104,42 +110,43 @@ void vtkEDMInterface::Init()
 	vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
 	this->Deformed->ShallowCopy(input);
 
-	//FIXME: Automate imageData generation
-	//Generate image source
-	double spacing[3];
-	spacing[0] = spacing[1] = spacing[2] = 1;
-
+	//Get Input data bounds to generate image data
 	double * bounds = input->GetBounds();
+	this->ImageOrigin[0] = bounds[0];
+	this->ImageOrigin[1] = bounds[2];
+	this->ImageOrigin[2] = bounds[4];
+
+	//Obtain image dimensions
 	int dim[3];
 	for (int i = 0; i < 3; i++)
 	{
-		dim[i] = static_cast<int>(ceil((bounds[i * 2 + 1] - bounds[i * 2]) / spacing[i]));
+		dim[i] = static_cast<int>(ceil((bounds[i * 2 + 1] - bounds[i * 2]) / this->ImageSpacing[i]));
 	}
 
-	this->ImageData->SetSpacing(spacing);
+	//Apply spacing, dimension and origin values to image data
+	this->ImageData->SetSpacing(this->ImageSpacing);
 	this->ImageData->SetDimensions(dim);
 	this->ImageData->SetExtent(0, dim[0]-1, 0, dim[1]-1, 0, dim[2]-1);
 
-	double origin[3];
-	origin[0] = bounds[0];
-	origin[1] = bounds[2];
-	origin[2] = bounds[4];
-	this->ImageData->SetOrigin(origin);
+	this->ImageData->SetOrigin(this->ImageOrigin);
 	this->ImageData->SetScalarTypeToUnsignedChar();
 	this->ImageData->AllocateScalars();
 
-	//Fill the image with foreground voxels:
+	//Create binary image.
 	unsigned char inval = 255;
 	unsigned char outval = 0;
+
+	//Fill the image with foreground voxels:
 	vtkIdType count = this->ImageData->GetNumberOfPoints();
 	for (vtkIdType i = 0; i < count; ++i)
 	{
 		this->ImageData->GetPointData()->GetScalars()->SetTuple1(i, inval);
 	}
 
+	//Configurate Image stencil filter
 	this->ImageStencilFilter->SetInput(input);
-	this->ImageStencilFilter->SetOutputOrigin(origin);
-	this->ImageStencilFilter->SetOutputSpacing(spacing);
+	this->ImageStencilFilter->SetOutputOrigin(this->ImageOrigin);
+	this->ImageStencilFilter->SetOutputSpacing(this->ImageSpacing);
 	this->ImageStencilFilter->SetOutputWholeExtent(this->ImageData->GetExtent());
 
 	//Generate Stencil
@@ -148,14 +155,15 @@ void vtkEDMInterface::Init()
 	this->Stencil->ReverseStencilOff();
 	this->Stencil->SetBackgroundValue(outval);
 
-	//Compute forces
+	//Set pipeline for external force computation
 	this->ForceFilter->SetInput(this->Stencil->GetOutput());
 	this->MagnitudeFilter->SetInput(this->ForceFilter->GetOutput());
 	this->SobelFilter->SetInput(this->MagnitudeFilter->GetOutput());
 
-	//Save Image source
+	//Save image source
 	this->ImageSource = this->SobelFilter->GetOutput();
 
+	//Set pipeline for deformable mesh
 	this->DeformableMesh->IterateFromZeroOff();
 	this->DeformableMesh->SetScaleFactor(this->WarpScaleFactor);
 	this->DeformableMesh->SetInput(this->Deformed);
@@ -241,7 +249,7 @@ int vtkEDMInterface::RequestData(
 	return 1;
 }
 
-void vtkEDMInterface::AddDisplacement(vtkIdType pointId, double * value)
+void vtkEDMInterface::AddDisplacement(vtkIdType pointId, double * vector)
 {
 	//Note that forces applied must not be big, so the mesh could recover from it
 	//New point position must be stored in memory
@@ -253,7 +261,7 @@ void vtkEDMInterface::AddDisplacement(vtkIdType pointId, double * value)
 	points->GetPoint(id, point);
 
 	//Add displacement
-	vtkMath::Add(point, value, point);
+	vtkMath::Add(point, vector, point);
 	points->SetPoint(id, point);
 
 	this->Reset = 1;

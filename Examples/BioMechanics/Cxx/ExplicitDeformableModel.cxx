@@ -1,19 +1,15 @@
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
+#include "vtkXMLPolyDataReader.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
-#include "vtkPolyDataWriter.h"
 #include "vtkPoints.h"
 #include "vtkCellArray.h"
 #include "vtkIdList.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkCamera.h"
-
-#include "vtkPolyData.h"
-#include "vtkPolyDataWriter.h"
-#include "vtkXMLPolyDataReader.h"
 #include "vtkSphereSource.h"
 
 #include "vtkTimerLog.h"
@@ -58,8 +54,8 @@ public:
 
 					//Set Collisions
 					double force[3];
-					force[0] = 2;
-					force[1] = 0.5;
+					force[0] = 0.1;
+					force[1] = 0.05;
 					force[2] = 0;
 
 					for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
@@ -134,20 +130,27 @@ int main(int argc, char * argv[])
 		filename = argv[1];
 	}
 
+	double r = 1;
 	vtkSmartPointer<vtkSphereSource> sphereSource =
 			vtkSmartPointer<vtkSphereSource>::New();
-	sphereSource->SetRadius(20);
-	sphereSource->SetPhiResolution(20);
-	sphereSource->SetThetaResolution(20);
+	sphereSource->SetRadius(r);
+	sphereSource->SetPhiResolution(16);
+	sphereSource->SetThetaResolution(16);
 	vtkSmartPointer<vtkPolyData> mesh = sphereSource->GetOutput();
 	sphereSource->Update();
 
+	double s = r/30;
+	double warp = s/100000;
+
 	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
 	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
+	std::cout << "[Test] Image spacing: " << s << "\n";
+	std::cout << "[Test] Image warp scale: " << warp << "\n";
 
 	vtkSmartPointer<vtkEDMInterface> EDM = vtkSmartPointer<vtkEDMInterface>::New();
 	EDM->SetNumberOfIterations(500);
-	EDM->SetWarpScaleFactor(0.001);
+	EDM->SetWarpScaleFactor(warp);
+	EDM->SetImageSpacing(s);
 	EDM->SetInput(mesh);
 	EDM->Init();
 

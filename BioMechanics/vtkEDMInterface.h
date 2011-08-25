@@ -55,9 +55,9 @@ class vtkDoubleArray;
 
 //! Interface class for a explicit deformation system.
 /*!
- * This deformatiom model uses a level set technique adapting the input mesh
- * to a vtkImageData input.\n
- * vtkEDMInterface class, based in vtkDeformationModel class, adapts the access to the
+ * This deformation model uses a level set technique adapting the input mesh
+ * to a vtkImageData input. Input data meshes shall be closed surfaces.\n
+ * The vtkEDMInterface class, based in vtkDeformationModel class, adapts the access to the
  * external vtkExplicitDeformableSystem package.
  */
 class VTK_ESQUI_BIOMECHANICS_EXPORT vtkEDMInterface : public vtkDeformationModel
@@ -85,7 +85,7 @@ public:
 
 	//!Set maximum number of iterations
 	/*!
-	 * This parameter sets the model to be executed a number of iterations.
+	 * This parameter sets the number of iterations the model will be executed until it reaches an stationary state.
 	 * \sa int GetNumberOfIterations()
 	 */
 	vtkSetMacro(NumberOfIterations, int);
@@ -97,7 +97,8 @@ public:
 
 	//!Set the warp scale factor
 	/*!
-	 * This parameter sets how fast the model recovers its original shape after being deformed.
+	 * This parameter sets how fast the model recovers its original shape after being deformed.\n
+	 * Warp scale factor shall be at least 1/50000 the value of spacing or the system will become unstable\n
 	 * \sa double GetWarpScaleFactor()
 	 */
 	vtkSetMacro(WarpScaleFactor, double);
@@ -107,7 +108,31 @@ public:
 	 */
 	vtkGetMacro(WarpScaleFactor, double);
 
-	virtual void AddDisplacement(vtkIdType pointId, double * force);
+	//!Set the image spacing (resolution)
+	/*!
+	 * This parameter sets the image data spacing that sets the resolution.
+	 * \sa double GetImageSpacing()
+	 */
+	vtkSetVector3Macro(ImageSpacing, double);
+	//!Set the image spacing (resolution)
+	/*!
+	 * Image spacing must be at least 1/10 of the object radius
+	 * \sa SetImageSpacing()
+	 */
+	vtkGetVector3Macro(ImageSpacing, double);
+
+	//!Set homogeneus image spacing (resolution)
+	void SetImageSpacing(double spacing);
+
+	vtkImageData * GetImageSource(){return this->ImageSource;};
+
+	//!Add displacement at the specified point.
+	/*!
+	 * The displacement shall not be greater than a 1/10 of the input mesh radius
+	 * \param pointId Point identifier
+	 * \param vector displacement vector
+	 */
+	virtual void AddDisplacement(vtkIdType pointId, double * vector);
 
 protected:
 	vtkEDMInterface();
@@ -143,7 +168,7 @@ protected:
 	//!Image origin
 	double ImageOrigin[3];
 
-	//Image spacing
+	//!Image spacing
 	double ImageSpacing[3];
 
 	//! Mesh reset flag

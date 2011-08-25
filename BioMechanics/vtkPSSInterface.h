@@ -95,7 +95,13 @@ public:
 	//! Set motion equation solver type.
 	vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);
 
-	virtual void AddDisplacement(vtkIdType pointId, double * force);
+	//!Add displacement at the specified point.
+	/*!
+	 *  The displacement shall not be greater than a 1/10 of the input mesh radius
+	 * \param pointId Point identifier
+	 * \param vector displacement vector
+	 */
+	virtual void AddDisplacement(vtkIdType pointId, double * vector);
 
 protected:
 	vtkPSSInterface();

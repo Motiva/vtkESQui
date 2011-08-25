@@ -86,12 +86,11 @@ public:
 
 	//!Add a displacement to the model
 	/*!
-	 * Add a force to the deformation model.
+	 * Pure virtual method. Must be implemented in inheriting classes.
 	 * \param pointId point identifier
-	 * \param force force vector
-	 * \sa RemoveCollision(vtkIdType id)
+	 * \param vector displacement vector
 	 */
-	virtual void AddDisplacement(vtkIdType pointId, double* value) = 0;
+	virtual void AddDisplacement(vtkIdType pointId, double * vector) = 0;
 
 	//!Insert a condition into the deformation model
 	/*!
