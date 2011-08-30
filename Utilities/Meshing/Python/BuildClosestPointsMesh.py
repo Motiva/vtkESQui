@@ -1,5 +1,18 @@
 #!/usr/bin/env python
 
+###############################################################################
+# This scripts generates a vtp file (vtkPolyData) that satisfies the 
+# vtkPSSInterface_ input data requirements, by generating a VTK_LINE cell mesh 
+# from VTK_TRIANGLE cell mesh.
+#
+# Usage:
+# vtkpython BuildClosestPointsMesh.py $inputFile $numberOfPoints $outputFile
+#
+# inputfile      vtp file containing a vtkPolyData object of VTK_TRIANGLE cells
+# numberOfPoints Number of closest points for every point.
+# outputFile     File path to output vtp file
+###############################################################################
+
 import sys
 import vtk
 

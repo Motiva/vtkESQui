@@ -1,5 +1,18 @@
 #!/usr/bin/env python
 
+##############################################################################
+# This scripts generates a vtp file (*vtkPolyData*) that satisfies the 
+# vtkPSSInterface_ input data requirements, by generating a VTK_LINE cell mesh
+# from VTK_TRIANGLE cell mesh. Every cell point it will be connected to its 
+# n-neighborhood point by a VTK_LINE cell. For example, for n=1, each point is
+# connected to every point of the cells it belongs. The biggest the n, the 
+# more rigid the mesh will become.
+#
+# Usage:
+# vtkpython BuildRigidityMesh.py $inputFile $rigidityFactor $outputFile
+##############################################################################
+
+
 import sys
 import vtk
 

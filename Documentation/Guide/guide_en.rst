@@ -3,9 +3,9 @@ vtkESQui Developer's Guide
 ==========================
 
 :Author:   Jorge Ballesteros-Ruiz <jballesteros@itccanarias.org>
-:Version:  0.5
+:Version:  0.5.3
 :Web:      http://motivando.me
-:Date:     May 20th 2011
+:Date:     Aug 30th 2011
 
 .. header:: 
      
@@ -53,7 +53,7 @@ Background
 
 *vtkESQui* is a surgical simulation software platform. The purpose of this project to provide a framework which allows, in an easy way, to build a virtual simulation of minimallly invasive surgical techniques.
 
-These platform, is a vtk-based software project that has been implemented in C++. The distribution follows the standard structure for vtk's projects. There are a few access layers to ease the use of the platform, such as: Tcl and Python. 
+This platform, is a vtk-based software project that has been implemented in C++. *vtkESQui* framework follows the standard folder structure for a vtk-based projects. A few access layers (wrappers) has been enabled to ease the use of the platform, such as: Tcl and Python. 
 
  .. class:: figuretable 
 
@@ -78,8 +78,8 @@ The goal is to provide the user a simple way to build a surgical scenario and ea
 
 In vtkESQui platform, there are two ways of controlling the simulation objects, let's say simulation interactors:
 
- * Keyboard + Mouse: Depending on the type of simulation, a mouse movement combined with akeyboard layout is used to control the objects (tools).
- * Haptic Devices: In case an haptic device is available, it can be used to handle the simulation instruments. Interfaces has been implemented for the following haptic devices:
+ * Keyboard + Mouse: Depending on the type of simulation, a mouse movement combined with a keyboard layout is used to control the simulation instruments (tools).
+ * Haptic Devices: In case a haptic device is available, it can be used to handle the simulation instruments. Interfaces has been implemented for the following haptic devices:
 
   ===============  ===============================================
   *Xitact VSP*     Endovascular techniques
@@ -115,7 +115,7 @@ Software License
 Installation
 ============
 
-This sectioncovers the whole process required to have your own copy of *vtkESQui* properly installed and fully working in your computer.
+This section covers the whole process to obtain your own copy of *vtkESQui* properly installed and fully working in your computer.
 
 Requirements
 ------------
@@ -142,18 +142,22 @@ There are multiple ways to get the software:
  
   $ git clone git://aecio/vtkESQui.git
 
+* Github::
+
+  $ git clone git://github.com/Motiva/vtkESQui.git
+
 Configuring
 -----------
 
 As a vtk-based project, *vtkESQui* configuration and compilation is done using *CMake* (http://cmake.org). *CMake* is a cross-platform, open-source build system that automatically generates makefiles and workspaces for later compilation.
 
-1. Once the source code has been downloaded and extracted/saved into a directory, let's name it VTKESQUI_DIR, a new binary directory has to be created.
+1. Once the source code has been downloaded and extracted/saved into a directory, let's name it VTKESQUI_SRC_DIR, a new binary directory has to be created.
 
  In Unix-like systems:: 
 
   $ mkdir vtkESQuiBin
   $ cd vtkESQuiBin
-  $ ccmake ../VTKESQUI_DIR
+  $ ccmake $VTKESQUI_SRC_DIR
 
  In Windows, the CMake GUI is used to define source and binary dir.
 
@@ -167,12 +171,21 @@ As a vtk-based project, *vtkESQui* configuration and compilation is done using *
 
    CMake configuration options
 
-3. Finally, after configuring the *CMake* options:
+3. Enable/Disable Wrapping
 
-   In Unix-like systems:
-    Press 'c' to configurate project and then 'g' to generate the makefiles
-   In Windows:
-    Press Configure button and then Generate button.
+*vtkESQui* wrapping of the code will require to build the project as shared libraries. To do so set the varaible BUILD_SHARED_LIBS to ON in the configuring_ process.
+
+ * TCL access to the code is enabled in the project configuring_ process, by setting the VTKESQUI_USE_TCL variable to ON.
+ * If you want to enable Python wrapping, please configure the project enabling the VTKESQUI_USE_PYTHON variable.
+
+4. Enable/Disable Testing and Examples:
+
+ BUILD_EXAMPLES 
+
+5. Finally, after configuring the *CMake* options
+
+ * In Unix-like systems: Press 'c' to configurate project and then 'g' to generate the makefiles
+ * In Windows: Press Configure button and then Generate button.
 
 Building
 --------
@@ -183,31 +196,54 @@ Once you have succesfully configured the project, the building process is starte
 
   $ make
  
- If anything went wrong, you may have vtkESQui platform compiled. If you want to install vtkESQui in your operating system you must type::
+ If anything went wrong, you may have *vtkESQui* platform compiled. If you want to install *vtkESQui* in your operating system you must login as root and then type::
 
   $ make install
 
- In Windows you must import the project in Visual Studio, and compile it as usual.
+ If you are a Windows user, import the project in Visual Studio, and compile it as usual. Installation of the project is done by executing INSTALL project configuration in Visual Studio.
 
 Setting up the environment
 --------------------------
 
-Set the environment variables: LD_LIBRARY_PATH and TCLLIBPATH to the path where are the (.so/dlls) vtk/wrapping libraries. If you have other Tcl/Tk versions, you should declare the TK_LIBRARY and TCL_LIBRARY variables.
+In order to get the platform fully operative, you may need to configurate the working environment. Make sure all the requirements_ are fullfiled and the packages are properly configured.
+
+Set the environment variables: LD_LIBRARY_PATH, PYTHONPATH and TCLLIBPATH to the path where are the (.so/dlls) vtk/wrapping libraries. If you have other Tcl/Tk versions, you should declare the TK_LIBRARY and TCL_LIBRARY variables.
 
 i.e. (under linux)::
 
- export LD_LIBRARY_PATH=/usr/local/lib/vtk-5.9:/home/user/software/ESQUI/EsquiBin/bin/
- export TCLLIBPATH=/home/user/software/ESQUI/ESQUI/Wrapping/Tcl
+ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/vtk-5.9:/home/user/software/bin/vtkESQui/bin/
+ export LD_LIBRARY_PATH
+
+You also may hav to add the library path to the PATH environment variable::
+
+ PATH=$PATH:/home/user/software/bin/vtkESQui/bin/
+ export PATH
+
+TCL/Python Wrapping
+...................
+
+In order to use TCL wrappers, you may have to add the following path to the TCLLIBPATH variable::
+
+ TCLLIBPATH="$TCLLIBPATH /home/user/software/src/vtkESQui/Wrapping/Tcl"
+ export TCLLIBPATH
+
+Note: values are separated by spaces.
+
+For Python wrapping, add the following paths to th PYTHONPATH variable::
+
+ PYTHONPATH=$PYTHONPATH:/home/user/software/bin/vtkESQui/bin
+ PYTHONPATH=$PYTHONPATH:/home/user/software/src/vtkESQui/Wrapping/Python
+ export PYTHONPATH
 
 Design
 ======
 
-This section contains a detailed description of the *vtkEQSui* framework design layout.
+This section contains a detailed description of the *vtkEQSui* framework design layout: Folder structure, Framework architecture, etc...
 
 Structure
 ---------
 
-As vtk-based project, *vtkESQui* follows the *VTK* folder structure. The framework has been implemented in a modular way, trying to make, if possible, every module independent from the rest. In this release the following folders are included:
+As a vtk-based project, *vtkESQui* follows the *VTK* folder structure. The framework has been implemented in a modular way, trying to make, if possible, every module independent from the rest. In this release the following folders are included:
 
 ===================  =================================================
 Module               Description
@@ -216,12 +252,12 @@ BioMechanics         Biomechanical (deformation) models and interfaces
 CollisionDetection   Collision detection models and interfaces
 Common               Project wide needed by the project
 Documentation        Documentation of the platform: Doxygen, user & developer guides
-Examples             List of examples implemented in C++ and Tcl
+Examples             List of examples implemented in C++, Python and Tcl
 Haptics              Classes that wrap the haptic device's API
 Scenario             Management of the rendered objects
 Simulation           Simulation process execution
 Utilities            Scripts and C++ classes to share/export/import models
-Wrapping             Code for wrapping under Tcl
+Wrapping             Wrapping under Python and Tcl
 ===================  =================================================
 
 Each module of the platform is stored in one folder, containing all the *C++* classes and testing scripts.
@@ -243,12 +279,12 @@ In a standard simulation process there are three main modules involved:
  * Rendering: Refresh object display properties
  * Interaction: User-machine interface for simulation object control
 
-Attending to the *vtkESQui* structure, in the following section all the project classes are described.
+Attending to the *vtkESQui* architecture, the following section contains all the project modules classes description.
 
 Modules
 =======
 
-In this section we explain the usage and the functionalities of the modules developed using the *vtkESQui* framework.
+In this section we explain the usage and the functionalities of the modules developed using the *vtkESQui* framework. 
 
 Common
 ------
@@ -264,35 +300,53 @@ This class represents an abstract model on a scenario element. It acts as a base
    :scale: 200%
    :align: center
 
-vtkModel class has two inputs. By default the input data will be read from a vtp file specified in *FileName* attribute. There is a second optional parameter, the source.
-The output displays the transformed mesh according to transfromation matrix values.
+vtkModel class has 2 inputs:
+
+== ================== ============================ ========
+Id Object type        Description                  R/O
+== ================== ============================ ========
+0  vtkPolyData object Defines input mesh           Required
+1  vtkPolyData object Defines synchronization mesh Optional
+== ================== ============================ ========
+
+By default, main input data will be set as a vtkPolyData object. Optionally it could be read from a vtp file, specifying the *FileName* attribute. The optional input, source, will be specified as vtkPolyData object.
+
+Prior to an update, an initialization of the object, through Init() function, is required, if the model is not included in a vtkScenarioElement_. In case the models is part of a vtkScenarioElement_ object, the element itself will initialize the model.
+
+After an update the object output will contain the synchronized mesh, if source mesh has been set.
+
+Every model has its own transform function with its own transform matrix. This matrix could be replaced by setting it before model initialization. According to transformation matrix values, the model actor will be updated. The transformed mesh will be available by retrieving the model actor.
+
+This class is inherited by vtkVisualizationModel_, vtkCollisionModel_ and vtkDeformationModel_.
 
 vtkModelCollection
 ..................
 
-vtkModelCollection is an object for creating and manipulating lists of scenario element models. The lists are unsorted and allow duplicate entries.
+vtkModelCollection is an object for creating and manipulating lists of vtkModel_ items. The lists are unsorted and allow duplicate entries.
 
 Scenario
 --------
 
-Scenario module contains all classes that manage the scenario objects display. A revision to all these classes, from bottom to top in its hierarchy level, is made in this section of the document.
+The scenario module contains all classes that manage the scenario objects display. A revision to all these classes, from bottom to top in its hierarchy level, is made in this section of the document.
 
 vtkVisualizationModel
 .....................
-vtkVisualizationModel object defines a visualization mesh (vtkPolyData)
+vtkVisualizationModel object defines a visualization mesh, in other words a vtkPolyData object.
 
-This class inherits from vtkModel_ base class. As it is specified in vtkModel, at least an input mesh should be defined. Optionally a source mesh for synchronization purposes may be defined.
+This class inherits from vtkModel_ base class. As it is specified in vtkModel_, at least an input mesh should be defined. Optionally a source mesh for synchronization purposes may be defined.
 
 .. image:: ../Doxygen/html/classvtkVisualizationModel__inherit__graph.png
    :scale: 200%
    :align: center
 
-To enhance visualization user experience a mesh texture can be specified through the *TextureFileName* attribute.
+Additionally, in order to enhance visualization user experience, a mesh texture can be specified through the *TextureFileName* attribute. This file path specified must contain a square .jpg file.
+
+Note: In this case, the optional vtkModel_ object input is ignored because no synchronization will be performed.
 
 vtkScenarioElement
 ..................
 
-vtkScenarioElement class implements the use of a surgical scenario element
+vtkScenarioElement class implements the use of a surgical scenario element.
 
 This class contains all the required attributes to define a scenario element, providing an easy use of element models collections.
 
@@ -300,14 +354,18 @@ This class contains all the required attributes to define a scenario element, pr
    :scale: 200%
    :align: center
 
-Every element has at least a visualization model (vtkVisualizationModel_), and optionally a collision model (vtkCollisionModel_) and a deformation model (vtkDeformationModel_).
+At least a visualization model has to be defined in the scenario element. To enable collision detection a vtkCollisionModel_ must be set to the element. If the element is deformable, a vtkDeformationModel_ must also be defined.
 
-Please refer to Examples_ section if you want to know more about this class.
+Positional parameters, such as Position, Orientation, Scale, etc... must be set in this object. All the element models will be located and transformed according to the specified values.
+
+Prior to un update of the class, the initialization method, Init(),  should be executed. This method will initialize the element and subsequently all of its models. If a scenario model has been previously initialized it will not be synchronized with the rest of the object models.
+
+Please refer to the Doxygen documentation and the Examples_ section if you want to know more about this class.
 
 vtkScenarioElementCollection
 ............................
 
-vtkScenarioElementCollection is an object for creating and manipulating lists of scenario element models (vtkScenarioElement_). The lists are unsorted and allow duplicate entries.
+vtkScenarioElementCollection is an object for creating and manipulating lists of vtkScenarioElement_ items. The lists are unsorted and allow duplicate entries.
 
 vtkScenarioObject
 .................
@@ -322,33 +380,33 @@ The following graph shows the inheritance hierarchy of this class:
    :scale: 200%
    :align: center
 
-Every scenario object is formed a collection of scenario elements, *Elements*, implemented in the vtkScenarioElement_ class. At least one scenario element per scenario object must be defined.
+Every scenario object, vtkScenarioObject_ is formed a collection of scenario elements, vtkScenarioElement_ *Elements*. At least one scenario element per scenario object must be defined.
 
 .. image:: ../Doxygen/html/classvtkScenarioObject__coll__graph.png
    :scale: 200%
    :align: center
 
-In order to manage scenario objects interaction a collection of collisions (see vtkCollisionCollection_), *Collisions*, has been included in this this class.
+In order to manage scenario objects interaction, a collection of collisions (see vtkCollisionCollection_), *Collisions*, has been included in this this class.
 
-Please refer to Examples_ section if you want to know more about this class.
+Please refer to Doxygen documentation and Examples_ section if you want to know more about this class.
 
 vtkScenarioObjectCollection
 ...........................
 
-vtkScenarioObjectCollection is an object for creating and manipulating lists of scenario object models (vtkScenarioObject_). The lists are unsorted and allow duplicate entries.
+vtkScenarioObjectCollection is an object for creating and manipulating lists of vtkScenarioObject_ items. The lists are unsorted and allow duplicate entries.
 
 vtkOrgan
 ........
 
 Implementation class for scenario organ definition.
 
-In vtkESQui an organ is considered an scenario object, so vtkScenarioObject_ serves as its base class.
+In *vtkESQui* an organ is considered a scenario object, so vtkScenarioObject_ serves as its base class.
 
 .. image:: ../Doxygen/html/classvtkOrgan__coll__graph.png
    :scale: 200%
    :align: center
 
-As a vtkModel_ based class, at least a visualization model has to be defined. If the organ is deformable, a deformation and a collision model must be also defined.
+Whether a deformation model of the vtkScenarioElement_ has been defined, the organ will behave as an static or deformable object.
 
 Please refer to Examples_ section if you want to know more about this class.
 
@@ -357,13 +415,13 @@ vtkTool
 
 Implementation class for scenario tool definition.
 
-In vtkESQui a tool is considered an scenario object, so vtkScenarioObject serves as its base class. This class is inherited by specific surgical technique tool implementations: vtkToolLaparoscopy_, vtkToolEndovascular_, etc...
+In *vtkESQui* a tool is considered a scenario object, so vtkScenarioObject_ serves as its base class.
 
 .. image:: ../Doxygen/html/classvtkTool__inherit__graph.png
    :scale: 200%
    :align: center
 
-As a vtkModel based class, at least a visualization model has to be defined. If the tool is deformable, a deformation and a collision model must also be defined.
+This class is inherited by specific surgical technique tool implementations: vtkToolLaparoscopy_, vtkToolEndovascular_, etc...
 
 vtkToolEndovascular
 ...................
@@ -376,7 +434,7 @@ This class inherits from vtkTool_, and serves as base class for specific endovas
    :scale: 200%
    :align: center
 
-A few specific movements (rotation, insertion, etc...) has been defined to control the tool.
+A few specific movements (rotation, insertion, etc...) has been defined to handle the tool.
 
 vtkToolCatheter
 ...............
@@ -485,7 +543,7 @@ vtkScenario
 
 In *vtkESQui* framework a surgical scenario is implemented with this class.
 
-All the elements in the scenario (objects, tools...) are stored in a collection, *Objects*. Any scenario object should be previously defined (all of its required parameters set) before being inserted/added to the scenario.
+All the elements in the scenario (organs, tools...) are stored in a collection, *Objects*. Any scenario object should be previously defined (all of its required parameters set) and initialized before being inserted/added to the scenario.
 
 .. image:: ../Doxygen/html/classvtkScenario__coll__graph.png
    :scale: 200%
@@ -504,12 +562,12 @@ Please refer to Examples_ section if you want to know more about this class.
 BioMechanics
 ------------
 
-The BioMechanics module is filled with all the classes involved in deformation process of scenario objects. Every deformable scenario object, must have a deformation model defined. vtkDeformationModel_ class is the base class for the interfaces to several deformation systems.
+The BioMechanics module is filled with all the classes involved in deformation process of scenario objects. Every deformable scenario element, must have a deformation model defined. vtkDeformationModel_ class is the base class for the interfaces to several deformation systems.
 
 vtkDeformationModel
 ...................
 
-vtkDeformationModel object defines a deformation model based on a mesh (vtkPolyData).
+vtkDeformationModel object defines a deformation model based on a mesh, *vtkPolyData*.
 
 .. image:: ../Doxygen/html/classvtkDeformationModel__coll__graph.png
    :scale: 200%
@@ -522,7 +580,7 @@ This class inherits from vtkModel_ base class. As it is specified in vtkModel, a
    :align: center
 
 An interface based on this class must be implemented to access available deformation models: 
- * vtkParticleSpringSystem: vtkPSSInterface_
+ * vtkParticleSystem: vtkPSSInterface_
  * vtkExplicitDeformableModel: vtkEDMInterface_
 
 vtkBoundaryCondition
@@ -547,22 +605,32 @@ vtkPSSInterface
 
 Interface class for a particle-spring deformation system.
 
-This class, based in vtkDeformationModel_ class, adapts the access to the external vtkParticleSpringSystem package.
+This class, based in vtkDeformationModel_ class, adapts the access to the external vtkCUDAParticleSystem package.
 
 .. image:: ../Doxygen/html/classvtkPSSInterface__coll__graph.png
    :scale: 200%
    :align: center
 
-The interface has to be initialized in order to be updated. Some parameters must be previously defined:
+Prior an update, the interface has to be initialized. Some parameters must be previously defined:
 
- * Input: vtkPolyData object
- * DistanceCoefficient: Maximum distance between points
- * DampingCoefficient: (d) oscillation coefficient
- * SpringCoefficient: (K) spring coefficient
- * Mass: unit mass of each particle
- * RigidityFactor: n-neighborhood connectivity
- * DeltaT: time step of deformation process
- * SolverType: motion equation solver type
+======================= ===========================================
+Input                   vtkPolyData object
+Source                  vtkPolyData object of the visualization mesh.
+DistanceCoefficient     Maximum distance between points
+DampingCoefficient (d)  oscillation coefficient
+SpringCoefficient (K)   spring coefficient
+Mass                    unit mass of each particle
+DeltaT                  time step of deformation process
+SolverType              motion equation solver type
+======================= ===========================================
+
+The main input should be a vtkPolyData object with the following topology:
+ 
+ * All points must be stored in the Points array.
+ * All cells must be defined as VTK_LINE cell type.
+ * All connected points must be linked with VTK_LINE cells.
+
+Once these parameters has been set, the initialization function will iterate through the input mesh cell array, creating a spring, vtkSpring, for every VTK_LINE cell. Every point of the mesh will be imported as vtkParticle object. For more information on this class check out its own documentation.
 
 The following screenshot displays the input mesh in translucid green and the deformed output as a grid.
 
@@ -572,7 +640,7 @@ The following screenshot displays the input mesh in translucid green and the def
 
    vtkESQui screenshot displaying an particle-spring deformation process
 
-Please check Testing source folder if you want to know more about this class.
+Feel free to check Testing and Examples_ folder if you want to know more about this class.
 
 vtkEDMInterface
 ...............
@@ -586,10 +654,12 @@ vtkEDMInterface class, based in vtkDeformationModel_ class, adapts the access to
    :align: center
 
 The interface has to be initialized in order to be updated. Some parameters must be previously defined:
- 
- * *Input*: vtkPolyData object
- * *NumberOfIterations*: Maximum number of iterations
- * *WarpScaleFactor*: Deformation scale factor
+
+================== ===========================
+Input              vtkPolyData object
+NumberOfIterations Maximum number of iterations
+WarpScaleFactor    Deformation scale factor
+================== ===========================
 
 The following screenshot displays the input mesh in translucid green and the deformed output as a grid.
 
@@ -604,14 +674,14 @@ Please Testing source folder if you want to know more about this class.
 CollisionDetection
 ------------------
 
-In the CollisionDetection model are stored all the classes involved in the collision detection process. This process is run over the scenario obejct collision models (vtkCollisionModel_) and the obtained results are saved as vtkCollision_ objects.
+In the collision detection package are stored all the classes involved in the collision detection process. This process is run over the scenario obejct collision models (vtkCollisionModel_) and the obtained results are saved as vtkCollision_ objects.
 
 vtkCollisionModel
 .................
 
-vtkCollisionModel object defines a collision model based on a mesh (vtkPolyData).
+vtkCollisionModel object defines a collision model based on a mesh, *vtkPolyData*.
 
-This class inherits from vtkModel base class. As it is specified in vtkModel_, at least an input mesh should be defined. Optionally a source mesh for synchronization purposes may be defined.
+This class inherits from vtkModel_ base class. As it is specified in vtkModel_, at least an input mesh should be defined. Optionally a source mesh for synchronization purposes may be defined.
 
 .. image:: ../Doxygen/html/classvtkCollisionModel__coll__graph.png
    :scale: 200%
@@ -633,7 +703,7 @@ vtkCollision acts as data container storing all the useful information of a scen
  * *Distance* between collided points
  * *Displacement* vector obtained from objects inertia
 
-All the information is stored in pair, one for each scenario object collided.
+All the information is stored in pairs, one for each scenario object collided.
 
 vtkCollisionCollection
 ......................
@@ -645,7 +715,7 @@ vtkCollisionDetection
 
 Generic base class for collision detection library interfaces
 
-This class serves as a base class for the collision detection libraries. Scenario object models, vtkCollisionModel_ must be assigned before process execution. The result of the procedure is collection of collisions, vtkCollisionCollection_, between scenario objects.
+This class serves as a base class for the collision detection libraries. Scenario object collision models, vtkCollisionModel_ must be assigned before process execution. The result of the procedure is collection of collisions, vtkCollisionCollection_, between scenario objects.
 
 .. image:: ../Doxygen/html/classvtkCollisionDetection__coll__graph.png
    :scale: 200%
@@ -656,12 +726,14 @@ vtkBioEngInterface_, an interface based on this class, has been implemented to a
 vtkBioEngInterface
 ..................
 
-This interface enables tehe access to the vtkbioeng collision detection library. In a few words, the object collision models are translated to its defined position, and then evaluated to check if they intersect between each other.
+This interface enables the access to the vtkbioeng collision detection library. In a few words, the object collision models are translated to its defined position, and then evaluated to check if they intersect between each other.
 
 For more info on this collision library refer to http://sourceforge.net/projects/vtkbioeng/
 
 Haptics
 -------
+
+Haptic devices, or haptics, are a tactile feedback device that takes advantage of a user's sense of touch by applying forces, vibrations, and/or motions to the user. This package contains all the required class to integrate the use of haptic devices into the *vtkESQui* platform.
 
 vtkHaptic
 .........
@@ -798,6 +870,43 @@ vtk2Blender
 Tex_vtkBlender.py has been designed to import models designed in Blender (http://www.blender3d.org), a 3D modelling, animation and rendering software, into any vtk-based project.
 
 For further information read Tex_Blender.py.pdf.
+
+Meshing
+.......
+
+In some cases, the vtkDeformationModel_ implementations require a custom input *vtkPolyData* objects. For example, vtkPSSInterface_ requires a *vtkPolyData* object with VTK_LINE cell types. To satisify these requirements a few scripts has been developed to generate this custom input data files.
+
+**BuildClosestPointMesh.py**
+
+This scripts generates a vtp file (*vtkPolyData*) that satisfies the vtkPSSInterface_ input data requirements, by generating a VTK_LINE cell mesh from VTK_TRIANGLE cell mesh. Every point is connected to its n closest points by VTK_LINE cell.
+
+The script is invoked as shown::
+
+ vtkpython BuildClosestPointsMesh.py $inputFile $numberOfPoints $outputFile.
+
+The parameters should be set:
+
+============== ================================================================
+inputfile      vtp file containing a *vtkPolyData* object of VTK_TRIANGLE cells
+numberOfPoints Number of closest points for every point.
+outputFile     File path to output vtp file
+============== ================================================================
+
+**BuildRigidityMesh.py**
+
+This scripts generates a vtp file (*vtkPolyData*) that satisfies the vtkPSSInterface_ input data requirements, by generating a VTK_LINE cell mesh from VTK_TRIANGLE cell mesh. Every cell point it will be connected to its n neighborhood point by a VTK_LINE cell. For example, for n=1, each point is connected to every point of the cells it belongs. The biggest the n, the rigidest the mesh will become. 
+
+The script is invoked as shown::
+
+ vtkpython BuildRigidityMesh.py $inputFile $rigidityFactor $outputFile
+
+The parameters should be set:
+
+============== ================================================================
+inputfile      vtp file containing a *vtkPolyData* object of VTK_TRIANGLE cells
+rigidityFactor Neighborhood size
+outputFile     File path to output vtp file
+============== ================================================================
 
 Examples
 ========
