@@ -123,13 +123,18 @@ int vtkPSSInterface::RequestData(
 		vtkInformationVector *outputVector) {
 
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	//vtkInformation *inInfo1 = inputVector[1]->GetInformationObject(0);
+	vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	vtkPolyData *input = vtkPolyData::SafeDownCast(
-			inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	vtkPolyData *output = vtkPolyData::SafeDownCast(
-			outInfo->Get(vtkDataObject::DATA_OBJECT()));
+	//Get the input and output
+	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	//Optional input
+	vtkPolyData * source = 0;
+	if(sourceInfo){
+		source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
+	}
+	//Output
+	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 	//cout << this->GetClassName() << "::RequestData(" << this->GetName() << ")\n";
 
@@ -142,9 +147,8 @@ int vtkPSSInterface::RequestData(
 		vtkPolyData * out = this->ParticleSpringSystem->GetOutput();
 
 		//If source is defined -> Synchronize mesh
-		if(this->VisualizationModel)
+		if(source)
 		{
-			vtkPolyData * source = vtkPolyData::SafeDownCast(this->VisualizationModel->GetInput());
 			if(this->HashMap->GetNumberOfIds() == 0)
 			{
 				//Build collision mesh hash map

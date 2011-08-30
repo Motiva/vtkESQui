@@ -48,7 +48,6 @@ POSSIBILITY OF SUCH DAMAGE.
 class vtkTransformPolyDataFilter;
 class vtkCollision;
 class vtkCollisionCollection;
-class vtkVisualizationModel;
 class vtkSphereSource;
 class vtkGlyph3D;
 
@@ -136,12 +135,6 @@ public:
 	//!Remove all collisions from the model
 	void RemoveAllCollisions();
 
-	//! Set visualization model for synchronization purposes
-	void SetVisualizationModel(vtkModel * vis);
-
-	//! Get visualization model for synchronization purposes
-	vtkModel * GetVisualizationModel();
-
 protected:
 
 	vtkCollisionModel();
@@ -177,9 +170,6 @@ protected:
 
 	//! Collection of collisions
 	vtkCollisionCollection * Collisions;
-
-	//! Visualization Model
-	vtkModel * VisualizationModel;
 
 private:
 	vtkCollisionModel (const vtkCollisionModel &);

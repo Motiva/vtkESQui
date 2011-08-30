@@ -202,34 +202,24 @@ int vtkModel::RequestData(
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
 
-	//cout << "vtkModel::RequestData (" << this->GetName() <<  ")\n";
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
 	vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
 	//Get the input and output
-	vtkPolyData *input = vtkPolyData::SafeDownCast(
-			inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	//Optional input
 	vtkPolyData * source = 0;
-	if(sourceInfo)
-	{
-		source = vtkPolyData::SafeDownCast(
-			sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
+	if(sourceInfo){
+		source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
 	}
-	vtkPolyData *output = vtkPolyData::SafeDownCast(
-			outInfo->Get(vtkDataObject::DATA_OBJECT()));
+	//Output
+	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 	//If source is defined -> Synchronize mesh
 	if(source)
 	{
-		//cout << "source is present\n";
-		/*this->SmoothFilter->SetInput(input);
-		this->SmoothFilter->SetSource(source);
-		this->SmoothFilter->Update();
-		this->Mapper->SetInput(this->SmoothFilter->GetOutput());
-		this->Mapper->Update();
-		output->ShallowCopy(this->SmoothFilter->GetOutput());*/
+		vtkDebugMacro("Model source is present\n");
 
 		if(this->HashMap->GetNumberOfIds() == 0)
 		{
@@ -264,6 +254,8 @@ int vtkModel::RequestData(
 //--------------------------------------------------------------------------
 void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
 {
+	vtkDebugMacro("Build model hashmap.")
+
 	//Force data to be updated
 	a->Update();
 	b->Update();
@@ -274,15 +266,11 @@ void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
 
 	this->HashMap->SetNumberOfIds(a->GetNumberOfPoints());
 
-	//cout << this->GetName() << "::HashMap \n";
 	for (int i=0; i<a->GetNumberOfPoints(); i++)
 	{
 		double * point = a->GetPoint(i);
 		vtkIdType id = locator->FindClosestPoint(point);
 		this->HashMap->SetId(i, id);
-		//double * p = b->GetPoint(id);
-		//cout << "Map [" << i << "]: " << "("<< point[0] << "," << point[1] << "," << point[2] << ") ["<<
-		//		id << "]: " << "("<< p[0] << "," << p[1] << "," << p[2] << ")" <<  endl;
 	}
 }
 

@@ -178,12 +178,18 @@ int vtkEDMInterface::RequestData(
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
 
-	// Get the info objects
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	// Get the input and output
+	//Get the input and output
 	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	//Optional input
+	vtkPolyData * source = 0;
+	if(sourceInfo){
+		source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
+	}
+	//Output
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 	if(this->Status == Enabled)
@@ -214,9 +220,8 @@ int vtkEDMInterface::RequestData(
 		vtkPolyData * out = this->DeformableMesh->GetOutput();
 
 		//If source is defined -> Synchronize mesh
-		if(this->VisualizationModel)
+		if(source)
 		{
-			vtkPolyData * source = vtkPolyData::SafeDownCast(this->VisualizationModel->GetInput());
 			if(this->HashMap->GetNumberOfIds() == 0)
 			{
 				//Build collision mesh hash map

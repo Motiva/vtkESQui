@@ -331,13 +331,12 @@ void vtkSimulationInteractorStyle::OnLeftButtonUp()
 //--------------------------------------------------------------------------
 void vtkSimulationInteractorStyle::OnMiddleButtonDown()
 {
-	std::cout << "MiddleButtonDown\n";
 }
 
 //--------------------------------------------------------------------------
 void vtkSimulationInteractorStyle::OnMiddleButtonUp()
 {
-	std::cout << "MiddleButtonUp\n";
+
 }
 
 //--------------------------------------------------------------------------

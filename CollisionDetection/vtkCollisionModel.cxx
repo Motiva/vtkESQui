@@ -54,6 +54,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkSphereSource.h"
 #include "vtkGlyph3D.h"
 #include "vtkPoints.h"
+#include "vtkPointData.h"
+#include "vtkCellData.h"
 #include "vtkIdList.h"
 #include "vtkPointLocator.h"
 #include "vtkTransform.h"
@@ -72,8 +74,6 @@ vtkCollisionModel::vtkCollisionModel() {
 	this->SetNumberOfOutputPorts(2);
 
 	this->ModelType = vtkModel::Collision;
-
-	this->VisualizationModel = NULL;
 
 	this->DeltaT = 1.0;
 	this->Velocity[0]=this->Velocity[1]=this->Velocity[2]=0.0;
@@ -137,18 +137,6 @@ void vtkCollisionModel::RemoveAllCollisions()
 }
 
 //--------------------------------------------------------------------------
-void vtkCollisionModel::SetVisualizationModel(vtkModel * vis)
-{
-	this->VisualizationModel = vis;
-}
-
-//--------------------------------------------------------------------------
-vtkModel * vtkCollisionModel::GetVisualizationModel()
-{
-	return this->VisualizationModel;
-}
-
-//--------------------------------------------------------------------------
 void vtkCollisionModel::Init()
 {
 	this->Superclass::Init();
@@ -163,13 +151,13 @@ void vtkCollisionModel::Init()
 	else this->Matrix = this->Transform->GetMatrix();
 
 	//Filter to apply transformations to the mesh
-	this->TransformFilter->SetInput(this->GetInput());
+	this->TransformFilter->SetInputConnection(this->GetOutputPort());
 	this->TransformFilter->SetTransform(this->Transform);
 
 	// Configure visualization
 	this->Sphere = vtkSphereSource::New();
 	this->Glyphs = vtkGlyph3D::New();
-	this->Glyphs->SetInput(this->GetInput());
+	this->Glyphs->SetInputConnection(this->GetOutputPort());
 	this->Sphere->SetRadius(this->Radius);
 	this->Glyphs->SetSource(this->Sphere->GetOutput());
 	this->Glyphs->ScalingOff();
@@ -185,28 +173,33 @@ int vtkCollisionModel::RequestData(
 
 	// Get the info objects
 	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
 	vtkInformation *outInfo = outputVector->GetInformationObject(0);
 	vtkInformation *outInfo1 = outputVector->GetInformationObject(1);
 
 	// Get the input and output
 	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	// Optional input
+	vtkPolyData * source = 0;
+	if(sourceInfo){
+		source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
+	}
 
+	// Main output
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+	// Secondary output for collision purposes
 	vtkPolyData *outputTx = vtkPolyData::SafeDownCast(outInfo1->Get(vtkDataObject::DATA_OBJECT()));
 
 	//cout << this->GetClassName() << "::RequestData (" << this->GetName() << ")\n";
 
 	if(this->Status == Enabled)
 	{
-		//Update object position
-		this->Transform->SetMatrix(this->Matrix);
-		this->Transform->Update();
-		this->TransformFilter->Update();
+		//collision visualization mesh
+		output->ShallowCopy(input);
 
 		//If source is defined -> Synchronize mesh
-		if(this->VisualizationModel)
+		if(source)
 		{
-			vtkPolyData * source = this->VisualizationModel->GetOutput();
 			if(this->HashMap->GetNumberOfIds() == 0)
 			{
 				//Build collision mesh hash map
@@ -214,7 +207,7 @@ int vtkCollisionModel::RequestData(
 			}
 
 			//Synchronize both meshes
-			vtkPoints * points = input->GetPoints();
+			vtkPoints * points = output->GetPoints();
 			for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
 			{
 				int id = this->HashMap->GetId(i);
@@ -229,17 +222,20 @@ int vtkCollisionModel::RequestData(
 		this->Actor->SetVisibility(this->Visibility);
 		if(this->IsVisible())
 		{
+			this->Glyphs->Modified();
+			//this->Glyphs->Update();
 			this->Actor->GetProperty()->SetColor(this->Color);
 			this->Actor->GetProperty()->SetOpacity(this->Opacity);
-			this->Glyphs->Modified();
-			this->Glyphs->Update();
-			this->Mapper->Update();
+			this->Mapper->Modified();
 		}
+
+
+		//Update object position
+		this->Transform->SetMatrix(this->Matrix);
+		this->Transform->Update();
 
 		//Transformed mesh for collision detection purposes
 		outputTx->ShallowCopy(this->TransformFilter->GetOutput());
-		//collision visualization mesh
-		output->ShallowCopy(input);
 	}
 	else
 	{

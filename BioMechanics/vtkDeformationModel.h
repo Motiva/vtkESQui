@@ -114,18 +114,6 @@ public:
 	 */
 	virtual void RemoveBoundaryConditions();
 
-	//! Set Collision model for synchronization purposes
-	void SetCollisionModel(vtkModel * col);
-
-	//! Get Collision model for synchronization purposes
-	vtkModel * GetCollisionModel();
-
-	//! Set visualization model for synchronization purposes
-	void SetVisualizationModel(vtkModel * vis);
-
-	//! Get visualization model for synchronization purposes
-	vtkModel * GetVisualizationModel();
-
 protected:
 
 	vtkDeformationModel();
@@ -139,12 +127,6 @@ protected:
 	 * This acts as pointer to the deformation model collection of conditions
 	 */
 	vtkBoundaryConditionCollection * BoundaryConditions;
-
-	//! Collision Model
-	vtkModel * CollisionModel;
-
-	//! Visualization Model
-	vtkModel * VisualizationModel;
 
 private:
 	vtkDeformationModel (const vtkDeformationModel &);

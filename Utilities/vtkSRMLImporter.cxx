@@ -322,7 +322,7 @@ int vtkSRMLImporter::ImportBegin ()
 	else
 	{
 		//Simulation must have a renderWindow and a renderer predefined
-		cout << "Simulation has not been properly defined" << endl;
+		vtkErrorMacro("Simulation has not been properly defined");
 		return 0;
 	}
 	vtkDebugMacro(<< "Opening import file as binary");
@@ -330,7 +330,7 @@ int vtkSRMLImporter::ImportBegin ()
 	// reported by OpenSRMLFile.
 	if(!this->OpenSRMLFile())
 	{
-		std::cout << "File has not been opened..." << std::endl;
+		vtkErrorMacro("File has not been opened...");
 		return 0;
 	}
 	return this->ReadSRMLData();
