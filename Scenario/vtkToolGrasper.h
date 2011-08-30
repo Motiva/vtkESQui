@@ -142,6 +142,17 @@ public:
 	//! Sets the grasper roll angle
 	void Roll(double angle);
 
+	//! Reset tool to its initial position
+	/*!
+	 * Initial position:
+	 *  * Tool z-axis orientation set to 0
+	 *  * Both levers must be closed
+	 */
+	//void Reset();
+
+	//! Retore tool to its last position
+	//void Restore();
+
 protected:	
 
 	vtkToolGrasper();

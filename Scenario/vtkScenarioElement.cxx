@@ -197,16 +197,16 @@ void vtkScenarioElement::Init()
 			{
 				this->CollisionModel->SetObjectId(this->ObjectId);
 				this->CollisionModel->SetId(this->Id);
-				this->CollisionModel->SetVisualizationModel(this->VisualizationModel);
+				//Set optional (synchronisation) input
+				this->CollisionModel->SetInput(1, this->VisualizationModel->GetOutput());
 				this->Models->AddModel(this->CollisionModel);
 
 				if(this->DeformationModel)
 				{
 					this->DeformationModel->SetObjectId(this->ObjectId);
 					this->DeformationModel->SetId(this->Id);
-					//Set source meshes for synchronization
-					this->DeformationModel->SetVisualizationModel(this->VisualizationModel);
-					this->DeformationModel->SetCollisionModel(this->CollisionModel);
+					//Set optional (synchronisation) input
+					this->DeformationModel->SetInput(1, this->VisualizationModel->GetOutput());
 					this->Models->AddModel(this->DeformationModel);
 				}
 			}
@@ -335,6 +335,7 @@ void vtkScenarioElement::Translate(double * vector)
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Translate(double x, double y, double z) {
+	//cout << this->GetName() << "::Translate: " << x << ", " << y << ", " << z << endl;
 	this->Transform->Translate(x, y, z);
 	this->Modified();
 }
@@ -347,12 +348,14 @@ void vtkScenarioElement::RotateWXYZ(double a, double x, double y, double z) {
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::RotateX(double x) {
+	//cout << this->GetName() << "::RotateX: " << x << endl;
 	this->Transform->RotateX(x);
 	this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioElement::RotateY(double y) {
+	//cout << this->GetName() << "::RotateY: " << y << endl;
 	this->Transform->RotateY(y);
 	this->Modified();
 }
@@ -360,6 +363,7 @@ void vtkScenarioElement::RotateY(double y) {
 //--------------------------------------------------------------------------
 void vtkScenarioElement::RotateZ(double z)
 {
+	//cout << this->GetName() << "::RotateZ: " << z << endl;
 	this->Transform->RotateZ(z);
 	this->Modified();
 }
@@ -367,7 +371,7 @@ void vtkScenarioElement::RotateZ(double z)
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Reset()
 {
-	//FIXME: Use matrix inverse to reset position
+	//cout << this->GetName() << "::Reset()" << endl;
 	this->Transform->Translate(this->Origin);
 	this->Transform->RotateZ(-this->Orientation[2]);
 }
@@ -375,6 +379,7 @@ void vtkScenarioElement::Reset()
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Restore()
 {
+	//cout << this->GetName() << "::Restore()" << endl;
 	this->Transform->RotateZ(this->Orientation[2]);
 	vtkMath::MultiplyScalar(this->Origin, -1);
 	this->Transform->Translate(this->Origin);

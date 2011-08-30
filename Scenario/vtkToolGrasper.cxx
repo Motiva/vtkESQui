@@ -45,6 +45,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInformation.h"
 #include "vtkInformationVector.h"
 #include "vtkAppendPolyData.h"
+#include "vtkTransform.h"
 
 #include "vtkScenarioElement.h"
 #include "vtkScenarioElementCollection.h"
@@ -121,24 +122,6 @@ void vtkToolGrasper::SetRightLever(vtkScenarioElement * e)
 	this->RightLever = e;
 }
 
-//--------------------------------------------------------------------------
-/*int vtkToolGrasper::RequestData(vtkInformation *vtkNotUsed(request),
-		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector)
-{
-	// get the info objects
-	vtkInformation *outInfo = outputVector->GetInformationObject(0);
-
-	// get the input and output
-	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-	this->AppendFilter->Update();
-
-	output->ShallowCopy(this->AppendFilter->GetOutput());
-
-	return 1;
-}*/
-
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Open(){
 	if(this->IsClosed()) {
@@ -155,15 +138,14 @@ void vtkToolGrasper::Close(){
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::SetOpening(double opening) {
-	//cout << "vtkToolGrasper::SetOpening: " << opening << "\n";
 	if(this->Opening != opening)
 	{
+		//cout << "vtkToolGrasper::SetOpening: " << opening << "\n";
 		double step = opening - this->Opening;
 
 		//Left Lever
 		this->LeftLever->RotateX(-this->OpeningAngle*step);
 		this->LeftLever->Update();
-
 		//Right Lever
 		this->RightLever->RotateX(this->OpeningAngle*step);
 		this->RightLever->Update();
@@ -192,7 +174,9 @@ void vtkToolGrasper::RotateX(double angle)
 	double o = this->Opening;
 	//Grasper is clamped before being rotated
 	this->SetOpening(0);
+	//this->Reset();
 	Superclass::RotateX(angle);
+	//this->Restore();
 	//Grasper' opening state is restored
 	this->SetOpening(o);
 
@@ -267,4 +251,7 @@ void vtkToolGrasper::PrintSelf(ostream& os,vtkIndent indent) {
 	this->Superclass::PrintSelf(os,indent);
 	os << indent << "Opening: " << this->Opening << endl;
 	os << indent << "Opening Angle: " << this->OpeningAngle << endl;
+	os << indent << "Yaw Angle: " << this->YawAngle << endl;
+	os << indent << "Pitch Angle: " << this->PitchAngle << endl;
+	os << indent << "Roll Angle: " << this->RollAngle << endl;
 }

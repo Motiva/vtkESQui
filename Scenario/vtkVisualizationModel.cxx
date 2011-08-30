@@ -120,15 +120,11 @@ int vtkVisualizationModel::RequestData(
 	//Get the input and output
 	vtkPolyData *input = vtkPolyData::SafeDownCast(
 			inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	//Optional input
-	vtkPolyData * source = 0;
-	if(sourceInfo)
-	{
-		source = vtkPolyData::SafeDownCast(
-				sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
-	}
+
+	//Output
 	vtkPolyData *output = vtkPolyData::SafeDownCast(
 			outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
 	if(this->Status == Enabled)
 	{
 		//Set visualization parameters
