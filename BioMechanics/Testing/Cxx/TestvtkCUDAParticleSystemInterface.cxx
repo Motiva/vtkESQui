@@ -27,7 +27,7 @@
 #include "vtkCollision.h"
 #include "vtkCollisionCollection.h"
 
-#include "vtkParticleSpringSystemInterface.h"
+#include "vtkCUDAParticleSystemInterface.h"
 
 class vtkPSSTimerCallback : public vtkCommand
 {
@@ -117,7 +117,7 @@ public:
 		this->RenderTimerId = tid;
 	}
 
-	void SetDeformationModel(vtkParticleSpringSystemInterface * DeformationModel)
+	void SetDeformationModel(vtkCUDAParticleSystemInterface * DeformationModel)
 	{
 		this->DeformationModel = DeformationModel;
 	}
@@ -133,10 +133,10 @@ private:
 
 	vtkIdList * List;
 
-	vtkParticleSpringSystemInterface * DeformationModel;
+	vtkCUDAParticleSystemInterface * DeformationModel;
 };
 
-int TestvtkParticleSpringSystemInterface(int argc, char * argv[])
+int TestvtkCUDAParticleSystemInterface(int argc, char * argv[])
 {
 	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c12.vtp";
 
@@ -157,16 +157,16 @@ int TestvtkParticleSpringSystemInterface(int argc, char * argv[])
 
 	vtkPolyData * mesh = reader->GetOutput();
 
-	vtkSmartPointer<vtkParticleSpringSystemInterface> system = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
+	vtkSmartPointer<vtkCUDAParticleSystemInterface> system = vtkSmartPointer<vtkCUDAParticleSystemInterface>::New();
 	system->SetFileName(filename);
 	system->SetColor(1,0,0);
 	system->SetOpacity(1.0);
-	system->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
+	system->SetSolverType(vtkCUDAMotionEquationSolver::VelocityVerlet);
 	system->SetSpringCoefficient(250);
 	system->SetDistanceCoefficient(10);
 	system->SetDampingCoefficient(5);//Friction
 	system->SetMass(.5);
-	system->SetDeltaT(0.001);//10ms
+	system->SetDeltaT(0.001);//1ms
 	system->Init();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();

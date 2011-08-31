@@ -1,7 +1,16 @@
 SET(KIT vtkESQuiBioMechanics)
+SET(Kit_Test_SRCS 
+    TestvtkEDMInterface.cxx
+    TestvtkParticleSpringSystemInterface.cxx
+  )
+
+IF(VTKESQUI_USE_CUDA)
+  SET(Kit_Test_SRCS ${Kit_Test_SRCS}
+  TestvtkCUDAParticleSystemInterface.cxx)
+ENDIF(VTKESQUI_USE_CUDA)
+
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
-  TestvtkEDMInterface.cxx
-  TestvtkParticleSpringSystemInterface.cxx
+  ${Kit_Test_SRCS}
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})
