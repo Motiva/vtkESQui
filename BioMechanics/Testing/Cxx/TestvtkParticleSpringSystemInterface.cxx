@@ -27,7 +27,7 @@
 #include "vtkCollision.h"
 #include "vtkCollisionCollection.h"
 
-#include "vtkPSSInterface.h"
+#include "vtkParticleSpringSystemInterface.h"
 
 class vtkPSSTimerCallback : public vtkCommand
 {
@@ -117,7 +117,7 @@ public:
 		this->RenderTimerId = tid;
 	}
 
-	void SetDeformationModel(vtkPSSInterface * DeformationModel)
+	void SetDeformationModel(vtkParticleSpringSystemInterface * DeformationModel)
 	{
 		this->DeformationModel = DeformationModel;
 	}
@@ -133,10 +133,10 @@ private:
 
 	vtkIdList * List;
 
-	vtkPSSInterface * DeformationModel;
+	vtkParticleSpringSystemInterface * DeformationModel;
 };
 
-int TestvtkPSSInterface(int argc, char * argv[])
+int TestvtkParticleSpringSystemInterface(int argc, char * argv[])
 {
 	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c12.vtp";
 
@@ -157,17 +157,17 @@ int TestvtkPSSInterface(int argc, char * argv[])
 
 	vtkPolyData * mesh = reader->GetOutput();
 
-	vtkSmartPointer<vtkPSSInterface> pss = vtkSmartPointer<vtkPSSInterface>::New();
-	pss->SetFileName(filename);
-	pss->SetColor(1,0,0);
-	pss->SetOpacity(1.0);
-	pss->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
-	pss->SetSpringCoefficient(150);
-	pss->SetDistanceCoefficient(10);
-	pss->SetDampingCoefficient(5);//Friction
-	pss->SetMass(.5);
-	pss->SetDeltaT(0.001);//10ms
-	pss->Init();
+	vtkSmartPointer<vtkParticleSpringSystemInterface> system = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
+	system->SetFileName(filename);
+	system->SetColor(1,0,0);
+	system->SetOpacity(1.0);
+	system->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
+	system->SetSpringCoefficient(150);
+	system->SetDistanceCoefficient(10);
+	system->SetDampingCoefficient(5);//Friction
+	system->SetMass(.5);
+	system->SetDeltaT(0.001);//10ms
+	system->Init();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
@@ -191,7 +191,7 @@ int TestvtkPSSInterface(int argc, char * argv[])
 	actor->GetProperty()->SetOpacity(0.5);
 
 	renderer->AddActor(actor);
-	renderer->AddActor(pss->GetActor());
+	renderer->AddActor(system->GetActor());
 	renderer->SetBackground(1,1,1);
 
 	renderer->ResetCamera();
@@ -205,7 +205,7 @@ int TestvtkPSSInterface(int argc, char * argv[])
 	iren->AddObserver(vtkCommand::TimerEvent, cb);
 	int tid;
 
-	cb->SetDeformationModel(pss);
+	cb->SetDeformationModel(system);
 
 	//Create a faster timer for DeformationModel update
 	tid = iren->CreateRepeatingTimer(10);

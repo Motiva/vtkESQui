@@ -10,7 +10,7 @@ SET(UKIT BioMechanics)  #Uppercase Kit Name
 # Kit_SRCS variable.
 SET (Kit_SRCS 
 vtkDeformationModel.cxx
-vtkPSSInterface.cxx
+vtkParticleSpringSystemInterface.cxx
 vtkEDMInterface.cxx
 vtkBoundaryCondition.cxx
 vtkBoundaryConditionCollection.cxx
@@ -41,6 +41,13 @@ ${PROJECT_NAME}CommonPythonD
 vtkCommonPythonD
 )
 
+IF(VTKESQUI_USE_CUDA)
+  SET(Kit_SRCS ${Kit_SRCS}
+  vtkCUDAParticleSystemInterface.cxx)
+  SET(KIT_LIBS ${KIT_LIBS}
+      vtkCUDAParticleSystem)
+ENDIF(VTKESQUI_USE_CUDA)
+
 #
 # Uncomment the following code if you are plannig to add python and/or java support
 #
@@ -64,14 +71,6 @@ vtkCommonPythonD
 #SET(KIT_JAVA_DEPS)
 
 #-----------------------------------------------------------------------------
-# Include common Haptics CMake code. 
-# Note: Should be located before KitCommonBlock INCLUDE command
-#IF(VTKESQUI_USE_HAPTICS)
-#  INCLUDE(${VTKESQUI_CMAKE_DIR}/HapticCommonBlock.cmake)
-#ENDIF(VTKESQUI_USE_HAPTICS)
-#-----------------------------------------------------------------------------
-
-#-----------------------------------------------------------------------------
 # Include CMake code common to all kits.
 INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 #-----------------------------------------------------------------------------
@@ -80,7 +79,10 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 
 SUBDIRS(Testing)
 SUBDIRS(vtkParticleSpringSystem)
+SUBDIRS(vtkExplicitDeformableModel)
 IF(VTKESQUI_USE_FEM)
   SUBDIRS(vtkFEMSystem)
 ENDIF(VTKESQUI_USE_FEM)
-SUBDIRS(vtkExplicitDeformableModel)
+IF(VTKESQUI_USE_CUDA)
+  SUBDIRS(vtkCUDAParticleSystem)
+ENDIF(VTKESQUI_USE_CUDA)

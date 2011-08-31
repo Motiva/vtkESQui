@@ -142,7 +142,7 @@ col_organ SetVisibility 1
 col_organ SetColor 0.0 0.0 1.0 
 
 #Deformation model. Particle-Spring system
-vtkPSSInterface def_organ
+vtkParticleSpringSystemInterface def_organ
 def_organ SetName "sphere_def" 
 def_organ SetFileName $fn3d 
 def_organ SetVisibility 0 

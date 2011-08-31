@@ -59,7 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkScenarioObject.h"
 #include "vtkVisualizationModel.h"
 #include "vtkCollisionModel.h"
-#include "vtkPSSInterface.h"
+#include "vtkParticleSpringSystemInterface.h"
 #include "vtkOrgan.h"
 
 using namespace std;
@@ -98,7 +98,7 @@ int TestvtkScenario(int argc, char * argv[])
 	col->SetColor(0.0, 0.0, 1.0);
 
 	//Deformation model. Particle-Spring system
-	vtkSmartPointer<vtkPSSInterface> def = vtkSmartPointer<vtkPSSInterface>::New();
+	vtkSmartPointer<vtkParticleSpringSystemInterface> def = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
 	def->SetName("ParticleSpring");
 	def->SetFileName(fn);
 	def->SetOpacity(1.0);

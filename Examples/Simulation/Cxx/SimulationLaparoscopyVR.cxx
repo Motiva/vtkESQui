@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkOrgan.h"
 #include "vtkSimulation.h"
 #include "vtkSimulationInteractorStyle.h"
-#include "vtkPSSInterface.h"
+#include "vtkParticleSpringSystemInterface.h"
 
 namespace EsquiExampleNS{
 	//All these objects must be defined globally, in order to access them on timer callback
@@ -141,7 +141,7 @@ int main(int argc, char * argv[])
 	//organ->SetOrganType(vtkOrgan::Deformable);
 
 	//Set Deformation Model
-/*	vtkPSSInterface * particleSpring = vtkPSSInterface::New();
+/*	vtkParticleSpringSystemInterface * particleSpring = vtkParticleSpringSystemInterface::New();
 	particleSpring->SetDeltaT(0.01);
 	particleSpring->SetGravity(0.0, 0.0, 0.0);
 

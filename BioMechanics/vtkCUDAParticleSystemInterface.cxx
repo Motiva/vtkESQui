@@ -39,7 +39,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkPSSInterface.h"
+#include "vtkCUDAParticleSystemInterface.h"
 
 #include "vtkObjectFactory.h"
 #include "vtkStreamingDemandDrivenPipeline.h"
@@ -57,13 +57,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkBoundaryCondition.h"
 #include "vtkBoundaryConditionCollection.h"
 
-vtkCxxRevisionMacro(vtkPSSInterface, "$Revision: 1.2 $");
-vtkStandardNewMacro(vtkPSSInterface);
+vtkCxxRevisionMacro(vtkCUDAParticleSystemInterface, "$Revision: 1.2 $");
+vtkStandardNewMacro(vtkCUDAParticleSystemInterface);
 
 //----------------------------------------------------------------------------
-vtkPSSInterface::vtkPSSInterface()
+vtkCUDAParticleSystemInterface::vtkCUDAParticleSystemInterface()
 {
-	this->ParticleSpringSystem = vtkParticleSpringSystem::New();
+	this->System = vtkCUDAParticleSystem::New();
 	this->SpringCoefficient = 0.0;
 	this->DistanceCoefficient = 0;
 	this->DampingCoefficient = 0;
@@ -71,33 +71,33 @@ vtkPSSInterface::vtkPSSInterface()
 	this->Mass = 0;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
 	this->DeltaT = 0;
-	this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
+	this->SolverType = vtkCUDAMotionEquationSolver::VelocityVerlet;
 }
 
 //----------------------------------------------------------------------------
-vtkPSSInterface::~vtkPSSInterface()
+vtkCUDAParticleSystemInterface::~vtkCUDAParticleSystemInterface()
 {
-	this->ParticleSpringSystem->Delete();
+	this->System->Delete();
 }
 
 //--------------------------------------------------------------------------
-void vtkPSSInterface::Init()
+void vtkCUDAParticleSystemInterface::Init()
 {
 	this->Superclass::Init();
 
 	//Set input data
-	this->ParticleSpringSystem->SetInput(this->GetInput());
+	this->System->SetInput(this->GetInput());
 	//Set common parameters
-	this->ParticleSpringSystem->SetGravity(this->Gravity);
-	this->ParticleSpringSystem->SetDeltaT(this->DeltaT);
+	this->System->SetGravity(this->Gravity);
+	this->System->SetDeltaTime(this->DeltaT);
 	//Set Mass-Spring System parameters
-	this->ParticleSpringSystem->SetDistanceCoefficient(this->DistanceCoefficient);
-	this->ParticleSpringSystem->SetSpringCoefficient(this->SpringCoefficient);//Friction
-	this->ParticleSpringSystem->SetDampingCoefficient(this->DampingCoefficient);//Friction
-	this->ParticleSpringSystem->SetMass(this->Mass);
-	this->ParticleSpringSystem->SetSolverType(this->SolverType);
+	this->System->SetDistanceCoefficient(this->DistanceCoefficient);
+	this->System->SetSpringCoefficient(this->SpringCoefficient);//Friction
+	this->System->SetDampingCoefficient(this->DampingCoefficient);//Friction
+	this->System->SetMass(this->Mass);
+	this->System->SetSolverType(this->SolverType);
 	//Initialize system
-	this->ParticleSpringSystem->Init();
+	this->System->Init();
 
 	//Once the system has been initialized the boundary conditions are set
 	this->BoundaryConditions->InitTraversal();
@@ -108,7 +108,8 @@ void vtkPSSInterface::Init()
 			/* 0 -> Fixed
 			 * 1 -> Free
 			 */
-			this->ParticleSpringSystem->SetParticleStatus(c->GetPointId(), c->GetValue());
+			//TODO: Enable particle status in vtkCUDAparticleSystem
+			//this->System->SetParticleStatus(c->GetPointId(), c->GetValue());
 		}
 	}
 
@@ -117,7 +118,7 @@ void vtkPSSInterface::Init()
 
 // VTK specific method: This method is called when the pipeline is calculated.
 //----------------------------------------------------------------------------
-int vtkPSSInterface::RequestData(
+int vtkCUDAParticleSystemInterface::RequestData(
 		vtkInformation *vtkNotUsed(request),
 		vtkInformationVector **inputVector,
 		vtkInformationVector *outputVector) {
@@ -141,10 +142,10 @@ int vtkPSSInterface::RequestData(
 	if(this->Status == Enabled)
 	{
 		//Force recalculation of the output in every step
-		this->ParticleSpringSystem->Modified();
-		this->ParticleSpringSystem->Update();
+		this->System->Modified();
+		this->System->Update();
 
-		vtkPolyData * out = this->ParticleSpringSystem->GetOutput();
+		vtkPolyData * out = this->System->GetOutput();
 
 		//If source is defined -> Synchronize mesh
 		if(source)
@@ -183,13 +184,13 @@ int vtkPSSInterface::RequestData(
 	return 1;
 }
 
-void vtkPSSInterface::AddDisplacement(vtkIdType pointId, double * vector)
+void vtkCUDAParticleSystemInterface::AddDisplacement(vtkIdType pointId, double * vector)
 {
-	this->ParticleSpringSystem->InsertCollision(pointId, vector);
+	this->System->InsertCollision(pointId, vector);
 }
 
 //--------------------------------------------------------------------------
-void vtkPSSInterface::PrintSelf(ostream& os, vtkIndent indent)
+void vtkCUDAParticleSystemInterface::PrintSelf(ostream& os, vtkIndent indent)
 {
 	this->Superclass::PrintSelf(os,indent);
 	os << indent << "SpringCoefficient: " << this->SpringCoefficient << endl;

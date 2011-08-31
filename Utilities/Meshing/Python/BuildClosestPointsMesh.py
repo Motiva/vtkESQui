@@ -2,7 +2,7 @@
 
 ###############################################################################
 # This scripts generates a vtp file (vtkPolyData) that satisfies the 
-# vtkPSSInterface_ input data requirements, by generating a VTK_LINE cell mesh 
+# vtkParticleSpringSystemInterface_ input data requirements, by generating a VTK_LINE cell mesh 
 # from VTK_TRIANGLE cell mesh.
 #
 # Usage:

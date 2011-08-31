@@ -46,7 +46,7 @@ col SetOpacity 0.5
 col SetColor 0.0 0.0 1.0
 
 #Deformation model. Particle-Spring system
-vtkPSSInterface def 
+vtkParticleSpringSystemInterface def 
 def SetName "ParticleSpring"
 def SetFileName $dfn
 def SetOpacity 1

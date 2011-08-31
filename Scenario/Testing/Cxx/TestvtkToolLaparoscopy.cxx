@@ -53,7 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkCollisionModel.h"
 #include "vtkVisualizationModel.h"
 #include "vtkDeformationModel.h"
-#include "vtkPSSInterface.h"
+#include "vtkParticleSpringSystemInterface.h"
 
 #include "vtkSmartPointer.h"
 #include "vtkRenderWindowInteractor.h"

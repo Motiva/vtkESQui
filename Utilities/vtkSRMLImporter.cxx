@@ -70,7 +70,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkToolGrasper.h"
 #include "vtkToolProbe.h"
 #include "vtkToolScissors.h"
-#include "vtkPSSInterface.h"
+#include "vtkParticleSpringSystemInterface.h"
 #include "vtkBoundaryCondition.h"
 
 #include <sys/stat.h>
@@ -470,7 +470,7 @@ void vtkSRMLImporter::SetElementModels(vtkScenarioElement * element, vtkXMLDataE
 				const char * interfaceType = xmlInterface->GetAttribute("Type");
 				if(strcmp(interfaceType, "PSS") == 0)
 				{
-					vtkPSSInterface * def = vtkPSSInterface::New();
+					vtkParticleSpringSystemInterface * def = vtkParticleSpringSystemInterface::New();
 					this->SetModelData(def, xmlModel);
 					element->SetDeformationModel(def);
 					//Specific deformation model parameters

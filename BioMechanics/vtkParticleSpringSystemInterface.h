@@ -39,8 +39,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#ifndef __vtkPSSInterface_h
-#define __vtkPSSInterface_h
+#ifndef __vtkParticleSpringSystemInterface_h
+#define __vtkParticleSpringSystemInterface_h
 
 #include "vtkESQuiBioMechanicsWin32Header.h"
 #include "vtkDeformationModel.h"
@@ -53,14 +53,14 @@ POSSIBILITY OF SUCH DAMAGE.
  * external vtkParticleSpringSystem package.
  */
 
-class VTK_ESQUI_BIOMECHANICS_EXPORT vtkPSSInterface : public vtkDeformationModel
+class VTK_ESQUI_BIOMECHANICS_EXPORT vtkParticleSpringSystemInterface : public vtkDeformationModel
 {
 public:
 	//! Type Revision Macro
-	vtkTypeRevisionMacro(vtkPSSInterface, vtkDeformationModel);
+	vtkTypeRevisionMacro(vtkParticleSpringSystemInterface, vtkDeformationModel);
 	//! Create a new PSS Interface
-	static vtkPSSInterface* New();
-	const char *GetClassName() {return "vtkPSSInterface";};
+	static vtkParticleSpringSystemInterface* New();
+	const char *GetClassName() {return "vtkParticleSpringSystemInterface";};
 	//! Print class object values
 	void PrintSelf(ostream& os, vtkIndent indent);
 
@@ -104,8 +104,8 @@ public:
 	virtual void AddDisplacement(vtkIdType pointId, double * vector);
 
 protected:
-	vtkPSSInterface();
-	~vtkPSSInterface();
+	vtkParticleSpringSystemInterface();
+	~vtkParticleSpringSystemInterface();
 
 
 	//!Particle-spring system mesh
@@ -151,8 +151,8 @@ protected:
 	vtkMotionEquationSolver::MotionEquationSolverType SolverType;
 	
 private:
-	vtkPSSInterface(const vtkPSSInterface&);  // Not implemented.
-	void operator=(const vtkPSSInterface&);  // Not implemented.
+	vtkParticleSpringSystemInterface(const vtkParticleSpringSystemInterface&);  // Not implemented.
+	void operator=(const vtkParticleSpringSystemInterface&);  // Not implemented.
 };
 
 #endif

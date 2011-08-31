@@ -1,7 +1,7 @@
 SET(KIT vtkESQuiBioMechanics)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
   TestvtkEDMInterface.cxx
-  TestvtkPSSInterface.cxx
+  TestvtkParticleSpringSystemInterface.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})

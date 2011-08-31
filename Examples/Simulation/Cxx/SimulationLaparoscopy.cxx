@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkSimulation.h"
 #include "vtkSimulationInteractorStyle.h"
-#include "vtkPSSInterface.h"
+#include "vtkParticleSpringSystemInterface.h"
 
 //!This test perform a standard execution of the ESQUI simulation of a laparoscopic scenario.
 
@@ -203,7 +203,7 @@ int main(int argc, char * argv[])
 	col_organ->SetColor(0.0, 0.0, 1.0);
 
 	//Deformation model. Particle-Spring system
-	vtkSmartPointer<vtkPSSInterface> def_organ = vtkSmartPointer<vtkPSSInterface>::New();
+	vtkSmartPointer<vtkParticleSpringSystemInterface> def_organ = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
 	def_organ->SetName("sphere_def");
 	def_organ->SetFileName(fn3d);
 	def_organ->SetVisibility(0);
@@ -243,7 +243,7 @@ int main(int argc, char * argv[])
 	col_stomach->SetColor(0.0, 0.0, 1.0);
 
 	//Deformation model. Particle-Spring system
-	vtkSmartPointer<vtkPSSInterface> def_stomach = vtkSmartPointer<vtkPSSInterface>::New();
+	vtkSmartPointer<vtkParticleSpringSystemInterface> def_stomach = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
 	def_stomach->SetName("stomach_def");
 	def_stomach->SetFileName(fn4d);
 	def_stomach->SetVisibility(0);

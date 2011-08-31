@@ -53,7 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkCollisionModel.h"
 #include "vtkVisualizationModel.h"
 #include "vtkDeformationModel.h"
-#include "vtkPSSInterface.h"
+#include "vtkParticleSpringSystemInterface.h"
 
 #include "vtkSmartPointer.h"
 #include "vtkRenderWindowInteractor.h"
@@ -90,7 +90,7 @@ int TestvtkOrgan(int argc, char * argv[])
 	col->SetColor(0.0, 0.0, 1.0);
 
 	//Deformation model. Particle-Spring system
-	vtkSmartPointer<vtkPSSInterface> def = vtkSmartPointer<vtkPSSInterface>::New();
+	vtkSmartPointer<vtkParticleSpringSystemInterface> def = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
 	def->SetName("ParticleSpring");
 	def->SetFileName(dfn);
 	def->SetOpacity(1.0);

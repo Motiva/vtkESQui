@@ -580,7 +580,7 @@ This class inherits from vtkModel_ base class. As it is specified in vtkModel, a
    :align: center
 
 An interface based on this class must be implemented to access available deformation models: 
- * vtkParticleSystem: vtkPSSInterface_
+ * vtkParticleSystem: vtkParticleSpringSystemInterface_
  * vtkExplicitDeformableModel: vtkEDMInterface_
 
 vtkBoundaryCondition
@@ -600,14 +600,14 @@ vtkBoundaryConditionCollection
 
 vtkBoundaryConditionCollection is an object for creating and manipulating lists of boundary conditions (vtkBoundaryCondition_). The lists are unsorted and allow duplicate entries.
 
-vtkPSSInterface
+vtkParticleSpringSystemInterface
 ...............
 
 Interface class for a particle-spring deformation system.
 
 This class, based in vtkDeformationModel_ class, adapts the access to the external vtkCUDAParticleSystem package.
 
-.. image:: ../Doxygen/html/classvtkPSSInterface__coll__graph.png
+.. image:: ../Doxygen/html/classvtkParticleSpringSystemInterface__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -649,7 +649,7 @@ Interface class for a explicit deformation system. This deformatiom model uses a
 
 vtkEDMInterface class, based in vtkDeformationModel_ class, adapts the access to the external vtkExplicitDeformable package.
 
-.. image:: ../Doxygen/html/classvtkPSSInterface__coll__graph.png
+.. image:: ../Doxygen/html/classvtkParticleSpringSystemInterface__coll__graph.png
    :scale: 200%
    :align: center
 
@@ -874,11 +874,11 @@ For further information read Tex_Blender.py.pdf.
 Meshing
 .......
 
-In some cases, the vtkDeformationModel_ implementations require a custom input *vtkPolyData* objects. For example, vtkPSSInterface_ requires a *vtkPolyData* object with VTK_LINE cell types. To satisify these requirements a few scripts has been developed to generate this custom input data files.
+In some cases, the vtkDeformationModel_ implementations require a custom input *vtkPolyData* objects. For example, vtkParticleSpringSystemInterface_ requires a *vtkPolyData* object with VTK_LINE cell types. To satisify these requirements a few scripts has been developed to generate this custom input data files.
 
 **BuildClosestPointMesh.py**
 
-This scripts generates a vtp file (*vtkPolyData*) that satisfies the vtkPSSInterface_ input data requirements, by generating a VTK_LINE cell mesh from VTK_TRIANGLE cell mesh. Every point is connected to its n closest points by VTK_LINE cell.
+This scripts generates a vtp file (*vtkPolyData*) that satisfies the vtkParticleSpringSystemInterface_ input data requirements, by generating a VTK_LINE cell mesh from VTK_TRIANGLE cell mesh. Every point is connected to its n closest points by VTK_LINE cell.
 
 The script is invoked as shown::
 
@@ -894,7 +894,7 @@ outputFile     File path to output vtp file
 
 **BuildRigidityMesh.py**
 
-This scripts generates a vtp file (*vtkPolyData*) that satisfies the vtkPSSInterface_ input data requirements, by generating a VTK_LINE cell mesh from VTK_TRIANGLE cell mesh. Every cell point it will be connected to its n neighborhood point by a VTK_LINE cell. For example, for n=1, each point is connected to every point of the cells it belongs. The biggest the n, the rigidest the mesh will become. 
+This scripts generates a vtp file (*vtkPolyData*) that satisfies the vtkParticleSpringSystemInterface_ input data requirements, by generating a VTK_LINE cell mesh from VTK_TRIANGLE cell mesh. Every cell point it will be connected to its n neighborhood point by a VTK_LINE cell. For example, for n=1, each point is connected to every point of the cells it belongs. The biggest the n, the rigidest the mesh will become. 
 
 The script is invoked as shown::
 

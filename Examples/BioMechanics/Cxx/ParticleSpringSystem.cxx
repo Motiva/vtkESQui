@@ -23,7 +23,7 @@
 #include "vtkSmartPointer.h"
 #include "vtkCommand.h"
 
-#include "vtkPSSInterface.h"
+#include "vtkParticleSpringSystemInterface.h"
 
 class vtkPSSTimerCallback : public vtkCommand
 {
@@ -109,7 +109,7 @@ public:
 		this->RenderTimerId = tid;
 	}
 
-	void SetDeformationModel(vtkPSSInterface * DeformationModel)
+	void SetDeformationModel(vtkParticleSpringSystemInterface * DeformationModel)
 	{
 		this->DeformationModel = DeformationModel;
 	}
@@ -125,7 +125,7 @@ private:
 
 	vtkIdList * List;
 
-	vtkPSSInterface * DeformationModel;
+	vtkParticleSpringSystemInterface * DeformationModel;
 };
 
 int main(int argc, char * argv[])
@@ -144,7 +144,7 @@ int main(int argc, char * argv[])
 
 	vtkPolyData * mesh = reader->GetOutput();
 
-	vtkSmartPointer<vtkPSSInterface> pss = vtkSmartPointer<vtkPSSInterface>::New();
+	vtkSmartPointer<vtkParticleSpringSystemInterface> pss = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
 	pss->SetName("ball_def_c10");
 	pss->SetFileName(filename);
 	pss->SetColor(1,0,0);
