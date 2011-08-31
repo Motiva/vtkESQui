@@ -3,9 +3,9 @@ vtkESQui Developer's Guide
 ==========================
 
 :Author:   Jorge Ballesteros-Ruiz <jballesteros@itccanarias.org>
-:Version:  0.5.3
+:Version:  0.5.6
 :Web:      http://motivando.me
-:Date:     Aug 30th 2011
+:Date:     Aug 31th 2011
 
 .. header:: 
      
@@ -178,11 +178,21 @@ As a vtk-based project, *vtkESQui* configuration and compilation is done using *
  * TCL access to the code is enabled in the project configuring_ process, by setting the VTKESQUI_USE_TCL variable to ON.
  * If you want to enable Python wrapping, please configure the project enabling the VTKESQUI_USE_PYTHON variable.
 
-4. Enable/Disable Testing and Examples:
+4. Enable/Disable CUDA device support
+ 
+ * By default is disabled. If your computer is equipped with CUDA device and you want to enable it, set VTKESQUI_USE_CUDA variable to ON.
+ * Once this variable has been set to ON, you have to set the USE_CUDA variable to ON and set the CUDA_SDK_ROOT_DIR path and the CUDA_TOOLKIT_ROOT_DIR.
 
- BUILD_EXAMPLES 
+5. Enable/Disable Testing and Examples
 
-5. Finally, after configuring the *CMake* options
+ * By default source testing is disabled. If you want to enable it set the BUILD_TESTING variable to ON.
+ * By default Examples are disabled. If you want to enable it set the BUILD_EXAMPLES variable to ON.
+
+6. Enable/Disable Doxygen documentation build
+
+ * By default is disabled. If you want to enable it set the BUILD_DOCUMENTATION variable to ON. You may have to toggle advanced CMake configuration.
+
+7. Finally, after configuring the *CMake* options
 
  * In Unix-like systems: Press 'c' to configurate project and then 'g' to generate the makefiles
  * In Windows: Press Configure button and then Generate button.
@@ -196,6 +206,12 @@ Once you have succesfully configured the project, the building process is starte
 
   $ make
  
+ If documentation generation has been previously activated you have to type::
+ 
+  $make doc
+
+ Documentation html files will be located in VKESQUI_BIN_DIR/Documentation/Doxygen/html
+
  If anything went wrong, you may have *vtkESQui* platform compiled. If you want to install *vtkESQui* in your operating system you must login as root and then type::
 
   $ make install
@@ -601,11 +617,11 @@ vtkBoundaryConditionCollection
 vtkBoundaryConditionCollection is an object for creating and manipulating lists of boundary conditions (vtkBoundaryCondition_). The lists are unsorted and allow duplicate entries.
 
 vtkParticleSpringSystemInterface
-...............
+................................
 
 Interface class for a particle-spring deformation system.
 
-This class, based in vtkDeformationModel_ class, adapts the access to the external vtkCUDAParticleSystem package.
+This class, based in vtkDeformationModel_ class, adapts the access to the external vtkParticleSystem package.
 
 .. image:: ../Doxygen/html/classvtkParticleSpringSystemInterface__coll__graph.png
    :scale: 200%
@@ -639,6 +655,36 @@ The following screenshot displays the input mesh in translucid green and the def
    :align: center
 
    vtkESQui screenshot displaying an particle-spring deformation process
+
+Feel free to check Testing and Examples_ folder if you want to know more about this class.
+
+vtkCUDAParticleSystemInterface
+................................
+
+Interface class for a CUDA particle-spring deformation system.
+
+This class, based in vtkDeformationModel_ class, adapts the access to the external vtkCUDAParticleSystem package. Is based on the previous vtkParticleSpringSystemInterface_ deformation model, so its requirements will be equivalent.
+
+.. image:: ../Doxygen/html/classvtkParticleSpringSystemInterface__coll__graph.png
+   :scale: 200%
+   :align: center
+
+Prior an update, the interface has to be initialized. Some parameters must be previously defined:
+
+======================= ===========================================
+Input                   vtkPolyData object
+Source                  vtkPolyData object of the visualization mesh.
+DistanceCoefficient     Maximum distance between points
+DampingCoefficient (d)  oscillation coefficient
+SpringCoefficient (K)   spring coefficient
+Mass                    unit mass of each particle
+DeltaT                  time step of deformation process
+SolverType              motion equation solver type
+======================= ===========================================
+
+In this case a CUDA device must be available in your computer. If so please enable CUDA support in the project Configuring_ process. Once CUDA support has been enabled you this new interface will be available.
+
+This deformation model, equivalent to the vtkParticeSpringSystem, is enhanced with CUDA, giving it a 10x greater performance for extremely dense deformation meshes (number of cells > 1000).
 
 Feel free to check Testing and Examples_ folder if you want to know more about this class.
 

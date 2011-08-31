@@ -8,7 +8,6 @@
         "frames": [
             ["0cm", "0cm", "100%", "100%"]
           ],
-        "background" : "",
         "showHeader" : false,
         "showFooter" : false
     }
