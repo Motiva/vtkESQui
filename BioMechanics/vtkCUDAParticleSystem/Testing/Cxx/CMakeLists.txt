@@ -1,0 +1,3 @@
+ADD_EXECUTABLE(TestvtkCUDAParticleSystem TestvtkCUDAParticleSystem.cxx)
+TARGET_LINK_LIBRARIES(TestvtkCUDAParticleSystem 
+    vtkCUDAParticleSystem)
