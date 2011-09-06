@@ -28,11 +28,6 @@ OPTION (VTKESQUI_USE_HAPTICS "Set this option if you want to use an haptic devic
 OPTION (VTKESQUI_USE_FEM "Set this option if you want to enable FEM")
 
 #
-#Enabling/disabling DOLFIN use
-#
-OPTION (VTKESQUI_USE_DOLFIN "Set this option if you want to enable DOLFIN")
-
-#
 # Need to include class headers and the configuration header.
 #
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
@@ -184,7 +179,6 @@ IF(VTK_FOUND)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Common)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkParticleSpringSystem)
-  INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkFEMSystem)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkExplicitDeformableModel)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkExplicitDeformableModel/Filters)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/CollisionDetection)
@@ -214,16 +208,9 @@ IF(VTK_FOUND)
   ENDIF(VTKESQUI_USE_HAPTICS)
 
   IF(VTKESQUI_USE_FEM)
-    FIND_PACKAGE(GetFEM++ REQUIRED)
-    INCLUDE_DIRECTORIES(${GETFEM_INCLUDE_DIRS})
+    INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkFEMSystem)
   ENDIF(VTKESQUI_USE_FEM)
 	
-  IF(VTKESQUI_USE_DOLFIN)
-    FIND_PACKAGE(Dolfin REQUIRED)
-    INCLUDE_DIRECTORIES(${DOLFIN_INCLUDE_DIRS})
-  ENDIF(VTKESQUI_USE_DOLFIN)
-  
-  
   #
   # Build Documentation
   #

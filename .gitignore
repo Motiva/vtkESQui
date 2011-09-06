@@ -15,6 +15,9 @@ CVS
 .project
 .pydevproject
 
+# Sync script files
+sync.sh
+
 # Temporary files
 *.swp
 

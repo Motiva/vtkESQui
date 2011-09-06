@@ -9,7 +9,35 @@ ENDIF(COMMAND CMAKE_POLICY)
 # project set here.
 PROJECT(vtkFEMSystem)
 
-# Set your list of sources here.  Do not change the name of the
+ENABLE_TESTING()
+
+#
+#Enabling/disabling FEM use
+#
+OPTION (USE_GETFEM "Set this option if you want to enable FEM")
+
+#
+#Enabling/disabling DOLFIN use
+#
+OPTION (USE_DOLFIN "Set this option if you want to enable DOLFIN")
+
+#
+# Expand CMAKE_MODULE_PATH
+#
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/CMake/Modules/")
+
+IF(USE_GETFEM)
+	FIND_PACKAGE(GetFEM++ REQUIRED)
+	INCLUDE_DIRECTORIES(${GETFEM_INCLUDE_DIRS})
+ENDIF(USE_GETFEM)
+
+IF(USE_DOLFIN)
+	FIND_PACKAGE(Dolfin REQUIRED)
+	INCLUDE_DIRECTORIES(${DOLFIN_INCLUDE_DIRS})
+ENDIF(USE_DOLFIN)
+
+
+# Set your list of sources here. Do not change the name of the
 # vtkFEMSystem_SRCS variable.
 SET(vtkFEMSystem_SRCS
   vtkFEMSystem.cxx
@@ -41,14 +69,6 @@ SET(vtkFEMSystem_LIBS
 	vtkGraphics
 	vtkIO
 )
-
-IF(GETFEM_FOUND)
-    SET(vtkFEMSystem_LIBS ${vtkFEMSystem_LIBS} getfem)
-ENDIF(GETFEM_FOUND)
-
-IF(DOLFIN_FOUND)
-    SET(vtkFEMSystem_LIBS ${vtkFEMSystem_LIBS} dolfin)
-ENDIF(DOLFIN_FOUND)
 
 #-----------------------------------------------------------------------------
 # Most users should not need to change anything below this line.
@@ -118,6 +138,11 @@ IF(VTK_FOUND)
 		SET(vtkFEMSystem_LIBS ${vtkFEMSystem_LIBS} ${GETFEM_LIBRARY})
 		LINK_DIRECTORIES( ${LINK_DIRECTORIES} ${GETFEM_LIBRARY_DIR})
 	ENDIF(GETFEM_FOUND)
+	
+	IF(DOLFIN_FOUND)
+        SET(vtkFEMSystem_LIBS ${vtkFEMSystem_LIBS} dolfin)
+    ENDIF(DOLFIN_FOUND)
+	
 
 	# Create the library.
 	ADD_LIBRARY(${PROJECT_NAME} ${vtkFEMSystem_SRCS} ${vtkFEMSystemInstantiator_SRCS})

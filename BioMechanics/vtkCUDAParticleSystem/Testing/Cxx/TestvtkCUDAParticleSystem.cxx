@@ -136,7 +136,7 @@ int main(int argc, char * argv[])
 
 	vtkRenderer * renderer = vtkRenderer::New();
 
-	//Locate collision points
+	//Locate contact points
 	vtkPointLocator * locator = vtkPointLocator::New();
 	double bounds[6];
 	mesh->GetBounds(bounds);
