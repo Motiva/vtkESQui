@@ -14,6 +14,7 @@ CVS
 .cproject
 .project
 .pydevproject
+.settings
 
 # Sync script files
 sync.sh
