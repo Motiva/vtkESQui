@@ -38,12 +38,12 @@ def insertLine(lines, id0, id1):
         lines.InsertNextCell( line )
 
 if (len(sys.argv) == 1):
-    print "This script should at least contain 1 argument.\nUsage: vtkpython BuildClosestPointsMesh.py $inputFile $numberOfPoints $outputFile"
+    print "This script should at least contain 1 argument.\nUsage: vtkpython BuildClosestPointsMesh2D.py $inputFile $numberOfPoints $outputFile"
     sys.exit()
     
 path = sys.argv[1]
 f = 10
-opath = "/tmp/tmp_def.vtp"
+opath = "/tmp/out_def.vtp"
 if len(sys.argv) > 2:
     f = int(sys.argv[2])
 if len(sys.argv) > 3:
@@ -90,4 +90,4 @@ writer.SetFileName( opath )
 writer.SetDataModeToAscii()
 writer.Write()
 
-print "Output Mesh \nPoints: "+str( mesh.GetNumberOfPoints() )+"\nCells: "+str( mesh.GetNumberOfCells() )
+print "Output Mesh: "+opath+"\nPoints: "+str( mesh.GetNumberOfPoints() )+"\nCells: "+str( mesh.GetNumberOfCells() )+"\nSuccesfully imported..."

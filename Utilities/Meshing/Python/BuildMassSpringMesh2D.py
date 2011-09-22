@@ -41,19 +41,24 @@ def insertLine(lines, id0, id1):
         #print "s("+str(id0)+","+str(id1)+")"
 
 if (len(sys.argv) == 1):
-    print "This script should at least contain 1 argument.\nUsage: vtkpython BuildRigidityMesh.py $inputFile $rigidityFactor $outputFile"
+    print "This script should at least contain 1 argument.\nUsage: vtkpython BuildMassSpringMesh2D.py $inputFile $rigidityFactor $outputFile"
     sys.exit()
     
 path = sys.argv[1]
 f = 1
 c = 0
-opath = "/tmp/tmp_def.vtp"
+opath = "/tmp/out_def.vtp"
+
 if len(sys.argv) > 2:
     f = int(sys.argv[2])
 if len(sys.argv) > 3:
     opath = sys.argv[3]
     
-reader = vtk.vtkXMLPolyDataReader()
+if (str(path).endswith("vtk")):
+    reader = vtk.vtkPolyDataReader();
+else:
+    reader = vtk.vtkXMLPolyDataReader();
+    
 reader.SetFileName( path )
 reader.Update()
 
@@ -103,13 +108,10 @@ mesh = vtk.vtkPolyData()
 mesh.SetPoints( input.GetPoints() )
 mesh.SetLines( lines )
 
-mesh.GetPointCells(0, cIds)
-print "cell[0] Ids: "+str(cIds.GetNumberOfIds())
-
 writer = vtk.vtkXMLPolyDataWriter()
 writer.SetInput(mesh)
 writer.SetFileName( opath )
 writer.SetDataModeToAscii()
 writer.Write()
 
-print "Output Mesh \nPoints: "+str( mesh.GetNumberOfPoints() )+"\nCells: "+str( mesh.GetNumberOfCells() )
+print "Output Mesh: "+opath+"\nSuccesfully imported.. \nPoints: "+str( mesh.GetNumberOfPoints() )+"\nCells: "+str( mesh.GetNumberOfCells() )
