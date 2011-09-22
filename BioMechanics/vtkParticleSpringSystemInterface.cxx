@@ -100,10 +100,11 @@ void vtkParticleSpringSystemInterface::Init()
 	this->ParticleSpringSystem->Init();
 
 	//Once the system has been initialized the boundary conditions are set
+	//TODO: Enable boundary conditions
 	this->BoundaryConditions->InitTraversal();
 	while(vtkBoundaryCondition * c = this->BoundaryConditions->GetNextBoundaryCondition())
 	{
-		if(c->GetType() == vtkBoundaryCondition::Neumann){
+		if(c->GetType() == vtkBoundaryCondition::Dirichlet){
 			// Set condition value
 			/* 0 -> Fixed
 			 * 1 -> Free
@@ -185,7 +186,7 @@ int vtkParticleSpringSystemInterface::RequestData(
 
 void vtkParticleSpringSystemInterface::AddDisplacement(vtkIdType pointId, double * vector)
 {
-	this->ParticleSpringSystem->InsertCollision(pointId, vector);
+	this->ParticleSpringSystem->InsertDisplacement(pointId, vector);
 }
 
 //--------------------------------------------------------------------------

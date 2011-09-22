@@ -170,9 +170,6 @@ int vtkCUDAParticleSystem::RequestData(
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 
-	//Compute Collisions
-	this->ComputeCollisions();
-
 	this->Solver->ComputeNextStep(this->hPos, this->hVel, this->hAcc);
 
 	//DisplayParticleVectors();
@@ -192,15 +189,19 @@ int vtkCUDAParticleSystem::RequestData(
 }
 
 //----------------------------------------------------------------------------
-void vtkCUDAParticleSystem::InsertCollision(vtkIdType id, double * displacement)
+void vtkCUDAParticleSystem::InsertDisplacement(vtkIdType id, double * d)
 {
-	this->CollisionIds->InsertNextId(id);
-	this->CollisionDisplacements->InsertNextTuple(displacement);
-	this->Modified();
+	// Update particle position
+	float * p = GetParticleVector(Position, id);
+	p[0] += d[0];
+	p[1] += d[1];
+	p[2] += d[2];
+	//Set particle as contacted
+	p[3] = 1;
 }
 
 //----------------------------------------------------------------------------
-void vtkCUDAParticleSystem::SetCollisions(vtkIdList * ids, vtkDoubleArray * displacements)
+void vtkCUDAParticleSystem::SetDisplacements(vtkIdList * ids, vtkDoubleArray * displacements)
 {
 	if(ids->GetNumberOfIds() != displacements->GetNumberOfTuples())
 	{
@@ -208,38 +209,8 @@ void vtkCUDAParticleSystem::SetCollisions(vtkIdList * ids, vtkDoubleArray * disp
 												return;
 	}
 
-	this->CollisionIds->Reset();
-	this->CollisionDisplacements->Reset();
-
-	this->CollisionIds->DeepCopy(ids);
-	this->CollisionDisplacements->DeepCopy(displacements);
-
-	this->Modified();
-}
-
-//----------------------------------------------------------------------------
-void vtkCUDAParticleSystem::ComputeCollisions()
-{
-	if(this->CollisionIds && this->CollisionIds->GetNumberOfIds() != 0)
-	{
-		for (vtkIdType i = 0; i < this->CollisionIds->GetNumberOfIds(); i++)
-		{
-			//
-			vtkIdType id = this->CollisionIds->GetId(i);
-			double * d = this->CollisionDisplacements->GetTuple(i);
-
-			// Update particle position
-			float * p = GetParticleVector(Position, id);
-			p[0] += d[0];
-			p[1] += d[1];
-			p[2] += d[2];
-			//Set particle as contacted
-			p[3] = 1;
-		}
-
-		//Reset contact state
-		this->CollisionIds->Reset();
-		this->CollisionDisplacements->Reset();
+	for(int i=0; i<ids->GetNumberOfIds(); i++){
+		this->InsertDisplacement(ids->GetId(i), displacements->GetTuple3(i));
 	}
 }
 

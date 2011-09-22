@@ -3,29 +3,34 @@
 #include "vtkRenderWindowInteractor.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
-#include "vtkXMLPolyDataReader.h"
+#include "vtkPolyDataWriter.h"
 #include "vtkDataSetMapper.h"
 #include "vtkPoints.h"
 #include "vtkCellArray.h"
 #include "vtkIdList.h"
 #include "vtkActor.h"
+#include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkCamera.h"
+
+#include "vtkPolyData.h"
+#include "vtkPolyDataWriter.h"
+#include "vtkXMLPolyDataReader.h"
+
 #include "vtkTimerLog.h"
-#include "vtkDoubleArray.h"
 #include "vtkPointLocator.h"
-#include "vtkCommand.h"
 
 #include "vtkSmartPointer.h"
+#include "vtkCommand.h"
 
 #include "vtkParticleSpringSystem.h"
 
-class vtkTimerCallback : public vtkCommand
+class vtkTimerCB : public vtkCommand
 {
 public:
-	static vtkTimerCallback *New()
+	static vtkTimerCB *New()
 	{
-		vtkTimerCallback *cb = new vtkTimerCallback;
+		vtkTimerCB *cb = new vtkTimerCB;
 		cb->FastTimerId = 0;
 		cb->FasterTimerId = 0;
 		cb->RenderTimerId = 0;
@@ -34,21 +39,45 @@ public:
 
 	virtual void Execute(vtkObject *caller, unsigned long eventId, void *callData)
 	{
-		vtkTimerLog * timer = vtkTimerLog::New();
-
 		if (vtkCommand::TimerEvent == eventId)
 		{
 			int tid = * static_cast<int *>(callData);
 
 			if (tid == this->FastTimerId)
 			{
+				cout << "new collision\n";
 
+				vtkPolyData * mesh = vtkPolyData::SafeDownCast(this->DeformationModel->GetInput());
+
+				//Locate collision points
+				vtkPointLocator * locator = vtkPointLocator::New();
+				double bounds[6];
+				mesh->GetBounds(bounds);
+
+				double p[3] = {bounds[0], 0, 0};
+
+				vtkIdList * list = vtkIdList::New();
+				locator->SetDataSet(mesh);
+				locator->FindClosestNPoints(5, p, list);
+
+				//Set Collisions
+				double force[3];
+				force[0] = 0.15;//-0.1;
+				force[1] = 0.05;
+				force[2] = 0;//0.05;
+
+				for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
+				{
+					int id = list->GetId(i);
+					this->DeformationModel->InsertDisplacement(id, force);
+				}
 			}
 			else if (tid == this->FasterTimerId)
 			{
+				vtkTimerLog * timer = vtkTimerLog::New();
 				timer->StartTimer();
-				this->BMM->Modified();
-				this->BMM->Update();
+				this->DeformationModel->Modified();
+				this->DeformationModel->Update();
 				timer->StopTimer();
 
 				std::cout << "[Test] Execution Rate: " << 1/(timer->GetElapsedTime()) << "\n";
@@ -80,12 +109,12 @@ public:
 		this->RenderTimerId = tid;
 	}
 
-	void SetBMM(vtkParticleSpringSystem * bmm)
+	void SetDeformationModel(vtkParticleSpringSystem * DeformationModel)
 	{
-		this->BMM = bmm;
+		this->DeformationModel = DeformationModel;
 	}
 
-	void SetContactIds(vtkIdList * list)
+	void SetCollisionIds(vtkIdList * list)
 	{
 		this->List = list;
 	}
@@ -96,127 +125,98 @@ private:
 
 	vtkIdList * List;
 
-	vtkParticleSpringSystem * BMM;
+	vtkParticleSpringSystem * DeformationModel;
 };
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "";
+	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp";
 
 	if (argc > 1)
 	{
 		filename = argv[1];
 	}
-	else
-	{
-		cout << "This test should at least contain 1 argument.\nUsage: Test $inputFile" << endl;
-		exit(0);
-	}
 
-	vtkXMLPolyDataReader * reader = vtkXMLPolyDataReader::New();
+	vtkSmartPointer<vtkXMLPolyDataReader> reader =
+			vtkSmartPointer<vtkXMLPolyDataReader>::New();
 	reader->SetFileName(filename);
 	reader->Update();
 
 	vtkPolyData * mesh = reader->GetOutput();
 
-	vtkParticleSpringSystem* ParticleSpringSystem = vtkParticleSpringSystem::New();
-	ParticleSpringSystem->SetInput(mesh);
-	ParticleSpringSystem->SetSolverType(vtkMotionEquationSolver::RungeKutta4);
-	ParticleSpringSystem->SetSpringCoefficient(250);
-	ParticleSpringSystem->SetDistanceCoefficient(10);
-	ParticleSpringSystem->SetDampingCoefficient(5);//Friction
-	ParticleSpringSystem->SetMass(.1);
-	ParticleSpringSystem->SetDeltaT(0.001);//10ms
-	ParticleSpringSystem->Init();
+	vtkSmartPointer<vtkParticleSpringSystem> def = vtkSmartPointer<vtkParticleSpringSystem>::New();
+	def->SetInput(mesh);
+	def->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
+	def->SetSpringCoefficient(150);
+	def->SetDistanceCoefficient(10);
+	def->SetDampingCoefficient(5);//Friction
+	def->SetMass(.5);
+	def->SetDeltaT(0.001);//1ms
+	def->Init();
 
-	vtkRenderer * renderer = vtkRenderer::New();
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	//Locate contact points
-	vtkPointLocator * locator = vtkPointLocator::New();
-	double bounds[6];
-	mesh->GetBounds(bounds);
-
-	vtkIdList * list = vtkIdList::New();
-	double p[3] = {0, bounds[2], 0};
-
-	locator->SetDataSet(mesh);
-	locator->FindClosestNPoints(3, p, list);
-
-	//Set Contact
-	double dir[3];
-	dir[0] = 0;//-0.1;
-	dir[1] = 0.2;
-	dir[2] = 0;//0.05;
-
-	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
-	{
-		ParticleSpringSystem->InsertCollision(list->GetId(i), dir);
-	}
-
-	vtkRenderWindow * renWin = vtkRenderWindow::New();
+	vtkSmartPointer<vtkRenderWindow> renWin =
+			vtkSmartPointer<vtkRenderWindow>::New();
 	renWin->SetSize(500,500);
 	renWin->AddRenderer(renderer);
 
-	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
+	vtkSmartPointer<vtkRenderWindowInteractor> iren =
+			vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	iren->SetRenderWindow(renWin);
 
-	vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
+	vtkSmartPointer<vtkPolyDataMapper> mapper =
+			vtkSmartPointer<vtkPolyDataMapper>::New();
 	mapper->SetInput(mesh);
-	mapper->ScalarVisibilityOff();
 
-	vtkActor * actor = vtkActor::New();
+	vtkSmartPointer<vtkActor> actor =
+			vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetColor(0,1,0);
+	actor->GetProperty()->SetOpacity(0.5);
 
-	vtkPolyDataMapper * mapper2 = vtkPolyDataMapper::New();
-	mapper2->SetInput(ParticleSpringSystem->GetOutput());
-	mapper2->ScalarVisibilityOff();
+	vtkSmartPointer<vtkPolyDataMapper> mapper2 =
+				vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper2->SetInput(def->GetOutput());
 
-	vtkActor * actor2 = vtkActor::New();
+	vtkSmartPointer<vtkActor> actor2 =
+				vtkSmartPointer<vtkActor>::New();
 	actor2->SetMapper(mapper2);
 	actor2->GetProperty()->SetColor(1,0,0);
-	actor2->GetProperty()->SetRepresentationToWireframe();
 
-	//renderer->AddActor(actor);
+	renderer->AddActor(actor);
 	renderer->AddActor(actor2);
 	renderer->SetBackground(1,1,1);
 
 	renderer->ResetCamera();
-
-	ParticleSpringSystem->Print(cout);
-
 	iren->Initialize();
 
 	renWin->Render();
 
 	// Sign up to receive TimerEvent:
 	//
-	vtkTimerCallback *cb = vtkTimerCallback::New();
+	vtkTimerCB * cb = vtkTimerCB::New();
 	iren->AddObserver(vtkCommand::TimerEvent, cb);
 	int tid;
 
-	cb->SetBMM(ParticleSpringSystem);
+	cb->SetDeformationModel(def);
 
-	//Create a faster timer for BMM update
-	tid = iren->CreateRepeatingTimer(10);
+	//Create a faster timer for DeformationModel update
+	tid = iren->CreateRepeatingTimer(1);
 	cb->SetFasterTimerId(tid);
+
+	//Create a collision every 5 seconds
+	tid = iren->CreateRepeatingTimer(5000);
+	cb->SetFastTimerId(tid);
 
 	// Create a slower repeating timer to trigger Render calls.
 	// (This fires at the rate of approximately 25 frames per second.)
 	//
-	tid = iren->CreateRepeatingTimer(25);
+	tid = iren->CreateRepeatingTimer(40);
 	cb->SetRenderTimerId(tid);
 
 	iren->Start();
 
-	ParticleSpringSystem->Delete();
-	mapper->Delete();
-	actor->Delete();
-	mapper2->Delete();
-	actor2->Delete();
-	renderer->Delete();
-	renWin->Delete();
-	iren->Delete();
 	return 0;
 }
 

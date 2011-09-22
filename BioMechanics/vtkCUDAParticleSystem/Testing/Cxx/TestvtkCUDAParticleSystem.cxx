@@ -125,10 +125,10 @@ int main(int argc, char * argv[])
 	vtkCUDAParticleSystem* system = vtkCUDAParticleSystem::New();
 	system->SetInput(mesh);
 	system->SetSolverType(vtkCUDAMotionEquationSolver::RungeKutta4);
-	system->SetSpringCoefficient(350);
+	system->SetSpringCoefficient(150);
 	system->SetDistanceCoefficient(10);
-	system->SetDampingCoefficient(3);//Friction
-	system->SetMass(.1);
+	system->SetDampingCoefficient(5);//Friction
+	system->SetMass(.5);
 	system->SetDeltaTime(dt);//1ms
 	system->Init();
 
@@ -155,7 +155,7 @@ int main(int argc, char * argv[])
 
 	for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
 	{
-		system->InsertCollision(list->GetId(i), dir);
+		system->InsertDisplacement(list->GetId(i), dir);
 	}
 
 	vtkRenderWindow * renWin = vtkRenderWindow::New();
@@ -201,7 +201,7 @@ int main(int argc, char * argv[])
 	cb->SetSystem(system);
 
 	//Create a faster timer for BMM update
-	tid = iren->CreateRepeatingTimer(dt*10);
+	tid = iren->CreateRepeatingTimer(10);
 	cb->SetFasterTimerId(tid);
 
 	// Create a slower repeating timer to trigger Render calls.

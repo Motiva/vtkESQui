@@ -201,7 +201,7 @@ int main(int argc, char * argv[])
 	cb->SetDeformationModel(EDM);
 
 	//Create a faster timer for DeformationModel update
-	tid = iren->CreateRepeatingTimer(50);
+	tid = iren->CreateRepeatingTimer(5);
 	cb->SetFasterTimerId(tid);
 
 	//Create a collision every 5 seconds
@@ -211,7 +211,7 @@ int main(int argc, char * argv[])
 	// Create a slower repeating timer to trigger Render calls.
 	// (This fires at the rate of approximately 25 frames per second.)
 	//
-	tid = iren->CreateRepeatingTimer(25);
+	tid = iren->CreateRepeatingTimer(40);
 	cb->SetRenderTimerId(tid);
 
 	iren->Start();

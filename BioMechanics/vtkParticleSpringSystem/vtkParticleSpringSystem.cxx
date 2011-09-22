@@ -34,8 +34,6 @@ vtkParticleSpringSystem::vtkParticleSpringSystem()
 	this->Residual = 1e-6;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
 	this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
-	this->CollisionIds = NULL;
-	this->CollisionDisplacements = NULL;
 	this->Particles = NULL;
 	this->Springs = NULL;
 }
@@ -45,8 +43,6 @@ vtkParticleSpringSystem::~vtkParticleSpringSystem()
 {
 	if(this->Particles) this->Particles->Delete();
 	if(this->Springs) this->Springs->Delete();
-	if(this->CollisionIds) this->CollisionIds->Delete();
-	if(this->CollisionDisplacements) this->CollisionDisplacements->Delete();
 }
 
 //----------------------------------------------------------------------------
@@ -114,11 +110,6 @@ void vtkParticleSpringSystem::Init()
 	this->Solver->SetResidual(this->Residual);
 	this->Solver->Init();
 
-	//Initialize contact objects
-	this->CollisionIds = vtkIdList::New();
-	this->CollisionDisplacements = vtkDoubleArray::New();
-	this->CollisionDisplacements->SetNumberOfComponents(3);
-
 	//Raise update event
 	this->Modified();
 }
@@ -140,11 +131,8 @@ int vtkParticleSpringSystem::RequestData(
 	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Compute Collisions
-	this->ComputeContacts();
-
 	// Solve motion equation
-	this->Step();
+	this->Solver->ComputeNextStep(this->Particles, this->DeltaT);
 
 	output->ShallowCopy(input);
 
@@ -157,11 +145,6 @@ int vtkParticleSpringSystem::RequestData(
 	}
 
 	return 1;
-}
-
-void vtkParticleSpringSystem::Step()
-{
-	this->Solver->ComputeNextStep(this->Particles, this->DeltaT);
 }
 
 //----------------------------------------------------------------------------
@@ -199,15 +182,19 @@ void vtkParticleSpringSystem::CreateSpring(vtkParticle * p0, vtkParticle * p1)
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::InsertCollision(vtkIdType id, double * displacement)
+void vtkParticleSpringSystem::InsertDisplacement(vtkIdType id, double * d)
 {
-	this->CollisionIds->InsertNextId(id);
-	this->CollisionDisplacements->InsertNextTuple(displacement);
-	this->Modified();
+	vtkParticle * p = this->Particles->GetParticle(id);
+
+	//Add contact displacement
+	p->AddPosition(d[0], d[1], d[2]);
+
+	//Set particle as contacted
+	p->SetContacted(1);
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::SetCollisions(vtkIdList * ids, vtkDoubleArray * displacements)
+void vtkParticleSpringSystem::SetDisplacements(vtkIdList * ids, vtkDoubleArray * displacements)
 {
 	if(ids->GetNumberOfIds() != displacements->GetNumberOfTuples())
 	{
@@ -215,45 +202,8 @@ void vtkParticleSpringSystem::SetCollisions(vtkIdList * ids, vtkDoubleArray * di
 				return;
 	}
 
-	this->CollisionIds->Reset();
-	this->CollisionDisplacements->Reset();
-
-	this->CollisionIds->DeepCopy(ids);
-	this->CollisionDisplacements->DeepCopy(displacements);
-
-	this->Modified();
-}
-
-//----------------------------------------------------------------------------
-void vtkParticleSpringSystem::ComputeContacts()
-{
-	double position[3];
-	//double distance[3];
-	//double dNorm, L, ratio;
-
-	if(this->CollisionIds && this->CollisionIds->GetNumberOfIds() != 0)
-	{
-		for (vtkIdType i = 0; i < this->CollisionIds->GetNumberOfIds(); i++)
-		{
-			//
-			vtkIdType id = this->CollisionIds->GetId(i);
-			double * d = this->CollisionDisplacements->GetTuple(i);
-
-			vtkParticle * p = this->Particles->GetParticle(id);
-
-			//Save original position
-			p->GetPosition(position);
-
-			//Add contact displacement
-			p->AddPosition(d[0], d[1], d[2]);
-
-			//Set particle as contacted
-			p->SetContacted(1);
-		}
-
-		//Reset contact state
-		this->CollisionIds->Reset();
-		this->CollisionDisplacements->Reset();
+	for(int i=0; i<ids->GetNumberOfIds(); i++){
+		this->InsertDisplacement(ids->GetId(i), displacements->GetTuple3(i));
 	}
 }
 
@@ -313,7 +263,9 @@ void vtkParticleSpringSystem::ComputeForces()
 
 	for(int i = 0; i<this->Particles->GetNumberOfItems();i++)
 	{
-		this->Particles->GetParticle(i)->Update();
+		vtkParticle * p = this->Particles->GetParticle(i);
+		p->Update();
+		p->SetContacted(0);
 	}
 }
 

@@ -92,15 +92,15 @@ public:
 	//! Get Gravity Force (m/s2)
 	vtkGetVector3Macro(Gravity, double);
 
-	//! Insert a collision in the particle-spring system
-	void InsertCollision(vtkIdType id, double * displacement);
+	//! Insert a displacement in the particle-spring system
+	void InsertDisplacement(vtkIdType id, double * displacement);
 
-	//! Insert collisions particle-spring system
+	//! Insert displacements particle-spring system
 	/*!
 	 * \param ids List of particle ids
 	 * \param displacements Array containing displacement displacements
 	 */
-	void SetCollisions(vtkIdList * ids, vtkDoubleArray * displacements);
+	void SetDisplacements(vtkIdList * ids, vtkDoubleArray * displacements);
 
 	//! Compute the forces attending to the collisions
 	/*!
@@ -182,9 +182,6 @@ protected:
 private:
 	vtkCUDAParticleSystem(const vtkCUDAParticleSystem&);            // Not implemented.
 	void operator=(const vtkCUDAParticleSystem&);           // Not implemented.
-
-	//! Compute inserted collisions
-	void ComputeCollisions();
 
 	//! Enumeration of vector types
 	enum VectorType{

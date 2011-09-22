@@ -76,12 +76,6 @@ public:
 	 */
 	void Init();
 
-	//! Compute one step of the motion equation solver
-	/*!
-	 * The execution of the solver will be done through omputeNextStep() method. This method is executed on every time step to perform mesh deformation.
-	 */
-	void Step();
-
 	//Parameters for Particle-Spring System
 	//! Set spring coefficient
 	vtkSetMacro(SpringCoefficient, double);		// Spring coefficient
@@ -110,15 +104,15 @@ public:
 	 */
 	void SetParticleStatus(vtkIdType id, bool status);
 
-	//! Insert a collision in the particle-spring system
-	void InsertCollision(vtkIdType id, double * displacement);
+	//! Insert a displacement to a particle
+	void InsertDisplacement(vtkIdType id, double * displacement);
 
-	//! Insert collisions particle-spring system
+	//! Insert displacements to particles
 	/*!
 	 * \param ids List of particle ids
-	 * \param displacements Array containing displacement displacements
+	 * \param displacements Array containing displacements per particle
 	 */
-	void SetCollisions(vtkIdList * ids, vtkDoubleArray * displacements);
+	void SetDisplacements(vtkIdList * ids, vtkDoubleArray * displacements);
 
 	//! Compute the forces attending to the collisions
 	/*!
@@ -138,8 +132,6 @@ protected:
 	vtkSpringCollection * Springs;
 	//! Collection of particles
 	vtkParticleCollection * Particles;
-	//! Collection of links between particles and springs
-	vtkCellLinks * Links;
 
 	//Model Parameters
 	//! Spring stiffness k.
@@ -163,22 +155,12 @@ protected:
 	//! Motion equation solver type
 	vtkMotionEquationSolver::MotionEquationSolverType SolverType;
 
-	//Contact data
-	//! Contact Point Ids
-	vtkIdList * CollisionIds;
-	//! Contact Point Displacements
-	vtkDoubleArray * CollisionDisplacements;
-
 private:
 	vtkParticleSpringSystem(const vtkParticleSpringSystem&);            // Not implemented.
 	void operator=(const vtkParticleSpringSystem&);           // Not implemented.
 
 	//! Create a new spring between two particles
 	void CreateSpring(vtkParticle * p0, vtkParticle * p1);
-
-	//! Compute inserted collisions
-	void ComputeContacts();
-
 };
 
 #endif
