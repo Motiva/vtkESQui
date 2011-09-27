@@ -68,6 +68,6 @@ private:
 
 	vtkObjectTemplate (const vtkObjectTemplate &);//NotImplemented
 	void operator =(const vtkObjectTemplate &);//Not Implemented
-}
+};
 
 #endif
