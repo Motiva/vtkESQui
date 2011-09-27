@@ -186,7 +186,7 @@ int vtkCUDAParticleSystemInterface::RequestData(
 
 void vtkCUDAParticleSystemInterface::AddDisplacement(vtkIdType pointId, double * vector)
 {
-	this->System->InsertCollision(pointId, vector);
+	this->System->InsertDisplacement(pointId, vector);
 }
 
 //--------------------------------------------------------------------------
