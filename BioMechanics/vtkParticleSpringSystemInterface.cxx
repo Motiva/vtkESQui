@@ -184,9 +184,16 @@ int vtkParticleSpringSystemInterface::RequestData(
 	return 1;
 }
 
-void vtkParticleSpringSystemInterface::AddDisplacement(vtkIdType pointId, double * vector)
+//--------------------------------------------------------------------------
+void vtkParticleSpringSystemInterface::InsertDisplacement(vtkIdType id, double * vector)
 {
-	this->ParticleSpringSystem->InsertDisplacement(pointId, vector);
+	this->InsertDisplacement(id, vector[0], vector[1], vector[2]);
+}
+
+//--------------------------------------------------------------------------
+void vtkParticleSpringSystemInterface::InsertDisplacement(vtkIdType id, double x, double y, double z)
+{
+	this->ParticleSpringSystem->InsertDisplacement(id, x, y, z);
 }
 
 //--------------------------------------------------------------------------

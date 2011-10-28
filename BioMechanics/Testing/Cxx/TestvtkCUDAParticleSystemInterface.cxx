@@ -77,7 +77,7 @@ public:
 				for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
 				{
 					int id = list->GetId(i);
-					this->DeformationModel->AddDisplacement(id, dir);
+					this->DeformationModel->InsertDisplacement(id, dir);
 				}
 			}
 			else if (tid == this->FasterTimerId)

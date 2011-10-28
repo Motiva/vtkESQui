@@ -95,6 +95,9 @@ public:
 	//! Insert a displacement in the particle-spring system
 	void InsertDisplacement(vtkIdType id, double * displacement);
 
+	//! Insert a displacement in the particle-spring system
+	void InsertDisplacement(vtkIdType id, double x, double y, double z);
+
 	//! Insert displacements particle-spring system
 	/*!
 	 * \param ids List of particle ids

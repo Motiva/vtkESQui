@@ -184,9 +184,16 @@ int vtkCUDAParticleSystemInterface::RequestData(
 	return 1;
 }
 
-void vtkCUDAParticleSystemInterface::AddDisplacement(vtkIdType pointId, double * vector)
+//--------------------------------------------------------------------------
+void vtkCUDAParticleSystemInterface::InsertDisplacement(vtkIdType id, double * vector)
 {
-	this->System->InsertDisplacement(pointId, vector);
+	this->InsertDisplacement(id, vector[0], vector[1], vector[2]);
+}
+
+//--------------------------------------------------------------------------
+void vtkCUDAParticleSystemInterface::InsertDisplacement(vtkIdType id, double x, double y, double z)
+{
+	this->System->InsertDisplacement(id, x, y, z);
 }
 
 //--------------------------------------------------------------------------

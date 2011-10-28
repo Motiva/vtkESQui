@@ -39,87 +39,93 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkDeformationModel.h"
+#include "vtkRBFInterpolator.h"
 
+
+#include "vtkInformation.h"
+#include "vtkInformationVector.h"
 #include "vtkObjectFactory.h"
 #include "vtkStreamingDemandDrivenPipeline.h"
-#include "vtkInformationVector.h"
-#include "vtkInformation.h"
-#include "vtkDataObject.h"
 #include "vtkPolyData.h"
-#include "vtkActor.h"
-#include "vtkProperty.h"
+#include "vtkTupleInterpolator.h"
+#include "vtkDoubleArray.h"
+#include "vtkMath.h"
 
-#include "vtkBoundaryConditionCollection.h"
-#include "vtkBoundaryCondition.h"
-
-vtkCxxRevisionMacro(vtkDeformationModel, "$Revision: 0.1 $");
-//vtkStandardNewMacro(vtkDeformationModel);
+vtkCxxRevisionMacro(vtkRBFInterpolator, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkRBFInterpolator);
 
 //--------------------------------------------------------------------------
-vtkDeformationModel::vtkDeformationModel() {
-
-	this->SetModelType(vtkModel::Deformation);
-	this->Name = NULL;
-	this->BoundaryConditions = NULL;
-}
-
-//--------------------------------------------------------------------------
-vtkDeformationModel::~vtkDeformationModel() {
-
-	if(this->BoundaryConditions) this->BoundaryConditions->Delete();
-}
-
-//--------------------------------------------------------------------------
-void vtkDeformationModel::Init()
+vtkRBFInterpolator::vtkRBFInterpolator()
 {
-	this->Superclass::Init();
-
-	this->BoundaryConditions = vtkBoundaryConditionCollection::New();
-
-	//Display as a wire frame
-	this->Actor->GetProperty()->SetRepresentationToWireframe();
+	this->Initialized = false;
+	this->NumberOfControlPoints = 0;
 }
 
 //--------------------------------------------------------------------------
-//void vtkDeformationModel::InsertDisplacement(vtkIdType pointId, double * vector)
-//{
-//	this->InsertDisplacement(pointId, vector[0], vector[1], vector[2]);
-//}
-
-//--------------------------------------------------------------------------
-void vtkDeformationModel::InsertNextBoundaryCondition(vtkBoundaryCondition* condition)
+vtkRBFInterpolator::~vtkRBFInterpolator()
 {
-	//Insert collision point coordinates
-	this->BoundaryConditions->InsertNextBoundaryCondition(condition);
-	this->Modified();
 }
 
-//--------------------------------------------------------------------------
-void vtkDeformationModel::InsertBoundaryConditions(vtkBoundaryConditionCollection * collection)
+//----------------------------------------------------------------------------
+void vtkRBFInterpolator::Init()
 {
-	//Extract data from vtkBoundaryConditionCollection object
-	collection->InitTraversal();
-	vtkBoundaryCondition * c;
-	c = collection->GetNextBoundaryCondition();
-	while(c)
+	if(!this->Initialized)
 	{
-		this->InsertNextBoundaryCondition(c);
-		c = collection->GetNextBoundaryCondition();
+		vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
+
+		if(this->NumberOfControlPoints > 0 &&
+				this->NumberOfControlPoints < input->GetNumberOfPoints())
+		{
+			this->Interpolator = vtkTupleInterpolator::New();
+			this->Interpolator->SetNumberOfComponents(3);
+			this->Interpolator->SetInterpolationTypeToSpline();
+
+			this->controlPoints = vtkDoubleArray::New();
+			this->controlPoints->SetNumberOfComponents(3);
+			this->controlPoints->SetNumberOfTuples(this->NumberOfControlPoints);
+
+			this->controlPointDisplacements = vtkDoubleArray::New();
+			this->controlPointDisplacements->SetNumberOfComponents(3);
+			this->controlPointDisplacements->SetNumberOfTuples(this->NumberOfControlPoints);
+
+			int vertsPerPoint = vtkMath::Round(input->GetNumberOfPoints()/this->NumberOfControlPoints);
+			//TODO: Select input points from user input
+			double p0[3];
+			p0[0] = 0; p0[1] = 0; p0[2] = 0;
+			for(int i=0; i<this->NumberOfControlPoints; i++)
+			{
+				double * p = input->GetPoint(i*vertsPerPoint);
+				this->controlPoints->InsertNextTuple(p);
+				this->controlPointDisplacements->InsertNextTuple(p0);
+				//this->Interpolator->AddTuple()
+			}
+
+		}
 	}
+}
 
-	this->Modified();
+//----------------------------------------------------------------------------
+int vtkRBFInterpolator::RequestData(
+		vtkInformation *vtkNotUsed(request),
+		vtkInformationVector **inputVector,
+		vtkInformationVector *outputVector) {
+
+	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+	vtkInformation *outInfo = outputVector->GetInformationObject(0);
+
+	//Get the input and output
+	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+	//Output
+	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
+	cout << input->GetNumberOfPoints() << endl;
+
+	output->ShallowCopy(input);
+
+	return 1;
 }
 
 //--------------------------------------------------------------------------
-void vtkDeformationModel::RemoveBoundaryConditions()
+void vtkRBFInterpolator::PrintSelf(ostream&os, vtkIndent indent)
 {
-	this->BoundaryConditions->RemoveBoundaryConditions();
-	this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkDeformationModel::PrintSelf(ostream& os,vtkIndent indent) {
-
-	this->Superclass::PrintSelf(os, indent);
 }

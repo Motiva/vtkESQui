@@ -98,7 +98,7 @@ public:
 	//!Set the warp scale factor
 	/*!
 	 * This parameter sets how fast the model recovers its original shape after being deformed.\n
-	 * Warp scale factor shall be at least 1/50000 the value of spacing or the system will become unstable\n
+	 * Warp scale factor shall be at least 1/100000 the value of spacing or the system will become unstable\n
 	 * \sa double GetWarpScaleFactor()
 	 */
 	vtkSetMacro(WarpScaleFactor, double);
@@ -124,15 +124,31 @@ public:
 	//!Set homogeneus image spacing (resolution)
 	void SetImageSpacing(double spacing);
 
+	//!Set the image source
+	/*!
+	 * Optional input
+	 */
+	void SetImageSource(vtkImageData * image){this->ImageSource = image;};
+
+	//!Get the image source
 	vtkImageData * GetImageSource(){return this->ImageSource;};
 
 	//!Add displacement at the specified point.
 	/*!
 	 * The displacement shall not be greater than a 1/10 of the input mesh radius
-	 * \param pointId Point identifier
+	 * \param id Point identifier
+	 * \param x displacement x component
+	 * \param y displacement y component
+	 * \param z displacement z component
+	 */
+	virtual void InsertDisplacement(vtkIdType id, double x, double y, double z);
+
+	//!Insert a displacement to the model in the specified position
+	/*!
+	 * \param id point identifier
 	 * \param vector displacement vector
 	 */
-	virtual void AddDisplacement(vtkIdType pointId, double * vector);
+	virtual void InsertDisplacement(vtkIdType id, double * vector);
 
 protected:
 	vtkEDMInterface();
@@ -170,6 +186,9 @@ protected:
 
 	//!Image spacing
 	double ImageSpacing[3];
+
+	//!Image extent
+	int ImageExtent[6];
 
 	//! Mesh reset flag
 	bool Reset;

@@ -1,0 +1,3 @@
+
+ADD_EXECUTABLE(TestvtkRBFDeformation TestvtkRBFDeformation.cxx)
+TARGET_LINK_LIBRARIES(TestvtkRBFDeformation vtkRBFDeformation)

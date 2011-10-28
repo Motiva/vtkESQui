@@ -9,3 +9,6 @@ TARGET_LINK_LIBRARIES( IterativeWarp vtkExplicitDeformableModel vtkCommon vtkGra
 
 ADD_EXECUTABLE( DeformableMesh DeformableMesh.cxx )
 TARGET_LINK_LIBRARIES( DeformableMesh vtkExplicitDeformableModel vtkCommon vtkGraphics vtkRendering)
+
+ADD_EXECUTABLE( DeformableMeshPolyData DeformableMeshPolyData.cxx )
+TARGET_LINK_LIBRARIES( DeformableMeshPolyData vtkExplicitDeformableModel vtkCommon vtkGraphics vtkRendering)

@@ -27,7 +27,7 @@ vtkStandardNewMacro(vtkParticleSpringSystem);
 vtkParticleSpringSystem::vtkParticleSpringSystem()
 {
 	this->SpringCoefficient = 0.0;
-	this->DistanceCoefficient = 0;
+	this->DistanceCoefficient = 1;
 	this->DampingCoefficient = 0;
 	this->DeltaT = 0;
 	this->Mass = 0;
@@ -182,15 +182,21 @@ void vtkParticleSpringSystem::CreateSpring(vtkParticle * p0, vtkParticle * p1)
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::InsertDisplacement(vtkIdType id, double * d)
+void vtkParticleSpringSystem::InsertDisplacement(vtkIdType id, double x, double y, double z)
 {
 	vtkParticle * p = this->Particles->GetParticle(id);
 
 	//Add contact displacement
-	p->AddPosition(d[0], d[1], d[2]);
+	p->AddPosition(x, y, z);
 
 	//Set particle as contacted
 	p->SetContacted(1);
+}
+
+//----------------------------------------------------------------------------
+void vtkParticleSpringSystem::InsertDisplacement(vtkIdType id, double * d)
+{
+	this->InsertDisplacement(id, d[0], d[1], d[2]);
 }
 
 //----------------------------------------------------------------------------
@@ -235,13 +241,18 @@ void vtkParticleSpringSystem::ComputeForces()
 		vtkSpring * spring = this->Springs->GetSpring(i);
 		vtkParticle * p0 = spring->GetParticle(0);
 		vtkParticle * p1 = spring->GetParticle(1);
-		vtkMath::Subtract(p0->GetPosition(), p1->GetPosition(), d); // d = p[0]-p[1]
-		vtkMath::Subtract(p0->GetVelocity(), spring->GetParticle(1)->GetVelocity(), v); // v = v[0]-v[1]
+		vtkMath::Subtract(p0->GetPosition(), p1->GetPosition(), d); // d = (p0[0]-p1[0], p0[1]-p1[1], p0[2]-p1[2])
+		vtkMath::Subtract(p0->GetVelocity(), spring->GetParticle(1)->GetVelocity(), v); // v = (v0[0]-v1[0], v0[1]-v1[1], v0[2]-v1[2])
 		double L = spring->GetRestLength();
 		double dNorm = vtkMath::Norm(d);
-		double K = spring->GetSpringCoefficient();
 		double damping = spring->GetDampingCoefficient();
 		double Ad = (dNorm-L);
+
+		//Dynamic Stiffness (Hyperelasticity)
+		double K = spring->GetSpringCoefficient();
+		double r = dNorm/L;
+		if(r > this->DistanceCoefficient)
+			K *= r;
 
 		// Measure Spring/Damping Force
 		for(int j=0; j<3; j++)

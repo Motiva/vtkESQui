@@ -101,7 +101,14 @@ public:
 	 * \param pointId Point identifier
 	 * \param vector displacement vector
 	 */
-	virtual void AddDisplacement(vtkIdType pointId, double * vector);
+	virtual void InsertDisplacement(vtkIdType id, double x, double y, double z);
+
+	//!Insert a displacement to the model in the specified position
+	/*!
+	* \param id point identifier
+	* \param vector displacement vector
+	*/
+	virtual void InsertDisplacement(vtkIdType id, double * vector);
 
 protected:
 	vtkParticleSpringSystemInterface();

@@ -104,6 +104,9 @@ public:
 	 */
 	void SetParticleStatus(vtkIdType id, bool status);
 
+	//! Insert a displacement in the particle-spring system
+	void InsertDisplacement(vtkIdType id, double x, double y, double z);
+
 	//! Insert a displacement to a particle
 	void InsertDisplacement(vtkIdType id, double * displacement);
 
@@ -135,8 +138,18 @@ protected:
 
 	//Model Parameters
 	//! Spring stiffness k.
+	/*!
+	 * Spring stiffness coefficient: resistance offered by the spring to a
+	 * deformation. F[p(i)] = -(K*dNorm-L)*(d(p[i])/dNorm);
+	 */
 	double SpringCoefficient;
-	//! Distance coefficient. Maximum Percentage of elongation
+	//! Distance coefficient.
+	/*!
+	 * Maximum distance of linear elongation. For instance, a distance
+	 * coefficient of 2, means the elongation of a spring is linear elastic
+	 * until it reaches 2 times its initial length. For higher values, the
+	 * stiffness coefficient is modified dynamically.
+	 */
 	double DistanceCoefficient;
 	//! Damping coefficient
 	double DampingCoefficient;

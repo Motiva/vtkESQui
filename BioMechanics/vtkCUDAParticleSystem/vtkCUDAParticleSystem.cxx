@@ -189,15 +189,21 @@ int vtkCUDAParticleSystem::RequestData(
 }
 
 //----------------------------------------------------------------------------
-void vtkCUDAParticleSystem::InsertDisplacement(vtkIdType id, double * d)
+void vtkCUDAParticleSystem::InsertDisplacement(vtkIdType id, double x, double y, double z)
 {
 	// Update particle position
 	float * p = GetParticleVector(Position, id);
-	p[0] += d[0];
-	p[1] += d[1];
-	p[2] += d[2];
+	p[0] += x;
+	p[1] += y;
+	p[2] += z;
 	//Set particle as contacted
 	p[3] = 1;
+}
+
+//----------------------------------------------------------------------------
+void vtkCUDAParticleSystem::InsertDisplacement(vtkIdType id, double * d)
+{
+	this->InsertDisplacement(id, d[0], d[1], d[2]);
 }
 
 //----------------------------------------------------------------------------

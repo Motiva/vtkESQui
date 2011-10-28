@@ -51,9 +51,9 @@ int main( int argc, char** argv )
    ellipsoidSource->SetRadius(18, 14, 18);
 
    // External forces computation
-   sobel1->SetInputConnection(ellipsoidSource->GetOutputPort( ));
-   magnitude->SetInputConnection(sobel1->GetOutputPort());
-   sobel2->SetInputConnection(magnitude->GetOutputPort());
+   //sobel1->SetInputConnection(ellipsoidSource->GetOutputPort( ));
+   //magnitude->SetInputConnection(sobel1->GetOutputPort());
+   //sobel2->SetInputConnection(magnitude->GetOutputPort());
    
    // Deformable model initialisation
    sphereSource->SetCenter(31,31,31);
@@ -67,9 +67,9 @@ int main( int argc, char** argv )
    // Model
    deformableMesh->SetInputConnection(0, sphereSource->GetOutputPort());
    // Deformation forces
-   deformableMesh->SetInputConnection(1, sobel2->GetOutputPort( ));
-   deformableMesh->SetInputArrayToProcess( 
-      0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS, "Magnitude" );
+   deformableMesh->SetInputConnection(1, ellipsoidSource->GetOutputPort( ));
+   //deformableMesh->SetInputArrayToProcess(
+   //   0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS, "Magnitude" );
    
    // Visualisation pipeline
    vtkSmartPointer<vtkPolyDataMapper> mapper;

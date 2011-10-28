@@ -98,10 +98,19 @@ public:
 	//!Add displacement at the specified point.
 	/*!
 	 *  The displacement shall not be greater than a 1/10 of the input mesh radius
-	 * \param pointId Point identifier
-	 * \param vector displacement vector
+	 * \param id Point identifier
+	 * \param x displacement x component
+	 * \param y displacement y component
+	 * \param z displacement z component
 	 */
-	virtual void AddDisplacement(vtkIdType pointId, double * vector);
+	virtual void InsertDisplacement(vtkIdType id, double x, double y, double z);
+
+	//!Insert a displacement to the model in the specified position
+	/*!
+	* \param id point identifier
+	* \param vector displacement vector
+	*/
+	virtual void InsertDisplacement(vtkIdType id, double * vector);
 
 protected:
 	vtkCUDAParticleSystemInterface();

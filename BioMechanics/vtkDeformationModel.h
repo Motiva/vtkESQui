@@ -84,13 +84,23 @@ public:
 	//! Get Gravity Force (m/s2)
 	vtkGetVector3Macro(Gravity, double);
 
-	//!Add a displacement to the model
+	//!Insert a displacement to the model in the specified position
 	/*!
 	 * Pure virtual method. Must be implemented in inheriting classes.
-	 * \param pointId point identifier
+	 * \param id point identifier
 	 * \param vector displacement vector
 	 */
-	virtual void AddDisplacement(vtkIdType pointId, double * vector) = 0;
+	virtual void InsertDisplacement(vtkIdType id, double * vector) = 0;
+
+	//!Insert a displacement to the model in the specified position
+	/*!
+	* Pure virtual method. Must be implemented in inheriting classes.
+	* \param id point identifier
+	* \param x displacement x component
+	* \param y displacement y component
+	* \param z displacement z component
+	*/
+	virtual void InsertDisplacement(vtkIdType id, double x, double y, double z) = 0;
 
 	//!Insert a condition into the deformation model
 	/*!
