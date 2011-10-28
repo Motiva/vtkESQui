@@ -294,7 +294,7 @@ int vtkScenarioElement::RequestData(
 				//c->SetPoint(1, p);
 
 				//If displacement is zero (object is not moving) collision is ignored
-				this->DeformationModel->AddDisplacement(id, c->GetDisplacement());
+				this->DeformationModel->InsertDisplacement(id, c->GetDisplacement());
 			}
 
 			this->DeformationModel->Modified();

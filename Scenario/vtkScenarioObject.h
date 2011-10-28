@@ -92,7 +92,7 @@ public:
 	enum vtkScenarioObjectStatus
 	{
 		Enabled = 0,
-				Disabled = 1
+		Disabled = 1
 	};
 
 	//!Initialization function

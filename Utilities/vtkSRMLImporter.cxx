@@ -75,6 +75,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <sys/stat.h>
 #include <assert.h>
+#include <string>
 
 vtkCxxRevisionMacro(vtkSRMLImporter, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkSRMLImporter);
@@ -301,6 +302,12 @@ void vtkSRMLImporter::ReadData()
 	simulation->GetVectorAttribute("Gravity", 3, array);
 	this->Simulation->SetGravity(array);
 
+	const char * path = simulation->GetAttribute("DataPath");
+	if(path && strcmp(path, "")!=0)
+	{
+		strcpy(this->DataPath, path);
+	}
+
 	//Import Actors (Tools, Organs, Extras), Cameras, Lights and Properties
 	Superclass::ReadData();
 }
@@ -448,7 +455,15 @@ void vtkSRMLImporter::SetElementModels(vtkScenarioElement * element, vtkXMLDataE
 			this->SetModelData(vis, xmlModel);
 
 			//Specific visualization model parameters
-			vis->SetTextureFileName(this->ExpandDataFileName(xmlModel->GetAttribute("TextureFileName")));
+			if (this->DataPath)
+			{
+				vis->SetTextureFileName(this->ExpandDataFileName(xmlModel->GetAttribute("TextureFileName")));
+			}
+			else
+			{
+				vis->SetTextureFileName(xmlModel->GetAttribute("TextureFileName"));
+			}
+
 			element->SetVisualizationModel(vis);
 
 			if(this->GetDebug()) vis->Print(cout);
@@ -528,7 +543,14 @@ void vtkSRMLImporter::SetModelData(vtkModel * model, vtkXMLDataElement * xmlItem
 	}
 
 	model->SetName(xmlItem->GetAttribute("Name"));
-	model->SetFileName(this->ExpandDataFileName(xmlItem->GetAttribute("FileName")));
+	if (this->DataPath)
+	{
+		model->SetFileName(this->ExpandDataFileName(xmlItem->GetAttribute("FileName")));
+	}
+	else
+	{
+		model->SetFileName(xmlItem->GetAttribute("FileName"));
+	}
 
 	double array[3];
 	xmlItem->GetVectorAttribute("Color", 3, array);
@@ -705,6 +727,9 @@ void vtkSRMLImporter::ImportHaptic()
 const char * vtkSRMLImporter::ExpandDataFileName(const char * fname)
 {
 	char * fullName;
+
+	//Check for final and initial slashes
+
 	fullName = new char[strlen(this->DataPath) + 2 + strlen(fname)];
 	fullName[0] = 0;
 	strcat(fullName, this->DataPath);
