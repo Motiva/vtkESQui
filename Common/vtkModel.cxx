@@ -194,6 +194,7 @@ void vtkModel::Init()
 		//Set as initialized
 		this->Initialized = 1;
 	}
+	this->Modified();
 }
 
 //----------------------------------------------------------------------------

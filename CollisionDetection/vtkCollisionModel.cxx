@@ -163,6 +163,8 @@ void vtkCollisionModel::Init()
 	this->Glyphs->ScalingOff();
 
 	this->Mapper->SetInput(this->Glyphs->GetOutput());
+
+	this->Modified();
 }
 
 //----------------------------------------------------------------------------
@@ -229,7 +231,6 @@ int vtkCollisionModel::RequestData(
 			this->Mapper->Modified();
 		}
 
-
 		//Update object position
 		this->Transform->SetMatrix(this->Matrix);
 		this->Transform->Update();
@@ -244,8 +245,6 @@ int vtkCollisionModel::RequestData(
 		//collision visualization mesh
 		output->ShallowCopy(input);
 	}
-
-
 
 	return 1;
 }
