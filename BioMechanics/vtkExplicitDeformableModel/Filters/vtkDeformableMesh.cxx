@@ -64,11 +64,11 @@ int vtkDeformableMesh::FillInputPortInformation(int port, vtkInformation *info)
 void vtkDeformableMesh::Reset( vtkInformationVector** inputVector )
 {
    // get the info objects
-   vtkInformation *inMeshInfo = inputVector[0]->GetInformationObject(0);
+   //vtkInformation *inMeshInfo = inputVector[0]->GetInformationObject(0);
    vtkInformation *inImageInfo = inputVector[1]->GetInformationObject(0);
 
-   vtkPolyData* inputMesh = vtkPolyData::SafeDownCast(
-    inMeshInfo->Get(vtkDataObject::DATA_OBJECT()));
+   //vtkPolyData* inputMesh = vtkPolyData::SafeDownCast(
+   // inMeshInfo->Get(vtkDataObject::DATA_OBJECT()));
    vtkDataSet* inputImage = vtkDataSet::SafeDownCast(
     inImageInfo->Get(vtkDataObject::DATA_OBJECT()));
 

@@ -76,7 +76,6 @@ vtkModel::vtkModel()
 
 	this->Matrix = NULL;
 	this->Reader = NULL;
-	this->SmoothFilter = NULL;
 	this->Actor = NULL;
 	this->Mapper = NULL;
 	this->HashMap = NULL;
@@ -174,12 +173,8 @@ void vtkModel::Init()
 			this->SetInputConnection(this->Reader->GetOutputPort());
 		}
 
-		this->SmoothFilter = vtkSmoothPolyDataFilter::New();
 		this->Actor = vtkActor::New();
 		this->Mapper = vtkPolyDataMapper::New();
-
-		//Set smoothed output
-		this->SmoothFilter->SetNumberOfIterations(1);
 
 		//Set actor transformation matrix
 		if(this->Matrix)

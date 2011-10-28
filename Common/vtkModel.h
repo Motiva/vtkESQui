@@ -333,11 +333,6 @@ protected:
 	//! Transform Matrix
 	vtkMatrix4x4 * Matrix;
 
-	//vtkTransform * Transform;
-
-	//! Smoothing filter
-	vtkSmoothPolyDataFilter * SmoothFilter;
-
 	//! DataSetMapper of the model actor
 	vtkPolyDataMapper * Mapper;
 

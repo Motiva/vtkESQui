@@ -109,7 +109,7 @@ void vtkParticleSpringSystemInterface::Init()
 			/* 0 -> Fixed
 			 * 1 -> Free
 			 */
-			this->ParticleSpringSystem->SetParticleStatus(c->GetPointId(), c->GetValue());
+			this->ParticleSpringSystem->SetParticleStatus(c->GetPointId(), (c->GetValue() != 0 ? 1:0));
 		}
 	}
 

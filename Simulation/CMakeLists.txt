@@ -19,7 +19,8 @@ SET(KIT_LIBS
 ${PROJECT_NAME}Common
 ${PROJECT_NAME}Scenario
 ${PROJECT_NAME}CollisionDetection
-vtkCommon 
+vtkCommon
+vtkRendering 
 )
 
 # Set your list of TCL libraries here.
@@ -28,6 +29,7 @@ ${PROJECT_NAME}CommonTCL
 ${PROJECT_NAME}ScenarioTCL
 ${PROJECT_NAME}CollisionDetectionTCL
 vtkCommonTCL
+vtkRenderingTCL
 )
 
 # Set your list of Python libraries here.
@@ -36,6 +38,7 @@ ${PROJECT_NAME}CommonPythonD
 ${PROJECT_NAME}ScenarioPythonD
 ${PROJECT_NAME}CollisionDetectionPythonD
 vtkCommonPythonD
+vtkRenderingPythonD
 )
 
 #

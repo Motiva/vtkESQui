@@ -35,12 +35,21 @@ vtkRenderingTCL
 vtkHybridTCL
 )
 
+# Set your list of Python libraries here.
+SET(KIT_PYTHON_LIBS
+${PROJECT_NAME}SimulationPythonD
+${PROJECT_NAME}ScenarioPythonD
+${PROJECT_NAME}BioMechanicsPythonD
+${PROJECT_NAME}CollisionDetectionPythonD
+vtkCommonPythonD
+vtkRenderingPythonD
+vtkHybridPythonD
+)
+
 #
-# Uncomment the following code if you are plannig to add python and/or java support
+# Uncomment the following code if you are plannig to add java support
 #
 
-
-#SET(KIT_PYTHON_LIBS)
 #SET(KIT_JAVA_LIBS)
 
 
