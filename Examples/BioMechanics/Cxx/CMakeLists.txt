@@ -7,8 +7,6 @@ SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
-    WarpVector
-    SmoothedGradient
     ParticleSpringSystem
     ExplicitDeformableModel
 )

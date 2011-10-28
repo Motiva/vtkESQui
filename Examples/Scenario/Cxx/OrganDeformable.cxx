@@ -115,7 +115,7 @@ public:
 				for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
 				{
 					vtkIdType id = list->GetId(i);
-					def->AddDisplacement(id, force);
+					def->InsertDisplacement(id, force);
 				}
 			}
 			else if (tid == this->FasterTimerId)

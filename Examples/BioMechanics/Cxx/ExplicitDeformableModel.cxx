@@ -10,10 +10,12 @@
 #include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkCamera.h"
-#include "vtkSphereSource.h"
-
 #include "vtkTimerLog.h"
 #include "vtkPointLocator.h"
+
+#include "vtkTransform.h"
+#include "vtkTransformPolyDataFilter.h"
+#include "vtkThinPlateSplineTransform.h"
 
 #include "vtkCommand.h"
 
@@ -42,29 +44,33 @@ public:
 				vtkPolyData * mesh = vtkPolyData::SafeDownCast(this->DeformationModel->GetInput());
 
 				//Locate collision points
-					vtkPointLocator * locator = vtkPointLocator::New();
-					double bounds[6];
-					mesh->GetBounds(bounds);
+				vtkSmartPointer<vtkPointLocator> locator =
+						vtkSmartPointer<vtkPointLocator>::New();
+				vtkSmartPointer<vtkIdList> list = vtkSmartPointer<vtkIdList>::New();
 
-					double p[3] = {bounds[0], 0, 0};
+				double bounds[6];
+				mesh->GetBounds(bounds);
 
-					vtkIdList * list = vtkIdList::New();
-					locator->SetDataSet(mesh);
-					locator->FindClosestNPoints(5, p, list);
+				double p[3] = {bounds[0], 0, 0};
 
-					//Set Collisions
-					double force[3];
-					force[0] = 0.1;
-					force[1] = 0.05;
-					force[2] = 0;
+				locator->SetDataSet(mesh);
+				locator->FindClosestNPoints(6, p, list);
 
-					for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
-					{
-						int id = list->GetId(i);
-						this->DeformationModel->AddDisplacement(id, force);
-					}
 
-					cout << "Force applied...\n";
+				//Set Collisions
+				double d[3];
+				d[0] = 1.0;
+				d[1] = .5;
+				d[2] = 0;
+
+				for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
+				{
+					int id = list->GetId(i);
+					cout << "d[" << id << "]\n";
+					this->DeformationModel->InsertDisplacement(id, d);
+				}
+
+				cout << "Displacement applied...\n";
 			}
 			else if (tid == this->FasterTimerId)
 			{
@@ -74,7 +80,7 @@ public:
 				this->DeformationModel->Update();
 				timer->StopTimer();
 
-				std::cout << "[Test] Rate: " << 1/(timer->GetElapsedTime()) << "\n";
+				//std::cout << "[Test] Rate: " << 1/(timer->GetElapsedTime()) << "\n";
 			}
 			else if (tid == this->RenderTimerId)
 			{
@@ -130,29 +136,40 @@ int main(int argc, char * argv[])
 		filename = argv[1];
 	}
 
-	double r = 1;
-	vtkSmartPointer<vtkSphereSource> sphereSource =
-			vtkSmartPointer<vtkSphereSource>::New();
-	sphereSource->SetRadius(r);
-	sphereSource->SetPhiResolution(16);
-	sphereSource->SetThetaResolution(16);
-	vtkSmartPointer<vtkPolyData> mesh = sphereSource->GetOutput();
-	sphereSource->Update();
+	vtkSmartPointer<vtkXMLPolyDataReader> reader =
+			vtkSmartPointer<vtkXMLPolyDataReader>::New();
+	reader->SetFileName(filename);
+	reader->Update();
 
-	double s = r/30;
+	//vtkPolyData * mesh = reader->GetOutput();
+
+	vtkSmartPointer<vtkTransform> scale = vtkSmartPointer<vtkTransform>::New();
+	scale->Scale(10, 10, 10);
+	vtkSmartPointer<vtkTransformPolyDataFilter> filter = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+	filter->SetInput(reader->GetOutput());
+	filter->SetTransform(scale);
+	filter->Update();
+
+	vtkPolyData * mesh = filter->GetOutput();
+
+	double * bounds = mesh->GetBounds();
+
+	double r = (bounds[1] -bounds[0])/2;
+	double s = r/40;
+	//double d = 0.001;
 	double warp = s/100000;
 
 	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
 	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
-	std::cout << "[Test] Image spacing: " << s << "\n";
-	std::cout << "[Test] Image warp scale: " << warp << "\n";
 
 	vtkSmartPointer<vtkEDMInterface> EDM = vtkSmartPointer<vtkEDMInterface>::New();
-	EDM->SetNumberOfIterations(500);
+	EDM->SetNumberOfIterations(1000);
 	EDM->SetWarpScaleFactor(warp);
 	EDM->SetImageSpacing(s);
 	EDM->SetInput(mesh);
 	EDM->Init();
+
+	EDM->Print(cout);
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
@@ -180,9 +197,9 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkActor> actor2 = vtkSmartPointer<vtkActor>::New();
 	actor2->SetMapper(mapper2);
 	actor2->GetProperty()->SetColor(1,0,0);
-	actor2->GetProperty()->SetRepresentationToWireframe();
+	//actor2->GetProperty()->SetRepresentationToWireframe();
 
-	renderer->AddActor(actor);
+	//renderer->AddActor(actor);
 	renderer->AddActor(actor2);
 	//renderer->AddActor(EDM->GetActor());
 	renderer->SetBackground(1,1,1);

@@ -69,7 +69,7 @@ public:
 				for(vtkIdType i = 0; i< list->GetNumberOfIds(); i++)
 				{
 					int id = list->GetId(i);
-					this->DeformationModel->AddDisplacement(id, force);
+					this->DeformationModel->InsertDisplacement(id, force);
 				}
 			}
 			else if (tid == this->FasterTimerId)
@@ -151,7 +151,7 @@ int main(int argc, char * argv[])
 	pss->SetOpacity(1.0);
 	pss->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
 	pss->SetSpringCoefficient(150);
-	pss->SetDistanceCoefficient(10);
+	pss->SetDistanceCoefficient(1.1);
 	pss->SetDampingCoefficient(5);//Friction
 	pss->SetMass(.5);
 	pss->SetDeltaT(0.001);//1ms

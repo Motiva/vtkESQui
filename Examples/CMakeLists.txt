@@ -1,5 +1,4 @@
 SUBDIRS(BioMechanics)
-SUBDIRS(Meshes)
 SUBDIRS(Scenario)
 SUBDIRS(Simulation)
 SUBDIRS(Utilities)
