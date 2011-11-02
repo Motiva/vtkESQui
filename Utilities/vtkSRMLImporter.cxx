@@ -533,13 +533,13 @@ void vtkSRMLImporter::SetElementModels(vtkScenarioElement * element, vtkXMLDataE
 void vtkSRMLImporter::SetModelData(vtkModel * model, vtkXMLDataElement * xmlItem)
 {
 	const char * status = xmlItem->GetAttribute("Status");
-	if (!strcmp(status, "Enabled"))
+	if (!strcmp(status, "1"))
 	{
-		model->SetStatus(vtkModel::Enabled);
+		model->SetStatus(1);
 	}
-	else if (!strcmp(status, "Disabled"))
+	else if (!strcmp(status, "1"))
 	{
-		model->SetStatus(vtkModel::Disabled);
+		model->SetStatus(0);
 	}
 
 	model->SetName(xmlItem->GetAttribute("Name"));

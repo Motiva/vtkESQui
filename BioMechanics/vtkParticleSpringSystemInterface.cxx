@@ -139,7 +139,7 @@ int vtkParticleSpringSystemInterface::RequestData(
 
 	//cout << this->GetClassName() << "::RequestData(" << this->GetName() << ")\n";
 
-	if(this->Status == Enabled)
+	if(this->Status)
 	{
 		//Force recalculation of the output in every step
 		this->ParticleSpringSystem->Modified();

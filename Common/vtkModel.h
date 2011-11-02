@@ -84,13 +84,6 @@ public:
 		Collision = 1,
 		Deformation = 2
 	};
-
-	//!Enumeration of model status
-	enum vtkModelStatus
-	{
-		Enabled = 0,
-		Disabled = 1
-	};
 	//ETX
 
 	//!Set model id
@@ -130,13 +123,13 @@ public:
 	/*!
 	 *\sa GetStatus()
 	 */
-	vtkSetMacro(Status, vtkModel::vtkModelStatus);
+	vtkSetMacro(Status, bool);
 
 	//! Returns the state of the model
 	/*!
 	 *\sa SetStatus(vtkModelStatus)
 	 */
-	vtkGetMacro(Status, vtkModel::vtkModelStatus);
+	vtkGetMacro(Status, bool);
 
 	//! Assign model name
 	/*!
@@ -295,7 +288,7 @@ public:
 	 * - be computed in collision detection.
 	 * - be used in simulation.
 	 */
-	bool IsDisabled(){ return this->Status == Disabled;};
+	bool IsDisabled(){ return !this->Status;};
 
 	//!Check if object has been initialized
 	bool IsInitialized() { return this->Initialized;};
@@ -322,7 +315,7 @@ protected:
 	vtkModelType ModelType;
 
 	//! Model Status
-	vtkModelStatus Status;
+	bool Status;
 
 	//! model data file name
 	char * FileName;

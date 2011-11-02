@@ -71,7 +71,7 @@ vtkScenarioElement::vtkScenarioElement() {
 	this->Initialized = 0;
 
 	this->Type = Organ;
-	this->Status = Enabled;
+	this->Status = 1;
 	this->Scale[0] = this->Scale[1] = this->Scale[2] = 1.0;
 	this->DeltaT = 1.0;
 
@@ -400,7 +400,7 @@ void vtkScenarioElement::Hide()
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Enable()
 {
-	this->Status = Enabled;
+	this->Status = 1;
 	this->Models->InitTraversal();
 	while (vtkModel * model =  this->Models->GetNextModel())
 	{
@@ -411,7 +411,7 @@ void vtkScenarioElement::Enable()
 //--------------------------------------------------------------------------
 void vtkScenarioElement::Disable()
 {
-	this->Status = Disabled;
+	this->Status = 0;
 	this->Models->InitTraversal();
 	while (vtkModel * model =  this->Models->GetNextModel())
 	{
@@ -430,13 +430,13 @@ void vtkScenarioElement::Show()
 }
 //--------------------------------------------------------------------------
 bool vtkScenarioElement::IsEnabled(){
-	return this->Status == Enabled;
+	return this->Status;
 }
 
 //--------------------------------------------------------------------------
 bool vtkScenarioElement::IsDisabled()
 {
-	return this->Status == Disabled;
+	return !this->Status;
 }
 
 //--------------------------------------------------------------------------

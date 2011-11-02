@@ -124,7 +124,7 @@ int vtkVisualizationModel::RequestData(
 	vtkPolyData *output = vtkPolyData::SafeDownCast(
 			outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	if(this->Status == Enabled)
+	if(this->Status)
 	{
 		//Set visualization parameters
 		this->Actor->SetVisibility(this->Visibility);

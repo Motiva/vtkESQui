@@ -89,13 +89,6 @@ public:
 		Extra = 2
 	};
 
-	//! Enumeration of Element status
-	enum vtkScenarioElementStatus
-	{
-		Enabled = 0,
-		Disabled = 1
-	};
-
 	//! Abstract initialization function
 	/*!
 	 * This method initializes the Element physical values, scale, position, etc...
@@ -138,17 +131,17 @@ public:
 	 */
 	vtkGetMacro(Type, vtkScenarioElement::vtkScenarioElementType);
 
-	//! Assign the Element state
+	//! Assign the Element status
 	/*!
-	 *\sa GetState()
+	 *\sa GetStatus()
 	 */
-	vtkSetMacro(Status, vtkScenarioElement::vtkScenarioElementStatus);
+	vtkSetMacro(Status, bool);
 
-	//! Returns the state of the Element
+	//! Returns the status of the Element
 	/*!
-	 *\sa SetState(vtkScenarioStateType)
+	 *\sa SetStatus(bool)
 	 */
-	vtkGetMacro(Status, vtkScenarioElement::vtkScenarioElementStatus);
+	vtkGetMacro(Status, bool);
 
 	//! Assign Element name
 	/*!
@@ -420,8 +413,8 @@ protected:
 	vtkScenarioElementType Type;
 	//! Element Name
 	char * Name;
-	//! Element State
-	vtkScenarioElementStatus Status;
+	//! Element Status
+	bool Status;
 
 	//! Visualization model
 	vtkVisualizationModel * VisualizationModel;

@@ -69,7 +69,7 @@ vtkModel::vtkModel()
 	this->Name = NULL;
 	this->FileName = NULL;
 	this->Initialized = 0;
-	this->Status = Enabled;
+	this->Status = 1;
 	this->Color[0]=this->Color[1]=this->Color[2]=1.0;
 	this->Opacity = 1.0;
 	this->Visibility = 1;
@@ -233,7 +233,7 @@ int vtkModel::RequestData(
 
 	//Set visualization parameters
 	this->Actor->SetVisibility(this->Visibility);
-	if(this->Status == Enabled){
+	if(this->Status){
 		this->Actor->GetProperty()->SetColor(this->Color);
 		this->Actor->GetProperty()->SetOpacity(this->Opacity);
 
@@ -285,7 +285,7 @@ void vtkModel::Show()
 //--------------------------------------------------------------------------
 void vtkModel::Disable()
 {
-	this->Status = Disabled;
+	this->Status = 0;
 	this->Hide();
 	this->Modified();
 }
@@ -293,7 +293,7 @@ void vtkModel::Disable()
 //--------------------------------------------------------------------------
 void vtkModel::Enable()
 {
-	this->Status = Enabled;
+	this->Status = 1;
 	this->Show();
 	this->Modified();
 }

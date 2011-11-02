@@ -67,7 +67,7 @@ vtkScenarioObject::vtkScenarioObject() {
 	this->Renderer = NULL;
 	this->Initialized = 0;
 
-	this->Status = Enabled;
+	this->Status = 1;
 
 	this->Elements = vtkScenarioElementCollection::New();
 	this->Collisions = vtkCollisionCollection::New();
@@ -257,7 +257,7 @@ void vtkScenarioObject::Hide()
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Enable()
 {
-	this->Status = Enabled;
+	this->Status = 1;
 	this->Elements->InitTraversal();
 	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
 	{
@@ -268,7 +268,7 @@ void vtkScenarioObject::Enable()
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Disable()
 {
-	this->Status = Disabled;
+	this->Status = 0;
 	this->Elements->InitTraversal();
 	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
 	{

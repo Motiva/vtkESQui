@@ -88,13 +88,6 @@ public:
 				Extra = 2
 	};
 
-	//!Enumeration of object status
-	enum vtkScenarioObjectStatus
-	{
-		Enabled = 0,
-		Disabled = 1
-	};
-
 	//!Initialization function
 	virtual void Init();
 
@@ -122,18 +115,19 @@ public:
 	*/
 	vtkGetMacro(ObjectType, vtkScenarioObject::vtkScenarioObjectType);
 
-	//! Assign the object state
+	//! Assign the object status
 	/*!
-	*\sa GetState()
+	*\sa GetStatus()
 	*/
-	vtkSetMacro(Status, vtkScenarioObject::vtkScenarioObjectStatus);
+	vtkSetMacro(Status, bool)
 
-	//! Returns the state of the object
+	//! Returns the status of the object
 	/*!
-	*\sa SetState(vtkScenarioStateType)
+	*\sa SetStatus(bool)
 	*/
-	vtkGetMacro(Status, vtkScenarioObject::vtkScenarioObjectStatus);
+	vtkGetMacro(Status, bool);
 
+	vtkBooleanMacro(Status, bool);
 	//! Assign object name
 	/*!
 	*\sa GetName()
@@ -281,7 +275,7 @@ public:
 	* - be computed in collision detection.
 	* - be used in simulation.
 	*/
-	bool IsEnabled(){ return this->Status == Enabled;};
+	bool IsEnabled(){ return this->Status;};
 
 	//! Check if object is disabled.
 	/*!
@@ -290,7 +284,7 @@ public:
 	* - be computed in collision detection.
 	* - be used in simulation.
 	*/
-	bool IsDisabled(){ return this->Status == Disabled;};
+	bool IsDisabled(){ return !this->Status;};
 
 	//! Return if object has been initialized
 	bool IsInitialized(){ return this->Initialized;};
@@ -338,7 +332,7 @@ protected:
 	//! Object Name
 	char * Name;
 	//! Object State
-	vtkScenarioObjectStatus Status;
+	bool Status;
 
 	//! Initialization flag
 	bool Initialized;

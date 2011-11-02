@@ -117,7 +117,7 @@ void vtkBioEngInterface::Update()
 				if((m0->GetObjectId() != m1->GetObjectId())
 						&& (!m0->IsDisabled() && !m1->IsDisabled()))
 				{
-					//Each collision model transformed polydata (mx-GetOutput(1) is set as an input of the CDL
+					//Each collision model transformed polydata (mx->GetOutput(1) is set as an input of the CDL
 					this->DetectionFilter->SetInput(0, m0->GetOutput(1));
 					this->DetectionFilter->SetInput(1, m1->GetOutput(1));
 

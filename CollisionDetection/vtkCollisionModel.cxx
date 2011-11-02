@@ -151,7 +151,6 @@ void vtkCollisionModel::Init()
 	else this->Matrix = this->Transform->GetMatrix();
 
 	//Filter to apply transformations to the mesh
-	this->TransformFilter->SetInputConnection(this->GetOutputPort());
 	this->TransformFilter->SetTransform(this->Transform);
 
 	// Configure visualization
@@ -194,10 +193,10 @@ int vtkCollisionModel::RequestData(
 
 	//cout << this->GetClassName() << "::RequestData (" << this->GetName() << ")\n";
 
-	if(this->Status == Enabled)
+	if(this->Status)
 	{
 		//collision visualization mesh
-		output->ShallowCopy(input);
+		output->DeepCopy(input);
 
 		//If source is defined -> Synchronize mesh
 		if(source)
@@ -215,7 +214,7 @@ int vtkCollisionModel::RequestData(
 				int id = this->HashMap->GetId(i);
 				double * p = source->GetPoint(id);
 				//double * po = points->GetPoint(i);
-				//if(id==122) cout << "ps["<< i << "]: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po["<< id <<"]: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
+				//cout << "ps["<< i << "]: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po["<< id <<"]: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
 				points->SetPoint(i, p[0], p[1], p[2]);
 			}
 		}
@@ -225,7 +224,6 @@ int vtkCollisionModel::RequestData(
 		if(this->IsVisible())
 		{
 			this->Glyphs->Modified();
-			//this->Glyphs->Update();
 			this->Actor->GetProperty()->SetColor(this->Color);
 			this->Actor->GetProperty()->SetOpacity(this->Opacity);
 			this->Mapper->Modified();
@@ -235,15 +233,19 @@ int vtkCollisionModel::RequestData(
 		this->Transform->SetMatrix(this->Matrix);
 		this->Transform->Update();
 
+		//FIXME: output empty
+		this->TransformFilter->SetInput(output);
+		this->TransformFilter->Update();
+
 		//Transformed mesh for collision detection purposes
 		outputTx->ShallowCopy(this->TransformFilter->GetOutput());
 	}
 	else
 	{
-		//Transformed mesh for collision detection purposes
-		outputTx->ShallowCopy(input);
 		//collision visualization mesh
 		output->ShallowCopy(input);
+		//Transformed mesh for collision detection purposes
+		outputTx->ShallowCopy(input);
 	}
 
 	return 1;
