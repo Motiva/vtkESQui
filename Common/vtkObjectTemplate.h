@@ -50,24 +50,24 @@ POSSIBILITY OF SUCH DAMAGE.
 
 class VTK_ESQUI_COMMON_EXPORT vtkObjectTemplate : public vtkObject {
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkObjectTemplate,vtkObject);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkObjectTemplate,vtkObject);
 
-	//! Create new object
-	static vtkObjectTemplate *New();
-	//! Print object info
-	void PrintSelf(ostream& os, vtkIndent indent);
-	//! Return class name
-	const char *GetClassName() {return "vtkObjectTemplate";};
+  //! Create new object
+  static vtkObjectTemplate *New();
+  //! Print object info
+  void PrintSelf(ostream& os, vtkIndent indent);
+  //! Return class name
+  const char *GetClassName() {return "vtkObjectTemplate";};
 
 protected:
-	vtkObjectTemplate();
-	~vtkObjectTemplate();
+  vtkObjectTemplate();
+  ~vtkObjectTemplate();
 
 private:
 
-	vtkObjectTemplate (const vtkObjectTemplate &);//NotImplemented
-	void operator =(const vtkObjectTemplate &);//Not Implemented
+  vtkObjectTemplate (const vtkObjectTemplate &);//NotImplemented
+  void operator =(const vtkObjectTemplate &);//Not Implemented
 };
 
 #endif

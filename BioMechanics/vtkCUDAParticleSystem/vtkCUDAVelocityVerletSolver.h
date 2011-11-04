@@ -53,31 +53,31 @@ class vtkCUDAParticleSystem;
 
 class VTK_vtkCUDAParticleSystem_EXPORT vtkCUDAVelocityVerletSolver : public vtkCUDAMotionEquationSolver {
 public:
-	//!Type Revision Macro
-	vtkTypeRevisionMacro(vtkCUDAVelocityVerletSolver, vtkCUDAMotionEquationSolver);
-	//! Create a new euler solver
-	static vtkCUDAVelocityVerletSolver * New();
-	//! Print object values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Type Revision Macro
+  vtkTypeRevisionMacro(vtkCUDAVelocityVerletSolver, vtkCUDAMotionEquationSolver);
+  //! Create a new euler solver
+  static vtkCUDAVelocityVerletSolver * New();
+  //! Print object values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initialize equation motion solver
-	virtual void Init();
+  //! Initialize equation motion solver
+  virtual void Init();
 
-	//! Compute next step for every particle
-	/*!
-	 * \param p particle position vector
-	 * \param v particle velocity vector
-	 * \param a particle acceleration vector
-	 */
-	virtual void ComputeNextStep(float *p, float *v, float *a);
+  //! Compute next step for every particle
+  /*!
+   * \param p particle position vector
+   * \param v particle velocity vector
+   * \param a particle acceleration vector
+   */
+  virtual void ComputeNextStep(float *p, float *v, float *a);
 
 protected:
-	vtkCUDAVelocityVerletSolver();
-	~vtkCUDAVelocityVerletSolver();
+  vtkCUDAVelocityVerletSolver();
+  ~vtkCUDAVelocityVerletSolver();
 
 private:
-	vtkCUDAVelocityVerletSolver(const vtkCUDAVelocityVerletSolver&);            // Not implemented.
-	void operator=(const vtkCUDAVelocityVerletSolver&);           // Not implemented.
+  vtkCUDAVelocityVerletSolver(const vtkCUDAVelocityVerletSolver&);            // Not implemented.
+  void operator=(const vtkCUDAVelocityVerletSolver&);           // Not implemented.
 };
 
 #endif

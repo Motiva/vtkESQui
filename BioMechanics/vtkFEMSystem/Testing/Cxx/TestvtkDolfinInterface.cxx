@@ -8,18 +8,18 @@
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/3D/cylinder.xml";
+  const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/3D/cylinder.xml";
 
-	if (argc > 1)
-	{
-		filename = argv[1];
-	}
+  if (argc > 1)
+  {
+    filename = argv[1];
+  }
 
-	vtkDolfinInterface * Dolfin = vtkDolfinInterface::New();
+  vtkDolfinInterface * Dolfin = vtkDolfinInterface::New();
 
-	Dolfin->SetFileName(filename);
-	Dolfin->Init();
+  Dolfin->SetFileName(filename);
+  Dolfin->Init();
 
-	return 0;
+  return 0;
 }
 

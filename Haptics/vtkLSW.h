@@ -68,91 +68,91 @@ class VTK_ESQUI_HAPTICS_EXPORT vtkLSW:public vtkHaptic
 {
 
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkLSW, vtkHaptic);
-	//! Create new vtkLSW object
-	static vtkLSW *New();
-	//! Return class name
-	const char *GetClassName() { return "vtkLSW"; }
-	//! Print object info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkLSW, vtkHaptic);
+  //! Create new vtkLSW object
+  static vtkLSW *New();
+  //! Return class name
+  const char *GetClassName() { return "vtkLSW"; }
+  //! Print object info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Set up the LSW
-	virtual int Init();
+  //! Set up the LSW
+  virtual int Init();
 
-	//!Update the device
-	virtual void Update();
+  //!Update the device
+  virtual void Update();
 
-	//! Close the communication and turn off the LSW
-	virtual void Release();
+  //! Close the communication and turn off the LSW
+  virtual void Release();
 
-	//!Update the device
-	void UpdateDevice();
+  //!Update the device
+  void UpdateDevice();
 
-	//! Get the tool depth
-	double GetToolDepth(int id);
-	//! Get the tool yaw
-	double GetToolYaw(int id);
-	//! Get the tool pitch
-	double GetToolPitch(int id);
-	//! Get the tool aperture
-	double GetToolOpening(int id);
-	//! Get the tool twist
-	double GetToolRoll(int id);
+  //! Get the tool depth
+  double GetToolDepth(int id);
+  //! Get the tool yaw
+  double GetToolYaw(int id);
+  //! Get the tool pitch
+  double GetToolPitch(int id);
+  //! Get the tool aperture
+  double GetToolOpening(int id);
+  //! Get the tool twist
+  double GetToolRoll(int id);
 
-	//! Get the left tool depth
-	double GetLeftToolDepth();
-	//! Get the left tool yaw
-	double GetLeftToolYaw();
-	//! Get the left tool pitch
-	double GetLeftToolPitch();
-	//! Get the left tool aperture
-	double GetLeftToolOpening();
-	//! Get the left tool twist
-	double GetLeftToolRoll();
+  //! Get the left tool depth
+  double GetLeftToolDepth();
+  //! Get the left tool yaw
+  double GetLeftToolYaw();
+  //! Get the left tool pitch
+  double GetLeftToolPitch();
+  //! Get the left tool aperture
+  double GetLeftToolOpening();
+  //! Get the left tool twist
+  double GetLeftToolRoll();
 
-	//! Get the right tool depth
-	double GetRightToolDepth();
-	//! Get the right tool yaw
-	double GetRightToolYaw();
-	//! Get the right tool pitch
-	double GetRightToolPitch();
-	//! Get the right tool aperture
-	double GetRightToolOpening();
-	//! Get the right tool twist
-	double GetRightToolRoll();
+  //! Get the right tool depth
+  double GetRightToolDepth();
+  //! Get the right tool yaw
+  double GetRightToolYaw();
+  //! Get the right tool pitch
+  double GetRightToolPitch();
+  //! Get the right tool aperture
+  double GetRightToolOpening();
+  //! Get the right tool twist
+  double GetRightToolRoll();
 
-	//! Set the specified tool contact force
-	void SetToolForce(int id, float X, float Y, float Z);
-	//! Set the right tool contact force
-	void SetRightToolForce(float X, float Y, float Z);
-	//! Set the left tool contact force
-	void SetLeftToolForce(float X, float Y, float Z);
+  //! Set the specified tool contact force
+  void SetToolForce(int id, float X, float Y, float Z);
+  //! Set the right tool contact force
+  void SetRightToolForce(float X, float Y, float Z);
+  //! Set the left tool contact force
+  void SetLeftToolForce(float X, float Y, float Z);
 
-	//!Set data into the specified tool
-	void SetToolData(int id, int Type, double k, int flag);
-	//!Set data into the left tool
-	void SetLeftToolData(int Type, double k, int flag);
-	//!Set data into the left tool
-	void SetRightToolData(int Type, double k, int flag);
+  //!Set data into the specified tool
+  void SetToolData(int id, int Type, double k, int flag);
+  //!Set data into the left tool
+  void SetLeftToolData(int Type, double k, int flag);
+  //!Set data into the left tool
+  void SetRightToolData(int Type, double k, int flag);
 private:
 
-	bool StopFlag;
-	bool ForceCalculationMethodActive;
+  bool StopFlag;
+  bool ForceCalculationMethodActive;
 
-	//! vtkLSWTool object to access to the LSW's right tool
-	vtkLSWTool* LSWRightTool;
+  //! vtkLSWTool object to access to the LSW's right tool
+  vtkLSWTool* LSWRightTool;
 
-	//! vtkLSWTool object to access to the LSW's left tool
-	vtkLSWTool* LSWLeftTool;
+  //! vtkLSWTool object to access to the LSW's left tool
+  vtkLSWTool* LSWLeftTool;
 
-	//! ImmSurgicalWorkstation object.
-	ImmSurgicalWorkstation* LSWDevice;
+  //! ImmSurgicalWorkstation object.
+  ImmSurgicalWorkstation* LSWDevice;
 
 protected:
 
-	vtkLSW();
-	~vtkLSW();
+  vtkLSW();
+  ~vtkLSW();
 };
 
 #endif

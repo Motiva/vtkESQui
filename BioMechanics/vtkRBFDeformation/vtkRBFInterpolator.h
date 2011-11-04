@@ -51,31 +51,31 @@ class vtkTupleInterpolator;
 
 class VTK_vtkRBFDeformation_EXPORT vtkRBFInterpolator : public vtkPolyDataAlgorithm {
 public:
-	//!Type revision macro
-	vtkTypeRevisionMacro(vtkRBFInterpolator,vtkPolyDataAlgorithm);
+  //!Type revision macro
+  vtkTypeRevisionMacro(vtkRBFInterpolator,vtkPolyDataAlgorithm);
 
-	//!Create new object
-	static vtkRBFInterpolator *New();
-	//!Print object info
-	void PrintSelf(ostream& os, vtkIndent indent);
-	//!Return class name
-	const char *GetClassName() {return "vtkRBFInterpolator";};
+  //!Create new object
+  static vtkRBFInterpolator *New();
+  //!Print object info
+  void PrintSelf(ostream& os, vtkIndent indent);
+  //!Return class name
+  const char *GetClassName() {return "vtkRBFInterpolator";};
 
-	//!Initialize class
-	void Init();
+  //!Initialize class
+  void Init();
 
 protected:
-	vtkRBFInterpolator();
-	~vtkRBFInterpolator();
+  vtkRBFInterpolator();
+  ~vtkRBFInterpolator();
 
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 private:
 
-	vtkRBFInterpolator (const vtkRBFInterpolator &);//NotImplemented
-	void operator =(const vtkRBFInterpolator &);//Not Implemented
+  vtkRBFInterpolator (const vtkRBFInterpolator &);//NotImplemented
+  void operator =(const vtkRBFInterpolator &);//Not Implemented
 
-	bool Initialized;
+  bool Initialized;
 
 };
 

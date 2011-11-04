@@ -55,48 +55,48 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkToolCatheter: public vtkToolEndovascular
 {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkToolCatheter,vtkToolEndovascular);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkToolCatheter,vtkToolEndovascular);
 
-	//!Create new vtkToolCatheter object
-	static vtkToolCatheter *New();
+  //!Create new vtkToolCatheter object
+  static vtkToolCatheter *New();
 
-	//!Return class name
-	const char *GetClassName() { return "vtkToolCatheter"; }
+  //!Return class name
+  const char *GetClassName() { return "vtkToolCatheter"; }
 
-	//!Print the attributes value
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Print the attributes value
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Initialize the tool from VTK file
-	/*!
-	 * This function initializes the tool whose mesh is described on a VTK file
-	 */
-	virtual void Init();
+  //!Initialize the tool from VTK file
+  /*!
+   * This function initializes the tool whose mesh is described on a VTK file
+   */
+  virtual void Init();
 
-	//!Update the tool
-	/*!
-	 * This function update the tool values
-	 */
-	virtual void Update();
+  //!Update the tool
+  /*!
+   * This function update the tool values
+   */
+  virtual void Update();
 
-	//! Sets the catheter yaw angle
-	void Yaw(double angle);
+  //! Sets the catheter yaw angle
+  void Yaw(double angle);
 
-	//! Sets the catheter pitch angle
-	void Pitch(double angle);
+  //! Sets the catheter pitch angle
+  void Pitch(double angle);
 
-	//! Sets the catheter roll angle
-	void Roll(double angle);
+  //! Sets the catheter roll angle
+  void Roll(double angle);
 
-protected:	
+protected:  
 
-	vtkToolCatheter();
-	~vtkToolCatheter();
+  vtkToolCatheter();
+  ~vtkToolCatheter();
 
 private:
 
-	vtkToolCatheter (const vtkToolCatheter &); //Not Implemented
-	void operator =(const vtkToolCatheter &); //Not Implemented
+  vtkToolCatheter (const vtkToolCatheter &); //Not Implemented
+  void operator =(const vtkToolCatheter &); //Not Implemented
 
 };
 #endif

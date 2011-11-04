@@ -55,42 +55,42 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkToolDummy: public vtkToolLaparoscopy
 {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkToolDummy,vtkToolLaparoscopy);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkToolDummy,vtkToolLaparoscopy);
 
-	//!Create new vtkToolDummy object
-	static vtkToolDummy *New();
+  //!Create new vtkToolDummy object
+  static vtkToolDummy *New();
 
-	//!Return class name
-	const char *GetClassName() { return "vtkToolDummy"; }
+  //!Return class name
+  const char *GetClassName() { return "vtkToolDummy"; }
 
-	//!Print the attributes value
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Print the attributes value
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Initialize the tool from VTK file
-	/*!
-	 * This function initializes the tool whose mesh is described on a VTK file
-	 */
-	virtual void Init();
+  //!Initialize the tool from VTK file
+  /*!
+   * This function initializes the tool whose mesh is described on a VTK file
+   */
+  virtual void Init();
 
-	//! Sets the yaw angle
-	void Yaw(double angle);
+  //! Sets the yaw angle
+  void Yaw(double angle);
 
-	//! Sets the pitch angle
-	void Pitch(double angle);
+  //! Sets the pitch angle
+  void Pitch(double angle);
 
-	//! Sets the roll angle
-	void Roll(double angle);
+  //! Sets the roll angle
+  void Roll(double angle);
 
-protected:	
+protected:  
 
-	vtkToolDummy();
-	~vtkToolDummy();
+  vtkToolDummy();
+  ~vtkToolDummy();
 
 private:
 
-	vtkToolDummy (const vtkToolDummy &); //Not Implemented
-	void operator =(const vtkToolDummy &); //Not Implemented
+  vtkToolDummy (const vtkToolDummy &); //Not Implemented
+  void operator =(const vtkToolDummy &); //Not Implemented
 
 };
 #endif

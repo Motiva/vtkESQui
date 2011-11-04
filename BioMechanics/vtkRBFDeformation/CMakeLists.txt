@@ -25,19 +25,19 @@ SET(vtkRBFDeformation_SRCS
 #  )
 
 SET_SOURCE_FILES_PROPERTIES(
-	RBFInterpolator.cpp
-	newmat.cpp
-	PROPERTIES
-	WRAP_EXCLUDE 1
-	)
+  RBFInterpolator.cpp
+  newmat.cpp
+  PROPERTIES
+  WRAP_EXCLUDE 1
+  )
 
 # List the kits from VTK that are needed by this project.
 SET(vtkRBFDeformation_LIBS
-	vtkCommon
-	vtkFiltering
-	vtkRendering
-	vtkGraphics
-	vtkIO
+  vtkCommon
+  vtkFiltering
+  vtkRendering
+  vtkGraphics
+  vtkIO
 )
 
 #-----------------------------------------------------------------------------
@@ -72,40 +72,40 @@ ELSE(BUILD_SHARED_LIBS)
 ENDIF(BUILD_SHARED_LIBS)
 
 IF(VTK_FOUND)
-	# If this is a build tree, provide an option for putting this
-	# project's executables and libraries in with VTK's.
-	IF (EXISTS ${VTK_DIR}/bin)
-		OPTION(USE_VTK_OUTPUT_PATHS
-		"Use VTK's output directory for this project's executables and libraries."
-		OFF)
-		MARK_AS_ADVANCED (USE_VTK_OUTPUT_PATHS)
-		IF (USE_VTK_OUTPUT_PATHS)
-			SET (LIBRARY_OUTPUT_PATH ${VTK_DIR}/bin)
-			SET (EXECUTABLE_OUTPUT_PATH ${VTK_DIR}/bin)
-		ENDIF (USE_VTK_OUTPUT_PATHS)
-	ENDIF (EXISTS ${VTK_DIR}/bin)
+  # If this is a build tree, provide an option for putting this
+  # project's executables and libraries in with VTK's.
+  IF (EXISTS ${VTK_DIR}/bin)
+    OPTION(USE_VTK_OUTPUT_PATHS
+    "Use VTK's output directory for this project's executables and libraries."
+    OFF)
+    MARK_AS_ADVANCED (USE_VTK_OUTPUT_PATHS)
+    IF (USE_VTK_OUTPUT_PATHS)
+      SET (LIBRARY_OUTPUT_PATH ${VTK_DIR}/bin)
+      SET (EXECUTABLE_OUTPUT_PATH ${VTK_DIR}/bin)
+    ENDIF (USE_VTK_OUTPUT_PATHS)
+  ENDIF (EXISTS ${VTK_DIR}/bin)
 
-	# Create the header to configure the classes.
-	CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/vtkRBFDeformationConfigure.h.in
-		${PROJECT_BINARY_DIR}/${PROJECT_NAME}Configure.h
-		@ONLY IMMEDIATE)
+  # Create the header to configure the classes.
+  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/vtkRBFDeformationConfigure.h.in
+    ${PROJECT_BINARY_DIR}/${PROJECT_NAME}Configure.h
+    @ONLY IMMEDIATE)
 
-	# Use wrapping hints for this project.
-	SET(VTK_WRAP_HINTS "${PROJECT_SOURCE_DIR}/hints")
+  # Use wrapping hints for this project.
+  SET(VTK_WRAP_HINTS "${PROJECT_SOURCE_DIR}/hints")
 
-	# Create the instantiator for these classes.
-	SET(VTK_USE_INSTANTIATOR_NEW 1)
-	VTK_MAKE_INSTANTIATOR3("${PROJECT_NAME}Instantiator"
-	vtkRBFDeformationInstantiator_SRCS
-	"${vtkRBFDeformation_SRCS}"
-	"VTK_${PROJECT_NAME}_EXPORT"
-	${PROJECT_BINARY_DIR}
-	"${PROJECT_NAME}Configure.h")
+  # Create the instantiator for these classes.
+  SET(VTK_USE_INSTANTIATOR_NEW 1)
+  VTK_MAKE_INSTANTIATOR3("${PROJECT_NAME}Instantiator"
+  vtkRBFDeformationInstantiator_SRCS
+  "${vtkRBFDeformation_SRCS}"
+  "VTK_${PROJECT_NAME}_EXPORT"
+  ${PROJECT_BINARY_DIR}
+  "${PROJECT_NAME}Configure.h")
 
-	# Create the library.
-	ADD_LIBRARY(${PROJECT_NAME} ${vtkRBFDeformation_SRCS} ${vtkRBFDeformationInstantiator_SRCS})
-	TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${vtkRBFDeformation_LIBS})
+  # Create the library.
+  ADD_LIBRARY(${PROJECT_NAME} ${vtkRBFDeformation_SRCS} ${vtkRBFDeformationInstantiator_SRCS})
+  TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${vtkRBFDeformation_LIBS})
 
-	#TCL Wrapping not supported 
+  #TCL Wrapping not supported 
 SUBDIRS(Testing)
 ENDIF(VTK_FOUND)

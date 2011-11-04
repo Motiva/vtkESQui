@@ -53,8 +53,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #if defined(vtkESQuiCollisionDetection_EXPORTS)
     #define VTK_ESQUI_COLLISIONDETECTION_EXPORT __declspec(dllexport)
   #else
-	#undef VTK_ESQUI_COLLISIONDETECTION_EXPORT
-	#define VTK_ESQUI_COLLISIONDETECTION_EXPORT __declspec( dllimport )
+  #undef VTK_ESQUI_COLLISIONDETECTION_EXPORT
+  #define VTK_ESQUI_COLLISIONDETECTION_EXPORT __declspec( dllimport )
   #endif
 
 #else

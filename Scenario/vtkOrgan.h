@@ -72,40 +72,40 @@ class vtkCollisionModel;
 class VTK_ESQUI_SCENARIO_EXPORT vtkOrgan: public vtkScenarioObject
 {
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkOrgan, vtkScenarioObject);
-	//! Create new organ
-	static vtkOrgan * New();
-	//! Return class name
-	const char *GetClassName() {return "vtkOrgan";}
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkOrgan, vtkScenarioObject);
+  //! Create new organ
+  static vtkOrgan * New();
+  //! Return class name
+  const char *GetClassName() {return "vtkOrgan";}
 
-	virtual void PrintSelf(ostream &os, vtkIndent indent);
+  virtual void PrintSelf(ostream &os, vtkIndent indent);
 
-	//!Set force factor.
-	/*!
-	 * Used for estimating haptic force process
-	 * \sa GetForceFactor()
-	 */
-	vtkSetMacro(ForceFactor, double);
+  //!Set force factor.
+  /*!
+   * Used for estimating haptic force process
+   * \sa GetForceFactor()
+   */
+  vtkSetMacro(ForceFactor, double);
 
-	//!GetfForce factor.
-	/*!
-	 * \sa SetForceFactor(double value)
-	 */
-	vtkGetMacro(ForceFactor, double);
+  //!GetfForce factor.
+  /*!
+   * \sa SetForceFactor(double value)
+   */
+  vtkGetMacro(ForceFactor, double);
 
 protected:
 
-	//!Force factor estimation
-	double ForceFactor;
+  //!Force factor estimation
+  double ForceFactor;
 
-	vtkOrgan();
-	~vtkOrgan();
+  vtkOrgan();
+  ~vtkOrgan();
 
 private:
 
-	vtkOrgan(const vtkOrgan &);
-	void operator=(const vtkOrgan &);
+  vtkOrgan(const vtkOrgan &);
+  void operator=(const vtkOrgan &);
 
 };
 

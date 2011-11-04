@@ -48,12 +48,12 @@ vtkCxxRevisionMacro(vtkToolEndovascular, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 vtkToolEndovascular::vtkToolEndovascular() {
-	this->ToolType =  Endovascular;
-	this->Depth = 0;
-	this->YawAngle = 0;
-	this->PitchAngle = 0;
-	this->RollAngle = 0;
-	this->ForceFeedback[0] = this->ForceFeedback[1] = this->ForceFeedback[2] = 0;
+  this->ToolType =  Endovascular;
+  this->Depth = 0;
+  this->YawAngle = 0;
+  this->PitchAngle = 0;
+  this->RollAngle = 0;
+  this->ForceFeedback[0] = this->ForceFeedback[1] = this->ForceFeedback[2] = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -64,99 +64,99 @@ vtkToolEndovascular::~vtkToolEndovascular() {
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::Init()
 {
-	Superclass::Init();
-	double * orientation = this->GetElement(0)->GetOrientation();
-	this->YawAngle = orientation[0];
-	this->PitchAngle = orientation[1];
-	this->RollAngle = orientation[2];
+  Superclass::Init();
+  double * orientation = this->GetElement(0)->GetOrientation();
+  this->YawAngle = orientation[0];
+  this->PitchAngle = orientation[1];
+  this->RollAngle = orientation[2];
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::SetDepth(double depth)
 {
-	if(depth != this->Depth)
-	{
-		double step = this->Depth - depth;
-		Superclass::Translate(0, 0, step);
-		this->Depth = depth;
-	}
+  if(depth != this->Depth)
+  {
+    double step = this->Depth - depth;
+    Superclass::Translate(0, 0, step);
+    this->Depth = depth;
+  }
 }
 
 //--------------------------------------------------------------------------
 double vtkToolEndovascular::GetDepth()
 {
-	return this->Depth;
+  return this->Depth;
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::AddDepth(double step) {
-	//Note the step negative sign. VTK Z Axis is inverted
-	double depth = this->Depth - step;
-	this->SetDepth(depth);
+  //Note the step negative sign. VTK Z Axis is inverted
+  double depth = this->Depth - step;
+  this->SetDepth(depth);
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::RotateX(double angle)
 {
-	Superclass::RotateX(angle);
+  Superclass::RotateX(angle);
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::RotateY(double angle)
 {
-	Superclass::RotateY(angle);
+  Superclass::RotateY(angle);
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::RotateZ(double angle)
 {
-	Superclass::RotateZ(angle);
+  Superclass::RotateZ(angle);
 }
 
 //--------------------------------------------------------------------------
 double *  vtkToolEndovascular::GetContactForceValue() {
-/*	int NumberOfContacts;
-	float *ForceFeedback;
-	float *TotalForceFeedback;
-	ForceFeedback = new float[3];
-	TotalForceFeedback = new float[3];
-	TotalForceFeedback[0] = TotalForceFeedback[1] = TotalForceFeedback[2] = 0;
-	NumberOfContacts = this->_vContacts.size();
-	for (int i = 0; i < NumberOfContacts ; i++) {
-		//cout << "Dentro del bucle ITERACION " << i << endl;
-		this->_vContacts[i]->GetForceFeedback(ForceFeedback);
-		//cout << this->_vContacts[i]->GetXForce() << endl;
-		TotalForceFeedback[0] = TotalForceFeedback[0] + ForceFeedback[0];
-		TotalForceFeedback[1] = TotalForceFeedback[1] + ForceFeedback[1];
-		TotalForceFeedback[2] = TotalForceFeedback[2] + ForceFeedback[2];
-		cout << "Fx = " << ForceFeedback[0] << " Fy = " << ForceFeedback[1] << " Fz = " << ForceFeedback[2] << endl;
-		cout << "Herramienta asignada " << this->_vContacts[i]->GetTool() << endl;
-	}
-	TotalForceFeedback[0]  = TotalForceFeedback[0] / NumberOfContacts;
-	TotalForceFeedback[1]  = TotalForceFeedback[1] / NumberOfContacts;
-	TotalForceFeedback[2]  = TotalForceFeedback[2] / NumberOfContacts;
-	cout << "Fx = " << TotalForceFeedback[0] << "Fy = " << TotalForceFeedback[1] << "Fz = " << TotalForceFeedback[2] << endl;
+/*  int NumberOfContacts;
+  float *ForceFeedback;
+  float *TotalForceFeedback;
+  ForceFeedback = new float[3];
+  TotalForceFeedback = new float[3];
+  TotalForceFeedback[0] = TotalForceFeedback[1] = TotalForceFeedback[2] = 0;
+  NumberOfContacts = this->_vContacts.size();
+  for (int i = 0; i < NumberOfContacts ; i++) {
+    //cout << "Dentro del bucle ITERACION " << i << endl;
+    this->_vContacts[i]->GetForceFeedback(ForceFeedback);
+    //cout << this->_vContacts[i]->GetXForce() << endl;
+    TotalForceFeedback[0] = TotalForceFeedback[0] + ForceFeedback[0];
+    TotalForceFeedback[1] = TotalForceFeedback[1] + ForceFeedback[1];
+    TotalForceFeedback[2] = TotalForceFeedback[2] + ForceFeedback[2];
+    cout << "Fx = " << ForceFeedback[0] << " Fy = " << ForceFeedback[1] << " Fz = " << ForceFeedback[2] << endl;
+    cout << "Herramienta asignada " << this->_vContacts[i]->GetTool() << endl;
+  }
+  TotalForceFeedback[0]  = TotalForceFeedback[0] / NumberOfContacts;
+  TotalForceFeedback[1]  = TotalForceFeedback[1] / NumberOfContacts;
+  TotalForceFeedback[2]  = TotalForceFeedback[2] / NumberOfContacts;
+  cout << "Fx = " << TotalForceFeedback[0] << "Fy = " << TotalForceFeedback[1] << "Fz = " << TotalForceFeedback[2] << endl;
 */
-	//TODO: Implement force feedback
-	return this->ForceFeedback;
+  //TODO: Implement force feedback
+  return this->ForceFeedback;
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::SetForceFeedback(float Force[]){
-	this->ForceFeedback[0] = Force[0];
-	this->ForceFeedback[1] = Force[1];
-	this->ForceFeedback[2] = Force[2];
+  this->ForceFeedback[0] = Force[0];
+  this->ForceFeedback[1] = Force[1];
+  this->ForceFeedback[2] = Force[2];
 }
 
 //--------------------------------------------------------------------------
 void vtkToolEndovascular::PrintSelf(ostream& os,vtkIndent indent) {
 
-	this->Superclass::PrintSelf(os, indent);
+  this->Superclass::PrintSelf(os, indent);
 
-	os << indent << "Depth: " << this->Depth << "\n";
-	os << indent << "Pitch: " << this->PitchAngle << "\n";
-	os << indent << "Yaw: " << this->YawAngle << "\n";
-	os << indent << "Roll: " << this->RollAngle << "\n";
-	os << indent << "ForceFeedback: " << this->ForceFeedback[0] <<  ", " << this->ForceFeedback[1] <<  ", " << this->ForceFeedback[2] << "\n";
+  os << indent << "Depth: " << this->Depth << "\n";
+  os << indent << "Pitch: " << this->PitchAngle << "\n";
+  os << indent << "Yaw: " << this->YawAngle << "\n";
+  os << indent << "Roll: " << this->RollAngle << "\n";
+  os << indent << "ForceFeedback: " << this->ForceFeedback[0] <<  ", " << this->ForceFeedback[1] <<  ", " << this->ForceFeedback[2] << "\n";
 
 }

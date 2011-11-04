@@ -51,8 +51,8 @@ vtkStandardNewMacro(vtkToolScissors);
 //----------------------------------------------------------------------------
 vtkToolScissors::vtkToolScissors()
 {
-	this->ToolModel = Scissors;
-	this->Opening = 0;
+  this->ToolModel = Scissors;
+  this->Opening = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -63,113 +63,113 @@ vtkToolScissors::~vtkToolScissors()
 //----------------------------------------------------------------------------
 void vtkToolScissors::Init()
 {
-	Superclass::Init();
+  Superclass::Init();
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::Open(){
-	if(this->IsClosed()) {
-		this->SetOpening(1);
-	}
+  if(this->IsClosed()) {
+    this->SetOpening(1);
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::Close(){
-	if(!this->IsClosed()) {
-		this->SetOpening(0);
-	}
+  if(!this->IsClosed()) {
+    this->SetOpening(0);
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::SetOpening(double opening) {
-	double step = opening - this->Opening;
-	int angle = 30;
-	//Left Lever
-	this->GetElement(1)->RotateX(-angle*step);
-	//Right Lever
-	this->GetElement(2)->RotateX(angle*step);
-	this->Opening = opening;
+  double step = opening - this->Opening;
+  int angle = 30;
+  //Left Lever
+  this->GetElement(1)->RotateX(-angle*step);
+  //Right Lever
+  this->GetElement(2)->RotateX(angle*step);
+  this->Opening = opening;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::SetDepth(double position)
 {
-	//Scissors is clampled before being translated
-	double opening = this->Opening;
-	this->SetOpening(0);
-	Superclass::SetDepth(position);
-	//Scissors' opening state is restored
-	this->SetOpening(opening);
+  //Scissors is clampled before being translated
+  double opening = this->Opening;
+  this->SetOpening(0);
+  Superclass::SetDepth(position);
+  //Scissors' opening state is restored
+  this->SetOpening(opening);
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::RotateX(double angle)
 {
-	//Scissors is clampled before being rotated
-	double opening = this->Opening;
-	this->SetOpening(0);
-	Superclass::RotateX(angle);
-	//Scissors' opening state is restored
-	this->SetOpening(opening);
+  //Scissors is clampled before being rotated
+  double opening = this->Opening;
+  this->SetOpening(0);
+  Superclass::RotateX(angle);
+  //Scissors' opening state is restored
+  this->SetOpening(opening);
 
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::RotateY(double angle)
 {
-	//Scissors is clampled before being rotated
-	double opening = this->Opening;
-	this->SetOpening(0);
-	Superclass::RotateY(angle);
-	//Scissors' opening state is restored
-	this->SetOpening(opening);
+  //Scissors is clampled before being rotated
+  double opening = this->Opening;
+  this->SetOpening(0);
+  Superclass::RotateY(angle);
+  //Scissors' opening state is restored
+  this->SetOpening(opening);
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::RotateZ(double angle)
 {
-	//Scissors is clampled before being rotated
-	double opening = this->Opening;
-	this->SetOpening(0);
-	Superclass::RotateZ(angle);
-	//Scissors' opening state is restored
-	this->SetOpening(opening);
+  //Scissors is clampled before being rotated
+  double opening = this->Opening;
+  this->SetOpening(0);
+  Superclass::RotateZ(angle);
+  //Scissors' opening state is restored
+  this->SetOpening(opening);
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::Yaw(double angle)
 {
-	double step = angle - this->YawAngle;
-	if(step != 0)
-	{
-		this->RotateY(step);
-		this->YawAngle = angle;
-	}
+  double step = angle - this->YawAngle;
+  if(step != 0)
+  {
+    this->RotateY(step);
+    this->YawAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::Pitch(double angle)
 {
-	double step = angle - this->PitchAngle;
-	if(step != 0)
-	{
-		this->RotateX(step);
-		this->PitchAngle = angle;
-	}
+  double step = angle - this->PitchAngle;
+  if(step != 0)
+  {
+    this->RotateX(step);
+    this->PitchAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::Roll(double angle)
 {
-	double step = angle - this->RollAngle;
-	if(step != 0)
-	{
-		this->RotateZ(step);
-		this->RollAngle = angle;
-	}
+  double step = angle - this->RollAngle;
+  if(step != 0)
+  {
+    this->RotateZ(step);
+    this->RollAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolScissors::PrintSelf(ostream& os,vtkIndent indent) {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }

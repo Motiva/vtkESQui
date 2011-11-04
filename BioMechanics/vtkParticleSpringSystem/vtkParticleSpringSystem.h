@@ -63,117 +63,117 @@ class vtkParticleCollection;
 class VTK_vtkParticleSpringSystem_EXPORT vtkParticleSpringSystem : public vtkPolyDataAlgorithm {
 public:
 
-	//!Type revision macro
-	vtkTypeRevisionMacro(vtkParticleSpringSystem,vtkPolyDataAlgorithm);
-	//! Create new particle spring system object
-	static vtkParticleSpringSystem * New();
-	//! Print system info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Type revision macro
+  vtkTypeRevisionMacro(vtkParticleSpringSystem,vtkPolyDataAlgorithm);
+  //! Create new particle spring system object
+  static vtkParticleSpringSystem * New();
+  //! Print system info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initialize the particle spring system
-	/*!
-	 * Create springs, particles and the links between them.
-	 */
-	void Init();
+  //! Initialize the particle spring system
+  /*!
+   * Create springs, particles and the links between them.
+   */
+  void Init();
 
-	//Parameters for Particle-Spring System
-	//! Set spring coefficient
-	vtkSetMacro(Spring, double);		// Spring coefficient
-	//! Set distance coefficient. Percentage
-	vtkSetMacro(Distance, double);	// Distance constraint coefficient
-	//! Set damping coefficient
-	vtkSetMacro(Damping, double);	// Damping coefficient
-	//! Set time step
-	vtkSetMacro(TimeStep, double);				// dt for every step
-	//! Set mass of system particles
-	vtkSetMacro(Mass, double);					// Mass of all points (future work: specify different masses for different "layers")
-	//! Set residual error
-	vtkSetMacro(Residual, double);					// Residual error tolerance on displacement calculus
-	//! Set motion equation solver type.
-	vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);		// Motion equation solver type
+  //Parameters for Particle-Spring System
+  //! Set spring coefficient
+  vtkSetMacro(Spring, double);    // Spring coefficient
+  //! Set distance coefficient. Percentage
+  vtkSetMacro(Distance, double);  // Distance constraint coefficient
+  //! Set damping coefficient
+  vtkSetMacro(Damping, double);  // Damping coefficient
+  //! Set time step
+  vtkSetMacro(TimeStep, double);        // dt for every step
+  //! Set mass of system particles
+  vtkSetMacro(Mass, double);          // Mass of all points (future work: specify different masses for different "layers")
+  //! Set residual error
+  vtkSetMacro(Residual, double);          // Residual error tolerance on displacement calculus
+  //! Set motion equation solver type.
+  vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);    // Motion equation solver type
 
-	//! Set Gravity Force (m/s2)
-	vtkSetVector3Macro(Gravity, double);
-	//! Get Gravity Force (m/s2)
-	vtkGetVector3Macro(Gravity, double);
+  //! Set Gravity Force (m/s2)
+  vtkSetVector3Macro(Gravity, double);
+  //! Get Gravity Force (m/s2)
+  vtkGetVector3Macro(Gravity, double);
 
-	//! Set particle status
-	/*!
-	 * 0: Fixed
-	 * 1: Free
-	 */
-	void SetParticleStatus(vtkIdType id, bool status);
+  //! Set particle status
+  /*!
+   * 0: Fixed
+   * 1: Free
+   */
+  void SetParticleStatus(vtkIdType id, bool status);
 
-	//! Insert a displacement in the particle-spring system
-	void InsertDisplacement(vtkIdType id, double x, double y, double z);
+  //! Insert a displacement in the particle-spring system
+  void InsertDisplacement(vtkIdType id, double x, double y, double z);
 
-	//! Insert a displacement to a particle
-	void InsertDisplacement(vtkIdType id, double * displacement);
+  //! Insert a displacement to a particle
+  void InsertDisplacement(vtkIdType id, double * displacement);
 
-	//! Insert displacements to particles
-	/*!
-	 * \param ids List of particle ids
-	 * \param displacements Array containing displacements per particle
-	 */
-	void SetDisplacements(vtkIdList * ids, vtkDoubleArray * displacements);
+  //! Insert displacements to particles
+  /*!
+   * \param ids List of particle ids
+   * \param displacements Array containing displacements per particle
+   */
+  void SetDisplacements(vtkIdList * ids, vtkDoubleArray * displacements);
 
-	//! Compute the forces attending to the collisions
-	/*!
-	 * The solver is executed every step, in order to compute the force propagation along the whole system
-	 */
-	void ComputeForces();
+  //! Compute the forces attending to the collisions
+  /*!
+   * The solver is executed every step, in order to compute the force propagation along the whole system
+   */
+  void ComputeForces();
 
 protected:
-	vtkParticleSpringSystem();
-	~vtkParticleSpringSystem();
+  vtkParticleSpringSystem();
+  ~vtkParticleSpringSystem();
 
-	//! VTK method for system update. Must be implemented
-	int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
+  //! VTK method for system update. Must be implemented
+  int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
 
-	//Particle-Spring System
-	//! Collection of springs
-	vtkSpringCollection * Springs;
-	//! Collection of particles
-	vtkParticleCollection * Particles;
+  //Particle-Spring System
+  //! Collection of springs
+  vtkSpringCollection * Springs;
+  //! Collection of particles
+  vtkParticleCollection * Particles;
 
-	//Model Parameters
-	//! Spring stiffness k.
-	/*!
-	 * Spring stiffness coefficient: resistance offered by the spring to a
-	 * deformation. F[p(i)] = -(K*dNorm-L)*(d(p[i])/dNorm);
-	 */
-	double Spring;
-	//! Distance coefficient.
-	/*!
-	 * Maximum distance of linear elongation. For instance, a distance
-	 * coefficient of 2, means the elongation of a spring is linear elastic
-	 * until it reaches 2 times its initial length. For higher values, the
-	 * stiffness coefficient is modified dynamically.
-	 */
-	double Distance;
-	//! Damping coefficient
-	double Damping;
-	//! Equation time step
-	double TimeStep;
-	//! Mass for each system particle
-	double Mass;
-	//! Residual error tolerance
-	double Residual;
+  //Model Parameters
+  //! Spring stiffness k.
+  /*!
+   * Spring stiffness coefficient: resistance offered by the spring to a
+   * deformation. F[p(i)] = -(K*dNorm-L)*(d(p[i])/dNorm);
+   */
+  double Spring;
+  //! Distance coefficient.
+  /*!
+   * Maximum distance of linear elongation. For instance, a distance
+   * coefficient of 2, means the elongation of a spring is linear elastic
+   * until it reaches 2 times its initial length. For higher values, the
+   * stiffness coefficient is modified dynamically.
+   */
+  double Distance;
+  //! Damping coefficient
+  double Damping;
+  //! Equation time step
+  double TimeStep;
+  //! Mass for each system particle
+  double Mass;
+  //! Residual error tolerance
+  double Residual;
 
-	//!Gravity
-	double Gravity[3];
+  //!Gravity
+  double Gravity[3];
 
-	//! Motion equation solver
-	vtkMotionEquationSolver * Solver;
-	//! Motion equation solver type
-	vtkMotionEquationSolver::MotionEquationSolverType SolverType;
+  //! Motion equation solver
+  vtkMotionEquationSolver * Solver;
+  //! Motion equation solver type
+  vtkMotionEquationSolver::MotionEquationSolverType SolverType;
 
 private:
-	vtkParticleSpringSystem(const vtkParticleSpringSystem&);            // Not implemented.
-	void operator=(const vtkParticleSpringSystem&);           // Not implemented.
+  vtkParticleSpringSystem(const vtkParticleSpringSystem&);            // Not implemented.
+  void operator=(const vtkParticleSpringSystem&);           // Not implemented.
 
-	//! Create a new spring between two particles
-	void CreateSpring(vtkParticle * p0, vtkParticle * p1);
+  //! Create a new spring between two particles
+  void CreateSpring(vtkParticle * p0, vtkParticle * p1);
 };
 
 #endif

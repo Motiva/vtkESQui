@@ -56,112 +56,112 @@ POSSIBILITY OF SUCH DAMAGE.
 class VTK_ESQUI_BIOMECHANICS_EXPORT vtkCUDAParticleSystemInterface : public vtkDeformationModel
 {
 public:
-	//! Type Revision Macro
-	vtkTypeRevisionMacro(vtkCUDAParticleSystemInterface, vtkDeformationModel);
-	//! Create a new PSS Interface
-	static vtkCUDAParticleSystemInterface* New();
-	const char *GetClassName() {return "vtkCUDAParticleSystemInterface";};
-	//! Print class object values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type Revision Macro
+  vtkTypeRevisionMacro(vtkCUDAParticleSystemInterface, vtkDeformationModel);
+  //! Create a new PSS Interface
+  static vtkCUDAParticleSystemInterface* New();
+  const char *GetClassName() {return "vtkCUDAParticleSystemInterface";};
+  //! Print class object values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Process the algorithm request (Update).
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  //! Process the algorithm request (Update).
+  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-	//!Initialize the Deformation Model
-	/*!
-	 * The model has to be initialized in order to be updated. Some parameters
-	 * must be previously defined:\n
-	 * - Input: vtkPolyData object
-	 * - DistanceCoefficient: Maximum distance between points
-	 * - DampingCoefficient: (d) oscillation coefficient
-	 * - SpringCoefficient: (K) spring coefficient
-	 * - Mass: unit mass of each particle
-	 * - RigidityFactor: n-neighborhood connectivity
-	 * - DeltaT: time step of deformation process
-	 * - SolverType: motion equation solver type
-	 */
-	virtual void Init();
+  //!Initialize the Deformation Model
+  /*!
+   * The model has to be initialized in order to be updated. Some parameters
+   * must be previously defined:\n
+   * - Input: vtkPolyData object
+   * - DistanceCoefficient: Maximum distance between points
+   * - DampingCoefficient: (d) oscillation coefficient
+   * - SpringCoefficient: (K) spring coefficient
+   * - Mass: unit mass of each particle
+   * - RigidityFactor: n-neighborhood connectivity
+   * - DeltaT: time step of deformation process
+   * - SolverType: motion equation solver type
+   */
+  virtual void Init();
 
-	//! Set the distance coefficient
-	vtkSetMacro(Distance, double);
-	//! Set the damping coefficient
-	vtkSetMacro(Damping, double);
-	//! Set the damping coefficient
-	vtkSetMacro(Spring, double);
-	//! Set the mass value
-	vtkSetMacro(Mass, double);
-	//! Set the time step
-	vtkSetMacro(TimeStep, double);
-	//! Set motion equation solver type.
-	vtkSetMacro(SolverType, vtkCUDAMotionEquationSolver::CUDAMotionEquationSolverType);
+  //! Set the distance coefficient
+  vtkSetMacro(Distance, double);
+  //! Set the damping coefficient
+  vtkSetMacro(Damping, double);
+  //! Set the damping coefficient
+  vtkSetMacro(Spring, double);
+  //! Set the mass value
+  vtkSetMacro(Mass, double);
+  //! Set the time step
+  vtkSetMacro(TimeStep, double);
+  //! Set motion equation solver type.
+  vtkSetMacro(SolverType, vtkCUDAMotionEquationSolver::CUDAMotionEquationSolverType);
 
-	//!Add displacement at the specified point.
-	/*!
-	 *  The displacement shall not be greater than a 1/10 of the input mesh radius
-	 * \param id Point identifier
-	 * \param x displacement x component
-	 * \param y displacement y component
-	 * \param z displacement z component
-	 */
-	virtual void InsertDisplacement(vtkIdType id, double x, double y, double z);
+  //!Add displacement at the specified point.
+  /*!
+   *  The displacement shall not be greater than a 1/10 of the input mesh radius
+   * \param id Point identifier
+   * \param x displacement x component
+   * \param y displacement y component
+   * \param z displacement z component
+   */
+  virtual void InsertDisplacement(vtkIdType id, double x, double y, double z);
 
-	//!Insert a displacement to the model in the specified position
-	/*!
-	* \param id point identifier
-	* \param vector displacement vector
-	*/
-	virtual void InsertDisplacement(vtkIdType id, double * vector);
+  //!Insert a displacement to the model in the specified position
+  /*!
+  * \param id point identifier
+  * \param vector displacement vector
+  */
+  virtual void InsertDisplacement(vtkIdType id, double * vector);
 
 protected:
-	vtkCUDAParticleSystemInterface();
-	~vtkCUDAParticleSystemInterface();
+  vtkCUDAParticleSystemInterface();
+  ~vtkCUDAParticleSystemInterface();
 
 
-	//!Particle-spring system mesh
-	vtkCUDAParticleSystem * System;
+  //!Particle-spring system mesh
+  vtkCUDAParticleSystem * System;
 
-	// PSS specific parameters
-	//! Distance coefficient.
-	double Distance;
-	//! Damping coefficient.
-	/*!
-	 * Damping coefficient behaviour:\n
-	 * - < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
-	 * - = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
-	 * - > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
-	 */
-	double Damping;
-	//! Spring Coefficient
-	/*!
-	 * Commonly known as K, defines the spring rigidity.
-	 */
-	double Spring;
-	//! Mass of each particle
-	/*!
-	 * Mass value for every particle of the system. All particles must be set to the same value.
-	 * By default is set to 1.
-	 */
-	double Mass;
-	//! Calculation time step
-	/*!
-	 * Deformation process time interval. The configuration is crucial, for greater values the system
-	 * could become unstable.
-	 */
-	double TimeStep;
+  // PSS specific parameters
+  //! Distance coefficient.
+  double Distance;
+  //! Damping coefficient.
+  /*!
+   * Damping coefficient behaviour:\n
+   * - < 1 Under-damped. The system oscillates (with a slightly different frequency than the undamped case) with the amplitude gradually decreasing to zero
+   * - = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
+   * - > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
+   */
+  double Damping;
+  //! Spring Coefficient
+  /*!
+   * Commonly known as K, defines the spring rigidity.
+   */
+  double Spring;
+  //! Mass of each particle
+  /*!
+   * Mass value for every particle of the system. All particles must be set to the same value.
+   * By default is set to 1.
+   */
+  double Mass;
+  //! Calculation time step
+  /*!
+   * Deformation process time interval. The configuration is crucial, for greater values the system
+   * could become unstable.
+   */
+  double TimeStep;
 
-	//! Motion equation solver type
-	/*!
-	 * There are several motion equation solvers available:
-	 * - Euler
-	 * - Modified Euler
-	 * - Verlet
-	 * - Runge-Kutta 4-5
-	 */
-	vtkCUDAMotionEquationSolver::CUDAMotionEquationSolverType SolverType;
-	
+  //! Motion equation solver type
+  /*!
+   * There are several motion equation solvers available:
+   * - Euler
+   * - Modified Euler
+   * - Verlet
+   * - Runge-Kutta 4-5
+   */
+  vtkCUDAMotionEquationSolver::CUDAMotionEquationSolverType SolverType;
+  
 private:
-	vtkCUDAParticleSystemInterface(const vtkCUDAParticleSystemInterface&);  // Not implemented.
-	void operator=(const vtkCUDAParticleSystemInterface&);  // Not implemented.
+  vtkCUDAParticleSystemInterface(const vtkCUDAParticleSystemInterface&);  // Not implemented.
+  void operator=(const vtkCUDAParticleSystemInterface&);  // Not implemented.
 };
 
 #endif

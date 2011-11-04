@@ -64,89 +64,89 @@ vtkStandardNewMacro(vtkVisualizationModel);
 //--------------------------------------------------------------------------
 vtkVisualizationModel::vtkVisualizationModel() {
 
-	this->SetModelType(vtkModel::Visualization);
-	this->TextureFileName = NULL;
-	this->Texture = vtkTexture::New();
-	this->TextureReader = vtkJPEGReader::New();
-	this->TextureMap = vtkTextureMapToSphere::New();
-	this->TextureCoords = vtkTransformTextureCoords::New();
+  this->SetModelType(vtkModel::Visualization);
+  this->TextureFileName = NULL;
+  this->Texture = vtkTexture::New();
+  this->TextureReader = vtkJPEGReader::New();
+  this->TextureMap = vtkTextureMapToSphere::New();
+  this->TextureCoords = vtkTransformTextureCoords::New();
 
 }
 
 //--------------------------------------------------------------------------
 vtkVisualizationModel::~vtkVisualizationModel() {
 
-	if(this->Texture) this->Texture->Delete();
-	if(this->TextureReader) this->TextureReader->Delete();
-	if(this->TextureMap) this->TextureMap->Delete();
-	if(this->TextureCoords) this->TextureCoords->Delete();
+  if(this->Texture) this->Texture->Delete();
+  if(this->TextureReader) this->TextureReader->Delete();
+  if(this->TextureMap) this->TextureMap->Delete();
+  if(this->TextureCoords) this->TextureCoords->Delete();
 }
 
 //--------------------------------------------------------------------------
 void vtkVisualizationModel::Init()
 {
-	this->Superclass::Init();
+  this->Superclass::Init();
 
-	//Texture will be added
-	if(this->TextureFileName){
-		this->TextureMap->SetInput(this->GetInput());
-		this->TextureMap->PreventSeamOn();
+  //Texture will be added
+  if(this->TextureFileName){
+    this->TextureMap->SetInput(this->GetInput());
+    this->TextureMap->PreventSeamOn();
 
-		this->TextureCoords->SetInputConnection(this->TextureMap->GetOutputPort());
-		this->TextureCoords->SetScale(1, 1, 1);
+    this->TextureCoords->SetInputConnection(this->TextureMap->GetOutputPort());
+    this->TextureCoords->SetScale(1, 1, 1);
 
-		this->Mapper->SetInputConnection(this->TextureCoords->GetOutputPort());
+    this->Mapper->SetInputConnection(this->TextureCoords->GetOutputPort());
 
-		this->TextureReader->SetFileName(this->TextureFileName);
+    this->TextureReader->SetFileName(this->TextureFileName);
 
-		this->Texture->SetInputConnection(this->TextureReader->GetOutputPort());
-		this->Texture->InterpolateOn();
+    this->Texture->SetInputConnection(this->TextureReader->GetOutputPort());
+    this->Texture->InterpolateOn();
 
-		this->Actor->SetTexture(this->Texture);
-	}
+    this->Actor->SetTexture(this->Texture);
+  }
 }
 
 //----------------------------------------------------------------------------
-int vtkVisualizationModel::RequestData(
-		vtkInformation *vtkNotUsed(request),
-		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector) {
+/*int vtkVisualizationModel::RequestData(
+    vtkInformation *vtkNotUsed(request),
+    vtkInformationVector **inputVector,
+    vtkInformationVector *outputVector) {
 
-	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	vtkInformation *outInfo = outputVector->GetInformationObject(0);
+  vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+  vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	//Get the input and output
-	vtkPolyData *input = vtkPolyData::SafeDownCast(
-			inInfo->Get(vtkDataObject::DATA_OBJECT()));
+  //Get the input and output
+  vtkPolyData *input = vtkPolyData::SafeDownCast(
+      inInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Output
-	vtkPolyData *output = vtkPolyData::SafeDownCast(
-			outInfo->Get(vtkDataObject::DATA_OBJECT()));
+  //Output
+  vtkPolyData *output = vtkPolyData::SafeDownCast(
+      outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	if(this->Status)
-	{
-		//Set visualization parameters
-		this->Actor->SetVisibility(this->Visibility);
-		if(this->IsVisible())
-		{
-			this->Actor->GetProperty()->SetColor(this->Color);
-			this->Actor->GetProperty()->SetOpacity(this->Opacity);
+  if(this->Status)
+  {
+    //Set visualization parameters
+    this->Actor->SetVisibility(this->Visibility);
+    if(this->IsVisible())
+    {
+      this->Actor->GetProperty()->SetColor(this->Color);
+      this->Actor->GetProperty()->SetOpacity(this->Opacity);
 
-			this->Mapper->Modified();
-			this->Mapper->Update();
-		}
-	}
+      this->Mapper->Modified();
+      this->Mapper->Update();
+    }
+  }
 
-	output->ShallowCopy(input);
+  output->ShallowCopy(input);
 
-	return 1;
+  return 1;
 
-}
+}*/
 
 //--------------------------------------------------------------------------
 void vtkVisualizationModel::PrintSelf(ostream& os,vtkIndent indent) {
 
-	this->Superclass::PrintSelf(os, indent);
-	if(this->TextureFileName) os << indent << "TextureFileName: " << this->TextureFileName << "\n";
+  this->Superclass::PrintSelf(os, indent);
+  if(this->TextureFileName) os << indent << "TextureFileName: " << this->TextureFileName << "\n";
 
 }

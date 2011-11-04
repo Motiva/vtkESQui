@@ -58,61 +58,61 @@ class vtkParticle;
 class VTK_vtkParticleSpringSystem_EXPORT vtkMotionEquationSolver : public vtkObject {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkMotionEquationSolver, vtkObject);
-	//! Print solver info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkMotionEquationSolver, vtkObject);
+  //! Print solver info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Enumeration of solver types
-	enum MotionEquationSolverType{
-		Euler = 0,
-		ModifiedEuler = 1,
-		VelocityVerlet = 2,
-		RungeKutta4 = 3
-	};
+  //!Enumeration of solver types
+  enum MotionEquationSolverType{
+    Euler = 0,
+    ModifiedEuler = 1,
+    VelocityVerlet = 2,
+    RungeKutta4 = 3
+  };
 
-	//! Set number of particles
-	vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
+  //! Set number of particles
+  vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
 
-	//! Set residual error
-	vtkSetMacro(Residual, double);// NumberOfParticles
+  //! Set residual error
+  vtkSetMacro(Residual, double);// NumberOfParticles
 
-	//! Set Deformation model
-	void SetDeformationModel(vtkParticleSpringSystem * model);
+  //! Set Deformation model
+  void SetDeformationModel(vtkParticleSpringSystem * model);
 
-	//! Initialize solver.
-	/*!
-	 * Pure virtual method must be implemented in subclasses
-	 */
-	virtual void Init() = 0;
+  //! Initialize solver.
+  /*!
+   * Pure virtual method must be implemented in subclasses
+   */
+  virtual void Init() = 0;
 
-	//! Compute next step for every particle
-	/*!
-	 * Pure virtual method must be implemented in subclasses
-	 * \param particles collection of particles
-	 * \param dt time step
-	 */
-	virtual void ComputeNextStep(vtkParticleCollection * particles, double dt) = 0;
+  //! Compute next step for every particle
+  /*!
+   * Pure virtual method must be implemented in subclasses
+   * \param particles collection of particles
+   * \param dt time step
+   */
+  virtual void ComputeNextStep(vtkParticleCollection * particles, double dt) = 0;
 
 protected:
-	vtkMotionEquationSolver();
-	~vtkMotionEquationSolver();
+  vtkMotionEquationSolver();
+  ~vtkMotionEquationSolver();
 
-	//! Solver deformation model
-	vtkParticleSpringSystem * DeformationModel;
-	//! Number of particles
-	double NumberOfParticles;
+  //! Solver deformation model
+  vtkParticleSpringSystem * DeformationModel;
+  //! Number of particles
+  double NumberOfParticles;
 
-	//!Residual Error
-	double Residual;
-	//! Velocity derivative
-	vtkDoubleArray * dv;
-	//! Position derivative
-	vtkDoubleArray * dx;
+  //!Residual Error
+  double Residual;
+  //! Velocity derivative
+  vtkDoubleArray * dv;
+  //! Position derivative
+  vtkDoubleArray * dx;
 
 private:
-	vtkMotionEquationSolver(const vtkMotionEquationSolver&);            // Not implemented.
-	void operator=(const vtkMotionEquationSolver&);           // Not implemented.
+  vtkMotionEquationSolver(const vtkMotionEquationSolver&);            // Not implemented.
+  void operator=(const vtkMotionEquationSolver&);           // Not implemented.
 };
 
 #endif

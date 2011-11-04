@@ -52,42 +52,42 @@ using namespace std;
 
 int TestvtkCollisionCollection(int argc, char * argv[])
 {
-	vtkCollision * collision;
-	vtkCollisionCollection * collection = vtkCollisionCollection::New();
+  vtkCollision * collision;
+  vtkCollisionCollection * collection = vtkCollisionCollection::New();
 
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		collision = vtkCollision::New();
-		collision->SetElementId(0, 0);
-		collision->SetElementId(0, 1);
-		collision->SetPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-		collision->SetPointId(0, id);
-		collision->SetCellId(0, 1);
-		collision->SetPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-		collision->SetPointId(1, id);
-		collision->SetCellId(0, 1);
+  for (vtkIdType id = 0; id < 10; id++)
+  {
+    collision = vtkCollision::New();
+    collision->SetElementId(0, 0);
+    collision->SetElementId(0, 1);
+    collision->SetPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+    collision->SetPointId(0, id);
+    collision->SetCellId(0, 1);
+    collision->SetPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+    collision->SetPointId(1, id);
+    collision->SetCellId(0, 1);
 
-		collection->InsertNextCollision(collision);
-		std::cout << "Collision (" << id <<  ") has been inserted...\n";
-	}
+    collection->InsertNextCollision(collision);
+    std::cout << "Collision (" << id <<  ") has been inserted...\n";
+  }
 
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
+  std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
 
-	collection->InitTraversal();
+  collection->InitTraversal();
 
-	for (vtkIdType id = 0; id < 10; id++)
-	{
-		std::cout << "#########################\n";
-		collision = collection->GetNextCollision();
-		collision->Print(std::cout);
-		std::cout << "Collision (" << id <<  ") has been removed...\n";
-		//collection->RemoveItem(id);
-		collision->Delete();
-	}
-	collection->RemoveAllItems();
-	std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
+  for (vtkIdType id = 0; id < 10; id++)
+  {
+    std::cout << "#########################\n";
+    collision = collection->GetNextCollision();
+    collision->Print(std::cout);
+    std::cout << "Collision (" << id <<  ") has been removed...\n";
+    //collection->RemoveItem(id);
+    collision->Delete();
+  }
+  collection->RemoveAllItems();
+  std::cout << "Collection Number of Items: " << collection->GetNumberOfItems() << endl;
 
-	return 0;
+  return 0;
 }
 
 

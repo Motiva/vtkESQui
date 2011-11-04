@@ -12,12 +12,12 @@ vtkCxxRevisionMacro(vtkCUDAMotionEquationSolver, "$Revision: 0.1 $");
 //----------------------------------------------------------------------------
 vtkCUDAMotionEquationSolver::vtkCUDAMotionEquationSolver()
 {
-	this->NumberOfParticles = 0;
-	this->Residual = 1e-6;
-	this->Initialized = 0;
-	this->dPos = NULL;
-	this->dVel = NULL;
-	this->dAcc = NULL;
+  this->NumberOfParticles = 0;
+  this->Residual = 1e-6;
+  this->Initialized = 0;
+  this->dPos = NULL;
+  this->dVel = NULL;
+  this->dAcc = NULL;
 }
 
 
@@ -30,11 +30,11 @@ vtkCUDAMotionEquationSolver::~vtkCUDAMotionEquationSolver()
 //----------------------------------------------------------------------------
 void vtkCUDAMotionEquationSolver::SetDeformationModel(vtkCUDAParticleSystem * model)
 {
-	this->DeformationModel = model;
+  this->DeformationModel = model;
 }
 
 //----------------------------------------------------------------------------
 void vtkCUDAMotionEquationSolver::PrintSelf(ostream& os, vtkIndent indent)
 {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }

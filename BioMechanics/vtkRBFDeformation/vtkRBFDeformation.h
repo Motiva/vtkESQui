@@ -54,72 +54,72 @@ class vtkTupleInterpolator;
 
 class VTK_vtkRBFDeformation_EXPORT vtkRBFDeformation : public vtkPolyDataAlgorithm {
 public:
-	//!Type revision macro
-	vtkTypeRevisionMacro(vtkRBFDeformation,vtkPolyDataAlgorithm);
+  //!Type revision macro
+  vtkTypeRevisionMacro(vtkRBFDeformation,vtkPolyDataAlgorithm);
 
-	//!Create new object
-	static vtkRBFDeformation *New();
-	//!Print object info
-	void PrintSelf(ostream& os, vtkIndent indent);
-	//!Return class name
-	const char *GetClassName() {return "vtkRBFDeformation";};
+  //!Create new object
+  static vtkRBFDeformation *New();
+  //!Print object info
+  void PrintSelf(ostream& os, vtkIndent indent);
+  //!Return class name
+  const char *GetClassName() {return "vtkRBFDeformation";};
 
-	//!Initialize class
-	void Init();
+  //!Initialize class
+  void Init();
 
-	//!Set the number of control points
-	vtkSetMacro(NumberOfControlPoints, int);
-	//!Get the number of control points
-	vtkGetMacro(NumberOfControlPoints, int);
+  //!Set the number of control points
+  vtkSetMacro(NumberOfControlPoints, int);
+  //!Get the number of control points
+  vtkGetMacro(NumberOfControlPoints, int);
 
-	//!Set the time step
-	vtkSetMacro(DeltaT, double);
-	//!Get the time step
-	vtkGetMacro(DeltaT, double);
+  //!Set the time step
+  vtkSetMacro(DeltaT, double);
+  //!Get the time step
+  vtkGetMacro(DeltaT, double);
 
-	//!Set the relaxation factor
-	vtkSetClampMacro(RelaxationFactor, double, 0.0, 1.0);
-	//!Get the relaxation factor
-	vtkGetMacro(RelaxationFactor, double);
+  //!Set the relaxation factor
+  vtkSetClampMacro(RelaxationFactor, double, 0.0, 1.0);
+  //!Get the relaxation factor
+  vtkGetMacro(RelaxationFactor, double);
 
-	void SetDisplacement(int i, double * d);
+  void SetDisplacement(int i, double * d);
 
 protected:
-	vtkRBFDeformation();
-	~vtkRBFDeformation();
+  vtkRBFDeformation();
+  ~vtkRBFDeformation();
 
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 private:
 
-	vtkRBFDeformation (const vtkRBFDeformation &);//NotImplemented
-	void operator =(const vtkRBFDeformation &);//Not Implemented
+  vtkRBFDeformation (const vtkRBFDeformation &);//NotImplemented
+  void operator =(const vtkRBFDeformation &);//Not Implemented
 
-	bool Initialized;
+  bool Initialized;
 
-	int NumberOfControlPoints;
+  int NumberOfControlPoints;
 
-	double DeltaT;
+  double DeltaT;
 
-	double RelaxationFactor;
+  double RelaxationFactor;
 
-	vtkDoubleArray * controlPoints;
-	vtkDoubleArray * controlPointDisplacements;
+  vtkDoubleArray * controlPoints;
+  vtkDoubleArray * controlPointDisplacements;
 
-	vtkIdList * controlPointIds;
-	vtkIntArray * controlPointStatus;
+  vtkIdList * controlPointIds;
+  vtkIntArray * controlPointStatus;
 
-	vector<float> controlPointX;										// X-coordinates of control points
-	vector<float> controlPointY;										// Y-coordinates of control points
-	vector<float> controlPointZ;										// Z-coordinates of control points
+  vector<float> controlPointX;                    // X-coordinates of control points
+  vector<float> controlPointY;                    // Y-coordinates of control points
+  vector<float> controlPointZ;                    // Z-coordinates of control points
 
-	vector<float> controlPointDisplacementX;							// Displacement of control points in the X-direction
-	vector<float> controlPointDisplacementY;							// Displacement of control points in the Y-direction
-	vector<float> controlPointDisplacementZ;							// Displacement of control points in the Z-direction
+  vector<float> controlPointDisplacementX;              // Displacement of control points in the X-direction
+  vector<float> controlPointDisplacementY;              // Displacement of control points in the Y-direction
+  vector<float> controlPointDisplacementZ;              // Displacement of control points in the Z-direction
 
-	RBFInterpolator * rbfX;
-	RBFInterpolator * rbfY;
-	RBFInterpolator * rbfZ;
+  RBFInterpolator * rbfX;
+  RBFInterpolator * rbfY;
+  RBFInterpolator * rbfZ;
 
 };
 

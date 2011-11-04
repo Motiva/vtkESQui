@@ -68,67 +68,67 @@ using namespace std;
 
 int TestvtkScenario(int argc, char * argv[])
 {
-	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1.vtp";
-	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1_col.vtp";
-	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/liver.jpg";
+  const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1.vtp";
+  const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1_col.vtp";
+  const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/liver.jpg";
 
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	renderer->SetBackground(1,1,1);
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  renderer->SetBackground(1,1,1);
 
-	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
-	renWin->SetSize(800,600);
-	renWin->AddRenderer(renderer);
+  vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->SetSize(800,600);
+  renWin->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	iren->SetRenderWindow(renWin);
+  vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  iren->SetRenderWindow(renWin);
 
-	vtkSmartPointer<vtkScenario> scenario = vtkSmartPointer<vtkScenario>::New();
+  vtkSmartPointer<vtkScenario> scenario = vtkSmartPointer<vtkScenario>::New();
 
-	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
-	vis->SetName("ellipsoid_16_16_1");
-	vis->SetFileName(fn);
-	vis->SetTextureFileName(tfn);
-	vis->SetOpacity(0.5);
-	vis->SetColor(1.0, 1.0, 1.0);
+  vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
+  vis->SetName("ellipsoid_16_16_1");
+  vis->SetFileName(fn);
+  vis->SetTextureFileName(tfn);
+  vis->SetOpacity(0.5);
+  vis->SetColor(1.0, 1.0, 1.0);
 
-	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
-	col->SetName("vtkbioeng");
-	col->SetFileName(cfn);
-	col->SetOpacity(0.5);
-	col->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
+  col->SetName("vtkbioeng");
+  col->SetFileName(cfn);
+  col->SetOpacity(0.5);
+  col->SetColor(0.0, 0.0, 1.0);
 
-	//Deformation model. Particle-Spring system
-	vtkSmartPointer<vtkParticleSpringSystemInterface> def = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
-	def->SetName("ParticleSpring");
-	def->SetFileName(fn);
-	def->SetOpacity(1.0);
-	def->SetColor(0.0, 1.0, 0.0);
+  //Deformation model. Particle-Spring system
+  vtkSmartPointer<vtkParticleSpringSystemInterface> def = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
+  def->SetName("ParticleSpring");
+  def->SetFileName(fn);
+  def->SetOpacity(1.0);
+  def->SetColor(0.0, 1.0, 0.0);
 
-	vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
-	element->SetId(0);
-	element->SetName("ellipsoid");
-	element->SetVisualizationModel(vis);
-	element->SetCollisionModel(col);
-	element->SetDeformationModel(def);
-	element->SetPosition(3.0, 2.5, 0.0);
-	element->SetOrientation(25, -15, 30);
-	element->Init();
+  vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
+  element->SetId(0);
+  element->SetName("ellipsoid");
+  element->SetVisualizationModel(vis);
+  element->SetCollisionModel(col);
+  element->SetDeformationModel(def);
+  element->SetPosition(3.0, 2.5, 0.0);
+  element->SetOrientation(25, -15, 30);
+  element->Init();
 
-	vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
-	organ->AddElement(element);
-	organ->Init();
+  vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
+  organ->AddElement(element);
+  organ->Init();
 
-	organ->Update();
+  organ->Update();
 
-	scenario->SetRenderWindow(renWin);
-	scenario->AddObject(organ);
-	scenario->Init();
+  scenario->SetRenderWindow(renWin);
+  scenario->AddObject(organ);
+  scenario->Init();
 
-	scenario->Update();
+  scenario->Update();
 
-	scenario->Print(cout);
+  scenario->Print(cout);
 
-	return 0;
+  return 0;
 }
 
 

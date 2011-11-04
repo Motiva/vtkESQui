@@ -54,76 +54,76 @@ class vtkCUDAParticleSystem;
 class VTK_vtkCUDAParticleSystem_EXPORT vtkCUDAMotionEquationSolver : public vtkObject {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkCUDAMotionEquationSolver, vtkObject);
-	//! Print solver info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkCUDAMotionEquationSolver, vtkObject);
+  //! Print solver info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Enumeration of solver types
-	enum CUDAMotionEquationSolverType{
-		Euler = 0,
-		ModifiedEuler = 1,
-		VelocityVerlet = 2,
-		MidPoint = 3,
-		RungeKutta4 = 4
-	};
+  //!Enumeration of solver types
+  enum CUDAMotionEquationSolverType{
+    Euler = 0,
+    ModifiedEuler = 1,
+    VelocityVerlet = 2,
+    MidPoint = 3,
+    RungeKutta4 = 4
+  };
 
-	//! Set number of particles
-	vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
+  //! Set number of particles
+  vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
 
-	//! Set time step
-	vtkSetMacro(TimeStep, double);
+  //! Set time step
+  vtkSetMacro(TimeStep, double);
 
-	//! Set residual error
-	vtkSetMacro(Residual, double);// NumberOfParticles
+  //! Set residual error
+  vtkSetMacro(Residual, double);// NumberOfParticles
 
-	//! Set Deformation model
-	void SetDeformationModel(vtkCUDAParticleSystem * model);
+  //! Set Deformation model
+  void SetDeformationModel(vtkCUDAParticleSystem * model);
 
-	//! Initialize solver.
-	/*!
-	 * Pure virtual method must be implemented in subclasses
-	 */
-	virtual void Init() = 0;
+  //! Initialize solver.
+  /*!
+   * Pure virtual method must be implemented in subclasses
+   */
+  virtual void Init() = 0;
 
-	//! Compute next step for every particle
-	/*!
-	 * Pure virtual method must be implemented in subclasses
-	 * \param p particle position vector
-	 * \param v particle velocity vector
-	 * \param a particle acceleration vector
-	 */
-	virtual void ComputeNextStep(float *p, float *v, float *a) = 0;
+  //! Compute next step for every particle
+  /*!
+   * Pure virtual method must be implemented in subclasses
+   * \param p particle position vector
+   * \param v particle velocity vector
+   * \param a particle acceleration vector
+   */
+  virtual void ComputeNextStep(float *p, float *v, float *a) = 0;
 
 protected:
-	vtkCUDAMotionEquationSolver();
-	~vtkCUDAMotionEquationSolver();
+  vtkCUDAMotionEquationSolver();
+  ~vtkCUDAMotionEquationSolver();
 
-	//!Initialize flag
-	bool Initialized;
+  //!Initialize flag
+  bool Initialized;
 
-	//! Solver deformation model
-	vtkCUDAParticleSystem * DeformationModel;
+  //! Solver deformation model
+  vtkCUDAParticleSystem * DeformationModel;
 
-	//! Number of particles
-	int NumberOfParticles;
+  //! Number of particles
+  int NumberOfParticles;
 
-	//! Time step
-	double TimeStep;
+  //! Time step
+  double TimeStep;
 
-	//! Residual Error
-	double Residual;
+  //! Residual Error
+  double Residual;
 
-	//! Particle position device vector
-	float * dPos;
-	//! Particle velocity device vector
-	float * dVel;
-	//! Particle acceleration device vector
-	float * dAcc;
+  //! Particle position device vector
+  float * dPos;
+  //! Particle velocity device vector
+  float * dVel;
+  //! Particle acceleration device vector
+  float * dAcc;
 
 private:
-	vtkCUDAMotionEquationSolver(const vtkCUDAMotionEquationSolver&);            // Not implemented.
-	void operator=(const vtkCUDAMotionEquationSolver&);           // Not implemented.
+  vtkCUDAMotionEquationSolver(const vtkCUDAMotionEquationSolver&);            // Not implemented.
+  void operator=(const vtkCUDAMotionEquationSolver&);           // Not implemented.
 
 };
 

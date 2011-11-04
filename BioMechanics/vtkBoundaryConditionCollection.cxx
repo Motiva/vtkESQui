@@ -49,71 +49,71 @@ vtkStandardNewMacro(vtkBoundaryConditionCollection);
 
 //--------------------------------------------------------------------------
 void vtkBoundaryConditionCollection::DeepCopy(vtkBoundaryConditionCollection *collection) {
-	vtkBoundaryCondition * AuxCopy;
-	vtkBoundaryCondition * Aux;
-	this->InitTraversal();
-	AuxCopy = collection->GetNextBoundaryCondition();
-	while(AuxCopy) {
-		Aux = vtkBoundaryCondition::New();
-		Aux->DeepCopy(AuxCopy);
-		this->InsertNextBoundaryCondition(Aux);
-		AuxCopy = collection->GetNextBoundaryCondition();
-	}
+  vtkBoundaryCondition * AuxCopy;
+  vtkBoundaryCondition * Aux;
+  this->InitTraversal();
+  AuxCopy = collection->GetNextBoundaryCondition();
+  while(AuxCopy) {
+    Aux = vtkBoundaryCondition::New();
+    Aux->DeepCopy(AuxCopy);
+    this->InsertNextBoundaryCondition(Aux);
+    AuxCopy = collection->GetNextBoundaryCondition();
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkBoundaryConditionCollection::InsertNextBoundaryCondition(vtkBoundaryCondition *condition) {
-	this->vtkCollection::AddItem(condition);
+  this->vtkCollection::AddItem(condition);
 }
 
 //-------------------------------------------------------------------------
 void vtkBoundaryConditionCollection::ReplaceBoundaryCondition(vtkIdType id, vtkBoundaryCondition *condition) {
-	this->vtkCollection::ReplaceItem(id, condition);
+  this->vtkCollection::ReplaceItem(id, condition);
 }
 
 //-------------------------------------------------------------------------
 vtkIdType vtkBoundaryConditionCollection::ContainsBoundaryCondition(vtkBoundaryCondition * condition)
 {
-	return (this->FindBoundaryCondition(condition) != -1);
+  return (this->FindBoundaryCondition(condition) != -1);
 }
 
 //-------------------------------------------------------------------------
 vtkIdType vtkBoundaryConditionCollection::FindBoundaryCondition(vtkBoundaryCondition * condition)
 {
-	vtkBoundaryCondition * local;
+  vtkBoundaryCondition * local;
 
-	for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
-	{
-		local = this->GetBoundaryCondition(id);
-		if ((local) &&
-			(local->GetId() == condition->GetId()) &&
-			(local->GetPointId() == condition->GetPointId()) &&
-			(local->GetValue() == condition->GetValue()))
-		{
-			return id;
-		}
-	}
-	return -1;
+  for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
+  {
+    local = this->GetBoundaryCondition(id);
+    if ((local) &&
+      (local->GetId() == condition->GetId()) &&
+      (local->GetPointId() == condition->GetPointId()) &&
+      (local->GetValue() == condition->GetValue()))
+    {
+      return id;
+    }
+  }
+  return -1;
 }
 
 //--------------------------------------------------------------------------
 vtkBoundaryCondition* vtkBoundaryConditionCollection::GetBoundaryCondition(vtkIdType id) {
-	return static_cast <vtkBoundaryCondition *>(this->GetItemAsObject(id));
+  return static_cast <vtkBoundaryCondition *>(this->GetItemAsObject(id));
 }
 
 //--------------------------------------------------------------------------
 vtkBoundaryCondition * vtkBoundaryConditionCollection::GetNextBoundaryCondition() {
-	return static_cast <vtkBoundaryCondition*>(this->GetNextItemAsObject());
+  return static_cast <vtkBoundaryCondition*>(this->GetNextItemAsObject());
 }
 
 //--------------------------------------------------------------------------
 void vtkBoundaryConditionCollection::RemoveBoundaryCondition(vtkIdType id) {
-	this->vtkCollection::RemoveItem(id);
+  this->vtkCollection::RemoveItem(id);
 }
 
 //--------------------------------------------------------------------------
 void vtkBoundaryConditionCollection::RemoveBoundaryConditions() {
-	this->RemoveAllItems();
+  this->RemoveAllItems();
 }
 
 //----------------------------------------------------------------------------

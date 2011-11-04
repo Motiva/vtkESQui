@@ -71,71 +71,71 @@ using namespace std;
 
 int main(int argc, char * argv[])
 {
-	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
-	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp";
-	const char * dfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp";
-	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg";
+  const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
+  const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp";
+  const char * dfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp";
+  const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg";
 
-	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
-	vis->SetName("ellipsoid_16_16_1");
-	vis->SetFileName(fn);
-	vis->SetTextureFileName(tfn);
-	vis->SetOpacity(.8);
-	vis->SetColor(1.0, 1.0, 1.0);
+  vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
+  vis->SetName("ellipsoid_16_16_1");
+  vis->SetFileName(fn);
+  vis->SetTextureFileName(tfn);
+  vis->SetOpacity(.8);
+  vis->SetColor(1.0, 1.0, 1.0);
 
-	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
-	col->SetName("vtkbioeng");
-	col->SetFileName(cfn);
-	col->SetOpacity(0.5);
-	col->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
+  col->SetName("vtkbioeng");
+  col->SetFileName(cfn);
+  col->SetOpacity(0.5);
+  col->SetColor(0.0, 0.0, 1.0);
 
-	//Deformation model. Particle-Spring system
-	vtkSmartPointer<vtkParticleSpringSystemInterface> def = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
-	def->SetName("ParticleSpring");
-	def->SetFileName(dfn);
-	def->SetOpacity(1);
-	def->SetColor(0.0, 1.0, 0.0);
+  //Deformation model. Particle-Spring system
+  vtkSmartPointer<vtkParticleSpringSystemInterface> def = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
+  def->SetName("ParticleSpring");
+  def->SetFileName(dfn);
+  def->SetOpacity(1);
+  def->SetColor(0.0, 1.0, 0.0);
 
-	vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
-	element->SetId(0);
-	element->SetName("ellipsoid");
-	element->SetPosition(3.0, 2.5, 0.0);
-	element->SetOrientation(25, -15, 30);
-	element->SetVisualizationModel(vis);
-	element->SetCollisionModel(col);
-	element->SetDeformationModel(def);
-	element->Init();
+  vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
+  element->SetId(0);
+  element->SetName("ellipsoid");
+  element->SetPosition(3.0, 2.5, 0.0);
+  element->SetOrientation(25, -15, 30);
+  element->SetVisualizationModel(vis);
+  element->SetCollisionModel(col);
+  element->SetDeformationModel(def);
+  element->Init();
 
-	element->RotateZ(35);
-	element->Update();
+  element->RotateZ(35);
+  element->Update();
 
-	vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
-	organ->AddElement(element);
-	organ->Init();
+  vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
+  organ->AddElement(element);
+  organ->Init();
 
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
-	renWin->SetSize(800,600);
-	renWin->AddRenderer(renderer);
+  vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->SetSize(800,600);
+  renWin->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	iren->SetRenderWindow(renWin);
+  vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  iren->SetRenderWindow(renWin);
 
-	renderer->AddActor(vis->GetActor());
-	renderer->AddActor(col->GetActor());
-	renderer->AddActor(def->GetActor());
+  renderer->AddActor(vis->GetActor());
+  renderer->AddActor(col->GetActor());
+  renderer->AddActor(def->GetActor());
 
-	renderer->SetBackground(1,1,1);
+  renderer->SetBackground(1,1,1);
 
-	renderer->ResetCamera();
-	iren->Initialize();
+  renderer->ResetCamera();
+  iren->Initialize();
 
-	renWin->Render();
+  renWin->Render();
 
-	iren->Start();
+  iren->Start();
 
-	return 0;
+  return 0;
 }
 
 

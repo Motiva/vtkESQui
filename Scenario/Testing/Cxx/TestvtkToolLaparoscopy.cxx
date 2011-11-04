@@ -71,72 +71,72 @@ using namespace std;
 
 int TestvtkToolLaparoscopy(int argc, char * argv[])
 {
-	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick.vtp";
-	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick.vtp";
-	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
+  const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick.vtp";
+  const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick.vtp";
+  const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
 
-	const char * fnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
-	const char * cfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
-	const char * tfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
+  const char * fnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
+  const char * cfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
+  const char * tfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 
-	//Generate tool's first element (stick)
-	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
-	vis->SetName("stick_vis");
-	vis->SetFileName(fn);
-	vis->SetTextureFileName(tfn);
-	vis->SetOpacity(1.0);
-	vis->SetColor(1.0, 1.0, 1.0);
+  //Generate tool's first element (stick)
+  vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
+  vis->SetName("stick_vis");
+  vis->SetFileName(fn);
+  vis->SetTextureFileName(tfn);
+  vis->SetOpacity(1.0);
+  vis->SetColor(1.0, 1.0, 1.0);
 
-	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
-	col->SetName("vtkbioeng");
-	col->SetFileName(cfn);
-	col->SetOpacity(0.5);
-	col->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
+  col->SetName("vtkbioeng");
+  col->SetFileName(cfn);
+  col->SetOpacity(0.5);
+  col->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
-	stick->SetId(0);
-	stick->SetName("stick");
-	stick->SetPosition(3.0, 0.0, 0.0);
-	stick->SetOrientation(0, 0, -20);
-	stick->SetVisualizationModel(vis);
-	stick->SetCollisionModel(col);
-	stick->Init();
+  vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
+  stick->SetId(0);
+  stick->SetName("stick");
+  stick->SetPosition(3.0, 0.0, 0.0);
+  stick->SetOrientation(0, 0, -20);
+  stick->SetVisualizationModel(vis);
+  stick->SetCollisionModel(col);
+  stick->Init();
 
-	stick->Update();
+  stick->Update();
 
-	//Second element (ball)
-	vtkSmartPointer<vtkVisualizationModel> visb = vtkSmartPointer<vtkVisualizationModel>::New();
-	visb->SetName("ball_vis");
-	visb->SetFileName(fnb);
-	visb->SetTextureFileName(tfnb);
-	visb->SetOpacity(1.0);
-	visb->SetColor(1.0, 0.0, 1.0);
+  //Second element (ball)
+  vtkSmartPointer<vtkVisualizationModel> visb = vtkSmartPointer<vtkVisualizationModel>::New();
+  visb->SetName("ball_vis");
+  visb->SetFileName(fnb);
+  visb->SetTextureFileName(tfnb);
+  visb->SetOpacity(1.0);
+  visb->SetColor(1.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkCollisionModel> colb = vtkSmartPointer<vtkCollisionModel>::New();
-	colb->SetName("ball_vtkbioeng");
-	colb->SetFileName(cfnb);
-	colb->SetOpacity(0.5);
-	colb->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> colb = vtkSmartPointer<vtkCollisionModel>::New();
+  colb->SetName("ball_vtkbioeng");
+  colb->SetFileName(cfnb);
+  colb->SetOpacity(0.5);
+  colb->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> ball = vtkSmartPointer<vtkScenarioElement>::New();
-	ball->SetId(1);
-	ball->SetName("ball");
-	ball->SetPosition(3.0, 0.0, 0.0);
-	ball->SetOrientation(0, 0, -20);
-	ball->SetVisualizationModel(visb);
-	ball->SetCollisionModel(colb);
-	ball->Init();
+  vtkSmartPointer<vtkScenarioElement> ball = vtkSmartPointer<vtkScenarioElement>::New();
+  ball->SetId(1);
+  ball->SetName("ball");
+  ball->SetPosition(3.0, 0.0, 0.0);
+  ball->SetOrientation(0, 0, -20);
+  ball->SetVisualizationModel(visb);
+  ball->SetCollisionModel(colb);
+  ball->Init();
 
-	ball->Update();
+  ball->Update();
 
-	vtkSmartPointer<vtkToolDummy> tool = vtkSmartPointer<vtkToolDummy>::New();
-	tool->AddElement(stick);
-	tool->AddElement(ball);
-	tool->Init();
+  vtkSmartPointer<vtkToolDummy> tool = vtkSmartPointer<vtkToolDummy>::New();
+  tool->AddElement(stick);
+  tool->AddElement(ball);
+  tool->Init();
 
-	tool->Print(cout);
+  tool->Print(cout);
 
-	return 0;
+  return 0;
 }
 
 

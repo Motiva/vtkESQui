@@ -55,33 +55,33 @@ class vtkParticle;
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkVelocityVerletSolver : public vtkMotionEquationSolver {
 public:
-	//!Type Revision Macro
-	vtkTypeRevisionMacro(vtkVelocityVerletSolver, vtkMotionEquationSolver);
-	//! Create a new verlet solver
-	static vtkVelocityVerletSolver * New();
-	//! Print object values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Type Revision Macro
+  vtkTypeRevisionMacro(vtkVelocityVerletSolver, vtkMotionEquationSolver);
+  //! Create a new verlet solver
+  static vtkVelocityVerletSolver * New();
+  //! Print object values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initialize equation motion solver
-	virtual void Init();
+  //! Initialize equation motion solver
+  virtual void Init();
 
-	//! Compute next step for every particle
-	/*!
-	 * \param particles collection of particles
-	 * \param dt time step
-	 */
-	virtual void ComputeNextStep(vtkParticleCollection * particles, double dt);
+  //! Compute next step for every particle
+  /*!
+   * \param particles collection of particles
+   * \param dt time step
+   */
+  virtual void ComputeNextStep(vtkParticleCollection * particles, double dt);
 
 protected:
-	vtkVelocityVerletSolver();
-	~vtkVelocityVerletSolver();
+  vtkVelocityVerletSolver();
+  ~vtkVelocityVerletSolver();
 
 private:
-	vtkVelocityVerletSolver(const vtkVelocityVerletSolver&);            // Not implemented.
-	void operator=(const vtkVelocityVerletSolver&);           // Not implemented.
+  vtkVelocityVerletSolver(const vtkVelocityVerletSolver&);            // Not implemented.
+  void operator=(const vtkVelocityVerletSolver&);           // Not implemented.
 
-	//! Reset the solver
-	void Reset();
+  //! Reset the solver
+  void Reset();
 };
 
 #endif

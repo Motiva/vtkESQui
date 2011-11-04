@@ -12,8 +12,8 @@
   #if defined(vtkRBFDeformation_EXPORTS)
     #define VTK_vtkRBFDeformation_EXPORT __declspec(dllexport)
   #else
-	#undef VTK_vtkRBFDeformation_EXPORT
-	#define VTK_vtkRBFDeformation_EXPORT __declspec( dllimport )
+  #undef VTK_vtkRBFDeformation_EXPORT
+  #define VTK_vtkRBFDeformation_EXPORT __declspec( dllimport )
   #endif
 
 #else

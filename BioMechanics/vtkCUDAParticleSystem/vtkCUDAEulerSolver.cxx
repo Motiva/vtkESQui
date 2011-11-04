@@ -17,24 +17,24 @@ vtkCUDAEulerSolver::vtkCUDAEulerSolver()
 //----------------------------------------------------------------------------
 vtkCUDAEulerSolver::~vtkCUDAEulerSolver()
 {
-	//Free CUDA arrays
-	freeArray(this->dPos);
-	freeArray(this->dVel);
-	freeArray(this->dAcc);
+  //Free CUDA arrays
+  freeArray(this->dPos);
+  freeArray(this->dVel);
+  freeArray(this->dAcc);
 }
 
 //----------------------------------------------------------------------------
 void vtkCUDAEulerSolver::Init()
 {
-	unsigned int memSize = sizeof(float) * 4 * this->NumberOfParticles;
+  unsigned int memSize = sizeof(float) * 4 * this->NumberOfParticles;
 
-	//Initialize CUDA device
-	cudaInit();
+  //Initialize CUDA device
+  cudaInit();
 
-	//Allocate device vectors memory
-	allocateArray((void **)&this->dPos, memSize);
-	allocateArray((void **)&this->dVel, memSize);
-	allocateArray((void **)&this->dAcc, memSize);
+  //Allocate device vectors memory
+  allocateArray((void **)&this->dPos, memSize);
+  allocateArray((void **)&this->dVel, memSize);
+  allocateArray((void **)&this->dAcc, memSize);
 
 }
 
@@ -42,29 +42,29 @@ void vtkCUDAEulerSolver::Init()
 void vtkCUDAEulerSolver::ComputeNextStep(float *p, float *v, float *a)
 {
 
-	this->DeformationModel->ComputeForces();
+  this->DeformationModel->ComputeForces();
 
-	// Copy host -> device
-	unsigned int memSize = sizeof(float) * 4 * this->NumberOfParticles;
-	copyArrayToDevice(this->dPos, p, 0, memSize);
-	copyArrayToDevice(this->dVel, v, 0, memSize);
-	copyArrayToDevice(this->dAcc, a, 0, memSize);
+  // Copy host -> device
+  unsigned int memSize = sizeof(float) * 4 * this->NumberOfParticles;
+  copyArrayToDevice(this->dPos, p, 0, memSize);
+  copyArrayToDevice(this->dVel, v, 0, memSize);
+  copyArrayToDevice(this->dAcc, a, 0, memSize);
 
-	//CUDA procedure
+  //CUDA procedure
 
-	//Vn+1 = Vn + dt*At
-	integrateSystem(this->dVel, this->dAcc, this->TimeStep, this->NumberOfParticles);
-	//Xn+1 = Xn + dt*Vn+1
-	integrateSystem(this->dPos, this->dVel, this->TimeStep, this->NumberOfParticles);
+  //Vn+1 = Vn + dt*At
+  integrateSystem(this->dVel, this->dAcc, this->TimeStep, this->NumberOfParticles);
+  //Xn+1 = Xn + dt*Vn+1
+  integrateSystem(this->dPos, this->dVel, this->TimeStep, this->NumberOfParticles);
 
-	// Copy Device -> host
-	copyArrayFromDevice(p, this->dPos, 0, memSize);
-	copyArrayFromDevice(v, this->dVel, 0, memSize);
+  // Copy Device -> host
+  copyArrayFromDevice(p, this->dPos, 0, memSize);
+  copyArrayFromDevice(v, this->dVel, 0, memSize);
 
 }
 
 //----------------------------------------------------------------------------
 void vtkCUDAEulerSolver::PrintSelf(ostream& os, vtkIndent indent)
 {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }

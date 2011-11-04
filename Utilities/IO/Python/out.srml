@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Simulation Name="default" Type="default" Interaction="0" Collision="0" RenderRate="0.04" SimulationRate="0.01" InteractionRate="0.001" Gravity="0.0 -9.81 0.0" DataPath="">
+  <Interaction Name="default" Type="default" Status="1"/>
+  <Collision Name="default" Type="default" Status="0"/>
+  <Scenario Name="default">
+    <Environment Name="default" Ambient="0.0 0.0 0.0" Background="0.0 0.0 0.0">
+      <Cameras Name="default"/>
+      <Lights Name="default"/>
+    </Environment>
+    <Objects Name="default"/>
+  </Scenario>
+</Simulation>

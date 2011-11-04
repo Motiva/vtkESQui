@@ -63,84 +63,84 @@ class VTK_ESQUI_BIOMECHANICS_EXPORT vtkDeformationModel: public vtkModel {
 
 public:
 
-	//!Type revision macro
-	vtkTypeRevisionMacro(vtkDeformationModel, vtkModel);
+  //!Type revision macro
+  vtkTypeRevisionMacro(vtkDeformationModel, vtkModel);
 
-	//!Return the class name
-	const char *GetClassName() {return "vtkDeformationModel";}
+  //!Return the class name
+  const char *GetClassName() {return "vtkDeformationModel";}
 
-	//!Print class values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Print class values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Initialize the deformation model
-	/*!
-	 * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
-	 * - Input: vtkPolyData object \n
-	 */
-	virtual void Init();
+  //!Initialize the deformation model
+  /*!
+   * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
+   * - Input: vtkPolyData object \n
+   */
+  virtual void Init();
 
-	//! Set Gravity Force (m/s2)
-	vtkSetVector3Macro(Gravity, double);
-	//! Get Gravity Force (m/s2)
-	vtkGetVector3Macro(Gravity, double);
+  //! Set Gravity Force (m/s2)
+  vtkSetVector3Macro(Gravity, double);
+  //! Get Gravity Force (m/s2)
+  vtkGetVector3Macro(Gravity, double);
 
-	//!Insert a displacement to the model in the specified position
-	/*!
-	 * Pure virtual method. Must be implemented in inheriting classes.
-	 * \param id point identifier
-	 * \param vector displacement vector
-	 */
-	virtual void InsertDisplacement(vtkIdType id, double * vector) = 0;
+  //!Insert a displacement to the model in the specified position
+  /*!
+   * Pure virtual method. Must be implemented in inheriting classes.
+   * \param id point identifier
+   * \param vector displacement vector
+   */
+  virtual void InsertDisplacement(vtkIdType id, double * vector) = 0;
 
-	//!Insert a displacement to the model in the specified position
-	/*!
-	* Pure virtual method. Must be implemented in inheriting classes.
-	* \param id point identifier
-	* \param x displacement x component
-	* \param y displacement y component
-	* \param z displacement z component
-	*/
-	virtual void InsertDisplacement(vtkIdType id, double x, double y, double z) = 0;
+  //!Insert a displacement to the model in the specified position
+  /*!
+  * Pure virtual method. Must be implemented in inheriting classes.
+  * \param id point identifier
+  * \param x displacement x component
+  * \param y displacement y component
+  * \param z displacement z component
+  */
+  virtual void InsertDisplacement(vtkIdType id, double x, double y, double z) = 0;
 
-	//!Insert a condition into the deformation model
-	/*!
-	 * Add a single condition to the model at the end of the collection
-	 * \param condition condition to be added
-	 * \sa InsertBoundaryConditions(vtkBoundaryConditionCollection * collection);
-	 */
-	virtual void InsertNextBoundaryCondition(vtkBoundaryCondition * condition) ;
+  //!Insert a condition into the deformation model
+  /*!
+   * Add a single condition to the model at the end of the collection
+   * \param condition condition to be added
+   * \sa InsertBoundaryConditions(vtkBoundaryConditionCollection * collection);
+   */
+  virtual void InsertNextBoundaryCondition(vtkBoundaryCondition * condition) ;
 
-	//!Insert a collection of conditions into the deformation model
-	/*!
-	 * Add a collection of conditions to the model.
-	 * \param collection collection of conditions to be added
-	 * \sa InsertNextBoundaryCondition(vtkBoundaryCondition * condition) ;
-	 */
-	virtual void InsertBoundaryConditions(vtkBoundaryConditionCollection * collection);
+  //!Insert a collection of conditions into the deformation model
+  /*!
+   * Add a collection of conditions to the model.
+   * \param collection collection of conditions to be added
+   * \sa InsertNextBoundaryCondition(vtkBoundaryCondition * condition) ;
+   */
+  virtual void InsertBoundaryConditions(vtkBoundaryConditionCollection * collection);
 
-	//!Remove conditions of the deformation model
-	/*!
-	 * All previously defined conditions are removed from the model. Condition collection object is not deleted.
-	 */
-	virtual void RemoveBoundaryConditions();
+  //!Remove conditions of the deformation model
+  /*!
+   * All previously defined conditions are removed from the model. Condition collection object is not deleted.
+   */
+  virtual void RemoveBoundaryConditions();
 
 protected:
 
-	vtkDeformationModel();
-	~vtkDeformationModel();
+  vtkDeformationModel();
+  ~vtkDeformationModel();
 
-	//! Gravitation force
-	double Gravity[3];
+  //! Gravitation force
+  double Gravity[3];
 
-	//!Boundary conditions
-	/*!
-	 * This acts as pointer to the deformation model collection of conditions
-	 */
-	vtkBoundaryConditionCollection * BoundaryConditions;
+  //!Boundary conditions
+  /*!
+   * This acts as pointer to the deformation model collection of conditions
+   */
+  vtkBoundaryConditionCollection * BoundaryConditions;
 
 private:
-	vtkDeformationModel (const vtkDeformationModel &);
-	void operator =(const vtkDeformationModel &);
+  vtkDeformationModel (const vtkDeformationModel &);
+  void operator =(const vtkDeformationModel &);
 
 };
 

@@ -64,61 +64,61 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkVisualizationModel: public vtkModel {
 
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkVisualizationModel, vtkModel);
-	//! Create a new Scenario object
-	static vtkVisualizationModel * New();
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkVisualizationModel, vtkModel);
+  //! Create a new Scenario object
+  static vtkVisualizationModel * New();
 
-	//! Return the class name
-	const char *GetClassName() {return "vtkVisualizationModel";}
+  //! Return the class name
+  const char *GetClassName() {return "vtkVisualizationModel";}
 
-	//! Print class values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Print class values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Assign texture model filename
-	/*!
-	 *\sa GetTextureFileName()
-	 */
-	vtkSetStringMacro(TextureFileName);
+  //! Assign texture model filename
+  /*!
+   *\sa GetTextureFileName()
+   */
+  vtkSetStringMacro(TextureFileName);
 
-	//! Return model texture filename
-	/*!
-	 *\sa SetTextureFileName(const char * name)
-	 */
-	vtkGetStringMacro(TextureFileName);
+  //! Return model texture filename
+  /*!
+   *\sa SetTextureFileName(const char * name)
+   */
+  vtkGetStringMacro(TextureFileName);
 
-	//! Abstract initialization function
-	/*!
-	 * This method initializes the tool physical values, scale, position, etc...
-	 */
-	virtual void Init();
+  //! Abstract initialization function
+  /*!
+   * This method initializes the tool physical values, scale, position, etc...
+   */
+  virtual void Init();
 
 protected:
 
-	vtkVisualizationModel();
-	~vtkVisualizationModel();
+  vtkVisualizationModel();
+  ~vtkVisualizationModel();
 
-	//! Process the algorithm request (Update).
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  //! Process the algorithm request (Update).
+  //virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
 private:
-	vtkVisualizationModel (const vtkVisualizationModel &);
-	void operator =(const vtkVisualizationModel &);
+  vtkVisualizationModel (const vtkVisualizationModel &);
+  void operator =(const vtkVisualizationModel &);
 
-	//! Visualization texture filename
-	char * TextureFileName;
+  //! Visualization texture filename
+  char * TextureFileName;
 
-	//! Visualization mesh texture
-	vtkTexture * Texture;
+  //! Visualization mesh texture
+  vtkTexture * Texture;
 
-	//! Texture file reader
-	vtkJPEGReader * TextureReader;
+  //! Texture file reader
+  vtkJPEGReader * TextureReader;
 
-	//! Texture mapper
-	vtkTextureMapToSphere * TextureMap;
+  //! Texture mapper
+  vtkTextureMapToSphere * TextureMap;
 
-	//! Transformation of texture coords
-	vtkTransformTextureCoords * TextureCoords;
+  //! Transformation of texture coords
+  vtkTransformTextureCoords * TextureCoords;
 
 };
 

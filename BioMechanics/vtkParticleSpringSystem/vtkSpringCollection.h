@@ -57,53 +57,53 @@ entries are not prevented.
 class VTK_vtkParticleSpringSystem_EXPORT vtkSpringCollection : public vtkCollection
 {
 public:
-	//!Create new object
-	static vtkSpringCollection *New();
-	//!Type Revision Macro
-	vtkTypeRevisionMacro(vtkSpringCollection,vtkCollection);
-	//!Print Class Values
-	virtual void PrintSelf(ostream& os, vtkIndent indent);
+  //!Create new object
+  static vtkSpringCollection *New();
+  //!Type Revision Macro
+  vtkTypeRevisionMacro(vtkSpringCollection,vtkCollection);
+  //!Print Class Values
+  virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Insert an Spring to the collection
-	/*!
-	* The Spring will be inserted at the end of the list
-	* \param Spring vtkSpring object to be inserted
-	* \sa InsertSpring(vtkIdType id, vtkSpring *Spring)
-	*/
-	void InsertNextSpring(vtkSpring *Spring);
+  //!Insert an Spring to the collection
+  /*!
+  * The Spring will be inserted at the end of the list
+  * \param Spring vtkSpring object to be inserted
+  * \sa InsertSpring(vtkIdType id, vtkSpring *Spring)
+  */
+  void InsertNextSpring(vtkSpring *Spring);
 
-	//!Insert an Spring at the specified index
-	/*!
-	* \param id index of the list where the Spring will be inserted
-	* \param Spring vtkSpring object to be inserted
-	* \sa InsertNextSpring(vtkSpring *Spring)
-	*/
-	void InsertSpring(vtkIdType id, vtkSpring *Spring);
+  //!Insert an Spring at the specified index
+  /*!
+  * \param id index of the list where the Spring will be inserted
+  * \param Spring vtkSpring object to be inserted
+  * \sa InsertNextSpring(vtkSpring *Spring)
+  */
+  void InsertSpring(vtkIdType id, vtkSpring *Spring);
 
-	//!Return an Spring in specified position of the list.
-	/*!
-	* 	Get the Spring in the list with the position id. NULL is returned when the collection is exhausted.
-	* \param id index of the Spring to be returned
-	*/
-	vtkSpring *GetSpring(vtkIdType id);
+  //!Return an Spring in specified position of the list.
+  /*!
+  *   Get the Spring in the list with the position id. NULL is returned when the collection is exhausted.
+  * \param id index of the Spring to be returned
+  */
+  vtkSpring *GetSpring(vtkIdType id);
 
-	//!Return the next Spring on the list.
-	/*!
-	* Get the Spring at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
-	*/
-	vtkSpring * GetNextSpring();
+  //!Return the next Spring on the list.
+  /*!
+  * Get the Spring at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+  */
+  vtkSpring * GetNextSpring();
 
-	//!Return whether the collection contains a Spring or not
-	bool ContainsSpring(vtkSpring * Spring);
+  //!Return whether the collection contains a Spring or not
+  bool ContainsSpring(vtkSpring * Spring);
 
 
 protected:
-	vtkSpringCollection() {};
-	~vtkSpringCollection() {};
+  vtkSpringCollection() {};
+  ~vtkSpringCollection() {};
 
 private:
-	vtkSpringCollection(const vtkSpringCollection&);  // Not implemented.
-	void operator=(const vtkSpringCollection&);					// Not implemented.
+  vtkSpringCollection(const vtkSpringCollection&);  // Not implemented.
+  void operator=(const vtkSpringCollection&);          // Not implemented.
 };
 
 #endif

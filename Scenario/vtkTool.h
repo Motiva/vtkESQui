@@ -63,46 +63,46 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkTool: public vtkScenarioObject {
 
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkTool,vtkScenarioObject);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkTool,vtkScenarioObject);
 
-	//! Return the class name
-	const char *GetClassName() {return "vtkTool";}
+  //! Return the class name
+  const char *GetClassName() {return "vtkTool";}
 
-	//! Print class values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Print class values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Tool type definition
-	enum vtkToolType{
-		Laparoscopy = 0,
-		Endovascular = 1,
-		Arthroscopy = 2,
-		Camera = 3
-	};
+  //! Tool type definition
+  enum vtkToolType{
+    Laparoscopy = 0,
+    Endovascular = 1,
+    Arthroscopy = 2,
+    Camera = 3
+  };
 
-	//! Set tool type
-	/*!
-	 * \sa vtkToolType GetToolType()
-	 */
-	vtkSetMacro(ToolType, vtkTool::vtkToolType);
+  //! Set tool type
+  /*!
+   * \sa vtkToolType GetToolType()
+   */
+  vtkSetMacro(ToolType, vtkTool::vtkToolType);
 
-	//!Return tool type
-	/*!
-	 * \sa SetToolType(vtkToolType)
-	 */
-	vtkGetMacro(ToolType, vtkTool::vtkToolType);
+  //!Return tool type
+  /*!
+   * \sa SetToolType(vtkToolType)
+   */
+  vtkGetMacro(ToolType, vtkTool::vtkToolType);
 
 protected:
 
-	vtkTool();
-	~vtkTool();
+  vtkTool();
+  ~vtkTool();
 
-	//! Tool Type
-	vtkToolType ToolType;
+  //! Tool Type
+  vtkToolType ToolType;
 
 private:
-	vtkTool (const vtkTool &);
-	void operator =(const vtkTool &);
+  vtkTool (const vtkTool &);
+  void operator =(const vtkTool &);
 };
 
 #endif

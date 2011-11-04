@@ -24,215 +24,215 @@
 class vtkEDMTimerCallback : public vtkCommand
 {
 public:
-	static vtkEDMTimerCallback *New()
-	{
-		vtkEDMTimerCallback *cb = new vtkEDMTimerCallback;
-		cb->FastTimerId = 0;
-		cb->FasterTimerId = 0;
-		cb->RenderTimerId = 0;
-		return cb;
-	}
+  static vtkEDMTimerCallback *New()
+  {
+    vtkEDMTimerCallback *cb = new vtkEDMTimerCallback;
+    cb->FastTimerId = 0;
+    cb->FasterTimerId = 0;
+    cb->RenderTimerId = 0;
+    return cb;
+  }
 
-	virtual void Execute(vtkObject *caller, unsigned long eventId, void *callData)
-	{
-		if (vtkCommand::TimerEvent == eventId)
-		{
-			int tid = * static_cast<int *>(callData);
+  virtual void Execute(vtkObject *caller, unsigned long eventId, void *callData)
+  {
+    if (vtkCommand::TimerEvent == eventId)
+    {
+      int tid = * static_cast<int *>(callData);
 
-			if (tid == this->FastTimerId)
-			{
-				vtkPolyData * mesh = vtkPolyData::SafeDownCast(this->DeformationModel->GetInput());
+      if (tid == this->FastTimerId)
+      {
+        vtkPolyData * mesh = vtkPolyData::SafeDownCast(this->DeformationModel->GetInput());
 
-				//Locate collision points
-				vtkSmartPointer<vtkPointLocator> locator =
-						vtkSmartPointer<vtkPointLocator>::New();
-				vtkSmartPointer<vtkIdList> list = vtkSmartPointer<vtkIdList>::New();
+        //Locate collision points
+        vtkSmartPointer<vtkPointLocator> locator =
+            vtkSmartPointer<vtkPointLocator>::New();
+        vtkSmartPointer<vtkIdList> list = vtkSmartPointer<vtkIdList>::New();
 
-				double bounds[6];
-				mesh->GetBounds(bounds);
+        double bounds[6];
+        mesh->GetBounds(bounds);
 
-				double p[3] = {bounds[0], 0, 0};
+        double p[3] = {bounds[0], 0, 0};
 
-				locator->SetDataSet(mesh);
-				locator->FindClosestNPoints(6, p, list);
+        locator->SetDataSet(mesh);
+        locator->FindClosestNPoints(6, p, list);
 
 
-				//Set Collisions
-				double d[3];
-				d[0] = 1.0;
-				d[1] = .5;
-				d[2] = 0;
+        //Set Collisions
+        double d[3];
+        d[0] = 1.0;
+        d[1] = .5;
+        d[2] = 0;
 
-				for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
-				{
-					int id = list->GetId(i);
-					cout << "d[" << id << "]\n";
-					this->DeformationModel->InsertDisplacement(id, d);
-				}
+        for(vtkIdType i = 0; i<list->GetNumberOfIds(); i++)
+        {
+          int id = list->GetId(i);
+          cout << "d[" << id << "]\n";
+          this->DeformationModel->InsertDisplacement(id, d);
+        }
 
-				cout << "Displacement applied...\n";
-			}
-			else if (tid == this->FasterTimerId)
-			{
-				vtkTimerLog * timer = vtkTimerLog::New();
-				timer->StartTimer();
-				this->DeformationModel->Modified();
-				this->DeformationModel->Update();
-				timer->StopTimer();
+        cout << "Displacement applied...\n";
+      }
+      else if (tid == this->FasterTimerId)
+      {
+        vtkTimerLog * timer = vtkTimerLog::New();
+        timer->StartTimer();
+        this->DeformationModel->Modified();
+        this->DeformationModel->Update();
+        timer->StopTimer();
 
-				//std::cout << "[Test] Rate: " << 1/(timer->GetElapsedTime()) << "\n";
-			}
-			else if (tid == this->RenderTimerId)
-			{
-				vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::SafeDownCast(caller);
-				if (iren && iren->GetRenderWindow() && iren->GetRenderWindow()->GetRenderers())
-				{
-					iren->Render();
-				}
-			}
-		}
-	}
+        //std::cout << "[Test] Rate: " << 1/(timer->GetElapsedTime()) << "\n";
+      }
+      else if (tid == this->RenderTimerId)
+      {
+        vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::SafeDownCast(caller);
+        if (iren && iren->GetRenderWindow() && iren->GetRenderWindow()->GetRenderers())
+        {
+          iren->Render();
+        }
+      }
+    }
+  }
 
-	void SetFastTimerId(int tid)
-	{
-		this->FastTimerId = tid;
-	}
+  void SetFastTimerId(int tid)
+  {
+    this->FastTimerId = tid;
+  }
 
-	void SetFasterTimerId(int tid)
-	{
-		this->FasterTimerId = tid;
-	}
+  void SetFasterTimerId(int tid)
+  {
+    this->FasterTimerId = tid;
+  }
 
-	void SetRenderTimerId(int tid)
-	{
-		this->RenderTimerId = tid;
-	}
+  void SetRenderTimerId(int tid)
+  {
+    this->RenderTimerId = tid;
+  }
 
-	void SetDeformationModel(vtkEDMInterface * DeformationModel)
-	{
-		this->DeformationModel = DeformationModel;
-	}
+  void SetDeformationModel(vtkEDMInterface * DeformationModel)
+  {
+    this->DeformationModel = DeformationModel;
+  }
 
-	void SetCollisionIds(vtkIdList * list)
-	{
-		this->List = list;
-	}
+  void SetCollisionIds(vtkIdList * list)
+  {
+    this->List = list;
+  }
 private:
-	int FastTimerId;
-	int RenderTimerId;
-	int FasterTimerId;
+  int FastTimerId;
+  int RenderTimerId;
+  int FasterTimerId;
 
-	vtkIdList * List;
+  vtkIdList * List;
 
-	vtkEDMInterface * DeformationModel;
+  vtkEDMInterface * DeformationModel;
 };
 
 int main(int argc, char * argv[])
 {
-	const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/sphere12_12_1.vtp";
+  const char * filename = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/sphere12_12_1.vtp";
 
-	if (argc > 1)
-	{
-		filename = argv[1];
-	}
+  if (argc > 1)
+  {
+    filename = argv[1];
+  }
 
-	vtkSmartPointer<vtkXMLPolyDataReader> reader =
-			vtkSmartPointer<vtkXMLPolyDataReader>::New();
-	reader->SetFileName(filename);
-	reader->Update();
+  vtkSmartPointer<vtkXMLPolyDataReader> reader =
+      vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  reader->SetFileName(filename);
+  reader->Update();
 
-	//vtkPolyData * mesh = reader->GetOutput();
+  //vtkPolyData * mesh = reader->GetOutput();
 
-	vtkSmartPointer<vtkTransform> scale = vtkSmartPointer<vtkTransform>::New();
-	scale->Scale(10, 10, 10);
-	vtkSmartPointer<vtkTransformPolyDataFilter> filter = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
-	filter->SetInput(reader->GetOutput());
-	filter->SetTransform(scale);
-	filter->Update();
+  vtkSmartPointer<vtkTransform> scale = vtkSmartPointer<vtkTransform>::New();
+  scale->Scale(10, 10, 10);
+  vtkSmartPointer<vtkTransformPolyDataFilter> filter = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  filter->SetInput(reader->GetOutput());
+  filter->SetTransform(scale);
+  filter->Update();
 
-	vtkPolyData * mesh = filter->GetOutput();
+  vtkPolyData * mesh = filter->GetOutput();
 
-	double * bounds = mesh->GetBounds();
+  double * bounds = mesh->GetBounds();
 
-	double r = (bounds[1] -bounds[0])/2;
-	double s = r/40;
-	//double d = 0.001;
-	double warp = s/100000;
+  double r = (bounds[1] -bounds[0])/2;
+  double s = r/40;
+  //double d = 0.001;
+  double warp = s/100000;
 
-	std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
-	std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
+  std::cout << "[Test] Input grid #points: " << mesh->GetNumberOfPoints() << "\n";
+  std::cout << "[Test] Input grid #cells: " << mesh->GetNumberOfCells() << "\n";
 
-	vtkSmartPointer<vtkEDMInterface> EDM = vtkSmartPointer<vtkEDMInterface>::New();
-	EDM->SetNumberOfIterations(1000);
-	EDM->SetWarpScaleFactor(warp);
-	EDM->SetImageSpacing(s);
-	EDM->SetInput(mesh);
-	EDM->Init();
+  vtkSmartPointer<vtkEDMInterface> EDM = vtkSmartPointer<vtkEDMInterface>::New();
+  EDM->SetNumberOfIterations(1000);
+  EDM->SetWarpScaleFactor(warp);
+  EDM->SetImageSpacing(s);
+  EDM->SetInput(mesh);
+  EDM->Init();
 
-	EDM->Print(cout);
+  EDM->Print(cout);
 
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
-	renWin->SetSize(500,500);
-	renWin->AddRenderer(renderer);
+  vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->SetSize(500,500);
+  renWin->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	iren->SetRenderWindow(renWin);
+  vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  iren->SetRenderWindow(renWin);
 
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-	mapper->SetInput(mesh);
-	mapper->ScalarVisibilityOff();
+  vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  mapper->SetInput(mesh);
+  mapper->ScalarVisibilityOff();
 
-	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-	actor->SetMapper(mapper);
-	actor->GetProperty()->SetRepresentationToSurface();
-	actor->GetProperty()->SetColor(0.5,1,0);
-	actor->GetProperty()->SetOpacity(.3);
+  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  actor->SetMapper(mapper);
+  actor->GetProperty()->SetRepresentationToSurface();
+  actor->GetProperty()->SetColor(0.5,1,0);
+  actor->GetProperty()->SetOpacity(.3);
 
-	vtkSmartPointer<vtkPolyDataMapper> mapper2 = vtkSmartPointer<vtkPolyDataMapper>::New();
-	mapper2->SetInput(EDM->GetOutput());
-	mapper2->ScalarVisibilityOff();
+  vtkSmartPointer<vtkPolyDataMapper> mapper2 = vtkSmartPointer<vtkPolyDataMapper>::New();
+  mapper2->SetInput(EDM->GetOutput());
+  mapper2->ScalarVisibilityOff();
 
-	vtkSmartPointer<vtkActor> actor2 = vtkSmartPointer<vtkActor>::New();
-	actor2->SetMapper(mapper2);
-	actor2->GetProperty()->SetColor(1,0,0);
-	//actor2->GetProperty()->SetRepresentationToWireframe();
+  vtkSmartPointer<vtkActor> actor2 = vtkSmartPointer<vtkActor>::New();
+  actor2->SetMapper(mapper2);
+  actor2->GetProperty()->SetColor(1,0,0);
+  //actor2->GetProperty()->SetRepresentationToWireframe();
 
-	//renderer->AddActor(actor);
-	renderer->AddActor(actor2);
-	//renderer->AddActor(EDM->GetActor());
-	renderer->SetBackground(1,1,1);
+  //renderer->AddActor(actor);
+  renderer->AddActor(actor2);
+  //renderer->AddActor(EDM->GetActor());
+  renderer->SetBackground(1,1,1);
 
-	renderer->ResetCamera();
-	iren->Initialize();
+  renderer->ResetCamera();
+  iren->Initialize();
 
-	renWin->Render();
+  renWin->Render();
 
-	// Sign up to receive TimerEvent:
-	//
-	vtkSmartPointer<vtkEDMTimerCallback> cb = vtkSmartPointer<vtkEDMTimerCallback>::New();
-	iren->AddObserver(vtkCommand::TimerEvent, cb);
-	int tid;
+  // Sign up to receive TimerEvent:
+  //
+  vtkSmartPointer<vtkEDMTimerCallback> cb = vtkSmartPointer<vtkEDMTimerCallback>::New();
+  iren->AddObserver(vtkCommand::TimerEvent, cb);
+  int tid;
 
-	cb->SetDeformationModel(EDM);
+  cb->SetDeformationModel(EDM);
 
-	//Create a faster timer for DeformationModel update
-	tid = iren->CreateRepeatingTimer(5);
-	cb->SetFasterTimerId(tid);
+  //Create a faster timer for DeformationModel update
+  tid = iren->CreateRepeatingTimer(5);
+  cb->SetFasterTimerId(tid);
 
-	//Create a collision every 5 seconds
-	tid = iren->CreateRepeatingTimer(5000);
-	cb->SetFastTimerId(tid);
+  //Create a collision every 5 seconds
+  tid = iren->CreateRepeatingTimer(5000);
+  cb->SetFastTimerId(tid);
 
-	// Create a slower repeating timer to trigger Render calls.
-	// (This fires at the rate of approximately 25 frames per second.)
-	//
-	tid = iren->CreateRepeatingTimer(40);
-	cb->SetRenderTimerId(tid);
+  // Create a slower repeating timer to trigger Render calls.
+  // (This fires at the rate of approximately 25 frames per second.)
+  //
+  tid = iren->CreateRepeatingTimer(40);
+  cb->SetRenderTimerId(tid);
 
-	iren->Start();
+  iren->Start();
 
-	return 0;
+  return 0;
 }
 

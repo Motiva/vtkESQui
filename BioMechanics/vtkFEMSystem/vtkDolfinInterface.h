@@ -60,50 +60,50 @@ class VTK_vtkFEMSystem_EXPORT vtkDolfinInterface : public vtkObject
 {
 public:
 
-	//!Type revision macro
-	vtkTypeRevisionMacro(vtkDolfinInterface,vtkObject);
-	//! Create new dolfin library interface object
-	static vtkDolfinInterface * New();
-	//! Print system info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Type revision macro
+  vtkTypeRevisionMacro(vtkDolfinInterface,vtkObject);
+  //! Create new dolfin library interface object
+  static vtkDolfinInterface * New();
+  //! Print system info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	void SetMesh(vtkUnstructuredGrid * mesh);
+  void SetMesh(vtkUnstructuredGrid * mesh);
 
-	vtkSetStringMacro(FileName);
-	vtkGetStringMacro(FileName);
+  vtkSetStringMacro(FileName);
+  vtkGetStringMacro(FileName);
 
-	//vtkSetMacro(Mesh, vtkUnstructuredGrid);
-	//vtkGetMacro(Mesh, vtkUnstructuredGrid);
+  //vtkSetMacro(Mesh, vtkUnstructuredGrid);
+  //vtkGetMacro(Mesh, vtkUnstructuredGrid);
 
-	void Init();
+  void Init();
 
-	void Write();
+  void Write();
 
 protected:
-	vtkDolfinInterface();
-	~vtkDolfinInterface();
+  vtkDolfinInterface();
+  ~vtkDolfinInterface();
 
-	//!Configuration filename
-	char * FileName;
+  //!Configuration filename
+  char * FileName;
 
-	//! Lambda elasticity coefficient
-	double Lambda;
+  //! Lambda elasticity coefficient
+  double Lambda;
 
-	//!Mu elasticity coefficient
-	double Mu;
+  //!Mu elasticity coefficient
+  double Mu;
 
-	//!Tetrahedral mesh
-	dolfin::Mesh * FEMesh;
+  //!Tetrahedral mesh
+  dolfin::Mesh * FEMesh;
 
 
-	//vtkUnstructuredGrid * Mesh;
+  //vtkUnstructuredGrid * Mesh;
 
 private:
-	vtkDolfinInterface(const vtkDolfinInterface&);            // Not implemented.
-	void operator=(const vtkDolfinInterface&);           // Not implemented.
+  vtkDolfinInterface(const vtkDolfinInterface&);            // Not implemented.
+  void operator=(const vtkDolfinInterface&);           // Not implemented.
 
-	void GenerateTopologyMesh();
-	void GenerateFEMMesh();
+  void GenerateTopologyMesh();
+  void GenerateFEMMesh();
 };
 
 #endif

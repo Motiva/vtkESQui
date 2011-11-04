@@ -63,146 +63,146 @@ class vtkDoubleArray;
 class VTK_ESQUI_BIOMECHANICS_EXPORT vtkEDMInterface : public vtkDeformationModel
 {
 public:
-	//! Type Revision Macro
-	vtkTypeRevisionMacro(vtkEDMInterface, vtkDeformationModel);
-	//! Create a new EDM Interface
-	static vtkEDMInterface* New();
-	const char *GetClassName() {return "vtkEDMInterface";};
-	//! Print class object values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type Revision Macro
+  vtkTypeRevisionMacro(vtkEDMInterface, vtkDeformationModel);
+  //! Create a new EDM Interface
+  static vtkEDMInterface* New();
+  const char *GetClassName() {return "vtkEDMInterface";};
+  //! Print class object values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Process the algorithm request (Update).
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  //! Process the algorithm request (Update).
+  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-	//!Initialize the Deformation Model
-	/*!
-	 * The model has to be initialized in order to be updated. Some parameters must be previously defined: \n
-	 * - Input: vtkPolyData object
-	 * - NumberOfIterations: Maximum number of iterations
-	 * - WarpScaleFactor: Deformation scale factor
-	 */
-	virtual void Init();
+  //!Initialize the Deformation Model
+  /*!
+   * The model has to be initialized in order to be updated. Some parameters must be previously defined: \n
+   * - Input: vtkPolyData object
+   * - NumberOfIterations: Maximum number of iterations
+   * - WarpScaleFactor: Deformation scale factor
+   */
+  virtual void Init();
 
-	//!Set maximum number of iterations
-	/*!
-	 * This parameter sets the number of iterations the model will be executed until it reaches an stationary state.
-	 * \sa int GetNumberOfIterations()
-	 */
-	vtkSetMacro(NumberOfIterations, int);
-	//!Get maximum number of iterations
-	/*!
-	 * \sa SetNumberOfIterations(int)
-	 */
-	vtkGetMacro(NumberOfIterations, int);
+  //!Set maximum number of iterations
+  /*!
+   * This parameter sets the number of iterations the model will be executed until it reaches an stationary state.
+   * \sa int GetNumberOfIterations()
+   */
+  vtkSetMacro(NumberOfIterations, int);
+  //!Get maximum number of iterations
+  /*!
+   * \sa SetNumberOfIterations(int)
+   */
+  vtkGetMacro(NumberOfIterations, int);
 
-	//!Set the warp scale factor
-	/*!
-	 * This parameter sets how fast the model recovers its original shape after being deformed.\n
-	 * Warp scale factor shall be at least 1/100000 the value of spacing or the system will become unstable\n
-	 * \sa double GetWarpScaleFactor()
-	 */
-	vtkSetMacro(WarpScaleFactor, double);
-	//!Get the warp scale factor
-	/*!
-	 * \sa SetWarpScaleFactor(double)
-	 */
-	vtkGetMacro(WarpScaleFactor, double);
+  //!Set the warp scale factor
+  /*!
+   * This parameter sets how fast the model recovers its original shape after being deformed.\n
+   * Warp scale factor shall be at least 1/100000 the value of spacing or the system will become unstable\n
+   * \sa double GetWarpScaleFactor()
+   */
+  vtkSetMacro(WarpScaleFactor, double);
+  //!Get the warp scale factor
+  /*!
+   * \sa SetWarpScaleFactor(double)
+   */
+  vtkGetMacro(WarpScaleFactor, double);
 
-	//!Set the image spacing (resolution)
-	/*!
-	 * This parameter sets the image data spacing that sets the resolution.
-	 * \sa double GetImageSpacing()
-	 */
-	vtkSetVector3Macro(ImageSpacing, double);
-	//!Set the image spacing (resolution)
-	/*!
-	 * Image spacing must be at least 1/10 of the object radius
-	 * \sa SetImageSpacing()
-	 */
-	vtkGetVector3Macro(ImageSpacing, double);
+  //!Set the image spacing (resolution)
+  /*!
+   * This parameter sets the image data spacing that sets the resolution.
+   * \sa double GetImageSpacing()
+   */
+  vtkSetVector3Macro(ImageSpacing, double);
+  //!Set the image spacing (resolution)
+  /*!
+   * Image spacing must be at least 1/10 of the object radius
+   * \sa SetImageSpacing()
+   */
+  vtkGetVector3Macro(ImageSpacing, double);
 
-	//!Set homogeneus image spacing (resolution)
-	void SetImageSpacing(double spacing);
+  //!Set homogeneus image spacing (resolution)
+  void SetImageSpacing(double spacing);
 
-	//!Set the image source
-	/*!
-	 * Optional input
-	 */
-	void SetImageSource(vtkImageData * image){this->ImageSource = image;};
+  //!Set the image source
+  /*!
+   * Optional input
+   */
+  void SetImageSource(vtkImageData * image){this->ImageSource = image;};
 
-	//!Get the image source
-	vtkImageData * GetImageSource(){return this->ImageSource;};
+  //!Get the image source
+  vtkImageData * GetImageSource(){return this->ImageSource;};
 
-	//!Add displacement at the specified point.
-	/*!
-	 * The displacement shall not be greater than a 1/10 of the input mesh radius
-	 * \param id Point identifier
-	 * \param x displacement x component
-	 * \param y displacement y component
-	 * \param z displacement z component
-	 */
-	virtual void InsertDisplacement(vtkIdType id, double x, double y, double z);
+  //!Add displacement at the specified point.
+  /*!
+   * The displacement shall not be greater than a 1/10 of the input mesh radius
+   * \param id Point identifier
+   * \param x displacement x component
+   * \param y displacement y component
+   * \param z displacement z component
+   */
+  virtual void InsertDisplacement(vtkIdType id, double x, double y, double z);
 
-	//!Insert a displacement to the model in the specified position
-	/*!
-	 * \param id point identifier
-	 * \param vector displacement vector
-	 */
-	virtual void InsertDisplacement(vtkIdType id, double * vector);
+  //!Insert a displacement to the model in the specified position
+  /*!
+   * \param id point identifier
+   * \param vector displacement vector
+   */
+  virtual void InsertDisplacement(vtkIdType id, double * vector);
 
 protected:
-	vtkEDMInterface();
-	~vtkEDMInterface();
+  vtkEDMInterface();
+  ~vtkEDMInterface();
 
-	//!Explicit deformable mesh filter
-	vtkDeformableMesh * DeformableMesh;
+  //!Explicit deformable mesh filter
+  vtkDeformableMesh * DeformableMesh;
 
-	//!Source mesh polydata
-	vtkPolyData * Deformed;
+  //!Source mesh polydata
+  vtkPolyData * Deformed;
 
-	//!Force vector computation
-	vtkImageSobel3D * ForceFilter;
+  //!Force vector computation
+  vtkImageSobel3D * ForceFilter;
 
-	//!Magnitude filter
-	vtkImageMagnitude * MagnitudeFilter;
+  //!Magnitude filter
+  vtkImageMagnitude * MagnitudeFilter;
 
-	//!Sobel filter
-	vtkImageSobel3D * SobelFilter;
+  //!Sobel filter
+  vtkImageSobel3D * SobelFilter;
 
-	//!Image data
-	vtkImageData * ImageData;
+  //!Image data
+  vtkImageData * ImageData;
 
-	//!Generated Image Source
-	vtkImageData * ImageSource;
+  //!Generated Image Source
+  vtkImageData * ImageSource;
 
-	//!Image stencil filter
-	vtkPolyDataToImageStencil * ImageStencilFilter;
+  //!Image stencil filter
+  vtkPolyDataToImageStencil * ImageStencilFilter;
 
-	//!Image stencil
-	vtkImageStencil * Stencil;
+  //!Image stencil
+  vtkImageStencil * Stencil;
 
-	//!Image origin
-	double ImageOrigin[3];
+  //!Image origin
+  double ImageOrigin[3];
 
-	//!Image spacing
-	double ImageSpacing[3];
+  //!Image spacing
+  double ImageSpacing[3];
 
-	//!Image extent
-	int ImageExtent[6];
+  //!Image extent
+  int ImageExtent[6];
 
-	//! Mesh reset flag
-	bool Reset;
+  //! Mesh reset flag
+  bool Reset;
 
-	//! Number of iterations
-	int NumberOfIterations;
+  //! Number of iterations
+  int NumberOfIterations;
 
-	//! Warp scaling factor
-	double WarpScaleFactor;
+  //! Warp scaling factor
+  double WarpScaleFactor;
 
 private:
-	vtkEDMInterface(const vtkEDMInterface&);  // Not implemented.
-	void operator=(const vtkEDMInterface&);  // Not implemented.
-	
+  vtkEDMInterface(const vtkEDMInterface&);  // Not implemented.
+  void operator=(const vtkEDMInterface&);  // Not implemented.
+  
 };
 
 #endif

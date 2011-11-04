@@ -29,9 +29,9 @@ SET(KIT_LIBS
     ${PROJECT_NAME}BioMechanics
     ${PROJECT_NAME}CollisionDetection
     vtkRendering
-	vtkGraphics 
-	vtkCommon
-	vtkHybrid
+  vtkGraphics 
+  vtkCommon
+  vtkHybrid
 )
 
 # Set your list of TCL libraries here.
@@ -41,8 +41,8 @@ SET(KIT_TCL_LIBS
     ${PROJECT_NAME}CollisionDetectionTCL
     vtkRenderingTCL
     vtkGraphicsTCL
-	vtkCommonTCL
-	vtkHybridTCL
+  vtkCommonTCL
+  vtkHybridTCL
 )
  
 IF(APPLE)

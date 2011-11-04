@@ -60,97 +60,97 @@ POSSIBILITY OF SUCH DAMAGE.
 int main(int argc, char * argv[])
 {
 
-	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick.vtp";
-	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick_col.vtp";
-	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
+  const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick.vtp";
+  const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/stick_col.vtp";
+  const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
 
-	const char * fnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
-	const char * cfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
-	const char * tfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
+  const char * fnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
+  const char * cfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
+  const char * tfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	renderer->SetBackground(0.8,0.8,0.8);
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  renderer->SetBackground(0.8,0.8,0.8);
 
-	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
-	renWin->SetSize(800,600);
-	renWin->AddRenderer(renderer);
+  vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->SetSize(800,600);
+  renWin->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	iren->SetRenderWindow(renWin);
+  vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  iren->SetRenderWindow(renWin);
 
-	vtkSmartPointer<vtkScenario> scenario = vtkSmartPointer<vtkScenario>::New();
+  vtkSmartPointer<vtkScenario> scenario = vtkSmartPointer<vtkScenario>::New();
 
-	//Create a probe
-	//Generate probe's first element (stick)
-	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
-	vis->SetName("stick_vis");
-	vis->SetFileName(fn);
-	vis->SetTextureFileName(tfn);
-	vis->SetOpacity(1.0);
+  //Create a probe
+  //Generate probe's first element (stick)
+  vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
+  vis->SetName("stick_vis");
+  vis->SetFileName(fn);
+  vis->SetTextureFileName(tfn);
+  vis->SetOpacity(1.0);
 
-	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
-	col->SetName("stick_col");
-	col->SetFileName(cfn);
-	col->SetOpacity(1.0);
-	col->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
+  col->SetName("stick_col");
+  col->SetFileName(cfn);
+  col->SetOpacity(1.0);
+  col->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
-	stick->SetId(0);
-	stick->SetName("stick");
-	stick->SetVisualizationModel(vis);
-	stick->SetCollisionModel(col);
-	stick->SetOrigin(0,0,6);
+  vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
+  stick->SetId(0);
+  stick->SetName("stick");
+  stick->SetVisualizationModel(vis);
+  stick->SetCollisionModel(col);
+  stick->SetOrigin(0,0,6);
 
-	//Second element (tip)
-	vtkSmartPointer<vtkVisualizationModel> visb = vtkSmartPointer<vtkVisualizationModel>::New();
-	visb->SetName("tip_vis");
-	visb->SetFileName(fnb);
-	visb->SetTextureFileName(tfnb);
-	visb->SetOpacity(1.0);
-	visb->SetColor(1.0, 0.0, 1.0);
+  //Second element (tip)
+  vtkSmartPointer<vtkVisualizationModel> visb = vtkSmartPointer<vtkVisualizationModel>::New();
+  visb->SetName("tip_vis");
+  visb->SetFileName(fnb);
+  visb->SetTextureFileName(tfnb);
+  visb->SetOpacity(1.0);
+  visb->SetColor(1.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkCollisionModel> colb = vtkSmartPointer<vtkCollisionModel>::New();
-	colb->SetName("tip_col");
-	colb->SetFileName(cfnb);
-	colb->SetOpacity(1.0);
-	colb->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> colb = vtkSmartPointer<vtkCollisionModel>::New();
+  colb->SetName("tip_col");
+  colb->SetFileName(cfnb);
+  colb->SetOpacity(1.0);
+  colb->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> tip = vtkSmartPointer<vtkScenarioElement>::New();
-	tip->SetId(1);
-	tip->SetName("tip");
-	tip->SetVisualizationModel(visb);
-	tip->SetCollisionModel(colb);
-	tip->SetOrigin(0,0,6);
+  vtkSmartPointer<vtkScenarioElement> tip = vtkSmartPointer<vtkScenarioElement>::New();
+  tip->SetId(1);
+  tip->SetName("tip");
+  tip->SetVisualizationModel(visb);
+  tip->SetCollisionModel(colb);
+  tip->SetOrigin(0,0,6);
 
-	vtkSmartPointer<vtkToolDummy> probe = vtkSmartPointer<vtkToolDummy>::New();
-	probe->AddElement(stick);
-	probe->AddElement(tip);
+  vtkSmartPointer<vtkToolDummy> probe = vtkSmartPointer<vtkToolDummy>::New();
+  probe->AddElement(stick);
+  probe->AddElement(tip);
 
-	probe->Translate(2, 0, 0);
-	probe->RotateY(5);
-	probe->RotateX(-20);
+  probe->Translate(2, 0, 0);
+  probe->RotateY(5);
+  probe->RotateX(-20);
 
-	scenario->SetRenderWindow(renWin);
-	scenario->AddObject(probe);
-	scenario->Init();
+  scenario->SetRenderWindow(renWin);
+  scenario->AddObject(probe);
+  scenario->Init();
 
-	scenario->Update();
+  scenario->Update();
 
-	//Adjust Camera
-	vtkCamera * camera = renderer->GetActiveCamera();
-	camera->SetPosition(0, 0, 2);
-	camera->SetFocalPoint(0, 0, -6);
-	camera->SetViewAngle(60);
-	camera->Yaw(0);
-	camera->Elevation(20);
-	camera->Pitch(-15);
-	camera->Dolly(0.8);
+  //Adjust Camera
+  vtkCamera * camera = renderer->GetActiveCamera();
+  camera->SetPosition(0, 0, 2);
+  camera->SetFocalPoint(0, 0, -6);
+  camera->SetViewAngle(60);
+  camera->Yaw(0);
+  camera->Elevation(20);
+  camera->Pitch(-15);
+  camera->Dolly(0.8);
 
-	iren->Initialize();
+  iren->Initialize();
 
-	renWin->Render();
+  renWin->Render();
 
-	iren->Start();
+  iren->Start();
 
-	return 0;
+  return 0;
 }

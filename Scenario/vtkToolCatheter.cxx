@@ -66,48 +66,48 @@ vtkToolCatheter::~vtkToolCatheter()
 //----------------------------------------------------------------------------
 void vtkToolCatheter::Init()
 {
-	Superclass::Init();
+  Superclass::Init();
 }
 
 //----------------------------------------------------------------------------
 void vtkToolCatheter::Update()
 {
-	this->Superclass::Update();
+  this->Superclass::Update();
 }
 
 void vtkToolCatheter::Yaw(double angle)
 {
-	double step = angle - this->YawAngle;
-	if(step != 0)
-	{
-		this->RotateY(step);
-		this->YawAngle = angle;
-	}
+  double step = angle - this->YawAngle;
+  if(step != 0)
+  {
+    this->RotateY(step);
+    this->YawAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolCatheter::Pitch(double angle)
 {
-	double step = angle - this->PitchAngle;
-	if(step != 0)
-	{
-		this->RotateX(step);
-		this->PitchAngle = angle;
-	}
+  double step = angle - this->PitchAngle;
+  if(step != 0)
+  {
+    this->RotateX(step);
+    this->PitchAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolCatheter::Roll(double angle)
 {
-	double step = angle - this->RollAngle;
-	if(step != 0)
-	{
-		this->RotateZ(step);
-		this->RollAngle = angle;
-	}
+  double step = angle - this->RollAngle;
+  if(step != 0)
+  {
+    this->RotateZ(step);
+    this->RollAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolCatheter::PrintSelf(ostream& os,vtkIndent indent) {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }

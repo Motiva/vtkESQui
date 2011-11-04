@@ -17,40 +17,40 @@
 
 int TestvtkCollisionModel(int argc, char * argv[]){
 
-	const char * fnc ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp";
+  const char * fnc ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp";
 
-	vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
-	reader->SetFileName(fnc);
+  vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+  reader->SetFileName(fnc);
 
-	vtkSmartPointer<vtkCollisionModel> model = vtkSmartPointer<vtkCollisionModel>::New();
-	model->SetInput(reader->GetOutput());
-	model->SetOpacity(0.5);
-	model->SetColor(0,1,1);
-	model->SetRadius(0.05);
-	model->Init();
+  vtkSmartPointer<vtkCollisionModel> model = vtkSmartPointer<vtkCollisionModel>::New();
+  model->SetInput(reader->GetOutput());
+  model->SetOpacity(0.5);
+  model->SetColor(0,1,1);
+  model->SetRadius(0.05);
+  model->Init();
 
-	// A call to update method is made to force the model to be at its last state
-	model->Update();
+  // A call to update method is made to force the model to be at its last state
+  model->Update();
 
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
-	renWin->SetSize(500,500);
-	renWin->AddRenderer(renderer);
+  vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->SetSize(500,500);
+  renWin->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	iren->SetRenderWindow(renWin);
+  vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  iren->SetRenderWindow(renWin);
 
-	renderer->AddActor(model->GetActor());
-	renderer->SetBackground(1,1,1);
+  renderer->AddActor(model->GetActor());
+  renderer->SetBackground(1,1,1);
 
-	renderer->ResetCamera();
-	iren->Initialize();
+  renderer->ResetCamera();
+  iren->Initialize();
 
-	renWin->Render();
+  renWin->Render();
 
-	iren->Start();
+  iren->Start();
 
-	return 0;
+  return 0;
 }
 

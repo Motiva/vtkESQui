@@ -67,281 +67,284 @@ class vtkSmoothPolyDataFilter;
 class VTK_ESQUI_COMMON_EXPORT vtkModel : public vtkPolyDataAlgorithm {
 
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkModel,vtkPolyDataAlgorithm);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkModel,vtkPolyDataAlgorithm);
 
-	//! Create new model that will be used as a data container
-	static vtkModel *New();
-	//! Print model info
-	void PrintSelf(ostream& os, vtkIndent indent);
-	//! Return class name
-	const char *GetClassName() {return "vtkModel";};
+  //! Create new model that will be used as a data container
+  static vtkModel *New();
+  //! Print model info
+  void PrintSelf(ostream& os, vtkIndent indent);
+  //! Return class name
+  const char *GetClassName() {return "vtkModel";};
 
-	//!Tool type definitiion
-	//BTX
-	enum vtkModelType{
-		Visualization = 0,
-		Collision = 1,
-		Deformation = 2
-	};
-	//ETX
+  //!Tool type definitiion
+  //BTX
+  enum vtkModelType{
+    Visualization = 0,
+    Collision = 1,
+    Deformation = 2
+  };
+  //ETX
 
-	//!Set model id
-	/*!
-	 * \sa vtkIdType GetId()
-	 */
-	vtkSetMacro(Id, vtkIdType);
-	//!Return model id
-	/*!
-	 * \sa SetInput(vtkIdType)
-	 */
-	vtkGetMacro(Id, vtkIdType);
+  //!Set model id
+  /*!
+   * \sa vtkIdType GetId()
+   */
+  vtkSetMacro(Id, vtkIdType);
+  //!Return model id
+  /*!
+   * \sa SetInput(vtkIdType)
+   */
+  vtkGetMacro(Id, vtkIdType);
 
-	//!Set the object id of the model
-	/*!
-	 * \sa int GetObjectId()
-	 */
-	vtkSetMacro(ObjectId, int);
-	//!Get the  object id of the model
-	/*/
-	 * \sa SetObjectId(int)
-	 */
-	vtkGetMacro(ObjectId, int);
+  //!Set the object id of the model
+  /*!
+   * \sa int GetObjectId()
+   */
+  vtkSetMacro(ObjectId, int);
+  //!Get the  object id of the model
+  /*/
+   * \sa SetObjectId(int)
+   */
+  vtkGetMacro(ObjectId, int);
 
-	//!Set model type
-	/*!
-	 * \sa vtlModelType GetModelType()
-	 */
-	vtkSetMacro(ModelType, vtkModel::vtkModelType);
-	//!Return model type
-	/*!
-	 * \sa SetModelType(vtkModelType)
-	 */
-	vtkGetMacro(ModelType, vtkModel::vtkModelType);
+  //!Set model type
+  /*!
+   * \sa vtlModelType GetModelType()
+   */
+  vtkSetMacro(ModelType, vtkModel::vtkModelType);
+  //!Return model type
+  /*!
+   * \sa SetModelType(vtkModelType)
+   */
+  vtkGetMacro(ModelType, vtkModel::vtkModelType);
 
-	//! Assign the model state
-	/*!
-	 *\sa GetStatus()
-	 */
-	vtkSetMacro(Status, bool);
+  //! Assign the model state
+  /*!
+   *\sa GetStatus()
+   */
+  vtkSetMacro(Status, bool);
 
-	//! Returns the state of the model
-	/*!
-	 *\sa SetStatus(vtkModelStatus)
-	 */
-	vtkGetMacro(Status, bool);
+  //! Returns the state of the model
+  /*!
+   *\sa SetStatus(vtkModelStatus)
+   */
+  vtkGetMacro(Status, bool);
 
-	//! Assign model name
-	/*!
-	 *\sa GetName()
-	 */
-	vtkSetStringMacro(Name);
+  //! Assign model name
+  /*!
+   *\sa GetName()
+   */
+  vtkSetStringMacro(Name);
 
-	//!Return model name
-	/*!
-	 *\sa SetName(const char * name)
-	 */
-	vtkGetStringMacro(Name);
+  //!Return model name
+  /*!
+   *\sa SetName(const char * name)
+   */
+  vtkGetStringMacro(Name);
 
-	//! Assign model filename
-	/*!
-	 *\sa GetFileName()
-	 */
-	vtkSetStringMacro(FileName);
+  //! Assign model filename
+  /*!
+   *\sa GetFileName()
+   */
+  vtkSetStringMacro(FileName);
 
-	//!Return model filename
-	/*!
-	 *\sa SetFileName(const char * name)
-	 */
-	vtkGetStringMacro(FileName);
+  //!Return model filename
+  /*!
+   *\sa SetFileName(const char * name)
+   */
+  vtkGetStringMacro(FileName);
 
-	//! Set model mesh color
-	vtkSetVector3Macro(Color, double);
+  //! Set model mesh color
+  vtkSetVector3Macro(Color, double);
 
-	//! Get model mesh color
-	vtkGetVector3Macro(Color, double);
+  //! Get model mesh color
+  vtkGetVector3Macro(Color, double);
 
-	//! Set model opacity
-	/*!
-	 * \sa double GetOpacity()
-	 */
-	vtkSetMacro(Opacity, double);
+  //! Set model opacity
+  /*!
+   * \sa double GetOpacity()
+   */
+  vtkSetMacro(Opacity, double);
 
-	//! Get model opacity
-	/*!
-	 * \sa SetOpacity(double)
-	 */
-	vtkGetMacro(Opacity, double);
+  //! Get model opacity
+  /*!
+   * \sa SetOpacity(double)
+   */
+  vtkGetMacro(Opacity, double);
 
-	//! Set model visibility
-	/*!
-	 * \sa double GetVisibility()
-	 */
-	vtkSetMacro(Visibility, bool);
+  //! Set model visibility
+  /*!
+   * \sa double GetVisibility()
+   */
+  vtkSetMacro(Visibility, bool);
 
-	//! Get model visibilty
-	/*!
-	 * \sa double GetVisibility()
-	 */
-	vtkGetMacro(Visibility, bool);
+  //! Get model visibilty
+  /*!
+   * \sa double GetVisibility()
+   */
+  vtkGetMacro(Visibility, bool);
 
-	vtkBooleanMacro(Visibility, bool);
+  vtkBooleanMacro(Visibility, bool);
 
-	//!Set transform matrix
-	void SetMatrix(vtkMatrix4x4 * m);
+  //!Set transform matrix
+  void SetMatrix(vtkMatrix4x4 * m);
 
-	//!Get transform matrix
-	/*!
-	 * Transformation matrix for displaying purposes
-	 */
-	//!
-	vtkMatrix4x4 * GetMatrix();
+  //!Get transform matrix
+  /*!
+   * Transformation matrix for displaying purposes
+   */
+  //!
+  vtkMatrix4x4 * GetMatrix();
 
-	//!Get dataset mapper
-	/*!
-	 * Dataset mapper of the model actor
-	 */
-	vtkPolyDataMapper * GetMapper();
+  //!Get dataset mapper
+  /*!
+   * Dataset mapper of the model actor
+   */
+  vtkPolyDataMapper * GetMapper();
 
-	//!Get model actor
-	/*!
-	 * The model actor will be used for displaying purposes
-	 */
-	vtkActor * GetActor();
+  //!Get model actor
+  /*!
+   * The model actor will be used for displaying purposes
+   */
+  vtkActor * GetActor();
 
-	//! Specify the source object for mesh synchronization purposes
-	/*!
-	 * This is an optional input. If source is set, the model primary mesh
-	 * will be synchronized to this source mesh whenever a change is made on it.
-	 * \sa vtkPolyData* GetSource()
-	 */
-	virtual void SetSource(vtkPolyData *source);
+  //! Specify the source object for mesh synchronization purposes
+  /*!
+   * This is an optional input. If source is set, the model primary mesh
+   * will be synchronized to this source mesh whenever a change is made on it.
+   * \sa vtkPolyData* GetSource()
+   */
+  virtual void SetSource(vtkPolyData *source);
 
-	//! Return the source object for mesh synchronization purposes
-	/*!
-	 * \sa SetSource(vtkPolyData *)
-	 */
-	virtual vtkPolyData *GetSource();
+  //! Return the source object for mesh synchronization purposes
+  /*!
+   * \sa SetSource(vtkPolyData *)
+   */
+  virtual vtkPolyData *GetSource();
 
-	//! Get synchronization hash map
-	vtkIdList * GetHashMap();
+  //! Get synchronization hash map
+  vtkIdList * GetHashMap();
 
-	//!Virtual initialization function
-	/*!
-	 * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
-	 * - Input: vtkPolyData object \n
-	 */
-	virtual void Init();
+  //!Virtual initialization function
+  /*!
+   * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
+   * - Input: vtkPolyData object \n
+   */
+  virtual void Init();
 
-	//! Hide scenario model.
-	/*!
-	 * Must be implemented in inherited classes
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void Hide();
-	//! Show/Display model.
-	/*!
-	 * Must be implemented in inherited classes
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void Show();
+  //! Hide scenario model.
+  /*!
+   * Must be implemented in inherited classes
+   * Note: this function must be implemented in inheriting classes
+   */
+  virtual void Hide();
+  //! Show/Display model.
+  /*!
+   * Must be implemented in inherited classes
+   * Note: this function must be implemented in inheriting classes
+   */
+  virtual void Show();
 
-	//! Enable model.
-	/*!
-	 * Must be implemented in inherited classes
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void Enable();
+  //! Enable model.
+  /*!
+   * Must be implemented in inherited classes
+   * Note: this function must be implemented in inheriting classes
+   */
+  virtual void Enable();
 
-	//! Disable model.
-	/*!
-	 * Must be implemented in inherited classes
-	 * Note: this function must be implemented in inheriting classes
-	 */
-	virtual void Disable();
+  //! Disable model.
+  /*!
+   * Must be implemented in inherited classes
+   * Note: this function must be implemented in inheriting classes
+   */
+  virtual void Disable();
 
-	//! Check if model is visible
-	/*!
-	 * When an model is disabled it will:
-	 * - be visible.
-	 * - be computed in collision detection.
-	 * - be used in simulation.
-	 */
-	bool IsVisible(){ return this->Visibility == 1;};
+  //! Check if model is visible
+  /*!
+   * When an model is disabled it will:
+   * - be visible.
+   * - be computed in collision detection.
+   * - be used in simulation.
+   */
+  bool IsVisible(){ return this->Visibility == 1;};
 
-	//! Check if model is hidden
-	/*!
-	 * When an model is disabled it will NOT:
-	 * - be visible.
-	 * - be computed in collision detection.
-	 * It will be used in simulation.
-	 */
-	bool IsHidden(){ return this->Visibility == 0;};
+  //! Check if model is hidden
+  /*!
+   * When an model is disabled it will NOT:
+   * - be visible.
+   * - be computed in collision detection.
+   * It will be used in simulation.
+   */
+  bool IsHidden(){ return this->Visibility == 0;};
 
-	//! Check if model is disabled.
-	/*!
-	 * When an model is disabled it will NOT:
-	 * - be visible.
-	 * - be computed in collision detection.
-	 * - be used in simulation.
-	 */
-	bool IsDisabled(){ return !this->Status;};
+  //! Check if model is disabled.
+  /*!
+   * When an model is disabled it will NOT:
+   * - be visible.
+   * - be computed in collision detection.
+   * - be used in simulation.
+   */
+  bool IsDisabled(){ return !this->Status;};
 
-	//!Check if object has been initialized
-	bool IsInitialized() { return this->Initialized;};
+  //!Check if object has been initialized
+  bool IsInitialized() { return this->Initialized;};
 
 protected:
-	vtkModel();
-	~vtkModel();
+  vtkModel();
+  ~vtkModel();
 
-	virtual int FillOutputPortInformation( int port, vtkInformation* info );
-	virtual int FillInputPortInformation(int port, vtkInformation *info);
-	virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  virtual int FillOutputPortInformation( int port, vtkInformation* info );
+  virtual int FillInputPortInformation(int port, vtkInformation *info);
+  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-	virtual void BuildHashMap(vtkPolyData * a, vtkPolyData * b);
+  virtual void BuildHashMap(vtkPolyData * a, vtkPolyData * b);
 
-	//! Model Id
-	vtkIdType Id;
+  //! Model Id
+  vtkIdType Id;
 
-	//! Object Id
-	vtkIdType ObjectId;
+  //! Object Id
+  vtkIdType ObjectId;
 
-	//! Model name
-	char * Name;
+  //! Model name
+  char * Name;
 
-	vtkModelType ModelType;
+  vtkModelType ModelType;
 
-	//! Model Status
-	bool Status;
+  //! Model Status
+  bool Status;
 
-	//! model data file name
-	char * FileName;
+  //! model data file name
+  char * FileName;
 
-	//! Transform Matrix
-	vtkMatrix4x4 * Matrix;
+  //! Transform Matrix
+  vtkMatrix4x4 * Matrix;
 
-	//! DataSetMapper of the model actor
-	vtkPolyDataMapper * Mapper;
+  //! DataSetMapper of the model actor
+  vtkPolyDataMapper * Mapper;
 
-	//! Tool piece actor
-	vtkActor * Actor;
+  //! Tool piece actor
+  vtkActor * Actor;
 
-	//! Synchronization HashMap
-	vtkIdList * HashMap;
+  //! Filter used to synchronize/match input & source meshes
+  vtkSmoothPolyDataFilter * SmoothFilter;
 
-	//! Model initialization flag
-	bool Initialized;
+  //! Synchronization HashMap
+  vtkIdList * HashMap;
 
-	double Color[3];
+  //! Model initialization flag
+  bool Initialized;
 
-	double Opacity;
+  double Color[3];
 
-	bool Visibility;
+  double Opacity;
+
+  bool Visibility;
 
 private:
 
-	vtkModel (const vtkModel &);//NotImplemented
-	void operator =(const vtkModel &);//Not Implemented
+  vtkModel (const vtkModel &);//NotImplemented
+  void operator =(const vtkModel &);//Not Implemented
 
 };
 #endif

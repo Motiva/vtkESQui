@@ -67,133 +67,133 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkScenario: public vtkObject
 {
 
 public:
-	//!Type Revision Macro
-	vtkTypeRevisionMacro(vtkScenario, vtkObject);
-	//!Create a new Scenario object
-	static vtkScenario * New();
-	//! Print scenario info
-	void PrintSelf(ostream& os, vtkIndent indent);
-	//!Return class name as a string
-	const char *GetClassName() {return "vtkScenario";}
+  //!Type Revision Macro
+  vtkTypeRevisionMacro(vtkScenario, vtkObject);
+  //!Create a new Scenario object
+  static vtkScenario * New();
+  //! Print scenario info
+  void PrintSelf(ostream& os, vtkIndent indent);
+  //!Return class name as a string
+  const char *GetClassName() {return "vtkScenario";}
 
-	//! Assign model name
-	/*!
-	 *\sa GetName()
-	 */
-	vtkSetStringMacro(Name);
+  //! Assign model name
+  /*!
+   *\sa GetName()
+   */
+  vtkSetStringMacro(Name);
 
-	//!Return model name
-	/*!
-	 *\sa SetName(const char * name)
-	 */
-	vtkGetStringMacro(Name);
+  //!Return model name
+  /*!
+   *\sa SetName(const char * name)
+   */
+  vtkGetStringMacro(Name);
 
-	//!Set the collection of objects of the scenario
-	/*!
-	 * \param collection collection of objects to be inserted to the scenario
-	 * \sa GetObjects()
-	 */
-	void SetObjects(vtkScenarioObjectCollection * collection);
+  //!Set the collection of objects of the scenario
+  /*!
+   * \param collection collection of objects to be inserted to the scenario
+   * \sa GetObjects()
+   */
+  void SetObjects(vtkScenarioObjectCollection * collection);
 
-	//!Get the collection of objects of the scenario
-	/*!
-	 * \sa SetObjects(vtkScenarioObjectCollection * collection)
-	 */
-	vtkScenarioObjectCollection * GetObjects();
+  //!Get the collection of objects of the scenario
+  /*!
+   * \sa SetObjects(vtkScenarioObjectCollection * collection)
+   */
+  vtkScenarioObjectCollection * GetObjects();
 
-	//!Insert object to the scenario
-	/*!
-	 * The object will be inserted at the end of the list
-	 * \param object vtkScenarioObject object to be inserted
-	 * \return position of the added object.
-	 * \sa InsertObject(vtkScenarioObject * object)
-	 */
-	void AddObject(vtkScenarioObject * object);
+  //!Insert object to the scenario
+  /*!
+   * The object will be inserted at the end of the list
+   * \param object vtkScenarioObject object to be inserted
+   * \return position of the added object.
+   * \sa InsertObject(vtkScenarioObject * object)
+   */
+  void AddObject(vtkScenarioObject * object);
 
-	//!Insert an object in the specified position
-	/*!
-	 * If the given position is not empty, the content is replaced by the new model
-	 * \param index index of the list where the object will be added
-	 * \param object vtkScenarioObject object to be inserted
-	 * \sa InsertNextObject(vtkScenarioObject * object)
-	 */
-	void ReplaceObject(vtkIdType index, vtkScenarioObject * object);
+  //!Insert an object in the specified position
+  /*!
+   * If the given position is not empty, the content is replaced by the new model
+   * \param index index of the list where the object will be added
+   * \param object vtkScenarioObject object to be inserted
+   * \sa InsertNextObject(vtkScenarioObject * object)
+   */
+  void ReplaceObject(vtkIdType index, vtkScenarioObject * object);
 
-	//!Delete the object at the specified id from the scenario
-	/*!
-	 * It will only remove the object from the collection, it does not free memory
-	 * \param index index of the object to be removed
-	 */
-	void RemoveObject(vtkIdType index);
+  //!Delete the object at the specified id from the scenario
+  /*!
+   * It will only remove the object from the collection, it does not free memory
+   * \param index index of the object to be removed
+   */
+  void RemoveObject(vtkIdType index);
 
-	//!Return the object at the specified position
-	/*!
-	 * \param id index of the object to be returned
-	 * \return vtkScenarioObject object
-	 */
-	vtkScenarioObject * GetObject(vtkIdType id);
+  //!Return the object at the specified position
+  /*!
+   * \param id index of the object to be returned
+   * \return vtkScenarioObject object
+   */
+  vtkScenarioObject * GetObject(vtkIdType id);
 
-	//!Return number of objects in the scenario
-	vtkIdType GetNumberOfObjects();
+  //!Return number of objects in the scenario
+  vtkIdType GetNumberOfObjects();
 
-	//!Set/Get legend display
-	vtkSetMacro(Collision, bool);
-	vtkGetMacro(Collision, bool);
+  //!Set/Get legend display
+  vtkSetMacro(Collision, bool);
+  vtkGetMacro(Collision, bool);
 
-	vtkBooleanMacro(Collision, bool);
+  vtkBooleanMacro(Collision, bool);
 
-	//!Assign the render window of the scenario
-	/*!
-	 * \param window render window for displaying purposes
-	 * \sa GetRenderWindow()
-	 */
-	void SetRenderWindow(vtkRenderWindow *window);
+  //!Assign the render window of the scenario
+  /*!
+   * \param window render window for displaying purposes
+   * \sa GetRenderWindow()
+   */
+  void SetRenderWindow(vtkRenderWindow *window);
 
-	//!Return the render window of the scenario
-	/*!
-	 * \sa SetRenderWindow(vtkRenderWindow *Renderer)
-	 */
-	vtkRenderWindow *GetRenderWindow();
+  //!Return the render window of the scenario
+  /*!
+   * \sa SetRenderWindow(vtkRenderWindow *Renderer)
+   */
+  vtkRenderWindow *GetRenderWindow();
 
-	//! Check if scenario has been initialized
-	bool IsInitialized(){return this->Initialized;};
+  //! Check if scenario has been initialized
+  bool IsInitialized(){return this->Initialized;};
 
-	//!Initialize Scenario
-	void Init();
+  //!Initialize Scenario
+  void Init();
 
-	//!Update the whole Scenario
-	/*!
-	 * Collision Detection is processed. If any contact has occurred the related tools and objects will be updated
-	 */
-	void Update();
+  //!Update the whole Scenario
+  /*!
+   * Collision Detection is processed. If any contact has occurred the related tools and objects will be updated
+   */
+  void Update();
 
 protected:
 
-	vtkScenario();
-	~vtkScenario();
+  vtkScenario();
+  ~vtkScenario();
 
 
-	//! Name of the scenario
-	char* Name;
+  //! Name of the scenario
+  char* Name;
 
-	//! Initialization flag
-	bool Initialized;
+  //! Initialization flag
+  bool Initialized;
 
-	//!Scenario render window
-	vtkRenderWindow * RenderWindow;
-	//!Scenario renderer
-	vtkRenderer * Renderer;
+  //!Scenario render window
+  vtkRenderWindow * RenderWindow;
+  //!Scenario renderer
+  vtkRenderer * Renderer;
 
-	//!Collection of the scenario objects
-	vtkScenarioObjectCollection * Objects;
+  //!Collection of the scenario objects
+  vtkScenarioObjectCollection * Objects;
 
-	//!Enable collision detection
-	bool Collision;
+  //!Enable collision detection
+  bool Collision;
 
 private:
 
-	vtkScenario(const vtkScenario&);
-	void operator=(const vtkScenario&);
+  vtkScenario(const vtkScenario&);
+  void operator=(const vtkScenario&);
 
 };
 

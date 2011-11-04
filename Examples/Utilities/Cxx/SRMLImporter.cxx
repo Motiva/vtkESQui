@@ -58,57 +58,57 @@ POSSIBILITY OF SUCH DAMAGE.
 
 int main(int argc, char * argv[])
 {
-	const char * path = "/home/jballesteros/Workspace/data/vtkESQuiData/";
-	const char * fn = "/home/jballesteros/Workspace/data/vtkESQuiData/SRML/Laparoscopy/lap_basic.srml";
+  const char * path = "/home/jballesteros/Workspace/data/vtkESQuiData/";
+  const char * fn = "/home/jballesteros/Workspace/data/vtkESQuiData/SRML/Laparoscopy/lap_basic.srml";
 
-	if (argc > 1)
-	{
-		fn = argv[1];
-	}
+  if (argc > 1)
+  {
+    fn = argv[1];
+  }
 
-	/**********  Render Window Definitions  ********/
-	vtkSmartPointer<vtkRenderer> ren1 =
-			vtkSmartPointer<vtkRenderer>::New();
-	ren1->SetBackground(1.0,1.0,1.0);
+  /**********  Render Window Definitions  ********/
+  vtkSmartPointer<vtkRenderer> ren1 =
+      vtkSmartPointer<vtkRenderer>::New();
+  ren1->SetBackground(1.0,1.0,1.0);
 
-	vtkSmartPointer<vtkRenderWindow> renWin =
-			vtkSmartPointer<vtkRenderWindow>::New();
-	renWin->AddRenderer(ren1);
-	renWin->SetSize(840,480);
+  vtkSmartPointer<vtkRenderWindow> renWin =
+      vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->AddRenderer(ren1);
+  renWin->SetSize(840,480);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> iren =
-			vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	iren->SetRenderWindow(renWin);
+  vtkSmartPointer<vtkRenderWindowInteractor> iren =
+      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  iren->SetRenderWindow(renWin);
 
-	/**********  Scenario Definitions  ********/
-	vtkSmartPointer<vtkScenario> Scenario =
-			vtkSmartPointer<vtkScenario>::New();
-	Scenario->SetRenderWindow(renWin);
+  /**********  Scenario Definitions  ********/
+  vtkSmartPointer<vtkScenario> Scenario =
+      vtkSmartPointer<vtkScenario>::New();
+  Scenario->SetRenderWindow(renWin);
 
-	/**********  Interactor Style Definitions  ********/
-	vtkSmartPointer<vtkSimulationInteractorStyle> Style =
-			vtkSmartPointer<vtkSimulationInteractorStyle>::New();
+  /**********  Interactor Style Definitions  ********/
+  vtkSmartPointer<vtkSimulationInteractorStyle> Style =
+      vtkSmartPointer<vtkSimulationInteractorStyle>::New();
 
-	/**********  Simulation Definitions  ********/
-	vtkSmartPointer<vtkSimulation> Simulation =
-			vtkSmartPointer<vtkSimulation>::New();
-	Simulation->SetScenario(Scenario);
-	Simulation->SetInteractorStyle(Style);
+  /**********  Simulation Definitions  ********/
+  vtkSmartPointer<vtkSimulation> Simulation =
+      vtkSmartPointer<vtkSimulation>::New();
+  Simulation->SetScenario(Scenario);
+  Simulation->SetInteractorStyle(Style);
 
-	/**********  Simulation Import from SRML File  ********/
-	vtkSmartPointer<vtkSRMLImporter> Importer =
-			vtkSmartPointer<vtkSRMLImporter>::New();
-	Importer->SetDataPath(path);
-	Importer->SetFileName(fn);
-	Importer->SetSimulation(Simulation);
-	Importer->Read();
+  /**********  Simulation Import from SRML File  ********/
+  vtkSmartPointer<vtkSRMLImporter> Importer =
+      vtkSmartPointer<vtkSRMLImporter>::New();
+  Importer->SetDataPath(path);
+  Importer->SetFileName(fn);
+  Importer->SetSimulation(Simulation);
+  Importer->Read();
 
-	//Initialize simulation with imported values
-	Simulation->Init();
+  //Initialize simulation with imported values
+  Simulation->Init();
 
-	//Run simulation process
-	Simulation->Run();
+  //Run simulation process
+  Simulation->Run();
 
-	return 0;
+  return 0;
 }
 

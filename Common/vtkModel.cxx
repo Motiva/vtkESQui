@@ -63,242 +63,252 @@ vtkStandardNewMacro(vtkModel);
 //--------------------------------------------------------------------------
 vtkModel::vtkModel()
 {
-	this->Id = -1;
-	this->ObjectId = -1;
-	this->Name = NULL;
-	this->FileName = NULL;
-	this->Initialized = 0;
-	this->Status = 1;
-	this->Color[0]=this->Color[1]=this->Color[2]=1.0;
-	this->Opacity = 1.0;
-	this->Visibility = 1;
+  this->Id = -1;
+  this->ObjectId = -1;
+  this->Name = NULL;
+  this->FileName = NULL;
+  this->Initialized = 0;
+  this->Status = 1;
+  this->Color[0]=this->Color[1]=this->Color[2]=1.0;
+  this->Opacity = 1.0;
+  this->Visibility = 1;
 
-	this->Matrix = NULL;
-	this->Actor = NULL;
-	this->Mapper = NULL;
-	this->HashMap = NULL;
+  this->Matrix = NULL;
+  this->Actor = NULL;
+  this->Mapper = NULL;
+  this->HashMap = NULL;
 
-	//optional second input
-	this->SetNumberOfInputPorts(2);
+  //optional second input
+  this->SetNumberOfInputPorts(2);
 }
 
 //--------------------------------------------------------------------------
 vtkModel::~vtkModel()
 {
-	if(this->HashMap) this->HashMap->Delete();
+  if(this->HashMap) this->HashMap->Delete();
 }
 
 //----------------------------------------------------------------------------
 void vtkModel::SetSource(vtkPolyData *source)
 {
-	this->SetInput(1, source);
+  this->SetInput(1, source);
 }
 
 //----------------------------------------------------------------------------
 vtkPolyData *vtkModel::GetSource()
 {
-	if (this->GetNumberOfInputConnections(1) < 1)
-	{
-		return NULL;
-	}
-	return vtkPolyData::SafeDownCast(
-			this->GetExecutive()->GetInputData(1, 0));
+  if (this->GetNumberOfInputConnections(1) < 1)
+  {
+    return NULL;
+  }
+  return vtkPolyData::SafeDownCast(
+      this->GetExecutive()->GetInputData(1, 0));
 }
 
 
 //---------------------------------------------------------------------------
 int vtkModel::FillInputPortInformation(int port, vtkInformation *info)
 {
-	if(!this->Superclass::FillInputPortInformation(port, info))
-	{
-		return 0;
-	}
+  if(!this->Superclass::FillInputPortInformation(port, info))
+  {
+    return 0;
+  }
 
-	if( port == 1 ) // sync mesh
-	{
-		info->Set(vtkAlgorithm::INPUT_IS_OPTIONAL(), 1);
-	}
-	return 1;
+  if( port == 1 ) // sync mesh
+  {
+    info->Set(vtkAlgorithm::INPUT_IS_OPTIONAL(), 1);
+  }
+  return 1;
 }
 
 //----------------------------------------------------------------------------
 int vtkModel::FillOutputPortInformation(int, vtkInformation* info)
 {
-	info->Set(vtkDataObject::DATA_TYPE_NAME(), "vtkPolyData");
-	return 1;
+  info->Set(vtkDataObject::DATA_TYPE_NAME(), "vtkPolyData");
+  return 1;
 }
 
 //----------------------------------------------------------------------------
 void vtkModel::SetMatrix(vtkMatrix4x4 * m)
 {
-	this->Matrix = m;
+  this->Matrix = m;
 }
 
 //----------------------------------------------------------------------------
 vtkMatrix4x4 * vtkModel::GetMatrix()
 {
-	return this->Matrix;
+  return this->Matrix;
 }
 
 //----------------------------------------------------------------------------
 vtkActor * vtkModel::GetActor()
 {
-	return this->Actor;
+  return this->Actor;
 }
 
 //----------------------------------------------------------------------------
 vtkPolyDataMapper* vtkModel::GetMapper()
 {
-	return this->Mapper;
+  return this->Mapper;
 }
 //--------------------------------------------------------------------------
 vtkIdList * vtkModel::GetHashMap()
 {
-	return this->HashMap;
+  return this->HashMap;
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::Init()
 {
-	if(!this->Initialized)
-	{
-		//Synchronization hashMap
-		this->HashMap = vtkIdList::New();
+  if(!this->Initialized)
+  {
+    //Synchronization hashMap
+    this->HashMap = vtkIdList::New();
 
-		//Displaying purposes
-		this->Actor = vtkActor::New();
-		this->Mapper = vtkPolyDataMapper::New();
+    //Smooth Filter
+    this->SmoothFilter = vtkSmoothPolyDataFilter::New();
+    this->SmoothFilter->SetNumberOfIterations(10);
 
-		//Set actor transformation matrix
-		if(this->Matrix)
-		{
-			this->Actor->SetUserMatrix(this->Matrix);
-		}
+    //Displaying purposes
+    this->Actor = vtkActor::New();
+    this->Mapper = vtkPolyDataMapper::New();
 
-		this->Actor->SetMapper(this->Mapper);
+    //Set actor transformation matrix
+    if(this->Matrix)
+    {
+      this->Actor->SetUserMatrix(this->Matrix);
+    }
 
-		//Set as initialized
-		this->Initialized = 1;
-	}
-	this->Modified();
+    this->Actor->SetMapper(this->Mapper);
+
+    //Set as initialized
+    this->Initialized = 1;
+  }
+  this->Modified();
 }
 
 //----------------------------------------------------------------------------
 int vtkModel::RequestData(
-		vtkInformation *vtkNotUsed(request),
-		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector) {
+    vtkInformation *vtkNotUsed(request),
+    vtkInformationVector **inputVector,
+    vtkInformationVector *outputVector) {
 
-	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
-	vtkInformation *outInfo = outputVector->GetInformationObject(0);
+  vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+  vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
+  vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	//Get the input and output
-	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	//Optional input
-	vtkPolyData * source = 0;
-	if(sourceInfo){
-		source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
-	}
-	//Output
-	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+  //Get the input and output
+  vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+  //Optional input
+  vtkPolyData * source = 0;
+  if(sourceInfo){
+    source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
+  }
+  //Output
+  vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	output->ShallowCopy(input);
+  //If source is defined -> Synchronize mesh
+  if(source)
+  {
+    vtkDebugMacro("Model source is present\n");
 
-	//If source is defined -> Synchronize mesh
-	if(source)
-	{
-		vtkDebugMacro("Model source is present\n");
+    /*if(this->HashMap->GetNumberOfIds() == 0)
+    {
+      this->BuildHashMap(output, source);
+    }
 
-		if(this->HashMap->GetNumberOfIds() == 0)
-		{
-			this->BuildHashMap(output, source);
-		}
+    vtkPoints * points = output->GetPoints();
+    for(int i=0; i < points->GetNumberOfPoints(); i++){
+      double * p = source->GetPoint(this->HashMap->GetId(i));
+      points->SetPoint(i, p);
+      //double * po = input->GetPoint(i);
+      //if(i==20) cout << "ps: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
+    }*/
 
-		vtkPoints * points = output->GetPoints();
-		for(int i=0; i < points->GetNumberOfPoints(); i++){
-			double * p = source->GetPoint(this->HashMap->GetId(i));
-			points->SetPoint(i, p);
-			//double * po = input->GetPoint(i);
-			//if(i==20) cout << "ps: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
-		}
-	}
+    this->SmoothFilter->SetInput(input);
+    this->SmoothFilter->SetSource(source);
+    this->SmoothFilter->Update();
+    output->ShallowCopy(this->SmoothFilter->GetOutput());
+  }else
+  {
+    output->ShallowCopy(input);
+  }
 
-	//Set visualization parameters
-	this->Actor->SetVisibility(this->Visibility);
-	if(this->Status){
-		this->Actor->GetProperty()->SetColor(this->Color);
-		this->Actor->GetProperty()->SetOpacity(this->Opacity);
+  //Set visualization parameters
+  this->Actor->SetVisibility(this->Visibility);
 
-		this->Mapper->SetInput(output);
-		this->Mapper->Modified();
-		this->Mapper->Update();
-	}
+  if(this->Status){
+    this->Actor->GetProperty()->SetColor(this->Color);
+    this->Actor->GetProperty()->SetOpacity(this->Opacity);
 
-	return 1;
+    this->Mapper->SetInput(output);
+    this->Mapper->Modified();
+  }
+
+  return 1;
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
 {
-	vtkDebugMacro("Build model hashmap.")
+  vtkDebugMacro("Build model hashmap.")
 
-	//Force data to be updated
-	a->Update();
-	b->Update();
+  //Force data to be updated
+  a->Update();
+  b->Update();
 
-	//Create point locator to generate id map
-	vtkPointLocator * locator = vtkPointLocator::New();
-	locator->SetDataSet(b);
+  //Create point locator to generate id map
+  vtkPointLocator * locator = vtkPointLocator::New();
+  locator->SetDataSet(b);
 
-	this->HashMap->SetNumberOfIds(a->GetNumberOfPoints());
+  this->HashMap->SetNumberOfIds(a->GetNumberOfPoints());
 
-	for (int i=0; i<a->GetNumberOfPoints(); i++)
-	{
-		double * point = a->GetPoint(i);
-		vtkIdType id = locator->FindClosestPoint(point);
-		this->HashMap->SetId(i, id);
-	}
+  for (int i=0; i<a->GetNumberOfPoints(); i++)
+  {
+    double * point = a->GetPoint(i);
+    vtkIdType id = locator->FindClosestPoint(point);
+    this->HashMap->SetId(i, id);
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::Hide()
 {
-	this->Visibility = 0;
+  this->Visibility = 0;
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::Show()
 {
-	this->Visibility = 1;
+  this->Visibility = 1;
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::Disable()
 {
-	this->Status = 0;
-	this->Hide();
-	this->Modified();
+  this->Status = 0;
+  this->Hide();
+  this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::Enable()
 {
-	this->Status = 1;
-	this->Show();
-	this->Modified();
+  this->Status = 1;
+  this->Show();
+  this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::PrintSelf(ostream&os, vtkIndent indent)
 {
-	os << indent << "Id: " << this->Id << "\n";
-	os << indent << "ObjectId: " << this->ObjectId << "\n";
-	os << indent << "Model Type: " << this->ModelType << "\n";
-	os << indent << "Status: " << this->Status << "\n";
-	if(this->Name) os << indent << "Name: " << this->Name << "\n";
-	if(this->FileName) os << indent << "FileName: " << this->FileName << "\n";
-	os << indent << "Color: " << this->Color[0] << ", " << this->Color[1] << ", " << this->Color[2] << endl;
-	os << indent << "Opacity: " << this->Opacity << endl;
+  os << indent << "Id: " << this->Id << "\n";
+  os << indent << "ObjectId: " << this->ObjectId << "\n";
+  os << indent << "Model Type: " << this->ModelType << "\n";
+  os << indent << "Status: " << this->Status << "\n";
+  if(this->Name) os << indent << "Name: " << this->Name << "\n";
+  if(this->FileName) os << indent << "FileName: " << this->FileName << "\n";
+  os << indent << "Color: " << this->Color[0] << ", " << this->Color[1] << ", " << this->Color[2] << endl;
+  os << indent << "Opacity: " << this->Opacity << endl;
 
 }

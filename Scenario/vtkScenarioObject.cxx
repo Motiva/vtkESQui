@@ -58,263 +58,263 @@ vtkStandardNewMacro(vtkScenarioObject);
 //--------------------------------------------------------------------------
 vtkScenarioObject::vtkScenarioObject() {
 
-	this->SetNumberOfInputPorts(0);
-	this->SetNumberOfOutputPorts(1);
+  this->SetNumberOfInputPorts(0);
+  this->SetNumberOfOutputPorts(1);
 
-	this->Id = -1;
-	this->Name = NULL;
-	this->RenderWindow = NULL;
-	this->Renderer = NULL;
-	this->Initialized = 0;
+  this->Id = -1;
+  this->Name = NULL;
+  this->RenderWindow = NULL;
+  this->Renderer = NULL;
+  this->Initialized = 0;
 
-	this->Status = 1;
+  this->Status = 1;
 
-	this->Elements = vtkScenarioElementCollection::New();
-	this->Collisions = vtkCollisionCollection::New();
+  this->Elements = vtkScenarioElementCollection::New();
+  this->Collisions = vtkCollisionCollection::New();
 }
 
 //--------------------------------------------------------------------------
 vtkScenarioObject::~vtkScenarioObject()
 {
-	if(this->Elements) this->Elements->Delete();
-	if(this->Collisions) this->Collisions->Delete();
+  if(this->Elements) this->Elements->Delete();
+  if(this->Collisions) this->Collisions->Delete();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Init()
 {
-	if(!this->Initialized)
-	{
-		for (int id=0; id<this->GetNumberOfElements(); id++)
-		{
-			//Set common parameters
-			vtkScenarioElement * e = this->GetElement(id);
-			e->SetObjectId(this->Id);
-			e->SetId(id);
-			if(this->ObjectType == Tool) e->SetType(vtkScenarioElement::Tool);
-			else if(this->ObjectType == Organ) e->SetType(vtkScenarioElement::Organ);
+  if(!this->Initialized)
+  {
+    for (int id=0; id<this->GetNumberOfElements(); id++)
+    {
+      //Set common parameters
+      vtkScenarioElement * e = this->GetElement(id);
+      e->SetObjectId(this->Id);
+      e->SetId(id);
+      if(this->ObjectType == Tool) e->SetType(vtkScenarioElement::Tool);
+      else if(this->ObjectType == Organ) e->SetType(vtkScenarioElement::Organ);
 
-			//Initialize object elements
-			if(!e->IsInitialized()) e->Init();
-		}
-		this->Initialized = 1;
-	}
+      //Initialize object elements
+      if(!e->IsInitialized()) e->Init();
+    }
+    this->Initialized = 1;
+  }
 }
 
 //--------------------------------------------------------------------------
 int vtkScenarioObject::RequestData(vtkInformation *vtkNotUsed(request),
-		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector)
+    vtkInformationVector **inputVector,
+    vtkInformationVector *outputVector)
 {
 
-	//cout << "vtkScenarioObject::RequestData" << endl;
-	// get the info objects
-	//vtkInformation *outInfo = outputVector->GetInformationObject(0);
+  //cout << "vtkScenarioObject::RequestData" << endl;
+  // get the info objects
+  //vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	// get the input and output
-	//vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+  // get the input and output
+  //vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//Reset previous collisions
-	this->Collisions->RemoveAllItems();
+  //Reset previous collisions
+  this->Collisions->RemoveAllItems();
 
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =this->Elements->GetNextElement())
-	{
-		e->Modified();
-		e->Update();
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =this->Elements->GetNextElement())
+  {
+    e->Modified();
+    e->Update();
+  }
 
-	return 1;
+  return 1;
 }
 
 //--------------------------------------------------------------------------
 vtkScenarioElementCollection * vtkScenarioObject::GetElements()
 {
-	return this->Elements;
+  return this->Elements;
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::SetElements(vtkScenarioElementCollection * elements)
 {
-	if(this->Elements) this->Elements->Delete();
-	this->Elements = elements;
+  if(this->Elements) this->Elements->Delete();
+  this->Elements = elements;
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::AddElement(vtkScenarioElement *e) {
-	this->Elements->AddElement(e);
+  this->Elements->AddElement(e);
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::RemoveElement(vtkIdType id) {
-	this->Elements->RemoveItem(id);
+  this->Elements->RemoveItem(id);
 }
 
 //--------------------------------------------------------------------------
 vtkScenarioElement * vtkScenarioObject::GetElement(vtkIdType id) {
-	return this->Elements->GetElement(id);
+  return this->Elements->GetElement(id);
 }
 
 //--------------------------------------------------------------------------
 int vtkScenarioObject::GetNumberOfElements()
 {
-	return this->Elements->GetNumberOfElements();
+  return this->Elements->GetNumberOfElements();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Translate(double * vector)
 {
-	this->Translate(vector[0], vector[1], vector[2]);
+  this->Translate(vector[0], vector[1], vector[2]);
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Translate(double x, double y, double z) {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->Translate(x, y, z);
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->Translate(x, y, z);
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::RotateWXYZ(double a, double x, double y, double z) {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->RotateWXYZ(a, x, y, z);
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->RotateWXYZ(a, x, y, z);
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::RotateX(double x) {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->RotateX(x);
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->RotateX(x);
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::RotateY(double y) {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->RotateY(y);
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->RotateY(y);
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::RotateZ(double z)
 {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->RotateZ(z);
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->RotateZ(z);
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Reset()
 {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->Reset();
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->Reset();
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Restore()
 {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->Restore();
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->Restore();
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Show()
 {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->Show();
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->Show();
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Hide()
 {
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->Hide();
-	}
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->Hide();
+  }
 
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Enable()
 {
-	this->Status = 1;
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->Enable();
-	}
+  this->Status = 1;
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->Enable();
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::Disable()
 {
-	this->Status = 0;
-	this->Elements->InitTraversal();
-	while (vtkScenarioElement * e =  this->Elements->GetNextElement())
-	{
-		e->Disable();
-	}
+  this->Status = 0;
+  this->Elements->InitTraversal();
+  while (vtkScenarioElement * e =  this->Elements->GetNextElement())
+  {
+    e->Disable();
+  }
 }
 
 //Collision management
 //--------------------------------------------------------------------------
 void vtkScenarioObject::InsertNextCollision(vtkCollision * collision)
 {
-	this->Collisions->InsertNextCollision(collision);
+  this->Collisions->InsertNextCollision(collision);
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::SetCollisions( vtkCollisionCollection* collisions )
 {
-	if(this->Collisions) this->Collisions->Delete();
-	this->Collisions->DeepCopy(collisions);
+  if(this->Collisions) this->Collisions->Delete();
+  this->Collisions->DeepCopy(collisions);
 }
 
 //--------------------------------------------------------------------------
 vtkCollisionCollection * vtkScenarioObject::GetCollisions()
 {
-	return this->Collisions;
+  return this->Collisions;
 }
 
 //--------------------------------------------------------------------------
 vtkIdType vtkScenarioObject::GetNumberOfCollisions()
 {
-	return this->Collisions->GetNumberOfItems();
+  return this->Collisions->GetNumberOfItems();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::CleanCollisions()
 {
-	this->Collisions->RemoveCollisions();
+  this->Collisions->RemoveCollisions();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObject::PrintSelf(ostream& os,vtkIndent indent) {
 
-	os << indent << "Id: " << this->Id << "\n";
-	if(this->Name) os << indent << "Name: " << this->Name << "\n";
-	else os << indent << "Name: \n";
-	os << indent << "Type: " << this->ObjectType << "\n";
-	os << indent << "Status: " << this->Status << "\n";
-	os << indent << "NumberOfElements: " << this->Elements->GetNumberOfElements() << "\n";
+  os << indent << "Id: " << this->Id << "\n";
+  if(this->Name) os << indent << "Name: " << this->Name << "\n";
+  else os << indent << "Name: \n";
+  os << indent << "Type: " << this->ObjectType << "\n";
+  os << indent << "Status: " << this->Status << "\n";
+  os << indent << "NumberOfElements: " << this->Elements->GetNumberOfElements() << "\n";
 }

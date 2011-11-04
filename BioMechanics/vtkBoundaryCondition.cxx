@@ -50,11 +50,11 @@ vtkStandardNewMacro(vtkBoundaryCondition);
 
 //--------------------------------------------------------------------------
 vtkBoundaryCondition::vtkBoundaryCondition() {
-	this->Type = vtkBoundaryCondition::Neumann;
-	this->Id = -1;
-	this->PointId = -1;
-	this->Value = 0;
-	this->Point[0] = this->Point[1] = this->Point[2] = 0;
+  this->Type = vtkBoundaryCondition::Neumann;
+  this->Id = -1;
+  this->PointId = -1;
+  this->Value = 0;
+  this->Point[0] = this->Point[1] = this->Point[2] = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -64,21 +64,21 @@ vtkBoundaryCondition::~vtkBoundaryCondition()
 
 //--------------------------------------------------------------------------
 void vtkBoundaryCondition::DeepCopy(vtkBoundaryCondition *info) {
-	this->Type = info->Type;
-	this->Id = info->Id;
-	this->Value = info->Value;
-	this->PointId = info->PointId;
-	this->Point[0] = info->Point[0];
-	this->Point[1] = info->Point[1];
-	this->Point[2] = info->Point[2];
+  this->Type = info->Type;
+  this->Id = info->Id;
+  this->Value = info->Value;
+  this->PointId = info->PointId;
+  this->Point[0] = info->Point[0];
+  this->Point[1] = info->Point[1];
+  this->Point[2] = info->Point[2];
 }
 
 //--------------------------------------------------------------------------
 void vtkBoundaryCondition::PrintSelf(ostream&os, vtkIndent indent)
 {
-	os << indent << "Condition Type: " << this->Type << endl;
-	os << indent << "Id: " << this->Id << endl;
-	os << indent << "Point Id: " << this->PointId<< endl;
-	os << indent << "Point: " << this->Point[0] << ", " << this->Point[1] << ", " << this->Point[2] << endl;
-	os << indent << "Value: " << this->Value << endl;
+  os << indent << "Condition Type: " << this->Type << endl;
+  os << indent << "Id: " << this->Id << endl;
+  os << indent << "Point Id: " << this->PointId<< endl;
+  os << indent << "Point: " << this->Point[0] << ", " << this->Point[1] << ", " << this->Point[2] << endl;
+  os << indent << "Value: " << this->Value << endl;
 }

@@ -49,41 +49,41 @@ vtkStandardNewMacro(vtkSpringCollection);
 
 //----------------------------------------------------------------------------
 void vtkSpringCollection::InsertSpring(vtkIdType id, vtkSpring *spring) {
-	this->vtkCollection::ReplaceItem(id, (vtkObject*) spring);
+  this->vtkCollection::ReplaceItem(id, (vtkObject*) spring);
 }
 
 //--------------------------------------------------------------------------
 void vtkSpringCollection::InsertNextSpring(vtkSpring *spring) {
-	this->vtkCollection::AddItem((vtkObject *) spring);
+  this->vtkCollection::AddItem((vtkObject *) spring);
 }
 
 //--------------------------------------------------------------------------
 vtkSpring * vtkSpringCollection::GetSpring(vtkIdType id) {
-	return static_cast <vtkSpring *>(this->GetItemAsObject(id));
+  return static_cast <vtkSpring *>(this->GetItemAsObject(id));
 }
 
 //--------------------------------------------------------------------------
 vtkSpring * vtkSpringCollection::GetNextSpring() {
-	return static_cast <vtkSpring *>(this->GetNextItemAsObject());
+  return static_cast <vtkSpring *>(this->GetNextItemAsObject());
 }
 
 //--------------------------------------------------------------------------
 bool vtkSpringCollection::ContainsSpring(vtkSpring * spring) {
-	for(vtkIdType i = 0; i < this->GetNumberOfItems(); i++)
-	{
-		vtkSpring * local = this->GetSpring(i);
-		if(local->ContainsParticle(spring->GetParticle(0)) &&
-				local->ContainsParticle(spring->GetParticle(1)))
-		{
-			return 1;
-		}
-	}
-	return 0;
+  for(vtkIdType i = 0; i < this->GetNumberOfItems(); i++)
+  {
+    vtkSpring * local = this->GetSpring(i);
+    if(local->ContainsParticle(spring->GetParticle(0)) &&
+        local->ContainsParticle(spring->GetParticle(1)))
+    {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 
 //----------------------------------------------------------------------------
 void vtkSpringCollection::PrintSelf(ostream& os, vtkIndent indent)
 {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }

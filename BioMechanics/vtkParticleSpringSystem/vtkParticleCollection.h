@@ -57,55 +57,55 @@ entries are not prevented.
 class VTK_vtkParticleSpringSystem_EXPORT vtkParticleCollection : public vtkCollection
 {
 public:
-	//!Create new object
-	static vtkParticleCollection *New();
-	//!Type Revision Macro
-	vtkTypeRevisionMacro(vtkParticleCollection,vtkCollection);
-	//!Print Class Values
-	virtual void PrintSelf(ostream& os, vtkIndent indent);
+  //!Create new object
+  static vtkParticleCollection *New();
+  //!Type Revision Macro
+  vtkTypeRevisionMacro(vtkParticleCollection,vtkCollection);
+  //!Print Class Values
+  virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Insert an Particle to the collection
-	/*!
-	* The Particle will be inserted at the end of the list
-	* \param particle vtkParticle object to be inserted
-	* \sa InsertParticle(vtkIdType id, vtkParticle *Particle)
-	*/
-	void InsertNextParticle(vtkParticle *particle);
+  //!Insert an Particle to the collection
+  /*!
+  * The Particle will be inserted at the end of the list
+  * \param particle vtkParticle object to be inserted
+  * \sa InsertParticle(vtkIdType id, vtkParticle *Particle)
+  */
+  void InsertNextParticle(vtkParticle *particle);
 
-	//!Insert an Particle at the specified index
-	/*!
-	* \param id index of the list where the Particle will be inserted
-	* \param particle vtkParticle object to be inserted
-	* \sa InsertNextParticle(vtkParticle *Particle)
-	*/
-	void InsertParticle(vtkIdType id, vtkParticle *particle);
+  //!Insert an Particle at the specified index
+  /*!
+  * \param id index of the list where the Particle will be inserted
+  * \param particle vtkParticle object to be inserted
+  * \sa InsertNextParticle(vtkParticle *Particle)
+  */
+  void InsertParticle(vtkIdType id, vtkParticle *particle);
 
-	//!Return an Particle in specified position of the list.
-	/*!
-	* 	Get the Particle in the list with the position id. NULL is returned when the collection is exhausted.
-	* \param id index of the Particle to be returned
-	*/
-	vtkParticle *GetParticle(vtkIdType id);
+  //!Return an Particle in specified position of the list.
+  /*!
+  *   Get the Particle in the list with the position id. NULL is returned when the collection is exhausted.
+  * \param id index of the Particle to be returned
+  */
+  vtkParticle *GetParticle(vtkIdType id);
 
-	//!Return the next Particleism on the list.
-	/*!
-	* Get the Particle at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
-	*/
-	vtkParticle * GetNextParticle();
+  //!Return the next Particleism on the list.
+  /*!
+  * Get the Particle at the pointer position. Beware of calling InitTraversal() to init the pointer. NULL is returned when the collection is exhausted.
+  */
+  vtkParticle * GetNextParticle();
 
-	//!Return whether the collection contains a particle or not
-	bool ContainsParticle(vtkParticle * particle);
+  //!Return whether the collection contains a particle or not
+  bool ContainsParticle(vtkParticle * particle);
 
-	//!Return the number of particles in the collection
-	int GetNumberOfParticles();
+  //!Return the number of particles in the collection
+  int GetNumberOfParticles();
 
 protected:
-	vtkParticleCollection() {};
-	~vtkParticleCollection() {};
+  vtkParticleCollection() {};
+  ~vtkParticleCollection() {};
 
 private:
-	vtkParticleCollection(const vtkParticleCollection&);  // Not implemented.
-	void operator=(const vtkParticleCollection&);					// Not implemented.
+  vtkParticleCollection(const vtkParticleCollection&);  // Not implemented.
+  void operator=(const vtkParticleCollection&);          // Not implemented.
 };
 
 #endif

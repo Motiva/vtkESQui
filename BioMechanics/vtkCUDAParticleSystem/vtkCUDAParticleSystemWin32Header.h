@@ -12,8 +12,8 @@
   #if defined(vtkCUDAParticleSystem_EXPORTS)
     #define VTK_vtkCUDAParticleSystem_EXPORT __declspec(dllexport)
   #else
-	#undef VTK_vtkCUDAParticleSystem_EXPORT
-	#define VTK_vtkCUDAParticleSystem_EXPORT __declspec( dllimport )
+  #undef VTK_vtkCUDAParticleSystem_EXPORT
+  #define VTK_vtkCUDAParticleSystem_EXPORT __declspec( dllimport )
   #endif
 
 #else

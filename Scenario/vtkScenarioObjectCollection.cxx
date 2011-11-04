@@ -47,34 +47,34 @@ vtkCxxRevisionMacro(vtkScenarioObjectCollection, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 void vtkScenarioObjectCollection::ReplaceObject(vtkIdType id, vtkScenarioObject *e) {
-	this->vtkScenarioObjectCollection::ReplaceItem(id, (vtkObject*) e);
+  this->vtkScenarioObjectCollection::ReplaceItem(id, (vtkObject*) e);
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObjectCollection::AddObject(vtkScenarioObject *e) {
-	this->vtkCollection::AddItem((vtkObject *) e);
+  this->vtkCollection::AddItem((vtkObject *) e);
 }
 
 //--------------------------------------------------------------------------
 void vtkScenarioObjectCollection::RemoveObject(vtkIdType id) {
-	this->vtkCollection::RemoveItem(id);
+  this->vtkCollection::RemoveItem(id);
 }
 
 //--------------------------------------------------------------------------
 vtkScenarioObject * vtkScenarioObjectCollection::GetObject(vtkIdType id) {
-	return static_cast <vtkScenarioObject *>(this->GetItemAsObject(id));
+  return static_cast <vtkScenarioObject *>(this->GetItemAsObject(id));
 }
 
 //--------------------------------------------------------------------------
 vtkScenarioObject * vtkScenarioObjectCollection::GetNextObject()
 {
-	return static_cast <vtkScenarioObject *>(this->GetNextItemAsObject());
+  return static_cast <vtkScenarioObject *>(this->GetNextItemAsObject());
 }
 
 //--------------------------------------------------------------------------
 vtkIdType vtkScenarioObjectCollection::GetNumberOfObjects()
 {
-	return this->GetNumberOfItems();
+  return this->GetNumberOfItems();
 }
 
 //----------------------------------------------------------------------------

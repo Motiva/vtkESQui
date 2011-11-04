@@ -46,10 +46,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkImporter.h"
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
-	#include "vtkHaptic.h"
-	#include "vtkIHP.h"
-	#include "vtkVSP.h"
-	#include "vtkLSW.h"
+  #include "vtkHaptic.h"
+  #include "vtkIHP.h"
+  #include "vtkVSP.h"
+  #include "vtkLSW.h"
 #endif
 
 class vtkXMLDataElement;
@@ -80,167 +80,167 @@ class VTK_ESQUI_UTILITIES_EXPORT vtkSRMLImporter: public vtkImporter
 {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkSRMLImporter,vtkImporter);
-	//!Create new vtkSRMLImporter object
-	static vtkSRMLImporter *New();
-	//!Return class name
-	const char *GetClassName() { return "vtkSRMLImporter"; }
-	//!Print the attributes value
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkSRMLImporter,vtkImporter);
+  //!Create new vtkSRMLImporter object
+  static vtkSRMLImporter *New();
+  //!Return class name
+  const char *GetClassName() { return "vtkSRMLImporter"; }
+  //!Print the attributes value
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Set the Simulation
-	/*!
-	 * \sa vtkSimulation GetSimulation()
-	 */
-	void SetSimulation(vtkSimulation * simulation);
+  //! Set the Simulation
+  /*!
+   * \sa vtkSimulation GetSimulation()
+   */
+  void SetSimulation(vtkSimulation * simulation);
 
-	//! Get the Simulation
-	/*!
-	 * \sa SetSimulation(vtkSimulation *)
-	 */
-	vtkSimulation * GetSimulation();
+  //! Get the Simulation
+  /*!
+   * \sa SetSimulation(vtkSimulation *)
+   */
+  vtkSimulation * GetSimulation();
 
-	//! Set the name of the input file.
-	/*!
-	 * \sa const char * GetFileName()
-	 */
-	vtkSetStringMacro(FileName);
-	/*!
-	 * \sa SetFileName(const char *)
-	 */
-	//! Get the name of the input file.
-	vtkGetStringMacro(FileName);
+  //! Set the name of the input file.
+  /*!
+   * \sa const char * GetFileName()
+   */
+  vtkSetStringMacro(FileName);
+  /*!
+   * \sa SetFileName(const char *)
+   */
+  //! Get the name of the input file.
+  vtkGetStringMacro(FileName);
 
-	//! Set the data base path.
-	/*!
-	 * \sa const char * GetDataPath()
-	 */
-	vtkSetStringMacro(DataPath);
-	//! Get the data base path.
-	/*!
-	 * \sa SetDataPath(const char *)
-	 */
-	vtkGetStringMacro(DataPath);
+  //! Set the data base path.
+  /*!
+   * \sa const char * GetDataPath()
+   */
+  vtkSetStringMacro(DataPath);
+  //! Get the data base path.
+  /*!
+   * \sa SetDataPath(const char *)
+   */
+  vtkGetStringMacro(DataPath);
 
-protected:	
+protected:  
 
-	vtkSRMLImporter();
-	~vtkSRMLImporter();
+  vtkSRMLImporter();
+  ~vtkSRMLImporter();
 
-	//! Set the simulation scenario
-	/*!
-	 * \param scenario simulation scenario
-	 * \sa vtkScenario * GetScenario()
-	 */
-	void SetScenario(vtkScenario * scenario);
+  //! Set the simulation scenario
+  /*!
+   * \param scenario simulation scenario
+   * \sa vtkScenario * GetScenario()
+   */
+  void SetScenario(vtkScenario * scenario);
 
-	//! Get the simulation scenario
-	/*!
-	 * \sa SetScenario(vtkScenario * scenario);
-	 */
-	vtkScenario * GetScenario();
+  //! Get the simulation scenario
+  /*!
+   * \sa SetScenario(vtkScenario * scenario);
+   */
+  vtkScenario * GetScenario();
 
-	//! Starts the Import process
-	virtual int ImportBegin ();
-	//! Finalize the import process
-	virtual void ImportEnd ();
-	//! Import all the scenario actors (tools, organs, extras)
-	virtual void ImportActors (vtkRenderer * renderer);
-	//! Import scenario cameras
-	virtual void ImportCameras (vtkRenderer * renderer);
-	//! Import scenario lights
-	virtual void ImportLights (vtkRenderer * renderer);
-	//! Import specific scenario props
-	virtual void ImportProperties (vtkRenderer * renderer);
+  //! Starts the Import process
+  virtual int ImportBegin ();
+  //! Finalize the import process
+  virtual void ImportEnd ();
+  //! Import all the scenario actors (tools, organs, extras)
+  virtual void ImportActors (vtkRenderer * renderer);
+  //! Import scenario cameras
+  virtual void ImportCameras (vtkRenderer * renderer);
+  //! Import scenario lights
+  virtual void ImportLights (vtkRenderer * renderer);
+  //! Import specific scenario props
+  virtual void ImportProperties (vtkRenderer * renderer);
 
-	//! Import scenario objects
-	void ImportScenarioObjects();
-	//! Import scenario object elements
-	void SetScenarioElements(vtkScenarioObject * object, vtkXMLDataElement * item);
-	//! Import scenario element models
-	void SetElementModels(vtkScenarioElement * object, vtkXMLDataElement * item);
-	//! Import scenario element generic model
-	void SetModelData(vtkModel * object, vtkXMLDataElement * item);
-	//! Import haptic device information
-	void ImportHaptic();
+  //! Import scenario objects
+  void ImportScenarioObjects();
+  //! Import scenario object elements
+  void SetScenarioElements(vtkScenarioObject * object, vtkXMLDataElement * item);
+  //! Import scenario element models
+  void SetElementModels(vtkScenarioElement * object, vtkXMLDataElement * item);
+  //! Import scenario element generic model
+  void SetModelData(vtkModel * object, vtkXMLDataElement * item);
+  //! Import haptic device information
+  void ImportHaptic();
 
-	//!A SRML file is a basic XML file, so the parser corresponds to a vtkXMLParser object
-	vtkXMLDataParser * SRMLParser;
-	//!Basic XMLElement used in XML Parsing
-	vtkXMLDataElement * Element;
-	//!Input SRML Filename
-	char * FileName;
-	//!Path of the data files
-	char * DataPath;
-	//!XML data stream
-	istream * Stream;
-	//!Read error flag
-	int ReadError;
-	//!Data error flag
-	int DataError;
-	//!Information error flag
-	int InformationError;
+  //!A SRML file is a basic XML file, so the parser corresponds to a vtkXMLParser object
+  vtkXMLDataParser * SRMLParser;
+  //!Basic XMLElement used in XML Parsing
+  vtkXMLDataElement * Element;
+  //!Input SRML Filename
+  char * FileName;
+  //!Path of the data files
+  char * DataPath;
+  //!XML data stream
+  istream * Stream;
+  //!Read error flag
+  int ReadError;
+  //!Data error flag
+  int DataError;
+  //!Information error flag
+  int InformationError;
 
-	//! Simulation object to be imported
-	vtkSimulation * Simulation;
-	//! Simulation Scenario. It is automatically set through the SetSimulation method
-	vtkScenario * Scenario;
+  //! Simulation object to be imported
+  vtkSimulation * Simulation;
+  //! Simulation Scenario. It is automatically set through the SetSimulation method
+  vtkScenario * Scenario;
 
 private:
 
-	vtkSRMLImporter (const vtkSRMLImporter &); //Not Implemented
-	void operator =(const vtkSRMLImporter &); //Not Implemented
+  vtkSRMLImporter (const vtkSRMLImporter &); //Not Implemented
+  void operator =(const vtkSRMLImporter &); //Not Implemented
 
-	//! Opens the SRML file for parsing its content
-	int OpenSRMLFile();
+  //! Opens the SRML file for parsing its content
+  int OpenSRMLFile();
 
-	//! Reads the SRML file
-	int ReadSRMLFile(vtkXMLDataElement * e);
+  //! Reads the SRML file
+  int ReadSRMLFile(vtkXMLDataElement * e);
 
-	//! Closes the SRML file after parsing its content
-	void CloseSRMLFile();
+  //! Closes the SRML file after parsing its content
+  void CloseSRMLFile();
 
-	//! Create a new SRML file parser (XML file parser)
-	void CreateSRMLParser();
+  //! Create a new SRML file parser (XML file parser)
+  void CreateSRMLParser();
 
-	//! Destroy the SRML file parser after its execution
-	void DestroySRMLParser();
+  //! Destroy the SRML file parser after its execution
+  void DestroySRMLParser();
 
-	//! Parse SRML information
-	int ReadSRMLData();
+  //! Parse SRML information
+  int ReadSRMLData();
 
-	//! Read parsed information
-	void ReadData();
+  //! Read parsed information
+  void ReadData();
 
-	//! Set specific camera values
-	/*!
-	 * \param camera camera object
-	 * \param item parsed XMLDataElement that contains element info
-	 */
-	void SetCameraData(vtkCamera * camera, vtkXMLDataElement * item);
-	//! Set specific light values
-	/*!
-	 * \param light light object
-	 * \param item parsed XMLDataElement that contains element info
-	 */
-	void SetLightData(vtkLight * light, vtkXMLDataElement * item);
-	//! Set specific actor values
-	/*!
-	 * \param actor scenario item actor object
-	 * \param item parsed XMLDataElement that contains element info
-	 */
-	void SetActorData(vtkActor * actor, vtkXMLDataElement * item);
+  //! Set specific camera values
+  /*!
+   * \param camera camera object
+   * \param item parsed XMLDataElement that contains element info
+   */
+  void SetCameraData(vtkCamera * camera, vtkXMLDataElement * item);
+  //! Set specific light values
+  /*!
+   * \param light light object
+   * \param item parsed XMLDataElement that contains element info
+   */
+  void SetLightData(vtkLight * light, vtkXMLDataElement * item);
+  //! Set specific actor values
+  /*!
+   * \param actor scenario item actor object
+   * \param item parsed XMLDataElement that contains element info
+   */
+  void SetActorData(vtkActor * actor, vtkXMLDataElement * item);
 
-	//! Generate full path of filename
-	const char * ExpandDataFileName(const char * fname);
+  //! Generate full path of filename
+  const char * ExpandDataFileName(const char * fname);
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
-	void SetHapticData(vtkHaptic * haptic, vtkXMLDataElement * item);
+  void SetHapticData(vtkHaptic * haptic, vtkXMLDataElement * item);
 #endif
 
-	//! File stream to retrieve SRML file content
-	ifstream * FileStream;
+  //! File stream to retrieve SRML file content
+  ifstream * FileStream;
 
 };
 #endif

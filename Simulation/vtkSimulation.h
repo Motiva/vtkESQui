@@ -69,165 +69,165 @@ class VTK_ESQUI_SIMULATION_EXPORT vtkSimulation: public vtkObject
 {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkSimulation, vtkObject);
-	//! Create new vtkSimulation object
-	static vtkSimulation *New();
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkSimulation, vtkObject);
+  //! Create new vtkSimulation object
+  static vtkSimulation *New();
 
-	//! Return class name
-	const char *GetClassName() { return "vtkSimulation"; }
+  //! Return class name
+  const char *GetClassName() { return "vtkSimulation"; }
 
-	//! Print the attributes value
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Print the attributes value
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Set simulation render window interactor
-	/*!
-	 * \sa GetInteractor()
-	 */
-	void SetInteractor(vtkRenderWindowInteractor * i);
+  //! Set simulation render window interactor
+  /*!
+   * \sa GetInteractor()
+   */
+  void SetInteractor(vtkRenderWindowInteractor * i);
 
-	//! Get simulation render window interactor
-	/*!
-	 * \sa SetInteractor(vtkRenderWindowInteractor *iren)
-	 */
-	vtkRenderWindowInteractor * GetInteractor();
+  //! Get simulation render window interactor
+  /*!
+   * \sa SetInteractor(vtkRenderWindowInteractor *iren)
+   */
+  vtkRenderWindowInteractor * GetInteractor();
 
-	//! Set simulation interactor style
-	/*!
-	 * \sa GetInteractorStyle()
-	 */
-	void SetInteractorStyle(vtkSimulationInteractorStyle * style);
+  //! Set simulation interactor style
+  /*!
+   * \sa GetInteractorStyle()
+   */
+  void SetInteractorStyle(vtkSimulationInteractorStyle * style);
 
-	//! Get simulation interactor style
-	/*!
-	 * \sa SetInteractor(vtkSimulationInteractorStyle *style)
-	 */
-	vtkSimulationInteractorStyle * GetInteractorStyle();
+  //! Get simulation interactor style
+  /*!
+   * \sa SetInteractor(vtkSimulationInteractorStyle *style)
+   */
+  vtkSimulationInteractorStyle * GetInteractorStyle();
 
-	//! Set the simulation scenario: organs, tools, etc...
-	/*!
-	 * Contains the information of the scenario items: organs, tools, contacts, etc...
-	 */
-	void SetScenario(vtkScenario * s);
+  //! Set the simulation scenario: organs, tools, etc...
+  /*!
+   * Contains the information of the scenario items: organs, tools, contacts, etc...
+   */
+  void SetScenario(vtkScenario * s);
 
-	//! Return the scenario of the simulation
-	vtkScenario * GetScenario();
+  //! Return the scenario of the simulation
+  vtkScenario * GetScenario();
 
-	//! Return the collision collection
-	vtkCollisionCollection * GetCollisions();
+  //! Return the collision collection
+  vtkCollisionCollection * GetCollisions();
 
-	//! Set haptic device timer refresh rate (s)
-	vtkSetMacro(InteractionTimerRate, double);
+  //! Set haptic device timer refresh rate (s)
+  vtkSetMacro(InteractionTimerRate, double);
 
-	//! Set simulation refresh rate (s)
-	vtkSetMacro(SimulationTimerRate, double);
+  //! Set simulation refresh rate (s)
+  vtkSetMacro(SimulationTimerRate, double);
 
-	//! Set render refresh rate (s)
-	vtkSetMacro(RenderTimerRate, double);
+  //! Set render refresh rate (s)
+  vtkSetMacro(RenderTimerRate, double);
 
-	//! Get haptic device timer refresh rate (s)
-	vtkGetMacro(InteractionTimerRate, double);
+  //! Get haptic device timer refresh rate (s)
+  vtkGetMacro(InteractionTimerRate, double);
 
-	//! Get simulation refresh rate (s)
-	vtkGetMacro(SimulationTimerRate, double);
+  //! Get simulation refresh rate (s)
+  vtkGetMacro(SimulationTimerRate, double);
 
-	//! Get render refresh rate (s)
-	vtkGetMacro(RenderTimerRate, double);
+  //! Get render refresh rate (s)
+  vtkGetMacro(RenderTimerRate, double);
 
-	//! Get haptic device timer identifier
-	vtkGetMacro(InteractionTimerId, vtkIdType);
+  //! Get haptic device timer identifier
+  vtkGetMacro(InteractionTimerId, vtkIdType);
 
-	//! Get simulation timer identifier
-	vtkGetMacro(SimulationTimerId, vtkIdType);
+  //! Get simulation timer identifier
+  vtkGetMacro(SimulationTimerId, vtkIdType);
 
-	//! Get render timer identifier
-	vtkGetMacro(RenderTimerId, vtkIdType);
+  //! Get render timer identifier
+  vtkGetMacro(RenderTimerId, vtkIdType);
 
-	//! Set the interaction in the simulation
-	vtkSetMacro(Interaction, bool);
-	//! Get the interaction in the simulation
-	vtkGetMacro(Interaction, bool);
+  //! Set the interaction in the simulation
+  vtkSetMacro(Interaction, bool);
+  //! Get the interaction in the simulation
+  vtkGetMacro(Interaction, bool);
 
-	//! Enable the user interaction
-	vtkBooleanMacro(Interaction, bool);
+  //! Enable the user interaction
+  vtkBooleanMacro(Interaction, bool);
 
-	//! Set the collision detection
-	vtkSetMacro(Collision, bool);
-	//! Get the collision detection
-	vtkGetMacro(Collision, bool);
+  //! Set the collision detection
+  vtkSetMacro(Collision, bool);
+  //! Get the collision detection
+  vtkGetMacro(Collision, bool);
 
-	//!Enable the verbose
-	vtkBooleanMacro(Collision, bool);
+  //!Enable the verbose
+  vtkBooleanMacro(Collision, bool);
 
-	//! Set Gravity Force (m/s2)
-	vtkSetVector3Macro(Gravity, double);
-	//! Get Gravity Force (m/s2)
-	vtkGetVector3Macro(Gravity, double);
+  //! Set Gravity Force (m/s2)
+  vtkSetVector3Macro(Gravity, double);
+  //! Get Gravity Force (m/s2)
+  vtkGetVector3Macro(Gravity, double);
 
-	//! Initializes the simulation (Haptic, Manager, etc...)
-	void Init();
+  //! Initializes the simulation (Haptic, Manager, etc...)
+  void Init();
 
-	//! Starts the simulation
-	void Run();
+  //! Starts the simulation
+  void Run();
 
-	//!Update the simulation scenario
-	void UpdateScenario();
+  //!Update the simulation scenario
+  void UpdateScenario();
 
-	//!Update user interaction values
-	void UpdateInteraction();
+  //!Update user interaction values
+  void UpdateInteraction();
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
-	//BTX
-	//! Set the haptic device for the simulation///
-	void SetHapticDevice(vtkHaptic *Haptic) {this->HapticDevice = Haptic;}
-	//! Get the haptic device for the simulation
-	vtkHaptic *GetHapticDevice() {return this->HapticDevice;}
+  //BTX
+  //! Set the haptic device for the simulation///
+  void SetHapticDevice(vtkHaptic *Haptic) {this->HapticDevice = Haptic;}
+  //! Get the haptic device for the simulation
+  vtkHaptic *GetHapticDevice() {return this->HapticDevice;}
 private:
-	//! The haptic device for the simulator
-	vtkHaptic *HapticDevice;
-	//ETX
+  //! The haptic device for the simulator
+  vtkHaptic *HapticDevice;
+  //ETX
 #endif
 
 protected:
 
-	vtkSimulation();
-	~vtkSimulation();
+  vtkSimulation();
+  ~vtkSimulation();
 
-	//!Simulation callback command. Acts as a multirate timer
-	vtkCallbackCommand * Callback;
+  //!Simulation callback command. Acts as a multirate timer
+  vtkCallbackCommand * Callback;
 
-	vtkIdType InteractionTimerId;
-	double InteractionTimerRate;
-	vtkIdType SimulationTimerId;
-	double SimulationTimerRate;
-	vtkIdType RenderTimerId;
-	double RenderTimerRate;
+  vtkIdType InteractionTimerId;
+  double InteractionTimerRate;
+  vtkIdType SimulationTimerId;
+  double SimulationTimerRate;
+  vtkIdType RenderTimerId;
+  double RenderTimerRate;
 
-	//!Simulation scenario
-	vtkScenario * Scenario;
+  //!Simulation scenario
+  vtkScenario * Scenario;
 
-	//!Window interactor to control simulation display
-	vtkRenderWindowInteractor *Interactor;
+  //!Window interactor to control simulation display
+  vtkRenderWindowInteractor *Interactor;
 
-	//!Window interactor style to control simulation objects
-	vtkSimulationInteractorStyle *InteractorStyle;
+  //!Window interactor style to control simulation objects
+  vtkSimulationInteractorStyle *InteractorStyle;
 
-	//!collision detection library
-	vtkCollisionDetection* CollisionDetection;
+  //!collision detection library
+  vtkCollisionDetection* CollisionDetection;
 
-	//! Enable/disable user interaction
-	bool Interaction;
+  //! Enable/disable user interaction
+  bool Interaction;
 
-	//! Enable/disable collision detection
-	bool Collision;
+  //! Enable/disable collision detection
+  bool Collision;
 
-	//! Gravitational force
-	double Gravity[3];
+  //! Gravitational force
+  double Gravity[3];
 
 private:
 
-	vtkSimulation (const vtkSimulation &); //Not Implemented
-	void operator =(const vtkSimulation &); //Not Implemented
+  vtkSimulation (const vtkSimulation &); //Not Implemented
+  void operator =(const vtkSimulation &); //Not Implemented
 
 };
 #endif

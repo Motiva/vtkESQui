@@ -59,111 +59,111 @@ class vtkScenario;
 class VTK_ESQUI_SIMULATION_EXPORT vtkSimulationInteractorStyle : public vtkInteractorStyleTrackballCamera {
 
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkSimulationInteractorStyle,vtkInteractorStyleTrackballCamera);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkSimulationInteractorStyle,vtkInteractorStyleTrackballCamera);
 
-	//! Create new vtkSimulationInteractorStyle object
-	static vtkSimulationInteractorStyle *New();
+  //! Create new vtkSimulationInteractorStyle object
+  static vtkSimulationInteractorStyle *New();
 
-	//! Return class name
-	const char *GetClassName() {return "vtkSimulationInteractorStyle";};
+  //! Return class name
+  const char *GetClassName() {return "vtkSimulationInteractorStyle";};
 
-	//! Initialization of the simulation style
-	void Init();
+  //! Initialization of the simulation style
+  void Init();
 
-	//! Handle onKeyPress event
-	virtual void OnKeyPress();
+  //! Handle onKeyPress event
+  virtual void OnKeyPress();
 
-	//! Handle onMouseMove event
-	virtual void OnMouseMove();
+  //! Handle onMouseMove event
+  virtual void OnMouseMove();
 
-	//! Handle onLeftButtonDown event
-	virtual void OnLeftButtonDown();
-	//! Handle onLeftButtonUp event
-	virtual void OnLeftButtonUp();
+  //! Handle onLeftButtonDown event
+  virtual void OnLeftButtonDown();
+  //! Handle onLeftButtonUp event
+  virtual void OnLeftButtonUp();
 
-	//! Handle onMiddleButtonDown event
-	virtual void OnMiddleButtonDown();
-	//! Handle onMiddleButtonUp event
-	virtual void OnMiddleButtonUp();
+  //! Handle onMiddleButtonDown event
+  virtual void OnMiddleButtonDown();
+  //! Handle onMiddleButtonUp event
+  virtual void OnMiddleButtonUp();
 
-	//! Handle onRightButtonDown event
-	virtual void OnRightButtonDown();
-	//! Handle onRightButtonUp event
-	virtual void OnRightButtonUp();
+  //! Handle onRightButtonDown event
+  virtual void OnRightButtonDown();
+  //! Handle onRightButtonUp event
+  virtual void OnRightButtonUp();
 
-	//! Set interactor scenario
-	/*!
-	 * \sa vtkScenario * GetScenario()
-	 */
-	void SetScenario(vtkScenario * s);
+  //! Set interactor scenario
+  /*!
+   * \sa vtkScenario * GetScenario()
+   */
+  void SetScenario(vtkScenario * s);
 
-	//! Get interactor scenario
-	/*!
-	 * \sa SetScenario(vtkScenario * s)
-	 */
-	vtkScenario * GetScenario();
+  //! Get interactor scenario
+  /*!
+   * \sa SetScenario(vtkScenario * s)
+   */
+  vtkScenario * GetScenario();
 
-	//! Set currently active tool id
-	/*!
-	 * \sa int GetActiveToolId()
-	 */
-	vtkSetMacro(ActiveToolId, vtkIdType);
-	//! Get currently active tool id
-	/*!
-	 * \sa SetActiveToolId(int)
-	 */
-	vtkGetMacro(ActiveToolId, vtkIdType);
+  //! Set currently active tool id
+  /*!
+   * \sa int GetActiveToolId()
+   */
+  vtkSetMacro(ActiveToolId, vtkIdType);
+  //! Get currently active tool id
+  /*!
+   * \sa SetActiveToolId(int)
+   */
+  vtkGetMacro(ActiveToolId, vtkIdType);
 
-	//! Set movement scale factor
-	/*!
-	 * \sa double GetScale()
-	 */
-	vtkSetMacro(Scale, double);
-	//! Get movement scale
-	/*!
-	 * \sa SetScale(double)
-	 */
-	vtkGetMacro(Scale, double);
+  //! Set movement scale factor
+  /*!
+   * \sa double GetScale()
+   */
+  vtkSetMacro(Scale, double);
+  //! Get movement scale
+  /*!
+   * \sa SetScale(double)
+   */
+  vtkGetMacro(Scale, double);
 
 protected:
-	vtkSimulationInteractorStyle();
-	~vtkSimulationInteractorStyle();
+  vtkSimulationInteractorStyle();
+  ~vtkSimulationInteractorStyle();
 
-	// Returns stroed tool identifier
-	int GetToolId(int id);
+  // Returns stroed tool identifier
+  int GetToolId(int id);
 
-	//! Number of tools to be handled
-	int GetNumberOfTools();
+  //! Number of tools to be handled
+  int GetNumberOfTools();
 
-	//! Scenario to be controled
-	vtkScenario * Scenario;
+  //! Scenario to be controled
+  vtkScenario * Scenario;
 
-	//! Scenario camera
-	vtkCamera * Camera;
+  //! Scenario camera
+  vtkCamera * Camera;
 
-	//! Last mouse event position
-	int PreviousPosition[2];
+  //! Last mouse event position
+  int PreviousPosition[2];
 
-	//! Movement scale
-	double Scale;
+  //! Movement scale
+  double Scale;
 
-	//! Left button pressed flag
-	bool LeftButtonPressed;
-	//! Right button pressed flag
-	bool RightButtonPressed;
+  //! Left button pressed flag
+  bool LeftButtonPressed;
+  //! Right button pressed flag
+  bool RightButtonPressed;
 
-	//! Camera/Tool Mode
-	bool Mode;
-	//! Tool id list
-	vtkIdList * ToolIds;
-	//! Active tool identifier
-	vtkIdType ActiveToolId;
-	//! Initialization flag
-	bool Initialized;
+  //! Camera/Tool Mode
+  bool Mode;
+  //! Tool id list
+  vtkIdList * ToolIds;
+  //! Active tool identifier
+  vtkIdType ActiveToolId;
+  //! Initialization flag
+  bool Initialized;
 
 private:
-	vtkSimulationInteractorStyle (const vtkSimulationInteractorStyle &);//NotImplemented
-	void operator =(const vtkSimulationInteractorStyle &);//Not Implemented
+  vtkSimulationInteractorStyle (const vtkSimulationInteractorStyle &);//NotImplemented
+  void operator =(const vtkSimulationInteractorStyle &);//Not Implemented
 };
 #endif

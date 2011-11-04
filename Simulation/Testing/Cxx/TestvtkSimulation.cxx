@@ -63,38 +63,38 @@ using namespace std;
 
 int TestvtkSimulation(int argc, char * argv[])
 {
-	vtkSmartPointer<vtkRenderer> ren1 =
-			vtkSmartPointer<vtkRenderer>::New();
-	ren1->SetBackground(1.0,1.0,1.0);
+  vtkSmartPointer<vtkRenderer> ren1 =
+      vtkSmartPointer<vtkRenderer>::New();
+  ren1->SetBackground(1.0,1.0,1.0);
 
-	vtkSmartPointer<vtkRenderWindow> renWin =
-			vtkSmartPointer<vtkRenderWindow>::New();
-	renWin->AddRenderer(ren1);
-	renWin->SetSize(840,480);
+  vtkSmartPointer<vtkRenderWindow> renWin =
+      vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->AddRenderer(ren1);
+  renWin->SetSize(840,480);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> iren =
-			vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	iren->SetRenderWindow(renWin);
+  vtkSmartPointer<vtkRenderWindowInteractor> iren =
+      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  iren->SetRenderWindow(renWin);
 
-	/**********  Scenario Definitions  ********/
-	vtkSmartPointer<vtkScenario> Scenario =
-			vtkSmartPointer<vtkScenario>::New();
-	Scenario->SetRenderWindow(renWin);
+  /**********  Scenario Definitions  ********/
+  vtkSmartPointer<vtkScenario> Scenario =
+      vtkSmartPointer<vtkScenario>::New();
+  Scenario->SetRenderWindow(renWin);
 
-	vtkSmartPointer<vtkSimulation> Simulation =
-			vtkSmartPointer<vtkSimulation>::New();
-	Simulation->SetInteractor(iren);
-	Simulation->SetScenario(Scenario);
-	Simulation->SetInteractionTimerRate(0.001);
-	Simulation->SetRenderTimerRate(0.025);
-	Simulation->SetSimulationTimerRate(0.025);
-	Simulation->Init();
+  vtkSmartPointer<vtkSimulation> Simulation =
+      vtkSmartPointer<vtkSimulation>::New();
+  Simulation->SetInteractor(iren);
+  Simulation->SetScenario(Scenario);
+  Simulation->SetInteractionTimerRate(0.001);
+  Simulation->SetRenderTimerRate(0.025);
+  Simulation->SetSimulationTimerRate(0.025);
+  Simulation->Init();
 
-	Simulation->Print(cout);
+  Simulation->Print(cout);
 
-	Simulation->Run();
+  Simulation->Run();
 
-	return 0;
+  return 0;
 }
 
 

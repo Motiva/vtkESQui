@@ -50,52 +50,52 @@ vtkCxxRevisionMacro(vtkCollisionDetection, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 vtkCollisionDetection::vtkCollisionDetection(){
-	this->Models = vtkModelCollection::New();
-	this->Collisions = vtkCollisionCollection::New();
+  this->Models = vtkModelCollection::New();
+  this->Collisions = vtkCollisionCollection::New();
 }
 
 //--------------------------------------------------------------------------
 vtkCollisionDetection::~vtkCollisionDetection()
 {
-	if(this->Models) this->Models->Delete();
-	if(this->Collisions) this->Collisions->Delete();
+  if(this->Models) this->Models->Delete();
+  if(this->Collisions) this->Collisions->Delete();
 }
 
 //--------------------------------------------------------------------------
 void vtkCollisionDetection::SetModels(vtkModelCollection * elements)
 {
-	if(this->Models) this->Models->Delete();
-	this->Models = elements;
+  if(this->Models) this->Models->Delete();
+  this->Models = elements;
 }
 
 //--------------------------------------------------------------------------
 void vtkCollisionDetection::AddModel(vtkCollisionModel * element)
 {
-	this->Models->AddModel(element);
+  this->Models->AddModel(element);
 }
 
 //--------------------------------------------------------------------------
 vtkCollisionCollection * vtkCollisionDetection::GetCollisions()
 {
-	return this->Collisions;
+  return this->Collisions;
 }
 
 //--------------------------------------------------------------------------
 int vtkCollisionDetection::GetNumberOfCollisions()
 {
-	return this->Collisions->GetNumberOfItems();
+  return this->Collisions->GetNumberOfItems();
 }
 
 //--------------------------------------------------------------------------
 void vtkCollisionDetection::Reset()
 {
-	//Clear collisions from previous executions
-	this->Collisions->InitTraversal();
-	while(vtkCollision * collision = this->Collisions->GetNextCollision())
-	{
-		if(collision) collision->Delete();
-		collision = this->Collisions->GetNextCollision();
-	}
-	this->Collisions->RemoveAllItems();
+  //Clear collisions from previous executions
+  this->Collisions->InitTraversal();
+  while(vtkCollision * collision = this->Collisions->GetNextCollision())
+  {
+    if(collision) collision->Delete();
+    collision = this->Collisions->GetNextCollision();
+  }
+  this->Collisions->RemoveAllItems();
 }
 

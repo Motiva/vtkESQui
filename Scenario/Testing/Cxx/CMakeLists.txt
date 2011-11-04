@@ -13,7 +13,7 @@ TARGET_LINK_LIBRARIES(${KIT}CxxTests
     ${PROJECT_NAME}CollisionDetection
     vtkCommon
     vtkBioeng
-	vtkGraphics )
+  vtkGraphics )
 
 SET (TestsToRun ${Tests})
 REMOVE (TestsToRun ${KIT}CxxTests.cxx)

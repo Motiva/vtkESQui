@@ -12,8 +12,8 @@
   #if defined(vtkFEMSystem_EXPORTS)
     #define VTK_vtkFEMSystem_EXPORT __declspec(dllexport)
   #else
-	#undef VTK_vtkFEMSystem_EXPORT
-	#define VTK_vtkFEMSystem_EXPORT __declspec( dllimport )
+  #undef VTK_vtkFEMSystem_EXPORT
+  #define VTK_vtkFEMSystem_EXPORT __declspec( dllimport )
   #endif
 
 #else

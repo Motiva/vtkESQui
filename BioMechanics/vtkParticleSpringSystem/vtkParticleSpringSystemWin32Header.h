@@ -12,8 +12,8 @@
   #if defined(vtkParticleSpringSystem_EXPORTS)
     #define VTK_vtkParticleSpringSystem_EXPORT __declspec(dllexport)
   #else
-	#undef VTK_vtkParticleSpringSystem_EXPORT
-	#define VTK_vtkParticleSpringSystem_EXPORT __declspec( dllimport )
+  #undef VTK_vtkParticleSpringSystem_EXPORT
+  #define VTK_vtkParticleSpringSystem_EXPORT __declspec( dllimport )
   #endif
 
 #else

@@ -49,73 +49,73 @@ vtkStandardNewMacro(vtkCollisionCollection);
 
 //--------------------------------------------------------------------------
 void vtkCollisionCollection::DeepCopy(vtkCollisionCollection *collection) {
-	vtkCollision * AuxCopy;
-	vtkCollision * Aux;
-	this->InitTraversal();
-	AuxCopy = collection->GetNextCollision();
-	while(AuxCopy) {
-		Aux = vtkCollision::New();
-		Aux->DeepCopy(AuxCopy);
-		this->InsertNextCollision(Aux);
-		AuxCopy = collection->GetNextCollision();
-	}
+  vtkCollision * AuxCopy;
+  vtkCollision * Aux;
+  this->InitTraversal();
+  AuxCopy = collection->GetNextCollision();
+  while(AuxCopy) {
+    Aux = vtkCollision::New();
+    Aux->DeepCopy(AuxCopy);
+    this->InsertNextCollision(Aux);
+    AuxCopy = collection->GetNextCollision();
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkCollisionCollection::InsertNextCollision(vtkCollision *collision) {
-	this->vtkCollection::AddItem(collision);
+  this->vtkCollection::AddItem(collision);
 }
 
 //-------------------------------------------------------------------------
 void vtkCollisionCollection::ReplaceCollision(vtkIdType id, vtkCollision *collision) {
-	this->vtkCollection::ReplaceItem(id, collision);
+  this->vtkCollection::ReplaceItem(id, collision);
 }
 
 //-------------------------------------------------------------------------
 vtkIdType vtkCollisionCollection::ContainsCollision(vtkCollision * collision)
 {
-	return (this->FindCollision(collision) != -1);
+  return (this->FindCollision(collision) != -1);
 }
 
 //-------------------------------------------------------------------------
 vtkIdType vtkCollisionCollection::FindCollision(vtkCollision * collision)
 {
-	vtkCollision * local;
+  vtkCollision * local;
 
-	for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
-	{
-		local = this->GetCollision(id);
-		if ((local) &&
-				(local->GetObjectId(0) == collision->GetObjectId(0)) &&
-				(local->GetObjectId(1) == collision->GetObjectId(1)) &&
-				(local->GetElementId(0) == collision->GetElementId(0)) &&
-				(local->GetElementId(1) == collision->GetElementId(1)) &&
-				(local->GetPointId(1) == collision->GetPointId(1)))
-		{
-			return id;
-		}
-	}
-	return -1;
+  for(vtkIdType id = 0; id < this->GetNumberOfItems(); id++)
+  {
+    local = this->GetCollision(id);
+    if ((local) &&
+        (local->GetObjectId(0) == collision->GetObjectId(0)) &&
+        (local->GetObjectId(1) == collision->GetObjectId(1)) &&
+        (local->GetElementId(0) == collision->GetElementId(0)) &&
+        (local->GetElementId(1) == collision->GetElementId(1)) &&
+        (local->GetPointId(1) == collision->GetPointId(1)))
+    {
+      return id;
+    }
+  }
+  return -1;
 }
 
 //--------------------------------------------------------------------------
 vtkCollision* vtkCollisionCollection::GetCollision(vtkIdType id) {
-	return static_cast <vtkCollision *>(this->GetItemAsObject(id));
+  return static_cast <vtkCollision *>(this->GetItemAsObject(id));
 }
 
 //--------------------------------------------------------------------------
 vtkCollision * vtkCollisionCollection::GetNextCollision() {
-	return static_cast <vtkCollision*>(this->GetNextItemAsObject());
+  return static_cast <vtkCollision*>(this->GetNextItemAsObject());
 }
 
 //--------------------------------------------------------------------------
 void vtkCollisionCollection::RemoveCollision(vtkIdType id) {
-	this->vtkCollection::RemoveItem(id);
+  this->vtkCollection::RemoveItem(id);
 }
 
 //--------------------------------------------------------------------------
 void vtkCollisionCollection::RemoveCollisions() {
-	this->RemoveAllItems();
+  this->RemoveAllItems();
 }
 
 //----------------------------------------------------------------------------

@@ -58,33 +58,33 @@ POSSIBILITY OF SUCH DAMAGE.
 
 void func ( vtkObject* caller, long unsigned int eventId, void* clientData, void* callData )
 {
-	vtkSimulation * sim = static_cast<vtkSimulation*>(clientData);
+  vtkSimulation * sim = static_cast<vtkSimulation*>(clientData);
 
-	if (vtkCommand::TimerEvent == eventId)
-	{
-		int tid = * static_cast<int *>(callData);
-		if (tid == sim->GetInteractionTimerId())
-		{
-			//cout << "Haptic\n";
-			sim->UpdateInteraction();
-		}
-		if (tid == sim->GetSimulationTimerId())
-		{
-			//cout << "Simulation\n";
-			sim->UpdateScenario();
-		}
-		else if (tid == sim->GetRenderTimerId())
-		{
-			//cout << "Render\n";
-			vtkRenderWindowInteractor * Interactor = sim->GetInteractor();
-			if (Interactor &&
-					Interactor->GetRenderWindow() &&
-					Interactor->GetRenderWindow()->GetRenderers())
-			{
-				Interactor->Render();
-			}
-		}
-	}
+  if (vtkCommand::TimerEvent == eventId)
+  {
+    int tid = * static_cast<int *>(callData);
+    if (tid == sim->GetInteractionTimerId())
+    {
+      //cout << "Haptic\n";
+      sim->UpdateInteraction();
+    }
+    if (tid == sim->GetSimulationTimerId())
+    {
+      //cout << "Simulation\n";
+      sim->UpdateScenario();
+    }
+    else if (tid == sim->GetRenderTimerId())
+    {
+      //cout << "Render\n";
+      vtkRenderWindowInteractor * Interactor = sim->GetInteractor();
+      if (Interactor &&
+          Interactor->GetRenderWindow() &&
+          Interactor->GetRenderWindow()->GetRenderers())
+      {
+        Interactor->Render();
+      }
+    }
+  }
 
 }
 
@@ -94,210 +94,211 @@ vtkStandardNewMacro(vtkSimulation);
 //----------------------------------------------------------------------------
 vtkSimulation::vtkSimulation()
 {
-	this->Scenario = NULL;
-	this->Interactor = NULL;
-	this->InteractionTimerId = 0;
-	this->InteractionTimerRate = 0;
-	this->SimulationTimerId = 0;
-	this->SimulationTimerRate = 0;
-	this->RenderTimerId = 0;
-	this->RenderTimerRate = 0;
-	this->Interaction = false;
-	this->Collision = false;
-	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0.0;
+  this->Scenario = NULL;
+  this->Interactor = NULL;
+  this->InteractionTimerId = 0;
+  this->InteractionTimerRate = 0;
+  this->SimulationTimerId = 0;
+  this->SimulationTimerRate = 0;
+  this->RenderTimerId = 0;
+  this->RenderTimerRate = 0;
+  this->Interaction = false;
+  this->Collision = false;
+  this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0.0;
 
-	this->Callback = vtkCallbackCommand::New();
+  this->Callback = vtkCallbackCommand::New();
 }
 
 //----------------------------------------------------------------------------
 vtkSimulation::~vtkSimulation()
 {
-	if(this->Callback) this->Callback->Delete();
+  if(this->Callback) this->Callback->Delete();
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::SetInteractor(vtkRenderWindowInteractor * i)
 {
-	this->Interactor = i;
+  this->Interactor = i;
 }
 
 //----------------------------------------------------------------------------
 vtkRenderWindowInteractor * vtkSimulation::GetInteractor()
 {
-	return this->Interactor;
+  return this->Interactor;
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::SetInteractorStyle(vtkSimulationInteractorStyle * style)
 {
-	this->InteractorStyle = style;
+  this->InteractorStyle = style;
 }
 
 //----------------------------------------------------------------------------
 vtkSimulationInteractorStyle * vtkSimulation::GetInteractorStyle()
 {
-	return this->InteractorStyle;
+  return this->InteractorStyle;
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::SetScenario(vtkScenario * s)
 {
-	this->Scenario = s;
+  this->Scenario = s;
 }
 
 //----------------------------------------------------------------------------
 vtkScenario * vtkSimulation::GetScenario()
 {
-	return this->Scenario;
+  return this->Scenario;
 }
 
 //----------------------------------------------------------------------------
 vtkCollisionCollection * vtkSimulation::GetCollisions()
 {
-	return this->CollisionDetection->GetCollisions();
+  return this->CollisionDetection->GetCollisions();
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::Init() {
 
-	//Configure simulation loop
-	this->Callback->SetCallback(func);
-	this->Callback->SetClientData(this);
+  //Configure simulation loop
+  this->Callback->SetCallback(func);
+  this->Callback->SetClientData(this);
 
-	//Check if the interactor has been manually set
-	if(!this->Interactor)
-	{
-		this->Interactor = this->Scenario->GetRenderWindow()->GetInteractor();
-	}
+  //Check if the interactor has been manually set
+  if(!this->Interactor)
+  {
+    this->Interactor = this->Scenario->GetRenderWindow()->GetInteractor();
+  }
 
-	this->Interactor->Initialize();
+  this->Interactor->Initialize();
 
-	this->Interactor->AddObserver(vtkCommand::TimerEvent, this->Callback);
+  this->Interactor->AddObserver(vtkCommand::TimerEvent, this->Callback);
 
-	//Check for haptic device resfresh rate
-	if(this->InteractionTimerRate == 0)
-	{
-		vtkErrorMacro("Haptic Device refresh time has not been defined");
-	}
+  //Check for haptic device resfresh rate
+  if(this->InteractionTimerRate == 0)
+  {
+    vtkErrorMacro("Haptic Device refresh time has not been defined");
+  }
 
-	this->InteractionTimerId = this->Interactor->CreateRepeatingTimer(1000*this->InteractionTimerRate);
+  this->InteractionTimerId = this->Interactor->CreateRepeatingTimer(1000*this->InteractionTimerRate);
 
-	//Check for simulation resfresh rate
-	if(this->SimulationTimerRate == 0)
-	{
-		vtkErrorMacro("Simulation refresh time has not been defined");
-	}
+  //Check for simulation resfresh rate
+  if(this->SimulationTimerRate == 0)
+  {
+    vtkErrorMacro("Simulation refresh time has not been defined");
+  }
 
-	this->SimulationTimerId = this->Interactor->CreateRepeatingTimer(1000*this->SimulationTimerRate);
+  this->SimulationTimerId = this->Interactor->CreateRepeatingTimer(1000*this->SimulationTimerRate);
 
-	//Check for rendering rate
-	if(this->RenderTimerRate == 0)
-	{
-		vtkErrorMacro("Render time has not been defined");
-	}
+  //Check for rendering rate
+  if(this->RenderTimerRate == 0)
+  {
+    vtkErrorMacro("Render time has not been defined");
+  }
 
-	this->RenderTimerId = this->Interactor->CreateRepeatingTimer(1000*this->RenderTimerRate);
+  this->RenderTimerId = this->Interactor->CreateRepeatingTimer(1000*this->RenderTimerRate);
 
-	//Initialize visualization scenario
-	this->Scenario->Init();
+  //Initialize visualization scenario
+  this->Scenario->Init();
 
-	//Initialize collision detection process
-	if(this->Collision)
-	{
-		this->CollisionDetection = vtkBioEngInterface::New();
-		this->CollisionDetection->Init();
+  //Initialize collision detection process
+  if(this->Collision)
+  {
+    this->CollisionDetection = vtkBioEngInterface::New();
+    this->CollisionDetection->Init();
 
-		vtkScenarioObjectCollection * objects = this->Scenario->GetObjects();
-		objects->InitTraversal();
-		while(vtkScenarioObject * o = objects->GetNextObject())
-		{
-			vtkScenarioElementCollection * elements = o->GetElements();
-			elements->InitTraversal();
-			while(vtkScenarioElement * e = elements->GetNextElement())
-			{
-				e->SetDeltaT(this->SimulationTimerRate);
-				vtkCollisionModel *m = e->GetCollisionModel();
-				if(m)
-				{
-					m->SetDeltaT(this->SimulationTimerRate);
-					this->CollisionDetection->AddModel(m);
-				}
-			}
-		}
-	}
+    vtkScenarioObjectCollection * objects = this->Scenario->GetObjects();
+    objects->InitTraversal();
+    while(vtkScenarioObject * o = objects->GetNextObject())
+    {
+      vtkScenarioElementCollection * elements = o->GetElements();
+      elements->InitTraversal();
+      while(vtkScenarioElement * e = elements->GetNextElement())
+      {
+        e->SetDeltaT(this->SimulationTimerRate);
+        vtkCollisionModel *m = e->GetCollisionModel();
+        if(m)
+        {
+          m->SetDeltaT(this->SimulationTimerRate);
+          this->CollisionDetection->AddModel(m);
+        }
+      }
+    }
+  }
 
-	//Manage user interaction
-	if(this->Interaction)
-	{
-		//Initialize simulation interactor style
-		if(this->InteractorStyle) {
-			this->InteractorStyle->SetScenario(this->Scenario);
-			this->InteractorStyle->Init();
-			this->Interactor->SetInteractorStyle(this->InteractorStyle);
-		}
+  //FIXME: Redesign interaction
+  //Manage user interaction
+  if(this->Interaction)
+  {
+    //Initialize simulation interactor style
+    if(this->InteractorStyle) {
+      this->InteractorStyle->SetScenario(this->Scenario);
+      this->InteractorStyle->Init();
+      this->Interactor->SetInteractorStyle(this->InteractorStyle);
+    }
 
-	#ifndef VTKESQUI_USE_NO_HAPTICS
-		if(this->HapticDevice)
-		{
-			//Init haptic device
-			int connected = this->HapticDevice->Init();
-			if(connected > 0){
-				vtkDebugMacro("Haptic device is connected...");
-				//Set tools to be controlled by the device
-				objects->InitTraversal();
-				while(vtkScenarioObject * o = objects->GetNextObject())
-				{
-					if(o && o->GetObjectType() == vtkScenarioObject::Tool)
-					{
-						this->HapticDevice->AddTool(vtkTool::SafeDownCast(o));
-					}
-				}
-			}
-			else
-			{
-				vtkErrorMacro("Haptic device is not connected...");
-				exit(0);
-			}
-		}
-	#endif
-	}
+  #ifndef VTKESQUI_USE_NO_HAPTICS
+    if(this->HapticDevice)
+    {
+      //Init haptic device
+      int connected = this->HapticDevice->Init();
+      if(connected > 0){
+        vtkDebugMacro("Haptic device is connected...");
+        //Set tools to be controlled by the device
+        objects->InitTraversal();
+        while(vtkScenarioObject * o = objects->GetNextObject())
+        {
+          if(o && o->GetObjectType() == vtkScenarioObject::Tool)
+          {
+            this->HapticDevice->AddTool(vtkTool::SafeDownCast(o));
+          }
+        }
+      }
+      else
+      {
+        vtkErrorMacro("Haptic device is not connected...");
+        exit(0);
+      }
+    }
+  #endif
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::Run()
 {
-	this->Interactor->Start();
+  this->Interactor->Start();
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::UpdateScenario()
 {
-	//Check if any collision has occurred
-	this->CollisionDetection->Update();
-	this->Scenario->Update();
+  //Check if any collision has occurred
+  this->CollisionDetection->Update();
+  this->Scenario->Update();
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::UpdateInteraction() {
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
-	if(this->HapticDevice)
-	{
-		const char * name = HapticDevice->GetName();
-		this->GetHapticDevice()->Update();
-	}
+  if(this->HapticDevice)
+  {
+    const char * name = HapticDevice->GetName();
+    this->GetHapticDevice()->Update();
+  }
 #endif
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::PrintSelf(ostream& os,vtkIndent indent) {
-	//this->Superclass::PrintSelf(os,indent);
+  //this->Superclass::PrintSelf(os,indent);
 
-	os << indent << "SimulationTimerRate: " << this->SimulationTimerRate << "\n";
-	os << indent << "HapticTimerRate: " << this->InteractionTimerRate << "\n";
-	os << indent << "RenderTimerRate: " << this->RenderTimerRate << "\n";
-	os << indent << "Gravity: " << this->Gravity[0] << ", " << this->Gravity[1] << ", " << this->Gravity[2] << "\n";
-	os << indent << "UseHaptic: " << this->Interaction << "\n";
-	os << indent << "Verbose: " << this->Collision << "\n";
+  os << indent << "SimulationTimerRate: " << this->SimulationTimerRate << "\n";
+  os << indent << "HapticTimerRate: " << this->InteractionTimerRate << "\n";
+  os << indent << "RenderTimerRate: " << this->RenderTimerRate << "\n";
+  os << indent << "Gravity: " << this->Gravity[0] << ", " << this->Gravity[1] << ", " << this->Gravity[2] << "\n";
+  os << indent << "UseHaptic: " << this->Interaction << "\n";
+  os << indent << "Verbose: " << this->Collision << "\n";
 
 }

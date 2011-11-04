@@ -51,92 +51,92 @@ class vtkCollision;
 class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollisionCollection: public vtkCollection
 {
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkCollisionCollection,vtkCollection);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkCollisionCollection,vtkCollection);
 
-	//! Create new collection of collisions
-	static vtkCollisionCollection *New();
+  //! Create new collection of collisions
+  static vtkCollisionCollection *New();
 
-	//! Print collection info
-	virtual void PrintSelf(ostream& os, vtkIndent indent);
+  //! Print collection info
+  virtual void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Perform a deep copy of the vtkCollisionCollection Object
-	/*!
-	* \param collection collection of collisions to be copied.
-	*/
-	void DeepCopy(vtkCollisionCollection *collection);
+  //!Perform a deep copy of the vtkCollisionCollection Object
+  /*!
+  * \param collection collection of collisions to be copied.
+  */
+  void DeepCopy(vtkCollisionCollection *collection);
 
-	//! Add a Collision to the list.
-	/*!
-	* \param collision collision to be added to the collection
-	* \sa InsertCollision(vtkIdType id, vtkCollision *collision)
-	*/
-	void InsertNextCollision(vtkCollision *collision);
+  //! Add a Collision to the list.
+  /*!
+  * \param collision collision to be added to the collection
+  * \sa InsertCollision(vtkIdType id, vtkCollision *collision)
+  */
+  void InsertNextCollision(vtkCollision *collision);
 
-	//! Replace the Collision on id position.
-	/*!
-	* \param id collision identifier on the collection
-	* \param collision collision to be added to the collection
-	* \sa InsertNextCollision(vtkCollision *collision)
-	*/
-	void ReplaceCollision(vtkIdType id, vtkCollision *collision);
+  //! Replace the Collision on id position.
+  /*!
+  * \param id collision identifier on the collection
+  * \param collision collision to be added to the collection
+  * \sa InsertNextCollision(vtkCollision *collision)
+  */
+  void ReplaceCollision(vtkIdType id, vtkCollision *collision);
 
-	//! Check if the collision exists within the collection
-	/*!
-	 * A collision is found if the following params match:
-	 * - organId
-	 * - toolId
-	 * - organPointId
-	 * \param collision collision to be located in the collection
-	 * \return true if collision is already present
-	 */
-	vtkIdType ContainsCollision(vtkCollision * collision);
+  //! Check if the collision exists within the collection
+  /*!
+   * A collision is found if the following params match:
+   * - organId
+   * - toolId
+   * - organPointId
+   * \param collision collision to be located in the collection
+   * \return true if collision is already present
+   */
+  vtkIdType ContainsCollision(vtkCollision * collision);
 
-	//! Find collision within the collection
-	/*!
-	 * A collision is found if the following params match:
-	 * - organId
-	 * - toolId
-	 * - organPointId
-	 * \param collision collision to be located in the collection.
-	 *  \return position in the collection
-	 */
-	vtkIdType FindCollision(vtkCollision * collision);
+  //! Find collision within the collection
+  /*!
+   * A collision is found if the following params match:
+   * - organId
+   * - toolId
+   * - organPointId
+   * \param collision collision to be located in the collection.
+   *  \return position in the collection
+   */
+  vtkIdType FindCollision(vtkCollision * collision);
 
-	//! Return the Collision on id position.
-	/*!
-	* \param id identifier of the collision that will be returned
-	* \return vtkCollision object stored in the collection
-	*/
-	vtkCollision * GetCollision(vtkIdType id);
+  //! Return the Collision on id position.
+  /*!
+  * \param id identifier of the collision that will be returned
+  * \return vtkCollision object stored in the collection
+  */
+  vtkCollision * GetCollision(vtkIdType id);
 
-	//! Return iteratively each collision
-	/*!
-	* \return vtkCollision object stored in the collection
-	*/
-	vtkCollision * GetNextCollision();
+  //! Return iteratively each collision
+  /*!
+  * \return vtkCollision object stored in the collection
+  */
+  vtkCollision * GetNextCollision();
 
-	//! Remove the Collision at the id position
-	/*!
-	* This method only removes the collision from the collection.
-	* The object itself must be deleted.
-	*/
-	void RemoveCollision(vtkIdType id);
+  //! Remove the Collision at the id position
+  /*!
+  * This method only removes the collision from the collection.
+  * The object itself must be deleted.
+  */
+  void RemoveCollision(vtkIdType id);
 
-	//! Remove All Collisions.
-	/*!
-	* This method only removes the collision from the collection.
-	* The object itself must be deleted.
-	*/
-	void RemoveCollisions();
+  //! Remove All Collisions.
+  /*!
+  * This method only removes the collision from the collection.
+  * The object itself must be deleted.
+  */
+  void RemoveCollisions();
 
 protected:
-	vtkCollisionCollection() {};
-	~vtkCollisionCollection() {};
+  vtkCollisionCollection() {};
+  ~vtkCollisionCollection() {};
 
 private:
-	vtkCollisionCollection(const vtkCollisionCollection&);  // Not implemented.
-	void operator=(const vtkCollisionCollection&);				// Not implemented.
+  vtkCollisionCollection(const vtkCollisionCollection&);  // Not implemented.
+  void operator=(const vtkCollisionCollection&);        // Not implemented.
 };
 
 

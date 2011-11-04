@@ -58,147 +58,147 @@ class vtkMassProperties;
 class VTK_vtkCUDAParticleSystem_EXPORT vtkCUDAParticleSystem : public vtkPolyDataAlgorithm {
 public:
 
-	//!Type revision macro
-	vtkTypeRevisionMacro(vtkCUDAParticleSystem,vtkPolyDataAlgorithm);
-	//! Create new particle spring system object
-	static vtkCUDAParticleSystem * New();
-	//! Print system info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Type revision macro
+  vtkTypeRevisionMacro(vtkCUDAParticleSystem,vtkPolyDataAlgorithm);
+  //! Create new particle spring system object
+  static vtkCUDAParticleSystem * New();
+  //! Print system info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initialize the particle spring system
-	/*!
-	 * Create springs, particles and the links between them.
-	 */
-	void Init();
+  //! Initialize the particle spring system
+  /*!
+   * Create springs, particles and the links between them.
+   */
+  void Init();
 
-	//Parameters for Particle-Spring System
-	//! Set spring coefficient
-	vtkSetMacro(Spring, double);		// Spring coefficient
-	//! Set distance coefficient. Percentage
-	vtkSetMacro(Distance, double);	// Distance constraint coefficient
-	//! Set damping coefficient
-	vtkSetMacro(Damping, double);	// Damping coefficient
-	//! Set time step
-	vtkSetMacro(TimeStep, double);				// dt for every step
-	//! Set mass of system particles
-	vtkSetMacro(Mass, double);					// Mass of all points (future work: specify different masses for different "layers")
-	//! Set residual error
-	vtkSetMacro(Residual, double);					// Residual error tolerance on displacement calculus
-	//! Set motion equation solver type.
-	vtkSetMacro(SolverType, vtkCUDAMotionEquationSolver::CUDAMotionEquationSolverType);		// Motion equation solver type
+  //Parameters for Particle-Spring System
+  //! Set spring coefficient
+  vtkSetMacro(Spring, double);    // Spring coefficient
+  //! Set distance coefficient. Percentage
+  vtkSetMacro(Distance, double);  // Distance constraint coefficient
+  //! Set damping coefficient
+  vtkSetMacro(Damping, double);  // Damping coefficient
+  //! Set time step
+  vtkSetMacro(TimeStep, double);        // dt for every step
+  //! Set mass of system particles
+  vtkSetMacro(Mass, double);          // Mass of all points (future work: specify different masses for different "layers")
+  //! Set residual error
+  vtkSetMacro(Residual, double);          // Residual error tolerance on displacement calculus
+  //! Set motion equation solver type.
+  vtkSetMacro(SolverType, vtkCUDAMotionEquationSolver::CUDAMotionEquationSolverType);    // Motion equation solver type
 
-	//! Set Gravity Force (m/s2)
-	vtkSetVector3Macro(Gravity, double);
-	//! Get Gravity Force (m/s2)
-	vtkGetVector3Macro(Gravity, double);
+  //! Set Gravity Force (m/s2)
+  vtkSetVector3Macro(Gravity, double);
+  //! Get Gravity Force (m/s2)
+  vtkGetVector3Macro(Gravity, double);
 
-	//! Insert a displacement in the particle-spring system
-	void InsertDisplacement(vtkIdType id, double * displacement);
+  //! Insert a displacement in the particle-spring system
+  void InsertDisplacement(vtkIdType id, double * displacement);
 
-	//! Insert a displacement in the particle-spring system
-	void InsertDisplacement(vtkIdType id, double x, double y, double z);
+  //! Insert a displacement in the particle-spring system
+  void InsertDisplacement(vtkIdType id, double x, double y, double z);
 
-	//! Insert displacements particle-spring system
-	/*!
-	 * \param ids List of particle ids
-	 * \param displacements Array containing displacement displacements
-	 */
-	void SetDisplacements(vtkIdList * ids, vtkDoubleArray * displacements);
+  //! Insert displacements particle-spring system
+  /*!
+   * \param ids List of particle ids
+   * \param displacements Array containing displacement displacements
+   */
+  void SetDisplacements(vtkIdList * ids, vtkDoubleArray * displacements);
 
-	//! Compute the forces attending to the collisions
-	/*!
-	 * The solver is executed every step, in order to compute the force propagation along the whole system
-	 */
-	void ComputeForces();
+  //! Compute the forces attending to the collisions
+  /*!
+   * The solver is executed every step, in order to compute the force propagation along the whole system
+   */
+  void ComputeForces();
 
 protected:
-	vtkCUDAParticleSystem();
-	~vtkCUDAParticleSystem();
+  vtkCUDAParticleSystem();
+  ~vtkCUDAParticleSystem();
 
-	//! VTK method for system update. Must be implemented
-	int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
+  //! VTK method for system update. Must be implemented
+  int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
 
-	// Model Parameters
-	//! Init flag
-	bool Initialized;
-	//! System total number of Particles
-	int NumberOfParticles;
-	//! System total number of Spring
-	int NumberOfSprings;
+  // Model Parameters
+  //! Init flag
+  bool Initialized;
+  //! System total number of Particles
+  int NumberOfParticles;
+  //! System total number of Spring
+  int NumberOfSprings;
 
-	// Host Data Vectors
-	// Particles
-	//! Particle position host vector
-	float * hPos;
-	//! Particle velocity host vector
-	float * hVel;
-	//! Particle acceleration host vector
-	float * hAcc;
-	//! Particle force host vector
-	float * hFor;
-	//! Particle mass host vector
-	float * hMss;
+  // Host Data Vectors
+  // Particles
+  //! Particle position host vector
+  float * hPos;
+  //! Particle velocity host vector
+  float * hVel;
+  //! Particle acceleration host vector
+  float * hAcc;
+  //! Particle force host vector
+  float * hFor;
+  //! Particle mass host vector
+  float * hMss;
 
-	// Springs
-	//! Spring particle identifiers
-	int * hIds; //particle Ids
-	//! Spring length. Distance between particles.
-	float * hLength;
+  // Springs
+  //! Spring particle identifiers
+  int * hIds; //particle Ids
+  //! Spring length. Distance between particles.
+  float * hLength;
 
-	// Device Data
-	//! Particle position device vector
-	float * dPos;
-	//! Particle velocity device vector
-	float * dVel;
-	//! Particle acceleration device vector
-	float * dAcc;
+  // Device Data
+  //! Particle position device vector
+  float * dPos;
+  //! Particle velocity device vector
+  float * dVel;
+  //! Particle acceleration device vector
+  float * dAcc;
 
-	//! Equation time step
-	double TimeStep;
+  //! Equation time step
+  double TimeStep;
 
-	// System Parameters
-	//! Spring stiffness k.
-	double Spring;
-	//! Distance coefficient. Maximum Percentage of elongation
-	double Distance;
-	//! Damping coefficient
-	double Damping;
-	//! Mass for each system particle
-	double Mass;
-	//! Residual error tolerance
-	double Residual;
+  // System Parameters
+  //! Spring stiffness k.
+  double Spring;
+  //! Distance coefficient. Maximum Percentage of elongation
+  double Distance;
+  //! Damping coefficient
+  double Damping;
+  //! Mass for each system particle
+  double Mass;
+  //! Residual error tolerance
+  double Residual;
 
-	//! Gravitational force vector
-	double Gravity[3];
+  //! Gravitational force vector
+  double Gravity[3];
 
-	//! Motion equation solver
-	vtkCUDAMotionEquationSolver * Solver;
-	//! Motion equation solver type
-	vtkCUDAMotionEquationSolver::CUDAMotionEquationSolverType SolverType;
+  //! Motion equation solver
+  vtkCUDAMotionEquationSolver * Solver;
+  //! Motion equation solver type
+  vtkCUDAMotionEquationSolver::CUDAMotionEquationSolverType SolverType;
 
-	//Contact data
-	//! Contact Point Ids
-	vtkIdList * CollisionIds;
-	//! Contact Point Displacements
-	vtkDoubleArray * CollisionDisplacements;
+  //Contact data
+  //! Contact Point Ids
+  vtkIdList * CollisionIds;
+  //! Contact Point Displacements
+  vtkDoubleArray * CollisionDisplacements;
 
 private:
-	vtkCUDAParticleSystem(const vtkCUDAParticleSystem&);            // Not implemented.
-	void operator=(const vtkCUDAParticleSystem&);           // Not implemented.
+  vtkCUDAParticleSystem(const vtkCUDAParticleSystem&);            // Not implemented.
+  void operator=(const vtkCUDAParticleSystem&);           // Not implemented.
 
-	//! Enumeration of vector types
-	enum VectorType{
-		Position,
-		Velocity,
-		Acceleration,
-		Force
-	};
+  //! Enumeration of vector types
+  enum VectorType{
+    Position,
+    Velocity,
+    Acceleration,
+    Force
+  };
 
-	//
-	float * GetParticleVector(VectorType t, vtkIdType id);
+  //
+  float * GetParticleVector(VectorType t, vtkIdType id);
 
-	//
-	void DisplayParticleVectors();
+  //
+  void DisplayParticleVectors();
 
 };
 

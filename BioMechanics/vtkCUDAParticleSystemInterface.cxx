@@ -63,147 +63,147 @@ vtkStandardNewMacro(vtkCUDAParticleSystemInterface);
 //----------------------------------------------------------------------------
 vtkCUDAParticleSystemInterface::vtkCUDAParticleSystemInterface()
 {
-	this->System = vtkCUDAParticleSystem::New();
-	this->Spring = 0.0;
-	this->Distance = 0;
-	this->Damping = 0;
-	this->TimeStep = 0;
-	this->Mass = 0;
-	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
-	this->TimeStep = 0;
-	this->SolverType = vtkCUDAMotionEquationSolver::VelocityVerlet;
+  this->System = vtkCUDAParticleSystem::New();
+  this->Spring = 0.0;
+  this->Distance = 0;
+  this->Damping = 0;
+  this->TimeStep = 0;
+  this->Mass = 0;
+  this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
+  this->TimeStep = 0;
+  this->SolverType = vtkCUDAMotionEquationSolver::VelocityVerlet;
 }
 
 //----------------------------------------------------------------------------
 vtkCUDAParticleSystemInterface::~vtkCUDAParticleSystemInterface()
 {
-	this->System->Delete();
+  this->System->Delete();
 }
 
 //--------------------------------------------------------------------------
 void vtkCUDAParticleSystemInterface::Init()
 {
-	this->Superclass::Init();
+  this->Superclass::Init();
 
-	//Set input data
-	this->System->SetInput(this->GetInput());
-	//Set common parameters
-	this->System->SetGravity(this->Gravity);
-	this->System->SetTimeStep(this->TimeStep);
-	//Set Mass-Spring System parameters
-	this->System->SetDistance(this->Distance);
-	this->System->SetSpring(this->Spring);//Friction
-	this->System->SetDamping(this->Damping);//Friction
-	this->System->SetMass(this->Mass);
-	this->System->SetSolverType(this->SolverType);
-	//Initialize system
-	this->System->Init();
+  //Set input data
+  this->System->SetInput(this->GetInput());
+  //Set common parameters
+  this->System->SetGravity(this->Gravity);
+  this->System->SetTimeStep(this->TimeStep);
+  //Set Mass-Spring System parameters
+  this->System->SetDistance(this->Distance);
+  this->System->SetSpring(this->Spring);//Friction
+  this->System->SetDamping(this->Damping);//Friction
+  this->System->SetMass(this->Mass);
+  this->System->SetSolverType(this->SolverType);
+  //Initialize system
+  this->System->Init();
 
-	//Once the system has been initialized the boundary conditions are set
-	this->BoundaryConditions->InitTraversal();
-	while(vtkBoundaryCondition * c = this->BoundaryConditions->GetNextBoundaryCondition())
-	{
-		if(c->GetType() == vtkBoundaryCondition::Neumann){
-			// Set condition value
-			/* 0 -> Fixed
-			 * 1 -> Free
-			 */
-			//TODO: Enable particle status in vtkCUDAparticleSystem
-			//this->System->SetParticleStatus(c->GetPointId(), c->GetValue());
-		}
-	}
+  //Once the system has been initialized the boundary conditions are set
+  this->BoundaryConditions->InitTraversal();
+  while(vtkBoundaryCondition * c = this->BoundaryConditions->GetNextBoundaryCondition())
+  {
+    if(c->GetType() == vtkBoundaryCondition::Neumann){
+      // Set condition value
+      /* 0 -> Fixed
+       * 1 -> Free
+       */
+      //TODO: Enable particle status in vtkCUDAparticleSystem
+      //this->System->SetParticleStatus(c->GetPointId(), c->GetValue());
+    }
+  }
 
-	if (this->Debug) this->Print(cout);
+  if (this->Debug) this->Print(cout);
 }
 
 // VTK specific method: This method is called when the pipeline is calculated.
 //----------------------------------------------------------------------------
 int vtkCUDAParticleSystemInterface::RequestData(
-		vtkInformation *vtkNotUsed(request),
-		vtkInformationVector **inputVector,
-		vtkInformationVector *outputVector) {
+    vtkInformation *vtkNotUsed(request),
+    vtkInformationVector **inputVector,
+    vtkInformationVector *outputVector) {
 
-	vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-	vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
-	vtkInformation *outInfo = outputVector->GetInformationObject(0);
+  vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+  vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
+  vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
-	//Get the input and output
-	vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-	//Optional input
-	vtkPolyData * source = 0;
-	if(sourceInfo){
-		source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
-	}
-	//Output
-	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+  //Get the input and output
+  vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+  //Optional input
+  vtkPolyData * source = 0;
+  if(sourceInfo){
+    source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
+  }
+  //Output
+  vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-	//cout << this->GetClassName() << "::RequestData(" << this->GetName() << ")\n";
+  //cout << this->GetClassName() << "::RequestData(" << this->GetName() << ")\n";
 
-	if(this->Status == Enabled)
-	{
-		//Force recalculation of the output in every step
-		this->System->Modified();
-		this->System->Update();
+  if(this->Status == Enabled)
+  {
+    //Force recalculation of the output in every step
+    this->System->Modified();
+    this->System->Update();
 
-		vtkPolyData * out = this->System->GetOutput();
+    vtkPolyData * out = this->System->GetOutput();
 
-		//If source is defined -> Synchronize mesh
-		if(source)
-		{
-			if(this->HashMap->GetNumberOfIds() == 0)
-			{
-				//Build collision mesh hash map
-				this->BuildHashMap(input, source);
-			}
+    //If source is defined -> Synchronize mesh
+    if(source)
+    {
+      if(this->HashMap->GetNumberOfIds() == 0)
+      {
+        //Build collision mesh hash map
+        this->BuildHashMap(input, source);
+      }
 
-			//Synchronize/Modify visualization mesh
-			vtkPoints * points = source->GetPoints();
-			for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
-			{
-				int id = this->HashMap->GetId(i);
-				double * p = out->GetPoint(id);
-				points->SetPoint(i, p);
-			}
-		}
+      //Synchronize/Modify visualization mesh
+      vtkPoints * points = source->GetPoints();
+      for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
+      {
+        int id = this->HashMap->GetId(i);
+        double * p = out->GetPoint(id);
+        points->SetPoint(i, p);
+      }
+    }
 
-		//Set visualization parameters
-		this->Actor->SetVisibility(this->Visibility);
-		if(this->IsVisible())
-		{
-			this->Actor->GetProperty()->SetColor(this->Color);
-			this->Actor->GetProperty()->SetOpacity(this->Opacity);
+    //Set visualization parameters
+    this->Actor->SetVisibility(this->Visibility);
+    if(this->IsVisible())
+    {
+      this->Actor->GetProperty()->SetColor(this->Color);
+      this->Actor->GetProperty()->SetOpacity(this->Opacity);
 
-			this->Mapper->SetInput(out);
-		}
+      this->Mapper->SetInput(out);
+    }
 
-		//Update filter output
-		output->ShallowCopy(out);
-	}
-	else output->ShallowCopy(input);
+    //Update filter output
+    output->ShallowCopy(out);
+  }
+  else output->ShallowCopy(input);
 
-	return 1;
+  return 1;
 }
 
 //--------------------------------------------------------------------------
 void vtkCUDAParticleSystemInterface::InsertDisplacement(vtkIdType id, double * vector)
 {
-	this->InsertDisplacement(id, vector[0], vector[1], vector[2]);
+  this->InsertDisplacement(id, vector[0], vector[1], vector[2]);
 }
 
 //--------------------------------------------------------------------------
 void vtkCUDAParticleSystemInterface::InsertDisplacement(vtkIdType id, double x, double y, double z)
 {
-	this->System->InsertDisplacement(id, x, y, z);
+  this->System->InsertDisplacement(id, x, y, z);
 }
 
 //--------------------------------------------------------------------------
 void vtkCUDAParticleSystemInterface::PrintSelf(ostream& os, vtkIndent indent)
 {
-	this->Superclass::PrintSelf(os,indent);
-	os << indent << "SpringCoefficient: " << this->Spring << endl;
-	os << indent << "DampingCoefficient: " << this->Damping << endl;
-	os << indent << "DistanceCoefficient: " << this->Distance << endl;
-	os << indent << "Mass: " << this->Mass << endl;
-	os << indent << "DeltaT: " << this->TimeStep << endl;
-	os << indent << "SolverType: " << this->SolverType << endl;
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "SpringCoefficient: " << this->Spring << endl;
+  os << indent << "DampingCoefficient: " << this->Damping << endl;
+  os << indent << "DistanceCoefficient: " << this->Distance << endl;
+  os << indent << "Mass: " << this->Mass << endl;
+  os << indent << "DeltaT: " << this->TimeStep << endl;
+  os << indent << "SolverType: " << this->SolverType << endl;
 }

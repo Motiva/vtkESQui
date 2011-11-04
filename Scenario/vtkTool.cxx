@@ -55,7 +55,7 @@ vtkCxxRevisionMacro(vtkTool, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 vtkTool::vtkTool() {
-	this->ObjectType = vtkScenarioObject::Tool;
+  this->ObjectType = vtkScenarioObject::Tool;
 }
 
 //--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ vtkTool::~vtkTool() {
 
 //--------------------------------------------------------------------------
 void vtkTool::PrintSelf(ostream& os,vtkIndent indent) {
-	this->Superclass::PrintSelf(os, indent);
+  this->Superclass::PrintSelf(os, indent);
 
-	os << indent << "ToolType: " << this->ToolType << "\n";
+  os << indent << "ToolType: " << this->ToolType << "\n";
 }

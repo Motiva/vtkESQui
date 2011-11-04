@@ -62,33 +62,33 @@ using namespace std;
 
 int TestvtkSRMLImporter(int argc, char * argv[])
 {
-	/**********  Render Window Definitions  ********/
-	vtkRenderer * ren1 = vtkRenderer::New();
-	ren1->SetBackground(1.0,1.0,1.0);
+  /**********  Render Window Definitions  ********/
+  vtkRenderer * ren1 = vtkRenderer::New();
+  ren1->SetBackground(1.0,1.0,1.0);
 
-	vtkRenderWindow *renWin = vtkRenderWindow::New();
-	renWin->AddRenderer(ren1);
-	renWin->SetSize(840,480);
+  vtkRenderWindow *renWin = vtkRenderWindow::New();
+  renWin->AddRenderer(ren1);
+  renWin->SetSize(840,480);
 
-	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
-	iren->SetRenderWindow(renWin);
+  vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
+  iren->SetRenderWindow(renWin);
 
-	vtkSimulation * Simulation = vtkSimulation::New();
+  vtkSimulation * Simulation = vtkSimulation::New();
 
-	vtkScenario * Scenario = vtkScenario::New();
-	Scenario->SetRenderWindow(renWin);
+  vtkScenario * Scenario = vtkScenario::New();
+  Scenario->SetRenderWindow(renWin);
 
-	Simulation->SetScenario(Scenario);
+  Simulation->SetScenario(Scenario);
 
-	vtkSRMLImporter * Importer = vtkSRMLImporter::New();
-	Importer->SetDebug(1);
+  vtkSRMLImporter * Importer = vtkSRMLImporter::New();
+  Importer->SetDebug(1);
 
-	Importer->SetDataPath("/home/jballesteros/Workspace/data/vtkESQuiData");
-	Importer->SetFileName("/home/jballesteros/Workspace/data/vtkESQuiData/SRML/Laparoscopy/lap_basic.srml");
-	Importer->SetSimulation(Simulation);
-	Importer->Read();
+  Importer->SetDataPath("/home/jballesteros/Workspace/data/vtkESQuiData");
+  Importer->SetFileName("/home/jballesteros/Workspace/data/vtkESQuiData/SRML/Laparoscopy/lap_basic.srml");
+  Importer->SetSimulation(Simulation);
+  Importer->Read();
 
-	return 0;
+  return 0;
 }
 
 

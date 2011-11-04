@@ -48,8 +48,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #if defined(vtkESQuiScenario_EXPORTS)
     #define VTK_ESQUI_SCENARIO_EXPORT __declspec(dllexport)
   #else
-	#undef VTK_ESQUI_SCENARIO_EXPORT
-	#define VTK_ESQUI_SCENARIO_EXPORT __declspec( dllimport ) 
+  #undef VTK_ESQUI_SCENARIO_EXPORT
+  #define VTK_ESQUI_SCENARIO_EXPORT __declspec( dllimport ) 
   #endif
 
 #else

@@ -57,83 +57,83 @@ class vtkParticleCollection;
 class VTK_vtkParticleSpringSystem_EXPORT vtkSpring : public vtkObject {
 public:
 
-	//! Type Revision Macro
-	vtkTypeRevisionMacro(vtkSpring, vtkObject);
-	//! Create new spring object
-	static vtkSpring * New();
-	//! Print object info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type Revision Macro
+  vtkTypeRevisionMacro(vtkSpring, vtkObject);
+  //! Create new spring object
+  static vtkSpring * New();
+  //! Print object info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Set spring identifier
-	vtkSetMacro(Id, vtkIdType);
-	//! Get spring identifier
-	vtkGetMacro(Id, vtkIdType);
-	//! Set spring coefficient
-	vtkSetMacro(K, double);
-	//! Get spring coefficient
-	vtkGetMacro(K, double);
-	//! Set damping coefficient
-	vtkSetMacro(Damping, double);
-	//! Get damping coefficient
-	vtkGetMacro(Damping, double);
-	//! Set distance coefficient. Percentage
-	vtkSetMacro(Distance, double);
-	//! Get distance coefficient. Percentage
-	vtkGetMacro(Distance, double);
-	//! Set time step. (ms)
-	vtkSetMacro(TimeStep, double);					// dt for every step
-	//! Get time step. (ms)
-	vtkGetMacro(TimeStep, double);
-	//! Set rest length
-	vtkGetMacro(RestLength, double);					// Distance between particles
+  //! Set spring identifier
+  vtkSetMacro(Id, vtkIdType);
+  //! Get spring identifier
+  vtkGetMacro(Id, vtkIdType);
+  //! Set spring coefficient
+  vtkSetMacro(K, double);
+  //! Get spring coefficient
+  vtkGetMacro(K, double);
+  //! Set damping coefficient
+  vtkSetMacro(Damping, double);
+  //! Get damping coefficient
+  vtkGetMacro(Damping, double);
+  //! Set distance coefficient. Percentage
+  vtkSetMacro(Distance, double);
+  //! Get distance coefficient. Percentage
+  vtkGetMacro(Distance, double);
+  //! Set time step. (ms)
+  vtkSetMacro(TimeStep, double);          // dt for every step
+  //! Get time step. (ms)
+  vtkGetMacro(TimeStep, double);
+  //! Set rest length
+  vtkGetMacro(RestLength, double);          // Distance between particles
 
-	//! Get spring direction.
-	double * GetDirection();
+  //! Get spring direction.
+  double * GetDirection();
 
-	//! Get spring direction.
-	void GetDirection(double Direction[3]);
+  //! Get spring direction.
+  void GetDirection(double Direction[3]);
 
-	//! Insert a new particle in the spring particle collection
-	void InsertNextParticle(vtkParticle * particle);
+  //! Insert a new particle in the spring particle collection
+  void InsertNextParticle(vtkParticle * particle);
 
-	//! Set a particle at a specified id
-	void SetParticle(vtkIdType id, vtkParticle * particle);
+  //! Set a particle at a specified id
+  void SetParticle(vtkIdType id, vtkParticle * particle);
 
-	//! Get particle with the specified id
-	vtkParticle * GetParticle(vtkIdType id);
+  //! Get particle with the specified id
+  vtkParticle * GetParticle(vtkIdType id);
 
-	//! Check whether the spring contains a particle
-	bool ContainsParticle(vtkParticle * particle);
+  //! Check whether the spring contains a particle
+  bool ContainsParticle(vtkParticle * particle);
 
-	//! Initialize the spring values
-	void Init();
+  //! Initialize the spring values
+  void Init();
 
 protected:
-	vtkSpring();
-	~vtkSpring();
+  vtkSpring();
+  ~vtkSpring();
 
-	//! Spring Identifier
-	vtkIdType Id;
-	//! Spring Coefficient, stiffness. k; F = -kx
-	double K;
-	//! Damping Coefficient
-	double Damping;
-	//! Distance Coefficient
-	double Distance;
-	//! Time step,
-	double TimeStep;
+  //! Spring Identifier
+  vtkIdType Id;
+  //! Spring Coefficient, stiffness. k; F = -kx
+  double K;
+  //! Damping Coefficient
+  double Damping;
+  //! Distance Coefficient
+  double Distance;
+  //! Time step,
+  double TimeStep;
 
-	//! Spring rest length
-	double RestLength;
-	//! spring direction
-	double Direction[3];
+  //! Spring rest length
+  double RestLength;
+  //! spring direction
+  double Direction[3];
 
-	//! Spring particles
-	vtkParticleCollection * Particles;
+  //! Spring particles
+  vtkParticleCollection * Particles;
 
 private:
-	vtkSpring(const vtkSpring&);            // Not implemented.
-	void operator=(const vtkSpring&);           // Not implemented.
+  vtkSpring(const vtkSpring&);            // Not implemented.
+  void operator=(const vtkSpring&);           // Not implemented.
 
 };
 

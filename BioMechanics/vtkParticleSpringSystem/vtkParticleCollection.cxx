@@ -49,44 +49,44 @@ vtkStandardNewMacro(vtkParticleCollection);
 
 //----------------------------------------------------------------------------
 void vtkParticleCollection::InsertParticle(vtkIdType id, vtkParticle *particle) {
-	this->vtkCollection::ReplaceItem(id, (vtkObject*) particle);
+  this->vtkCollection::ReplaceItem(id, (vtkObject*) particle);
 }
 
 //--------------------------------------------------------------------------
 void vtkParticleCollection::InsertNextParticle(vtkParticle *particle) {
-	this->vtkCollection::AddItem((vtkObject *) particle);
+  this->vtkCollection::AddItem((vtkObject *) particle);
 }
 
 //--------------------------------------------------------------------------
 vtkParticle * vtkParticleCollection::GetParticle(vtkIdType id) {
-	return static_cast <vtkParticle *>(this->GetItemAsObject(id));
+  return static_cast <vtkParticle *>(this->GetItemAsObject(id));
 }
 
 //--------------------------------------------------------------------------
 vtkParticle * vtkParticleCollection::GetNextParticle() {
-	return static_cast <vtkParticle *>(this->GetNextItemAsObject());
+  return static_cast <vtkParticle *>(this->GetNextItemAsObject());
 }
 
 //--------------------------------------------------------------------------
 bool vtkParticleCollection::ContainsParticle(vtkParticle * particle) {
-	for(vtkIdType i = 0; i < this->GetNumberOfItems(); i++)
-	{
-		vtkParticle * local = this->GetParticle(i);
-		if(local && (local->GetId() == particle->GetId())){
-			return 1;
-		}
-	}
-	return 0;
+  for(vtkIdType i = 0; i < this->GetNumberOfItems(); i++)
+  {
+    vtkParticle * local = this->GetParticle(i);
+    if(local && (local->GetId() == particle->GetId())){
+      return 1;
+    }
+  }
+  return 0;
 }
 
 //----------------------------------------------------------------------------
 int vtkParticleCollection::GetNumberOfParticles()
 {
-	return this->GetNumberOfItems();
+  return this->GetNumberOfItems();
 }
 
 //----------------------------------------------------------------------------
 void vtkParticleCollection::PrintSelf(ostream& os, vtkIndent indent)
 {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }

@@ -297,35 +297,35 @@ namespace RBD_COMMON {
 
 
 #ifdef USING_FLOAT                      // set precision type to float
-	typedef float Real;
-	typedef double long_Real;
+  typedef float Real;
+  typedef double long_Real;
 #endif
 
 #ifdef USING_DOUBLE                     // set precision type to double
-	typedef double Real;
-	typedef long double long_Real;
+  typedef double Real;
+  typedef long double long_Real;
 #endif
 
 
-	// This is for (very old) compilers that do not have bool automatically defined
+  // This is for (very old) compilers that do not have bool automatically defined
 
 #ifndef bool_LIB
 #define bool_LIB 0
 
-	class bool
-	{
-		int value;
-	public:
-		bool(const int b) { value = b ? 1 : 0; }
-		bool(const void* b) { value = b ? 1 : 0; }
-		bool() {}
-		operator int() const { return value; }
-		int operator!() const { return !value; }
-	};
+  class bool
+  {
+    int value;
+  public:
+    bool(const int b) { value = b ? 1 : 0; }
+    bool(const void* b) { value = b ? 1 : 0; }
+    bool() {}
+    operator int() const { return value; }
+    int operator!() const { return !value; }
+  };
 
 
-	const bool true = 1;
-	const bool false = 0;
+  const bool true = 1;
+  const bool false = 0;
 
 #endif
 
@@ -339,7 +339,7 @@ namespace RBD_COMMON {
 namespace RBD_COMMON {}
 namespace RBD_LIBRARIES                 // access all my libraries
 {
-	using namespace RBD_COMMON;
+  using namespace RBD_COMMON;
 }
 #endif
 
@@ -394,132 +394,132 @@ namespace RBD_COMMON {
 #endif
 
 
-	void MatrixTerminate();
+  void MatrixTerminate();
 
 
-	//********** classes for setting up exceptions and reporting ************//
+  //********** classes for setting up exceptions and reporting ************//
 
-	class BaseException;
+  class BaseException;
 
-	class Tracer                             // linked list showing how
-	{                                        // we got here
-		const char* entry;
-		Tracer* previous;
-	public:
-		Tracer(const char*);
-		~Tracer();
-		void ReName(const char*);
-		static void PrintTrace();             // for printing trace
-		static void AddTrace();               // insert trace in exception record
-		static Tracer* last;                  // points to Tracer list
-		friend class BaseException;
-	};
+  class Tracer                             // linked list showing how
+  {                                        // we got here
+    const char* entry;
+    Tracer* previous;
+  public:
+    Tracer(const char*);
+    ~Tracer();
+    void ReName(const char*);
+    static void PrintTrace();             // for printing trace
+    static void AddTrace();               // insert trace in exception record
+    static Tracer* last;                  // points to Tracer list
+    friend class BaseException;
+  };
 
 
-	class BaseException                          // The base exception class
-	{
-	protected:
-		static char* what_error;              // error message
-		static int SoFar;                     // no. characters already entered
-		static int LastOne;                   // last location in error buffer
-	public:
-		static void AddMessage(const char* a_what);
-		// messages about exception
-		static void AddInt(int value);        // integer to error message
-		static unsigned long Select;          // for identifying exception
-		BaseException(const char* a_what = 0);
-		static const char* what() { return what_error; }
-		// for getting error message
-	};
+  class BaseException                          // The base exception class
+  {
+  protected:
+    static char* what_error;              // error message
+    static int SoFar;                     // no. characters already entered
+    static int LastOne;                   // last location in error buffer
+  public:
+    static void AddMessage(const char* a_what);
+    // messages about exception
+    static void AddInt(int value);        // integer to error message
+    static unsigned long Select;          // for identifying exception
+    BaseException(const char* a_what = 0);
+    static const char* what() { return what_error; }
+    // for getting error message
+  };
 
 #ifdef TypeDefException
-	typedef BaseException Exception;        // for compatibility with my older libraries
+  typedef BaseException Exception;        // for compatibility with my older libraries
 #endif
 
-	inline Tracer::Tracer(const char* e)
-		: entry(e), previous(last) { last = this; }
+  inline Tracer::Tracer(const char* e)
+    : entry(e), previous(last) { last = this; }
 
-	inline Tracer::~Tracer() { last = previous; }
+  inline Tracer::~Tracer() { last = previous; }
 
-	inline void Tracer::ReName(const char* e) { entry=e; }
+  inline void Tracer::ReName(const char* e) { entry=e; }
 
 #ifdef SimulateExceptions                // SimulateExceptions
 
 #include <setjmp.h>
 
 
-	//************* the definitions of Try, Throw and Catch *****************//
+  //************* the definitions of Try, Throw and Catch *****************//
 
 
-	class JumpItem;
-	class Janitor;
+  class JumpItem;
+  class Janitor;
 
-	class JumpBase         // pointer to a linked list of jmp_buf s
-	{
-	public:
-		static JumpItem *jl;
-		static jmp_buf env;
-	};
+  class JumpBase         // pointer to a linked list of jmp_buf s
+  {
+  public:
+    static JumpItem *jl;
+    static jmp_buf env;
+  };
 
-	class JumpItem         // an item in a linked list of jmp_buf s
-	{
-	public:
-		JumpItem *ji;
-		jmp_buf env;
-		Tracer* trace;                     // to keep check on Tracer items
-		Janitor* janitor;                  // list of items for cleanup
-		JumpItem() : ji(JumpBase::jl), trace(0), janitor(0)
-		{ JumpBase::jl = this; }
-		~JumpItem() { JumpBase::jl = ji; }
-	};
+  class JumpItem         // an item in a linked list of jmp_buf s
+  {
+  public:
+    JumpItem *ji;
+    jmp_buf env;
+    Tracer* trace;                     // to keep check on Tracer items
+    Janitor* janitor;                  // list of items for cleanup
+    JumpItem() : ji(JumpBase::jl), trace(0), janitor(0)
+    { JumpBase::jl = this; }
+    ~JumpItem() { JumpBase::jl = ji; }
+  };
 
-	void Throw();
+  void Throw();
 
-	inline void Throw(const BaseException&) { Throw(); }
+  inline void Throw(const BaseException&) { Throw(); }
 
 #define Try                                             \
-	if (!setjmp( JumpBase::jl->env )) {                  \
-	JumpBase::jl->trace = Tracer::last;               \
-	JumpItem JI387256156;
+  if (!setjmp( JumpBase::jl->env )) {                  \
+  JumpBase::jl->trace = Tracer::last;               \
+  JumpItem JI387256156;
 
 #define ReThrow Throw()
 
 #define Catch(EXCEPTION)                                \
-	} else if (BaseException::Select == EXCEPTION::Select) {
+  } else if (BaseException::Select == EXCEPTION::Select) {
 
 #define CatchAll } else
 
 #define CatchAndThrow  } else Throw();
 
 
-	//****************** cleanup heap following Throw ***********************//
+  //****************** cleanup heap following Throw ***********************//
 
-	class Janitor
-	{
-	protected:
-		static bool do_not_link;                  // set when new is called
-		bool OnStack;                             // false if created by new
-	public:
-		Janitor* NextJanitor;
-		virtual void CleanUp() {}
-		Janitor();
-		virtual ~Janitor();
-	};
+  class Janitor
+  {
+  protected:
+    static bool do_not_link;                  // set when new is called
+    bool OnStack;                             // false if created by new
+  public:
+    Janitor* NextJanitor;
+    virtual void CleanUp() {}
+    Janitor();
+    virtual ~Janitor();
+  };
 
 
-	// The tiresome old trick for initializing the Janitor class
-	// this is needed for classes derived from Janitor which have objects
-	// declared globally
+  // The tiresome old trick for initializing the Janitor class
+  // this is needed for classes derived from Janitor which have objects
+  // declared globally
 
-	class JanitorInitializer
-	{
-	public:
-		JanitorInitializer();
-	private:
-		static int ref_count;
-	};
+  class JanitorInitializer
+  {
+  public:
+    JanitorInitializer();
+  private:
+    static int ref_count;
+  };
 
-	static JanitorInitializer JanInit;
+  static JanitorInitializer JanInit;
 
 #endif                                // end of SimulateExceptions
 
@@ -543,123 +543,123 @@ namespace RBD_COMMON {
 #define CatchAll } if (false)
 #define CatchAndThrow }
 
-	inline void Throw() { MatrixTerminate(); }
-	inline void Throw(const BaseException&) { MatrixTerminate(); }
+  inline void Throw() { MatrixTerminate(); }
+  inline void Throw(const BaseException&) { MatrixTerminate(); }
 
 
 #endif                                // end of DisableExceptions
 
 #ifndef SimulateExceptions            // ! SimulateExceptions
 
-	class Janitor                         // a dummy version
-	{
-	public:
-		virtual void CleanUp() {}
-		Janitor() {}
-		virtual ~Janitor() {}
-	};
+  class Janitor                         // a dummy version
+  {
+  public:
+    virtual void CleanUp() {}
+    Janitor() {}
+    virtual ~Janitor() {}
+  };
 
 #endif                                // end of ! SimulateExceptions
 
 
-	//******************** FREE_CHECK and NEW_DELETE ***********************//
+  //******************** FREE_CHECK and NEW_DELETE ***********************//
 
 #ifdef DO_FREE_CHECK                          // DO_FREE_CHECK
-	// Routines for tracing whether new and delete calls are balanced
+  // Routines for tracing whether new and delete calls are balanced
 
-	class FreeCheck;
+  class FreeCheck;
 
-	class FreeCheckLink
-	{
-	protected:
-		FreeCheckLink* next;
-		void* ClassStore;
-		FreeCheckLink();
-		virtual void Report()=0;                   // print details of link
-		friend class FreeCheck;
-	};
+  class FreeCheckLink
+  {
+  protected:
+    FreeCheckLink* next;
+    void* ClassStore;
+    FreeCheckLink();
+    virtual void Report()=0;                   // print details of link
+    friend class FreeCheck;
+  };
 
-	class FCLClass : public FreeCheckLink         // for registering objects
-	{
-		char* ClassName;
-		FCLClass(void* t, char* name);
-		void Report();
-		friend class FreeCheck;
-	};
+  class FCLClass : public FreeCheckLink         // for registering objects
+  {
+    char* ClassName;
+    FCLClass(void* t, char* name);
+    void Report();
+    friend class FreeCheck;
+  };
 
-	class FCLRealArray : public FreeCheckLink     // for registering real arrays
-	{
-		char* Operation;
-		int size;
-		FCLRealArray(void* t, char* o, int s);
-		void Report();
-		friend class FreeCheck;
-	};
+  class FCLRealArray : public FreeCheckLink     // for registering real arrays
+  {
+    char* Operation;
+    int size;
+    FCLRealArray(void* t, char* o, int s);
+    void Report();
+    friend class FreeCheck;
+  };
 
-	class FCLIntArray : public FreeCheckLink     // for registering int arrays
-	{
-		char* Operation;
-		int size;
-		FCLIntArray(void* t, char* o, int s);
-		void Report();
-		friend class FreeCheck;
-	};
+  class FCLIntArray : public FreeCheckLink     // for registering int arrays
+  {
+    char* Operation;
+    int size;
+    FCLIntArray(void* t, char* o, int s);
+    void Report();
+    friend class FreeCheck;
+  };
 
 
-	class FreeCheck
-	{
-		static FreeCheckLink* next;
-		static int BadDelete;
-	public:
-		static void Register(void*, char*);
-		static void DeRegister(void*, char*);
-		static void RegisterR(void*, char*, int);
-		static void DeRegisterR(void*, char*, int);
-		static void RegisterI(void*, char*, int);
-		static void DeRegisterI(void*, char*, int);
-		static void Status();
-		friend class FreeCheckLink;
-		friend class FCLClass;
-		friend class FCLRealArray;
-		friend class FCLIntArray;
-	};
+  class FreeCheck
+  {
+    static FreeCheckLink* next;
+    static int BadDelete;
+  public:
+    static void Register(void*, char*);
+    static void DeRegister(void*, char*);
+    static void RegisterR(void*, char*, int);
+    static void DeRegisterR(void*, char*, int);
+    static void RegisterI(void*, char*, int);
+    static void DeRegisterI(void*, char*, int);
+    static void Status();
+    friend class FreeCheckLink;
+    friend class FCLClass;
+    friend class FCLRealArray;
+    friend class FCLIntArray;
+  };
 
 #define FREE_CHECK(Class)                                                  \
 public:                                                                    \
-	void* operator new(size_t size)                                         \
-	{                                                                       \
-	void* t = ::operator new(size); FreeCheck::Register(t,#Class);       \
-	return t;                                                            \
-	}                                                                       \
-	void operator delete(void* t)                                           \
-	{ FreeCheck::DeRegister(t,#Class); ::operator delete(t); }
+  void* operator new(size_t size)                                         \
+  {                                                                       \
+  void* t = ::operator new(size); FreeCheck::Register(t,#Class);       \
+  return t;                                                            \
+  }                                                                       \
+  void operator delete(void* t)                                           \
+  { FreeCheck::DeRegister(t,#Class); ::operator delete(t); }
 
 
 #ifdef SimulateExceptions         // SimulateExceptions
 
 #define NEW_DELETE(Class)                                                  \
 public:                                                                    \
-	void* operator new(size_t size)                                         \
-	{                                                                       \
-	do_not_link=true;                                                    \
-	void* t = ::operator new(size); FreeCheck::Register(t,#Class);       \
-	return t;                                                            \
-	}                                                                       \
-	void operator delete(void* t)                                           \
-	{ FreeCheck::DeRegister(t,#Class); ::operator delete(t); }
+  void* operator new(size_t size)                                         \
+  {                                                                       \
+  do_not_link=true;                                                    \
+  void* t = ::operator new(size); FreeCheck::Register(t,#Class);       \
+  return t;                                                            \
+  }                                                                       \
+  void operator delete(void* t)                                           \
+  { FreeCheck::DeRegister(t,#Class); ::operator delete(t); }
 
 
 #endif                           // end of SimulateExceptions
 
 
 #define MONITOR_REAL_NEW(Operation, Size, Pointer)                         \
-	FreeCheck::RegisterR(Pointer, Operation, Size);
+  FreeCheck::RegisterR(Pointer, Operation, Size);
 #define MONITOR_INT_NEW(Operation, Size, Pointer)                          \
-	FreeCheck::RegisterI(Pointer, Operation, Size);
+  FreeCheck::RegisterI(Pointer, Operation, Size);
 #define MONITOR_REAL_DELETE(Operation, Size, Pointer)                      \
-	FreeCheck::DeRegisterR(Pointer, Operation, Size);
+  FreeCheck::DeRegisterR(Pointer, Operation, Size);
 #define MONITOR_INT_DELETE(Operation, Size, Pointer)                       \
-	FreeCheck::DeRegisterI(Pointer, Operation, Size);
+  FreeCheck::DeRegisterI(Pointer, Operation, Size);
 
 #else                            // DO_FREE_CHECK not defined
 
@@ -675,9 +675,9 @@ public:                                                                    \
 
 #define NEW_DELETE(Class)                                                  \
 public:                                                                    \
-	void* operator new(size_t size)                                    \
-	{ do_not_link=true; void* t = ::operator new(size); return t; }    \
-	void operator delete(void* t) { ::operator delete(t); }
+  void* operator new(size_t size)                                    \
+  { do_not_link=true; void* t = ::operator new(size); return t; }    \
+  void operator delete(void* t) { ::operator delete(t); }
 
 #endif                            // end of SimulateExceptions
 
@@ -690,84 +690,84 @@ public:                                                                    \
 #endif                            // end of ! SimulateExceptions
 
 
-	//********************* derived exceptions ******************************//
+  //********************* derived exceptions ******************************//
 
-	class Logic_error : public BaseException
-	{
-	public:
-		static unsigned long Select;
-		Logic_error(const char* a_what = 0);
-	};
+  class Logic_error : public BaseException
+  {
+  public:
+    static unsigned long Select;
+    Logic_error(const char* a_what = 0);
+  };
 
-	class Runtime_error : public BaseException
-	{
-	public:
-		static unsigned long Select;
-		Runtime_error(const char* a_what = 0);
-	};
+  class Runtime_error : public BaseException
+  {
+  public:
+    static unsigned long Select;
+    Runtime_error(const char* a_what = 0);
+  };
 
-	class Domain_error : public Logic_error
-	{
-	public:
-		static unsigned long Select;
-		Domain_error(const char* a_what = 0);
-	};
+  class Domain_error : public Logic_error
+  {
+  public:
+    static unsigned long Select;
+    Domain_error(const char* a_what = 0);
+  };
 
-	class Invalid_argument : public Logic_error
-	{
-	public:
-		static unsigned long Select;
-		Invalid_argument(const char* a_what = 0);
-	};
+  class Invalid_argument : public Logic_error
+  {
+  public:
+    static unsigned long Select;
+    Invalid_argument(const char* a_what = 0);
+  };
 
-	class Length_error : public Logic_error
-	{
-	public:
-		static unsigned long Select;
-		Length_error(const char* a_what = 0);
-	};
+  class Length_error : public Logic_error
+  {
+  public:
+    static unsigned long Select;
+    Length_error(const char* a_what = 0);
+  };
 
-	class Out_of_range : public Logic_error
-	{
-	public:
-		static unsigned long Select;
-		Out_of_range(const char* a_what = 0);
-	};
+  class Out_of_range : public Logic_error
+  {
+  public:
+    static unsigned long Select;
+    Out_of_range(const char* a_what = 0);
+  };
 
-	//class Bad_cast : public Logic_error
-	//{
-	//public:
-	//   static unsigned long Select;
-	//   Bad_cast(const char* a_what = 0);
-	//};
+  //class Bad_cast : public Logic_error
+  //{
+  //public:
+  //   static unsigned long Select;
+  //   Bad_cast(const char* a_what = 0);
+  //};
 
-	//class Bad_typeid : public Logic_error
-	//{
-	//public:
-	//   static unsigned long Select;
-	//   Bad_typeid(const char* a_what = 0);
-	//};
+  //class Bad_typeid : public Logic_error
+  //{
+  //public:
+  //   static unsigned long Select;
+  //   Bad_typeid(const char* a_what = 0);
+  //};
 
-	class Range_error : public Runtime_error
-	{
-	public:
-		static unsigned long Select;
-		Range_error(const char* a_what = 0);
-	};
+  class Range_error : public Runtime_error
+  {
+  public:
+    static unsigned long Select;
+    Range_error(const char* a_what = 0);
+  };
 
-	class Overflow_error : public Runtime_error
-	{
-	public:
-		static unsigned long Select;
-		Overflow_error(const char* a_what = 0);
-	};
+  class Overflow_error : public Runtime_error
+  {
+  public:
+    static unsigned long Select;
+    Overflow_error(const char* a_what = 0);
+  };
 
-	class Bad_alloc : public BaseException
-	{
-	public:
-		static unsigned long Select;
-		Bad_alloc(const char* a_what = 0);
-	};
+  class Bad_alloc : public BaseException
+  {
+  public:
+    static unsigned long Select;
+    Bad_alloc(const char* a_what = 0);
+  };
 
 #ifdef use_namespace
 }
@@ -905,7 +905,7 @@ public:
 
 
    static int nTypes() { return 13; }          // number of different types
-					       // exclude Ct, US, BC
+                 // exclude Ct, US, BC
 public:
    int attribute;
    bool DataLossOK;                            // true if data loss is OK when
@@ -1053,18 +1053,18 @@ class GenericMatrix;
 
 #define MatrixTypeUnSp 0
 //static MatrixType MatrixTypeUnSp(MatrixType::US);
-//						// AT&T needs this
+//            // AT&T needs this
 
 class BaseMatrix : public Janitor               // base of all matrix classes
 {
 protected:
    virtual int search(const BaseMatrix*) const = 0;
-						// count number of times matrix
-   						// is referred to
+            // count number of times matrix
+               // is referred to
 
 public:
    virtual GeneralMatrix* Evaluate(MatrixType mt=MatrixTypeUnSp) = 0;
-						// evaluate temporary
+            // evaluate temporary
    // for old version of G++
    //   virtual GeneralMatrix* Evaluate(MatrixType mt) = 0;
    //   GeneralMatrix* Evaluate() { return Evaluate(MatrixTypeUnSp); }
@@ -2178,7 +2178,7 @@ protected:
    // if these union statements cause problems, simply remove them
    // and declare the items individually
    union { const BaseMatrix* bm1; GeneralMatrix* gm1; };
-						  // pointers to summands
+              // pointers to summands
    union { const BaseMatrix* bm2; GeneralMatrix* gm2; };
    MultipliedMatrix(const BaseMatrix* bm1x, const BaseMatrix* bm2x)
       : bm1(bm1x),bm2(bm2x) {}
@@ -2554,16 +2554,16 @@ public:
    ~SimpleIntArray();         // return the space to memory
    int& operator[](int i);    // access element of the array - start at 0
    int operator[](int i) const;
-			      // access element of constant array
+            // access element of constant array
    void operator=(int ai);    // set the array equal to a constant
    void operator=(const SimpleIntArray& b);
-			      // copy the elements of an array
+            // copy the elements of an array
    SimpleIntArray(const SimpleIntArray& b);
-			      // make a new array equal to an existing one
+            // make a new array equal to an existing one
    int Size() const { return n; }
-			      // return the size of the array
+            // return the size of the array
    int size() const { return n; }
-			      // return the size of the array
+            // return the size of the array
    int* Data() { return a; }  // pointer to the data
    const int* Data() const { return a; }  // pointer to the data
    int* data() { return a; }  // pointer to the data
@@ -2884,208 +2884,208 @@ inline Real Dot(ColumnVector& CV1, ColumnVector& CV2)
 namespace NEWMAT {
 #endif
 
-	//$$ controlw.h                Control word class
+  //$$ controlw.h                Control word class
 
 #ifndef CONTROL_WORD_LIB
 #define CONTROL_WORD_LIB 0
 
-	// for organising an int as a series of bits which indicate whether an
-	// option is on or off.
+  // for organising an int as a series of bits which indicate whether an
+  // option is on or off.
 
-	class ControlWord
-	{
-	protected:
-		int cw;                                      // the control word
-	public:
-		ControlWord() : cw(0) {}                     // do nothing
-		ControlWord(int i) : cw(i) {}                // load an integer
+  class ControlWord
+  {
+  protected:
+    int cw;                                      // the control word
+  public:
+    ControlWord() : cw(0) {}                     // do nothing
+    ControlWord(int i) : cw(i) {}                // load an integer
 
-		// select specific bits (for testing at least one set)
-		ControlWord operator*(ControlWord i) const
-		{ return ControlWord(cw & i.cw); }
-		void operator*=(ControlWord i)  { cw &= i.cw; }
+    // select specific bits (for testing at least one set)
+    ControlWord operator*(ControlWord i) const
+    { return ControlWord(cw & i.cw); }
+    void operator*=(ControlWord i)  { cw &= i.cw; }
 
-		// set bits
-		ControlWord operator+(ControlWord i) const
-		{ return ControlWord(cw | i.cw); }
-		void operator+=(ControlWord i)  { cw |= i.cw; }
+    // set bits
+    ControlWord operator+(ControlWord i) const
+    { return ControlWord(cw | i.cw); }
+    void operator+=(ControlWord i)  { cw |= i.cw; }
 
-		// reset bits
-		ControlWord operator-(ControlWord i) const
-		{ return ControlWord(cw - (cw & i.cw)); }
-		void operator-=(ControlWord i) { cw -= (cw & i.cw); }
+    // reset bits
+    ControlWord operator-(ControlWord i) const
+    { return ControlWord(cw - (cw & i.cw)); }
+    void operator-=(ControlWord i) { cw -= (cw & i.cw); }
 
-		// check if all of selected bits set or reset
-		bool operator>=(ControlWord i) const { return (cw & i.cw) == i.cw; }
-		bool operator<=(ControlWord i) const { return (cw & i.cw) == cw; }
+    // check if all of selected bits set or reset
+    bool operator>=(ControlWord i) const { return (cw & i.cw) == i.cw; }
+    bool operator<=(ControlWord i) const { return (cw & i.cw) == cw; }
 
-		// flip selected bits
-		ControlWord operator^(ControlWord i) const
-		{ return ControlWord(cw ^ i.cw); }
-		ControlWord operator~() const { return ControlWord(~cw); }
+    // flip selected bits
+    ControlWord operator^(ControlWord i) const
+    { return ControlWord(cw ^ i.cw); }
+    ControlWord operator~() const { return ControlWord(~cw); }
 
-		// convert to integer
-		int operator+() const { return cw; }
-		int operator!() const { return cw==0; }
-		FREE_CHECK(ControlWord)
-	};
+    // convert to integer
+    int operator+() const { return cw; }
+    int operator!() const { return cw==0; }
+    FREE_CHECK(ControlWord)
+  };
 
 
 #endif
 
 
-	/************** classes MatrixRowCol, MatrixRow, MatrixCol *****************/
+  /************** classes MatrixRowCol, MatrixRow, MatrixCol *****************/
 
-	// Used for accessing the rows and columns of matrices
-	// All matrix classes must provide routines for calculating matrix rows and
-	// columns. Assume rows can be found very efficiently.
+  // Used for accessing the rows and columns of matrices
+  // All matrix classes must provide routines for calculating matrix rows and
+  // columns. Assume rows can be found very efficiently.
 
-	enum LSF { LoadOnEntry=1,StoreOnExit=2,DirectPart=4,StoreHere=8,HaveStore=16 };
-
-
-	class LoadAndStoreFlag : public ControlWord
-	{
-	public:
-		LoadAndStoreFlag() {}
-		LoadAndStoreFlag(int i) : ControlWord(i) {}
-		LoadAndStoreFlag(LSF lsf) : ControlWord(lsf) {}
-		LoadAndStoreFlag(const ControlWord& cwx) : ControlWord(cwx) {}
-	};
-
-	class MatrixRowCol
-		// the row or column of a matrix
-	{
-	public:                                        // these are public to avoid
-		// numerous friend statements
-		int length;                                 // row or column length
-		int skip;                                   // initial number of zeros
-		int storage;                                // number of stored elements
-		int rowcol;                                 // row or column number
-		GeneralMatrix* gm;                          // pointer to parent matrix
-		Real* data;                                 // pointer to local storage
-		LoadAndStoreFlag cw;                        // Load? Store? Is a Copy?
-		void IncrMat() { rowcol++; data += storage; }   // used by NextRow
-		void IncrDiag() { rowcol++; skip++; data++; }
-		void IncrId() { rowcol++; skip++; }
-		void IncrUT() { rowcol++; data += storage; storage--; skip++; }
-		void IncrLT() { rowcol++; data += storage; storage++; }
-
-	public:
-		void Zero();                                // set elements to zero
-		void Add(const MatrixRowCol&);              // add a row/col
-		void AddScaled(const MatrixRowCol&, Real);  // add a multiple of a row/col
-		void Add(const MatrixRowCol&, const MatrixRowCol&);
-		// add two rows/cols
-		void Add(const MatrixRowCol&, Real);        // add a row/col
-		void NegAdd(const MatrixRowCol&, Real);     // Real - a row/col
-		void Sub(const MatrixRowCol&);              // subtract a row/col
-		void Sub(const MatrixRowCol&, const MatrixRowCol&);
-		// sub a row/col from another
-		void RevSub(const MatrixRowCol&);           // subtract from a row/col
-		void ConCat(const MatrixRowCol&, const MatrixRowCol&);
-		// concatenate two row/cols
-		void Multiply(const MatrixRowCol&);         // multiply a row/col
-		void Multiply(const MatrixRowCol&, const MatrixRowCol&);
-		// multiply two row/cols
-		void KP(const MatrixRowCol&, const MatrixRowCol&);
-		// Kronecker Product two row/cols
-		void Copy(const MatrixRowCol&);             // copy a row/col
-		void CopyCheck(const MatrixRowCol&);        // ... check for data loss
-		void Check(const MatrixRowCol&);            // just check for data loss
-		void Check();                               // check full row/col present
-		void Copy(const double*&);                  // copy from an array
-		void Copy(const float*&);                   // copy from an array
-		void Copy(const int*&);                     // copy from an array
-		void Copy(Real);                            // copy from constant
-		void Add(Real);                             // add a constant
-		void Multiply(Real);                        // multiply by constant
-		Real SumAbsoluteValue();                    // sum of absolute values
-		Real MaximumAbsoluteValue1(Real r, int& i); // maximum of absolute values
-		Real MinimumAbsoluteValue1(Real r, int& i); // minimum of absolute values
-		Real Maximum1(Real r, int& i);              // maximum
-		Real Minimum1(Real r, int& i);              // minimum
-		Real Sum();                                 // sum of values
-		void Inject(const MatrixRowCol&);           // copy stored els of a row/col
-		void Negate(const MatrixRowCol&);           // change sign of a row/col
-		void Multiply(const MatrixRowCol&, Real);   // scale a row/col
-		friend Real DotProd(const MatrixRowCol&, const MatrixRowCol&);
-		// sum of pairwise product
-		Real* Data() { return data; }
-		int Skip() { return skip; }                 // number of elements skipped
-		int Storage() { return storage; }           // number of elements stored
-		int Length() { return length; }             // length of row or column
-		void Skip(int i) { skip=i; }
-		void Storage(int i) { storage=i; }
-		void Length(int i) { length=i; }
-		void SubRowCol(MatrixRowCol&, int, int) const;
-		// get part of a row or column
-		MatrixRowCol() {}                           // to stop warning messages
-		~MatrixRowCol();
-		FREE_CHECK(MatrixRowCol)
-	};
-
-	class MatrixRow : public MatrixRowCol
-	{
-	public:
-		// bodies for these are inline at the end of this .h file
-		MatrixRow(GeneralMatrix*, LoadAndStoreFlag, int=0);
-		// extract a row
-		~MatrixRow();
-		void Next();                                // get next row
-		FREE_CHECK(MatrixRow)
-	};
-
-	class MatrixCol : public MatrixRowCol
-	{
-	public:
-		// bodies for these are inline at the end of this .h file
-		MatrixCol(GeneralMatrix*, LoadAndStoreFlag, int=0);
-		// extract a col
-		MatrixCol(GeneralMatrix*, Real*, LoadAndStoreFlag, int=0);
-		// store/retrieve a col
-		~MatrixCol();
-		void Next();                                // get next row
-		FREE_CHECK(MatrixCol)
-	};
-
-	// MatrixColX is an alternative to MatrixCol where the complete
-	// column is stored externally
-
-	class MatrixColX : public MatrixRowCol
-	{
-	public:
-		// bodies for these are inline at the end of this .h file
-		MatrixColX(GeneralMatrix*, Real*, LoadAndStoreFlag, int=0);
-		// store/retrieve a col
-		~MatrixColX();
-		void Next();                                // get next row
-		Real* store;                                // pointer to local storage
-		//    less skip
-		FREE_CHECK(MatrixColX)
-	};
-
-	/**************************** inline bodies ****************************/
-
-	inline MatrixRow::MatrixRow(GeneralMatrix* gmx, LoadAndStoreFlag cwx, int row)
-	{ gm=gmx; cw=cwx; rowcol=row; gm->GetRow(*this); }
-
-	inline void MatrixRow::Next() { gm->NextRow(*this); }
-
-	inline MatrixCol::MatrixCol(GeneralMatrix* gmx, LoadAndStoreFlag cwx, int col)
-	{ gm=gmx; cw=cwx; rowcol=col; gm->GetCol(*this); }
-
-	inline MatrixCol::MatrixCol(GeneralMatrix* gmx, Real* r,
-		LoadAndStoreFlag cwx, int col)
-	{ gm=gmx; data=r; cw=cwx+StoreHere; rowcol=col; gm->GetCol(*this); }
-
-	inline MatrixColX::MatrixColX(GeneralMatrix* gmx, Real* r,
-		LoadAndStoreFlag cwx, int col)
-	{ gm=gmx; store=data=r; cw=cwx+StoreHere; rowcol=col; gm->GetCol(*this); }
+  enum LSF { LoadOnEntry=1,StoreOnExit=2,DirectPart=4,StoreHere=8,HaveStore=16 };
 
 
-	inline void MatrixCol::Next() { gm->NextCol(*this); }
+  class LoadAndStoreFlag : public ControlWord
+  {
+  public:
+    LoadAndStoreFlag() {}
+    LoadAndStoreFlag(int i) : ControlWord(i) {}
+    LoadAndStoreFlag(LSF lsf) : ControlWord(lsf) {}
+    LoadAndStoreFlag(const ControlWord& cwx) : ControlWord(cwx) {}
+  };
 
-	inline void MatrixColX::Next() { gm->NextCol(*this); }
+  class MatrixRowCol
+    // the row or column of a matrix
+  {
+  public:                                        // these are public to avoid
+    // numerous friend statements
+    int length;                                 // row or column length
+    int skip;                                   // initial number of zeros
+    int storage;                                // number of stored elements
+    int rowcol;                                 // row or column number
+    GeneralMatrix* gm;                          // pointer to parent matrix
+    Real* data;                                 // pointer to local storage
+    LoadAndStoreFlag cw;                        // Load? Store? Is a Copy?
+    void IncrMat() { rowcol++; data += storage; }   // used by NextRow
+    void IncrDiag() { rowcol++; skip++; data++; }
+    void IncrId() { rowcol++; skip++; }
+    void IncrUT() { rowcol++; data += storage; storage--; skip++; }
+    void IncrLT() { rowcol++; data += storage; storage++; }
+
+  public:
+    void Zero();                                // set elements to zero
+    void Add(const MatrixRowCol&);              // add a row/col
+    void AddScaled(const MatrixRowCol&, Real);  // add a multiple of a row/col
+    void Add(const MatrixRowCol&, const MatrixRowCol&);
+    // add two rows/cols
+    void Add(const MatrixRowCol&, Real);        // add a row/col
+    void NegAdd(const MatrixRowCol&, Real);     // Real - a row/col
+    void Sub(const MatrixRowCol&);              // subtract a row/col
+    void Sub(const MatrixRowCol&, const MatrixRowCol&);
+    // sub a row/col from another
+    void RevSub(const MatrixRowCol&);           // subtract from a row/col
+    void ConCat(const MatrixRowCol&, const MatrixRowCol&);
+    // concatenate two row/cols
+    void Multiply(const MatrixRowCol&);         // multiply a row/col
+    void Multiply(const MatrixRowCol&, const MatrixRowCol&);
+    // multiply two row/cols
+    void KP(const MatrixRowCol&, const MatrixRowCol&);
+    // Kronecker Product two row/cols
+    void Copy(const MatrixRowCol&);             // copy a row/col
+    void CopyCheck(const MatrixRowCol&);        // ... check for data loss
+    void Check(const MatrixRowCol&);            // just check for data loss
+    void Check();                               // check full row/col present
+    void Copy(const double*&);                  // copy from an array
+    void Copy(const float*&);                   // copy from an array
+    void Copy(const int*&);                     // copy from an array
+    void Copy(Real);                            // copy from constant
+    void Add(Real);                             // add a constant
+    void Multiply(Real);                        // multiply by constant
+    Real SumAbsoluteValue();                    // sum of absolute values
+    Real MaximumAbsoluteValue1(Real r, int& i); // maximum of absolute values
+    Real MinimumAbsoluteValue1(Real r, int& i); // minimum of absolute values
+    Real Maximum1(Real r, int& i);              // maximum
+    Real Minimum1(Real r, int& i);              // minimum
+    Real Sum();                                 // sum of values
+    void Inject(const MatrixRowCol&);           // copy stored els of a row/col
+    void Negate(const MatrixRowCol&);           // change sign of a row/col
+    void Multiply(const MatrixRowCol&, Real);   // scale a row/col
+    friend Real DotProd(const MatrixRowCol&, const MatrixRowCol&);
+    // sum of pairwise product
+    Real* Data() { return data; }
+    int Skip() { return skip; }                 // number of elements skipped
+    int Storage() { return storage; }           // number of elements stored
+    int Length() { return length; }             // length of row or column
+    void Skip(int i) { skip=i; }
+    void Storage(int i) { storage=i; }
+    void Length(int i) { length=i; }
+    void SubRowCol(MatrixRowCol&, int, int) const;
+    // get part of a row or column
+    MatrixRowCol() {}                           // to stop warning messages
+    ~MatrixRowCol();
+    FREE_CHECK(MatrixRowCol)
+  };
+
+  class MatrixRow : public MatrixRowCol
+  {
+  public:
+    // bodies for these are inline at the end of this .h file
+    MatrixRow(GeneralMatrix*, LoadAndStoreFlag, int=0);
+    // extract a row
+    ~MatrixRow();
+    void Next();                                // get next row
+    FREE_CHECK(MatrixRow)
+  };
+
+  class MatrixCol : public MatrixRowCol
+  {
+  public:
+    // bodies for these are inline at the end of this .h file
+    MatrixCol(GeneralMatrix*, LoadAndStoreFlag, int=0);
+    // extract a col
+    MatrixCol(GeneralMatrix*, Real*, LoadAndStoreFlag, int=0);
+    // store/retrieve a col
+    ~MatrixCol();
+    void Next();                                // get next row
+    FREE_CHECK(MatrixCol)
+  };
+
+  // MatrixColX is an alternative to MatrixCol where the complete
+  // column is stored externally
+
+  class MatrixColX : public MatrixRowCol
+  {
+  public:
+    // bodies for these are inline at the end of this .h file
+    MatrixColX(GeneralMatrix*, Real*, LoadAndStoreFlag, int=0);
+    // store/retrieve a col
+    ~MatrixColX();
+    void Next();                                // get next row
+    Real* store;                                // pointer to local storage
+    //    less skip
+    FREE_CHECK(MatrixColX)
+  };
+
+  /**************************** inline bodies ****************************/
+
+  inline MatrixRow::MatrixRow(GeneralMatrix* gmx, LoadAndStoreFlag cwx, int row)
+  { gm=gmx; cw=cwx; rowcol=row; gm->GetRow(*this); }
+
+  inline void MatrixRow::Next() { gm->NextRow(*this); }
+
+  inline MatrixCol::MatrixCol(GeneralMatrix* gmx, LoadAndStoreFlag cwx, int col)
+  { gm=gmx; cw=cwx; rowcol=col; gm->GetCol(*this); }
+
+  inline MatrixCol::MatrixCol(GeneralMatrix* gmx, Real* r,
+    LoadAndStoreFlag cwx, int col)
+  { gm=gmx; data=r; cw=cwx+StoreHere; rowcol=col; gm->GetCol(*this); }
+
+  inline MatrixColX::MatrixColX(GeneralMatrix* gmx, Real* r,
+    LoadAndStoreFlag cwx, int col)
+  { gm=gmx; store=data=r; cw=cwx+StoreHere; rowcol=col; gm->GetCol(*this); }
+
+
+  inline void MatrixCol::Next() { gm->NextCol(*this); }
+
+  inline void MatrixColX::Next() { gm->NextCol(*this); }
 
 #ifdef use_namespace
 }
@@ -3641,13 +3641,13 @@ public:                                                                    \
 
 
 #define MONITOR_REAL_NEW(Operation, Size, Pointer)                         \
-	FreeCheck::RegisterR(Pointer, Operation, Size);
+  FreeCheck::RegisterR(Pointer, Operation, Size);
 #define MONITOR_INT_NEW(Operation, Size, Pointer)                          \
-	FreeCheck::RegisterI(Pointer, Operation, Size);
+  FreeCheck::RegisterI(Pointer, Operation, Size);
 #define MONITOR_REAL_DELETE(Operation, Size, Pointer)                      \
-	FreeCheck::DeRegisterR(Pointer, Operation, Size);
+  FreeCheck::DeRegisterR(Pointer, Operation, Size);
 #define MONITOR_INT_DELETE(Operation, Size, Pointer)                       \
-	FreeCheck::DeRegisterI(Pointer, Operation, Size);
+  FreeCheck::DeRegisterI(Pointer, Operation, Size);
 
 #else                            // DO_FREE_CHECK not defined
 
@@ -3663,9 +3663,9 @@ public:                                                                    \
 
 #define NEW_DELETE(Class)                                                  \
 public:                                                                    \
-	void* operator new(size_t size)                                    \
-	{ do_not_link=true; void* t = ::operator new(size); return t; }    \
-	void operator delete(void* t) { ::operator delete(t); }
+  void* operator new(size_t size)                                    \
+  { do_not_link=true; void* t = ::operator new(size); return t; }    \
+  void operator delete(void* t) { ::operator delete(t); }
 
 #endif                            // end of SimulateExceptions
 

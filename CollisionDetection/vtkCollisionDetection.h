@@ -64,59 +64,59 @@ class vtkPolyData;
 class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollisionDetection: public vtkObject
 {
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkCollisionDetection, vtkObject);
-	vtkCollisionDetection();
-	~vtkCollisionDetection();
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkCollisionDetection, vtkObject);
+  vtkCollisionDetection();
+  ~vtkCollisionDetection();
 
-	//! Specify the collision models to be checked in the collision detection process
-	void SetModels(vtkModelCollection * models);
+  //! Specify the collision models to be checked in the collision detection process
+  void SetModels(vtkModelCollection * models);
 
-	//! Add a new collision model to the detector
-	void AddModel(vtkCollisionModel * element);
+  //! Add a new collision model to the detector
+  void AddModel(vtkCollisionModel * element);
 
-	//! Return the collisions detected
-	vtkCollisionCollection * GetCollisions();
+  //! Return the collisions detected
+  vtkCollisionCollection * GetCollisions();
 
-	//! Get total number of collisions detected
-	int GetNumberOfCollisions();
+  //! Get total number of collisions detected
+  int GetNumberOfCollisions();
 
-	//! Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use
-	/*!
-	* Abstract method to be defined on each implementation class
-	*/
-	virtual void Update() = 0;
+  //! Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use
+  /*!
+  * Abstract method to be defined on each implementation class
+  */
+  virtual void Update() = 0;
 
-	//!Initializes the CollisionDetectionLibrary
-	/*!
-	* Abstract method to be defined on each implementation class
-	*/
-	virtual void Init() = 0;
+  //!Initializes the CollisionDetectionLibrary
+  /*!
+  * Abstract method to be defined on each implementation class
+  */
+  virtual void Init() = 0;
 
 protected:
 
-	//! Collection of models
-	/*!
-	 * Every model contained in these collection will be processed in the collision detection process.
-	 */
-	vtkModelCollection * Models;
+  //! Collection of models
+  /*!
+   * Every model contained in these collection will be processed in the collision detection process.
+   */
+  vtkModelCollection * Models;
 
-	//! Collection of collisions
-	/*!
-	 * After the collision detection process has been executed the collisions between models
-	 * are stored in this collection.
-	 */
-	vtkCollisionCollection * Collisions;
+  //! Collection of collisions
+  /*!
+   * After the collision detection process has been executed the collisions between models
+   * are stored in this collection.
+   */
+  vtkCollisionCollection * Collisions;
 
-	//! Clear previous executions of the collision detection process
-	/*!
-	* Should be called every time collision detection is performed
-	*/
-	void Reset();
+  //! Clear previous executions of the collision detection process
+  /*!
+  * Should be called every time collision detection is performed
+  */
+  void Reset();
 
 private:
-	vtkCollisionDetection(const vtkCollisionDetection &); //NotImplemented
-	void operator =(const vtkCollisionDetection &); //Not Implemented
+  vtkCollisionDetection(const vtkCollisionDetection &); //NotImplemented
+  void operator =(const vtkCollisionDetection &); //Not Implemented
 
 };
 

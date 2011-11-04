@@ -46,9 +46,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 vtkTimerCallback::vtkTimerCallback()
 {
-	this->FasterTimerId = 0;
-	this->FastTimerId = 0;
-	this->RenderTimerId = 0;
+  this->FasterTimerId = 0;
+  this->FastTimerId = 0;
+  this->RenderTimerId = 0;
 }
 
 vtkTimerCallback::~vtkTimerCallback()
@@ -58,49 +58,49 @@ vtkTimerCallback::~vtkTimerCallback()
 //----------------------------------------------------------------------------
 void vtkTimerCallback::Execute(vtkObject *caller, unsigned long eid, void *callData)
 {
-	if (vtkCommand::TimerEvent == eid)
-	{
-		int tid = * static_cast<int *>(callData);
+  if (vtkCommand::TimerEvent == eid)
+  {
+    int tid = * static_cast<int *>(callData);
 
-		if (tid == this->FasterTimerId)
-		{
-			//Do whatever
-			cout << "FasterTimer\n";
-		}
-		if (tid == this->FastTimerId)
-		{
-			//Do whatever
-			cout << "FastTimer\n";
-		}
-		else if (tid == this->RenderTimerId)
-		{
-			cout << "Render\n";
-			if (this->Interactor &&
-					this->Interactor->GetRenderWindow() &&
-					this->Interactor->GetRenderWindow()->GetRenderers())
-			{
-				this->Interactor->Render();
-			}
-		}
-	}
+    if (tid == this->FasterTimerId)
+    {
+      //Do whatever
+      cout << "FasterTimer\n";
+    }
+    if (tid == this->FastTimerId)
+    {
+      //Do whatever
+      cout << "FastTimer\n";
+    }
+    else if (tid == this->RenderTimerId)
+    {
+      cout << "Render\n";
+      if (this->Interactor &&
+          this->Interactor->GetRenderWindow() &&
+          this->Interactor->GetRenderWindow()->GetRenderers())
+      {
+        this->Interactor->Render();
+      }
+    }
+  }
 }
 
 //--------------------------------------------------------------------------
 void vtkTimerCallback::SetFasterTimerId(vtkIdType tid)
 {
-	this->FasterTimerId = tid;
+  this->FasterTimerId = tid;
 }
 
 //--------------------------------------------------------------------------
 void vtkTimerCallback::SetFastTimerId(vtkIdType tid)
 {
-	this->FastTimerId = tid;
+  this->FastTimerId = tid;
 }
 
 //--------------------------------------------------------------------------
 void vtkTimerCallback::SetRenderTimerId(vtkIdType tid)
 {
-	this->RenderTimerId = tid;
+  this->RenderTimerId = tid;
 }
 
 //--------------------------------------------------------------------------

@@ -70,148 +70,148 @@ using namespace std;
 
 int main(int argc, char * argv[])
 {
-	const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
-	const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
-	const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
+  const char * fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
+  const char * cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
+  const char * tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
 
-	const char * fnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l.vtp";
-	const char * cfnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp";
-	const char * tfnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
+  const char * fnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l.vtp";
+  const char * cfnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp";
+  const char * tfnl ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 
-	const char * fnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r.vtp";
-	const char * cfnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp";
-	const char * tfnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
+  const char * fnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r.vtp";
+  const char * cfnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp";
+  const char * tfnr ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 
-	double origin[3];
-	double position[3];
+  double origin[3];
+  double position[3];
 
-	origin[0]=0;
-	origin[1]=0;
-	origin[2]=6;
-	position[0]=2.0;
-	position[1]=0;
-	position[2]=0;
+  origin[0]=0;
+  origin[1]=0;
+  origin[2]=6;
+  position[0]=2.0;
+  position[1]=0;
+  position[2]=0;
 
-	//Generate tool's first element (stick)
-	vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
-	vis->SetName("stick_vis");
-	vis->SetFileName(fn);
-	vis->SetTextureFileName(tfn);
-	vis->SetOpacity(1.0);
-	vis->SetColor(1.0, 1.0, 1.0);
+  //Generate tool's first element (stick)
+  vtkSmartPointer<vtkVisualizationModel> vis = vtkSmartPointer<vtkVisualizationModel>::New();
+  vis->SetName("stick_vis");
+  vis->SetFileName(fn);
+  vis->SetTextureFileName(tfn);
+  vis->SetOpacity(1.0);
+  vis->SetColor(1.0, 1.0, 1.0);
 
-	vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
-	col->SetName("vtkbioeng");
-	col->SetFileName(cfn);
-	col->SetOpacity(0.5);
-	col->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
+  col->SetName("vtkbioeng");
+  col->SetFileName(cfn);
+  col->SetOpacity(0.5);
+  col->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
-	stick->SetId(0);
-	stick->SetName("stick");
-	stick->SetVisualizationModel(vis);
-	stick->SetCollisionModel(col);
-	stick->SetPosition(position);
-	stick->SetOrigin(origin);
+  vtkSmartPointer<vtkScenarioElement> stick = vtkSmartPointer<vtkScenarioElement>::New();
+  stick->SetId(0);
+  stick->SetName("stick");
+  stick->SetVisualizationModel(vis);
+  stick->SetCollisionModel(col);
+  stick->SetPosition(position);
+  stick->SetOrigin(origin);
 
-	//Second element (left lever)
-	vtkSmartPointer<vtkVisualizationModel> visl = vtkSmartPointer<vtkVisualizationModel>::New();
-	visl->SetName("left_vis");
-	visl->SetFileName(fnl);
-	visl->SetTextureFileName(tfnl);
-	visl->SetOpacity(1.0);
-	visl->SetColor(0.0, 1.0, 1.0);
+  //Second element (left lever)
+  vtkSmartPointer<vtkVisualizationModel> visl = vtkSmartPointer<vtkVisualizationModel>::New();
+  visl->SetName("left_vis");
+  visl->SetFileName(fnl);
+  visl->SetTextureFileName(tfnl);
+  visl->SetOpacity(1.0);
+  visl->SetColor(0.0, 1.0, 1.0);
 
-	vtkSmartPointer<vtkCollisionModel> coll = vtkSmartPointer<vtkCollisionModel>::New();
-	coll->SetName("left_vtkbioeng");
-	coll->SetFileName(cfnl);
-	coll->SetOpacity(0.5);
-	coll->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> coll = vtkSmartPointer<vtkCollisionModel>::New();
+  coll->SetName("left_vtkbioeng");
+  coll->SetFileName(cfnl);
+  coll->SetOpacity(0.5);
+  coll->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> left = vtkSmartPointer<vtkScenarioElement>::New();
-	left->SetId(1);
-	left->SetName("left");
-	left->SetVisualizationModel(visl);
-	left->SetCollisionModel(coll);
-	left->SetPosition(position);
-	left->SetOrigin(origin);
+  vtkSmartPointer<vtkScenarioElement> left = vtkSmartPointer<vtkScenarioElement>::New();
+  left->SetId(1);
+  left->SetName("left");
+  left->SetVisualizationModel(visl);
+  left->SetCollisionModel(coll);
+  left->SetPosition(position);
+  left->SetOrigin(origin);
 
-	//Third element (right lever)
-	vtkSmartPointer<vtkVisualizationModel> visr = vtkSmartPointer<vtkVisualizationModel>::New();
-	visr->SetName("right_vis");
-	visr->SetFileName(fnr);
-	visr->SetTextureFileName(tfnr);
-	visr->SetOpacity(1.0);
-	visr->SetColor(1.0, 0.0, 1.0);
+  //Third element (right lever)
+  vtkSmartPointer<vtkVisualizationModel> visr = vtkSmartPointer<vtkVisualizationModel>::New();
+  visr->SetName("right_vis");
+  visr->SetFileName(fnr);
+  visr->SetTextureFileName(tfnr);
+  visr->SetOpacity(1.0);
+  visr->SetColor(1.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkCollisionModel> colr = vtkSmartPointer<vtkCollisionModel>::New();
-	colr->SetName("right_vtkbioeng");
-	colr->SetFileName(cfnr);
-	colr->SetOpacity(0.5);
-	colr->SetColor(0.0, 0.0, 1.0);
+  vtkSmartPointer<vtkCollisionModel> colr = vtkSmartPointer<vtkCollisionModel>::New();
+  colr->SetName("right_vtkbioeng");
+  colr->SetFileName(cfnr);
+  colr->SetOpacity(0.5);
+  colr->SetColor(0.0, 0.0, 1.0);
 
-	vtkSmartPointer<vtkScenarioElement> right = vtkSmartPointer<vtkScenarioElement>::New();
-	right->SetId(2);
-	right->SetName("right");
-	right->SetVisualizationModel(visr);
-	right->SetCollisionModel(colr);
-	right->SetPosition(position);
-	right->SetOrigin(origin);
+  vtkSmartPointer<vtkScenarioElement> right = vtkSmartPointer<vtkScenarioElement>::New();
+  right->SetId(2);
+  right->SetName("right");
+  right->SetVisualizationModel(visr);
+  right->SetCollisionModel(colr);
+  right->SetPosition(position);
+  right->SetOrigin(origin);
 
-	vtkSmartPointer<vtkToolGrasper> tool = vtkSmartPointer<vtkToolGrasper>::New();
-	tool->SetStick(stick);
-	tool->SetLeftLever(left);
-	tool->SetRightLever(right);
-	tool->Init();
+  vtkSmartPointer<vtkToolGrasper> tool = vtkSmartPointer<vtkToolGrasper>::New();
+  tool->SetStick(stick);
+  tool->SetLeftLever(left);
+  tool->SetRightLever(right);
+  tool->Init();
 
-	tool->Translate(position);
-	tool->RotateX(-10);
-	tool->Update();
+  tool->Translate(position);
+  tool->RotateX(-10);
+  tool->Update();
 
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
-	renWin->SetSize(800,600);
-	renWin->AddRenderer(renderer);
+  vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+  renWin->SetSize(800,600);
+  renWin->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	iren->SetRenderWindow(renWin);
+  vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  iren->SetRenderWindow(renWin);
 
-	vtkAxesActor * axes = vtkAxesActor::New();
+  vtkAxesActor * axes = vtkAxesActor::New();
 
-	vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
-	vtkActor * actor = vtkActor::New();
-	mapper->SetInput(colr->GetOutput(1));
-	actor->SetMapper(mapper);
+  vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
+  vtkActor * actor = vtkActor::New();
+  mapper->SetInput(colr->GetOutput(1));
+  actor->SetMapper(mapper);
 
-	//Visualization of collision meshes is disabled
-	renderer->SetBackground(0.9,0.9,0.9);
-	renderer->AddActor(axes);
-	renderer->AddActor(vis->GetActor());
-	renderer->AddActor(col->GetActor());
-	renderer->AddActor(visl->GetActor());
-	renderer->AddActor(coll->GetActor());
-	renderer->AddActor(visr->GetActor());
-	renderer->AddActor(colr->GetActor());
-	renderer->AddActor(actor);
+  //Visualization of collision meshes is disabled
+  renderer->SetBackground(0.9,0.9,0.9);
+  renderer->AddActor(axes);
+  renderer->AddActor(vis->GetActor());
+  renderer->AddActor(col->GetActor());
+  renderer->AddActor(visl->GetActor());
+  renderer->AddActor(coll->GetActor());
+  renderer->AddActor(visr->GetActor());
+  renderer->AddActor(colr->GetActor());
+  renderer->AddActor(actor);
 
-	//Adjust Camera
-	vtkCamera * camera = renderer->GetActiveCamera();
-	camera->SetPosition(0, 0, 6);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewAngle(60);
-	camera->Yaw(0);
-	camera->Elevation(20);
-	camera->Pitch(-15);
-	camera->Dolly(1);
+  //Adjust Camera
+  vtkCamera * camera = renderer->GetActiveCamera();
+  camera->SetPosition(0, 0, 6);
+  camera->SetFocalPoint(0, 0, 0);
+  camera->SetViewAngle(60);
+  camera->Yaw(0);
+  camera->Elevation(20);
+  camera->Pitch(-15);
+  camera->Dolly(1);
 
-	iren->Initialize();
+  iren->Initialize();
 
-	renWin->Render();
+  renWin->Render();
 
-	iren->Start();
+  iren->Start();
 
-	return 0;
+  return 0;
 }
 
 

@@ -55,44 +55,44 @@ class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkBioEngInterface: public vtkCollisio
 
 
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkBioEngInterface, vtkCollisionDetection);
-	//! Create new vtkbioeng interace
-	static vtkBioEngInterface *New();
-	//!Return class name
-	const char *GetClassName() {return "vtkBioEngInterface";};
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkBioEngInterface, vtkCollisionDetection);
+  //! Create new vtkbioeng interace
+  static vtkBioEngInterface *New();
+  //!Return class name
+  const char *GetClassName() {return "vtkBioEngInterface";};
 
-	//! Set up the collision detection library with the initial values,
-	/*!
-	* This method will vary depending on the collision detection library
-	*/
-	void Init();
+  //! Set up the collision detection library with the initial values,
+  /*!
+  * This method will vary depending on the collision detection library
+  */
+  void Init();
 
-	//! Update the collision detection library
-	/*!
-	* Executes the collision detection process between an tool and an organ
-	*/
-	void Update();
+  //! Update the collision detection library
+  /*!
+  * Executes the collision detection process between an tool and an organ
+  */
+  void Update();
 
 protected:
 
-	//! Default constructor
-	vtkBioEngInterface();
-	//! Default destructor
-	~vtkBioEngInterface();
+  //! Default constructor
+  vtkBioEngInterface();
+  //! Default destructor
+  ~vtkBioEngInterface();
 
-	//!Collision detection filter
-	vtkCollisionDetectionFilter *DetectionFilter;
+  //!Collision detection filter
+  vtkCollisionDetectionFilter *DetectionFilter;
 
-	//!Rotation matrix
-	vtkMatrix4x4 *Matrix0;
-	//!Rotation matrix
-	vtkMatrix4x4 *Matrix1;
+  //!Rotation matrix
+  vtkMatrix4x4 *Matrix0;
+  //!Rotation matrix
+  vtkMatrix4x4 *Matrix1;
 
 private:
 
-	vtkBioEngInterface(const vtkBioEngInterface &); //NotImplemented
-	void operator =(const vtkBioEngInterface &); //Not Implemented
+  vtkBioEngInterface(const vtkBioEngInterface &); //NotImplemented
+  void operator =(const vtkBioEngInterface &); //Not Implemented
 
 };
 

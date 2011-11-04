@@ -54,46 +54,46 @@ POSSIBILITY OF SUCH DAMAGE.
 int main(int argc, char * argv[])
 {
 
-	const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Catheter/catheterTube.vtp";
+  const char * filename0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Catheter/catheterTube.vtp";
 
-	if (argc > 3)
-	{
-		filename0 = argv[1];
-	}
+  if (argc > 3)
+  {
+    filename0 = argv[1];
+  }
 
-	/**********  Render Window Definitions  ********/
-	vtkRenderer * ren1 = vtkRenderer::New();
-	ren1->SetBackground(1.0,1.0,1.0);
+  /**********  Render Window Definitions  ********/
+  vtkRenderer * ren1 = vtkRenderer::New();
+  ren1->SetBackground(1.0,1.0,1.0);
 
-	vtkRenderWindow *renWin = vtkRenderWindow::New();
-	renWin->AddRenderer(ren1);
-	renWin->SetSize(840,480);
+  vtkRenderWindow *renWin = vtkRenderWindow::New();
+  renWin->AddRenderer(ren1);
+  renWin->SetSize(840,480);
 
-	vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
-	iren->SetRenderWindow(renWin);
+  vtkRenderWindowInteractor * iren = vtkRenderWindowInteractor::New();
+  iren->SetRenderWindow(renWin);
 
-	vtkToolCatheter * cath = vtkToolCatheter::New();
-	//Set tool identifier
-	cath->SetId(0);
-	//Set source data filename
-	cath->SetFileName(filename0);
-	//Set geometric parameters
-	cath->SetPosition(0, 0, 0);
-	cath->SetOrientation(0, 0, 0);
-	cath->SetOrigin(0, 0, 0);
+  vtkToolCatheter * cath = vtkToolCatheter::New();
+  //Set tool identifier
+  cath->SetId(0);
+  //Set source data filename
+  cath->SetFileName(filename0);
+  //Set geometric parameters
+  cath->SetPosition(0, 0, 0);
+  cath->SetOrientation(0, 0, 0);
+  cath->SetOrigin(0, 0, 0);
 
-	//Set tool scale (size)
-	cath->SetScale(1.0, 1.0, 1.0);
+  //Set tool scale (size)
+  cath->SetScale(1.0, 1.0, 1.0);
 
-	//Assign render window for display purposes
-	cath->SetRenderWindow(renWin);
-	cath->Init();
+  //Assign render window for display purposes
+  cath->SetRenderWindow(renWin);
+  cath->Init();
 
-	iren->Initialize();
+  iren->Initialize();
 
-	renWin->Render();
+  renWin->Render();
 
-	iren->Start();
+  iren->Start();
 
-	return 0;
+  return 0;
 }

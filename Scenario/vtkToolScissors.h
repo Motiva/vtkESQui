@@ -60,101 +60,101 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkToolScissors: public vtkToolLaparoscopy
 {
 public:
 
-	//!Type revision macro
-	vtkTypeRevisionMacro(vtkToolScissors,vtkToolLaparoscopy);
+  //!Type revision macro
+  vtkTypeRevisionMacro(vtkToolScissors,vtkToolLaparoscopy);
 
-	//!Create new vtkToolScissors object
-	static vtkToolScissors *New();
+  //!Create new vtkToolScissors object
+  static vtkToolScissors *New();
 
-	//!Return class name
-	const char *GetClassName() { return "vtkToolScissors"; }
+  //!Return class name
+  const char *GetClassName() { return "vtkToolScissors"; }
 
-	//!Print the attributes value
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Print the attributes value
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//!Initialize the tool from VTK file
-	/*!
-		This function initializes the tool whose mesh is described on a VTK file
-	 */
-	virtual void Init();
+  //!Initialize the tool from VTK file
+  /*!
+    This function initializes the tool whose mesh is described on a VTK file
+   */
+  virtual void Init();
 
-	//! Set the tool's opening according with the value given in the "Opening" parameter
-	/*!
-	 * This function set the tool's opening in function of the value given in the "Opening" parameter.
-	 * The opening is established modifying the tool's mesh position.
-	 * \sa double GetOpening()
-	 */
-	void SetOpening(double opening);
-	//!Get scissors opening
-	/*!
-	 * \sa SetOpening(double)
-	 */
-	vtkGetMacro(Opening, double);
+  //! Set the tool's opening according with the value given in the "Opening" parameter
+  /*!
+   * This function set the tool's opening in function of the value given in the "Opening" parameter.
+   * The opening is established modifying the tool's mesh position.
+   * \sa double GetOpening()
+   */
+  void SetOpening(double opening);
+  //!Get scissors opening
+  /*!
+   * \sa SetOpening(double)
+   */
+  vtkGetMacro(Opening, double);
 
-	//! Open the grasper moving piece actors
-	/*!
-		Piece actors are transformed to perform tool opening
-		Bounding boxes are recalculated.
-	 */
-	void Open();
+  //! Open the grasper moving piece actors
+  /*!
+    Piece actors are transformed to perform tool opening
+    Bounding boxes are recalculated.
+   */
+  void Open();
 
-	//! Close the grasper moving piece actors
-	/*!
-		Piece actors are transformed to perform tool closing
-		Bounding boxes are recalculated.
-	 */
-	void Close();
+  //! Close the grasper moving piece actors
+  /*!
+    Piece actors are transformed to perform tool closing
+    Bounding boxes are recalculated.
+   */
+  void Close();
 
-	//!Return whether the grasper is closed or not
-	bool IsClosed(){return (this->Opening <= 0.);}
+  //!Return whether the grasper is closed or not
+  bool IsClosed(){return (this->Opening <= 0.);}
 
-	//! Sets the grasper' depth in its own coordinate system
-	void SetDepth(double position);
+  //! Sets the grasper' depth in its own coordinate system
+  void SetDepth(double position);
 
-	//! Rotate the grasper in degrees from current orientation about the X axis using the right hand rule.
-	/*!
-	 * Scissors specific X-axis rotation.
-	 */
-	void RotateX(double angle);
+  //! Rotate the grasper in degrees from current orientation about the X axis using the right hand rule.
+  /*!
+   * Scissors specific X-axis rotation.
+   */
+  void RotateX(double angle);
 
-	//! Rotate the grasper in degrees from current orientation about the Y axis using the right hand rule.
-	/*!
-	 * Scissors specific X-axis rotation.
-	 */
-	void RotateY(double angle);
+  //! Rotate the grasper in degrees from current orientation about the Y axis using the right hand rule.
+  /*!
+   * Scissors specific X-axis rotation.
+   */
+  void RotateY(double angle);
 
-	//! Rotate the grasper in degrees from current orientation about the Y axis using the right hand rule.
-	/*!
-	 * Scissors specific X-axis rotation.
-	 */
-	void RotateZ(double angle);
+  //! Rotate the grasper in degrees from current orientation about the Y axis using the right hand rule.
+  /*!
+   * Scissors specific X-axis rotation.
+   */
+  void RotateZ(double angle);
 
-	//! Sets the grasper yaw angle
-	void Yaw(double angle);
+  //! Sets the grasper yaw angle
+  void Yaw(double angle);
 
-	//! Sets the grasper pitch angle
-	void Pitch(double angle);
+  //! Sets the grasper pitch angle
+  void Pitch(double angle);
 
-	//! Sets the grasper roll angle
-	void Roll(double angle);
+  //! Sets the grasper roll angle
+  void Roll(double angle);
 
 protected:
 
-	vtkToolScissors();
-	~vtkToolScissors();
+  vtkToolScissors();
+  ~vtkToolScissors();
 
 private:
 
-	vtkToolScissors (const vtkToolScissors &); //Not Implemented
-	void operator =(const vtkToolScissors &); //Not Implemented
+  vtkToolScissors (const vtkToolScissors &); //Not Implemented
+  void operator =(const vtkToolScissors &); //Not Implemented
 
-	//! Tool pieces opening
-	/*!
-	 * The "Opening" parameter can take any value between [0,1]:
-	 * - "0" -> to close the tool
-	 * - "1" -> to open the tool
-	 */
-	double Opening;
+  //! Tool pieces opening
+  /*!
+   * The "Opening" parameter can take any value between [0,1]:
+   * - "0" -> to close the tool
+   * - "1" -> to open the tool
+   */
+  double Opening;
 
 };
 #endif

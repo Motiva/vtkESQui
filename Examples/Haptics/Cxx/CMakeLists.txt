@@ -26,9 +26,9 @@ SET(KIT_LIBS
     ${PROJECT_NAME}Haptics
     ${PROJECT_NAME}Scenario
     vtkRendering
-	vtkGraphics 
-	vtkCommon
-	vtkHybrid
+  vtkGraphics 
+  vtkCommon
+  vtkHybrid
 )
 
 # Set your list of TCL libraries here.
@@ -37,8 +37,8 @@ SET(KIT_TCL_LIBS
     ${PROJECT_NAME}ScenarioTCL
     vtkRenderingTCL
     vtkGraphicsTCL
-	vtkCommonTCL
-	vtkHybridTCL
+  vtkCommonTCL
+  vtkHybridTCL
 )
  
 IF(APPLE)

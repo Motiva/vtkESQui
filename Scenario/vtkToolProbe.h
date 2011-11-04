@@ -60,50 +60,50 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkToolProbe: public vtkToolLaparoscopy
 {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkToolProbe,vtkToolLaparoscopy);
-	//! Create new vtkToolProbe object
-	static vtkToolProbe *New();
-	//! Return class name
-	const char *GetClassName() { return "vtkToolProbe"; }
-	//! Print the attributes value
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkToolProbe,vtkToolLaparoscopy);
+  //! Create new vtkToolProbe object
+  static vtkToolProbe *New();
+  //! Return class name
+  const char *GetClassName() { return "vtkToolProbe"; }
+  //! Print the attributes value
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Set the stick element to the object
-	void SetStick(vtkScenarioElement * e);
+  //! Set the stick element to the object
+  void SetStick(vtkScenarioElement * e);
 
-	//! Set the left lever element to the object
-	void SetTip(vtkScenarioElement * e);
+  //! Set the left lever element to the object
+  void SetTip(vtkScenarioElement * e);
 
-	//! Initialize the tool from VTK file
-	/*!
-	 * This function initializes the tool whose mesh is described on a VTK file
-	 */
-	virtual void Init();
+  //! Initialize the tool from VTK file
+  /*!
+   * This function initializes the tool whose mesh is described on a VTK file
+   */
+  virtual void Init();
 
-	//! Sets the probe yaw angle
-	void Yaw(double angle);
+  //! Sets the probe yaw angle
+  void Yaw(double angle);
 
-	//! Sets the probe pitch angle
-	void Pitch(double angle);
+  //! Sets the probe pitch angle
+  void Pitch(double angle);
 
-	//! Sets the probe roll angle
-	void Roll(double angle);
+  //! Sets the probe roll angle
+  void Roll(double angle);
 
-protected:	
+protected:  
 
-	vtkToolProbe();
-	~vtkToolProbe();
+  vtkToolProbe();
+  ~vtkToolProbe();
 
-	//! Stick element
-	vtkScenarioElement * Stick;
-	//! Tip element
-	vtkScenarioElement * Tip;
+  //! Stick element
+  vtkScenarioElement * Stick;
+  //! Tip element
+  vtkScenarioElement * Tip;
 
 private:
 
-	vtkToolProbe (const vtkToolProbe &); //Not Implemented
-	void operator =(const vtkToolProbe &); //Not Implemented
+  vtkToolProbe (const vtkToolProbe &); //Not Implemented
+  void operator =(const vtkToolProbe &); //Not Implemented
 
 };
 #endif

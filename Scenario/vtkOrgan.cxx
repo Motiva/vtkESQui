@@ -57,7 +57,7 @@ vtkStandardNewMacro(vtkOrgan);
 //----------------------------------------------------------------------------
 vtkOrgan::vtkOrgan()
 {
-	this->ObjectType = vtkScenarioObject::Organ;
+  this->ObjectType = vtkScenarioObject::Organ;
 }
 
 //--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ vtkOrgan::~vtkOrgan()
 
 //--------------------------------------------------------------------------
 void vtkOrgan::PrintSelf(ostream& os,vtkIndent indent) {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }
 
 

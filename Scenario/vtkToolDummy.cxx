@@ -52,20 +52,20 @@ vtkStandardNewMacro(vtkToolDummy);
 //----------------------------------------------------------------------------
 vtkToolDummy::vtkToolDummy() {
 
-	//Physical pieces Tool Construction
-/*	vtkPiece * piece;
+  //Physical pieces Tool Construction
+/*  vtkPiece * piece;
 
-	for(vtkIdType i = 0; i<2; i++)
-	{
-		piece = vtkPiece::New();
-		piece->SetId(0);
-		this->Pieces->AddPiece(piece);
-	}
+  for(vtkIdType i = 0; i<2; i++)
+  {
+    piece = vtkPiece::New();
+    piece->SetId(0);
+    this->Pieces->AddPiece(piece);
+  }
 
-	// Tool Piece Types (id)
-	// 0 -> Stick
-	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Stick);
-	this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Ball);*/
+  // Tool Piece Types (id)
+  // 0 -> Stick
+  this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Stick);
+  this->Pieces->GetPiece(0)->SetPieceType(vtkPiece::Ball);*/
 }
 
 //----------------------------------------------------------------------------
@@ -76,57 +76,57 @@ vtkToolDummy::~vtkToolDummy()
 //----------------------------------------------------------------------------
 void vtkToolDummy::Init() {
 
-	Superclass::Init();
-/*	vtkPiece * piece;
+  Superclass::Init();
+/*  vtkPiece * piece;
 
-	for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
-	{
-		piece = this->GetPiece(id);
-		piece->SetRenderWindow(this->RenderWindow);
-		piece->Init();
+  for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)
+  {
+    piece = this->GetPiece(id);
+    piece->SetRenderWindow(this->RenderWindow);
+    piece->Init();
 
-		this->Actors->AddItem((vtkActor*) piece->GetActor());
-		this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
-	}
+    this->Actors->AddItem((vtkActor*) piece->GetActor());
+    this->Transforms->AddItem((vtkTransform*) piece->GetTransform());
+  }
 
 
 
-	this->Update();*/
+  this->Update();*/
 }
 
 void vtkToolDummy::Yaw(double angle)
 {
-	double step = angle - this->YawAngle;
-	if(step != 0)
-	{
-		this->RotateY(step);
-		this->YawAngle = angle;
-	}
+  double step = angle - this->YawAngle;
+  if(step != 0)
+  {
+    this->RotateY(step);
+    this->YawAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolDummy::Pitch(double angle)
 {
-	double step = angle - this->PitchAngle;
-	if(step != 0)
-	{
-		this->RotateX(step);
-		this->PitchAngle = angle;
-	}
+  double step = angle - this->PitchAngle;
+  if(step != 0)
+  {
+    this->RotateX(step);
+    this->PitchAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolDummy::Roll(double angle)
 {
-	double step = angle - this->RollAngle;
-	if(step != 0)
-	{
-		this->RotateZ(step);
-		this->RollAngle = angle;
-	}
+  double step = angle - this->RollAngle;
+  if(step != 0)
+  {
+    this->RotateZ(step);
+    this->RollAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolDummy::PrintSelf(ostream& os,vtkIndent indent) {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }

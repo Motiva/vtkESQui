@@ -9,10 +9,10 @@ TARGET_LINK_LIBRARIES(${KIT}CxxTests
     ${PROJECT_NAME}Scenario
     ${PROJECT_NAME}Simulation
     vtkCommon  
-	vtkGraphics 
-	vtkFiltering
-	vtkHybrid
-	)
+  vtkGraphics 
+  vtkFiltering
+  vtkHybrid
+  )
 
 SET (TestsToRun ${Tests})
 REMOVE (TestsToRun ${KIT}CxxTests.cxx)

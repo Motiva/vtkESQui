@@ -59,106 +59,106 @@ class vtkIdList;
  */
 
 class VTK_ESQUI_BIOMECHANICS_EXPORT vtkBoundaryCondition : public vtkObject {
-	
+  
 public:
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkBoundaryCondition,vtkObject);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkBoundaryCondition,vtkObject);
 
-	//! Create new contact that will be used as a data container
-	static vtkBoundaryCondition *New();
-	//! Print contact info
-	void PrintSelf(ostream& os, vtkIndent indent);
-	//! Return class name
-	const char *GetClassName() {return "vtkBoundaryCondition";};
+  //! Create new contact that will be used as a data container
+  static vtkBoundaryCondition *New();
+  //! Print contact info
+  void PrintSelf(ostream& os, vtkIndent indent);
+  //! Return class name
+  const char *GetClassName() {return "vtkBoundaryCondition";};
 
-	
-	//! Condition type definition
-	/*!
-	 * This enumeration contains the types of boundary conditions supported
-	 */
-	enum vtkBoundaryConditionType{
-		Dirichlet = 0,
-		Neumann = 1,
-		Cauchy = 2
-	};
-	
+  
+  //! Condition type definition
+  /*!
+   * This enumeration contains the types of boundary conditions supported
+   */
+  enum vtkBoundaryConditionType{
+    Dirichlet = 0,
+    Neumann = 1,
+    Cauchy = 2
+  };
+  
 
-	//! Set boundary condition type.
-	/*!
-	* \sa vtkBoundaryCondition::vtkBoundaryConditionType GetType()
-	*/
-	vtkSetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);
-	//! Return condition type
-	/*!
-	 * \sa SetType(vtkBoundaryCondition::vtkBoundaryConditionType)
-	 */
-	vtkGetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);
+  //! Set boundary condition type.
+  /*!
+  * \sa vtkBoundaryCondition::vtkBoundaryConditionType GetType()
+  */
+  vtkSetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);
+  //! Return condition type
+  /*!
+   * \sa SetType(vtkBoundaryCondition::vtkBoundaryConditionType)
+   */
+  vtkGetMacro(Type, vtkBoundaryCondition::vtkBoundaryConditionType);
 
-	//! Set condition identifier key
-	/*!
-	 * \sa vtkIdType GetId()
-	 */
-	vtkSetMacro(Id, vtkIdType);
-	//! Return condition identifier
-	/*!
-	 * \return identifier key of the condition
-	 * \sa vtkIdType SetId(vtkIdType)
-	 */
-	vtkGetMacro(Id, vtkIdType);
+  //! Set condition identifier key
+  /*!
+   * \sa vtkIdType GetId()
+   */
+  vtkSetMacro(Id, vtkIdType);
+  //! Return condition identifier
+  /*!
+   * \return identifier key of the condition
+   * \sa vtkIdType SetId(vtkIdType)
+   */
+  vtkGetMacro(Id, vtkIdType);
 
-	//! Set condition value
-	/*!
-	 * \sa double GetValue()
-	 */
-	vtkSetMacro(Value, double);
-	//! Return condition value
-	/*!
-	 * \return numeric value of the condition
-	 * \sa vtkIdType SetValue(double)
-	 */
-	vtkGetMacro(Value, double);
+  //! Set condition value
+  /*!
+   * \sa double GetValue()
+   */
+  vtkSetMacro(Value, double);
+  //! Return condition value
+  /*!
+   * \return numeric value of the condition
+   * \sa vtkIdType SetValue(double)
+   */
+  vtkGetMacro(Value, double);
 
-	//! Set identifier of the point in which the condition is applied
-	/*!
-	 * \sa vtkIdType GetPointId()
-	 */
-	vtkSetMacro(PointId, vtkIdType);
-	//! Return condition value
-	/*!
-	 * \return point identifier of the condition
-	 * \sa SetPointId(vtkIdType)
-	 */
-	vtkGetMacro(PointId, vtkIdType);
+  //! Set identifier of the point in which the condition is applied
+  /*!
+   * \sa vtkIdType GetPointId()
+   */
+  vtkSetMacro(PointId, vtkIdType);
+  //! Return condition value
+  /*!
+   * \return point identifier of the condition
+   * \sa SetPointId(vtkIdType)
+   */
+  vtkGetMacro(PointId, vtkIdType);
 
-	//! Set condition point coordinates
-	vtkSetVector3Macro(Point, double);
-	//! Return condition point coordinates
-	vtkGetVector3Macro(Point, double);
+  //! Set condition point coordinates
+  vtkSetVector3Macro(Point, double);
+  //! Return condition point coordinates
+  vtkGetVector3Macro(Point, double);
 
-	//! Performs a full detailed copy of the contact
-	void DeepCopy(vtkBoundaryCondition *info);
+  //! Performs a full detailed copy of the contact
+  void DeepCopy(vtkBoundaryCondition *info);
 
 protected:
-	vtkBoundaryCondition();
-	~vtkBoundaryCondition();
+  vtkBoundaryCondition();
+  ~vtkBoundaryCondition();
 
-	//! Condition type
-	vtkBoundaryConditionType Type;
+  //! Condition type
+  vtkBoundaryConditionType Type;
 
-	//! Condition identifier
-	vtkIdType Id;
+  //! Condition identifier
+  vtkIdType Id;
 
-	//! Condition point coordinates
-	double Point[3];
+  //! Condition point coordinates
+  double Point[3];
 
-	//! Condition point id
-	vtkIdType PointId;
+  //! Condition point id
+  vtkIdType PointId;
 
-	//! Condition value
-	double Value;
+  //! Condition value
+  double Value;
 private:
 
-	vtkBoundaryCondition (const vtkBoundaryCondition &);//NotImplemented
-	void operator =(const vtkBoundaryCondition &);//Not Implemented
+  vtkBoundaryCondition (const vtkBoundaryCondition &);//NotImplemented
+  void operator =(const vtkBoundaryCondition &);//Not Implemented
 };
 #endif

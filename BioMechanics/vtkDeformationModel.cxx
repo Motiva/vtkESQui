@@ -59,67 +59,61 @@ vtkCxxRevisionMacro(vtkDeformationModel, "$Revision: 0.1 $");
 //--------------------------------------------------------------------------
 vtkDeformationModel::vtkDeformationModel() {
 
-	this->SetModelType(vtkModel::Deformation);
-	this->Name = NULL;
-	this->BoundaryConditions = NULL;
+  this->SetModelType(vtkModel::Deformation);
+  this->Name = NULL;
+  this->BoundaryConditions = NULL;
 }
 
 //--------------------------------------------------------------------------
 vtkDeformationModel::~vtkDeformationModel() {
 
-	if(this->BoundaryConditions) this->BoundaryConditions->Delete();
+  if(this->BoundaryConditions) this->BoundaryConditions->Delete();
 }
 
 //--------------------------------------------------------------------------
 void vtkDeformationModel::Init()
 {
-	this->Superclass::Init();
+  this->Superclass::Init();
 
-	this->BoundaryConditions = vtkBoundaryConditionCollection::New();
+  this->BoundaryConditions = vtkBoundaryConditionCollection::New();
 
-	//Display as a wire frame
-	this->Actor->GetProperty()->SetRepresentationToWireframe();
+  //Display as a wire frame
+  this->Actor->GetProperty()->SetRepresentationToWireframe();
 }
-
-//--------------------------------------------------------------------------
-//void vtkDeformationModel::InsertDisplacement(vtkIdType pointId, double * vector)
-//{
-//	this->InsertDisplacement(pointId, vector[0], vector[1], vector[2]);
-//}
 
 //--------------------------------------------------------------------------
 void vtkDeformationModel::InsertNextBoundaryCondition(vtkBoundaryCondition* condition)
 {
-	//Insert collision point coordinates
-	this->BoundaryConditions->InsertNextBoundaryCondition(condition);
-	this->Modified();
+  //Insert collision point coordinates
+  this->BoundaryConditions->InsertNextBoundaryCondition(condition);
+  this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkDeformationModel::InsertBoundaryConditions(vtkBoundaryConditionCollection * collection)
 {
-	//Extract data from vtkBoundaryConditionCollection object
-	collection->InitTraversal();
-	vtkBoundaryCondition * c;
-	c = collection->GetNextBoundaryCondition();
-	while(c)
-	{
-		this->InsertNextBoundaryCondition(c);
-		c = collection->GetNextBoundaryCondition();
-	}
+  //Extract data from vtkBoundaryConditionCollection object
+  collection->InitTraversal();
+  vtkBoundaryCondition * c;
+  c = collection->GetNextBoundaryCondition();
+  while(c)
+  {
+    this->InsertNextBoundaryCondition(c);
+    c = collection->GetNextBoundaryCondition();
+  }
 
-	this->Modified();
+  this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkDeformationModel::RemoveBoundaryConditions()
 {
-	this->BoundaryConditions->RemoveBoundaryConditions();
-	this->Modified();
+  this->BoundaryConditions->RemoveBoundaryConditions();
+  this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkDeformationModel::PrintSelf(ostream& os,vtkIndent indent) {
 
-	this->Superclass::PrintSelf(os, indent);
+  this->Superclass::PrintSelf(os, indent);
 }

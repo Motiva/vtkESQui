@@ -56,145 +56,145 @@ class VTK_ESQUI_SCENARIO_EXPORT vtkToolLaparoscopy: public vtkTool {
 
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkToolLaparoscopy,vtkTool);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkToolLaparoscopy,vtkTool);
 
-	//! Return the class name
-	const char *GetClassName() {return "vtkToolLaparoscopy";}
+  //! Return the class name
+  const char *GetClassName() {return "vtkToolLaparoscopy";}
 
-	//! Print class values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Print class values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Tool type definition
-	enum vtkToolLaparoscopyModel{
-		Probe = 0,
-		Grasper = 1,
-		Scissors = 2,
-		Hook = 3,
-		Dummy = 4
-	};
+  //! Tool type definition
+  enum vtkToolLaparoscopyModel{
+    Probe = 0,
+    Grasper = 1,
+    Scissors = 2,
+    Hook = 3,
+    Dummy = 4
+  };
 
-	//! Set tool model
-	vtkSetMacro(ToolModel, vtkToolLaparoscopy::vtkToolLaparoscopyModel);
-	//! Return tool model
-	vtkGetMacro(ToolModel, vtkToolLaparoscopy::vtkToolLaparoscopyModel);
+  //! Set tool model
+  vtkSetMacro(ToolModel, vtkToolLaparoscopy::vtkToolLaparoscopyModel);
+  //! Return tool model
+  vtkGetMacro(ToolModel, vtkToolLaparoscopy::vtkToolLaparoscopyModel);
 
-	//! Abstract initialization function
-	/*!
-	 * This method initializes the tool physical values, scale, position, etc...
-	 */
-	virtual void Init();
+  //! Abstract initialization function
+  /*!
+   * This method initializes the tool physical values, scale, position, etc...
+   */
+  virtual void Init();
 
-	//! Assign the haptic force as vector
-	/*!
-	 * \param Force force vector of components
-	 */
-	void SetForceFeedback(float Force[]);
+  //! Assign the haptic force as vector
+  /*!
+   * \param Force force vector of components
+   */
+  void SetForceFeedback(float Force[]);
 
-	//! Assign the haptic force components individually
-	/*!
-	 * \param x x component of the force
-	 * \param y y component of the force
-	 * \param z z component of the force
-	 */
-	void SetForceFeedback(float x, float y, float z) {
-		this->ForceFeedback[0] = x;
-		this->ForceFeedback[1] = y;
-		this->ForceFeedback[2] = z;
-	}
+  //! Assign the haptic force components individually
+  /*!
+   * \param x x component of the force
+   * \param y y component of the force
+   * \param z z component of the force
+   */
+  void SetForceFeedback(float x, float y, float z) {
+    this->ForceFeedback[0] = x;
+    this->ForceFeedback[1] = y;
+    this->ForceFeedback[2] = z;
+  }
 
-	//! Return the haptic force in float vector
-	/*!
-	 * \sa SetForceFeedback(float Force[])
-	 * \sa SetForceFeedback(float x, float y, float z)
-	 */
-	void GetForceFeedback( float Force[] ) const
-	{
-		Force[0] = this->ForceFeedback[0];
-		Force[1] = this->ForceFeedback[1];
-		Force[2] = this->ForceFeedback[2];
-	}
+  //! Return the haptic force in float vector
+  /*!
+   * \sa SetForceFeedback(float Force[])
+   * \sa SetForceFeedback(float x, float y, float z)
+   */
+  void GetForceFeedback( float Force[] ) const
+  {
+    Force[0] = this->ForceFeedback[0];
+    Force[1] = this->ForceFeedback[1];
+    Force[2] = this->ForceFeedback[2];
+  }
 
-	//! Return the x component of the haptic force
-	/*!
-	 * \sa SetForceFeedback(float Force[])
-	 * \sa SetForceFeedback(float x, float y, float z)
-	 */
-	float GetXFeedbackForce() {return this->ForceFeedback[0];}
-	//! Return the y component of the haptic force
-	/*!
-	 * \sa SetForceFeedback(float Force[])
-	 * \sa SetForceFeedback(float x, float y, float z)
-	 */
-	float GetYFeedbackForce() {return this->ForceFeedback[1];}
-	//! Return the z component of the haptic force
-	/*!
-	 * \sa SetForceFeedback(float Force[])
-	 * \sa SetForceFeedback(float x, float y, float z)
-	 */
-	float GetZFeedbackForce() {return this->ForceFeedback[2];}
+  //! Return the x component of the haptic force
+  /*!
+   * \sa SetForceFeedback(float Force[])
+   * \sa SetForceFeedback(float x, float y, float z)
+   */
+  float GetXFeedbackForce() {return this->ForceFeedback[0];}
+  //! Return the y component of the haptic force
+  /*!
+   * \sa SetForceFeedback(float Force[])
+   * \sa SetForceFeedback(float x, float y, float z)
+   */
+  float GetYFeedbackForce() {return this->ForceFeedback[1];}
+  //! Return the z component of the haptic force
+  /*!
+   * \sa SetForceFeedback(float Force[])
+   * \sa SetForceFeedback(float x, float y, float z)
+   */
+  float GetZFeedbackForce() {return this->ForceFeedback[2];}
 
-	//! Return tool contact force
-	double * GetContactForceValue();
+  //! Return tool contact force
+  double * GetContactForceValue();
 
-	//! Pull back tool
-	/*!
-	 * Set the tool depth position back.
-	 */
-	virtual void Pull();
+  //! Pull back tool
+  /*!
+   * Set the tool depth position back.
+   */
+  virtual void Pull();
 
-	//! Pull back tool
-	/*!
-	 * Set the tool depth position forward.
-	 */
-	virtual void Push();
+  //! Pull back tool
+  /*!
+   * Set the tool depth position forward.
+   */
+  virtual void Push();
 
-	//! Sets the tool's depth in its own coordinate system
-	virtual void SetDepth(double depth);
+  //! Sets the tool's depth in its own coordinate system
+  virtual void SetDepth(double depth);
 
-	//!Return the tool's depth
-	virtual double GetDepth();
+  //!Return the tool's depth
+  virtual double GetDepth();
 
-	//! Rotate the tool in degrees from current orientation about the X axis using the right hand rule.
-	void RotateX(double angle);
+  //! Rotate the tool in degrees from current orientation about the X axis using the right hand rule.
+  void RotateX(double angle);
 
-	//! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
-	void RotateY(double angle);
+  //! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
+  void RotateY(double angle);
 
-	//! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
-	void RotateZ(double angle);
+  //! Rotate the tool in degrees from current orientation about the Y axis using the right hand rule.
+  void RotateZ(double angle);
 
-	//! Sets the grasper yaw angle
-	virtual void Yaw(double angle);
+  //! Sets the grasper yaw angle
+  virtual void Yaw(double angle);
 
-	//! Sets the grasper pitch angle
-	virtual void Pitch(double angle);
+  //! Sets the grasper pitch angle
+  virtual void Pitch(double angle);
 
-	//! Sets the grasper roll angle
-	virtual void Roll(double angle);
+  //! Sets the grasper roll angle
+  virtual void Roll(double angle);
 
 protected:
 
-	vtkToolLaparoscopy();
-	~vtkToolLaparoscopy();
+  vtkToolLaparoscopy();
+  ~vtkToolLaparoscopy();
 
-	//! Tool Type
-	vtkToolLaparoscopyModel ToolModel;
+  //! Tool Type
+  vtkToolLaparoscopyModel ToolModel;
 
-	//! Force Feedabck unit vector
-	double ForceFeedback[3];
-	//! Tool depth (vtk z-axis direction)
-	double Depth;
-	//! Tool Yaw Angle. VTK Y-axis about rotation
-	double YawAngle;
-	//! Tool Pitch Angle. VTK X-axis about rotation
-	double PitchAngle;
-	//! Tool Roll Angle. VTK Z-axis about rotation
-	double RollAngle;
+  //! Force Feedabck unit vector
+  double ForceFeedback[3];
+  //! Tool depth (vtk z-axis direction)
+  double Depth;
+  //! Tool Yaw Angle. VTK Y-axis about rotation
+  double YawAngle;
+  //! Tool Pitch Angle. VTK X-axis about rotation
+  double PitchAngle;
+  //! Tool Roll Angle. VTK Z-axis about rotation
+  double RollAngle;
 
 private:
-	vtkToolLaparoscopy (const vtkToolLaparoscopy &);
-	void operator =(const vtkToolLaparoscopy &);
+  vtkToolLaparoscopy (const vtkToolLaparoscopy &);
+  void operator =(const vtkToolLaparoscopy &);
 };
 
 #endif

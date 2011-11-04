@@ -47,29 +47,29 @@ vtkCxxRevisionMacro(vtkModelCollection, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 void vtkModelCollection::InsertModel(vtkIdType id, vtkModel *Model) {
-	this->vtkModelCollection::ReplaceItem(id, (vtkObject*) Model);
+  this->vtkModelCollection::ReplaceItem(id, (vtkObject*) Model);
 }
 
 //--------------------------------------------------------------------------
 void vtkModelCollection::AddModel(vtkModel *Model) {
-	this->vtkCollection::AddItem((vtkObject *) Model);
+  this->vtkCollection::AddItem((vtkObject *) Model);
 }
 
 //--------------------------------------------------------------------------
 vtkModel * vtkModelCollection::GetModel(vtkIdType id) {
-	return static_cast <vtkModel *>(this->GetItemAsObject(id));
+  return static_cast <vtkModel *>(this->GetItemAsObject(id));
 }
 
 //--------------------------------------------------------------------------
 vtkModel * vtkModelCollection::GetNextModel()
 {
-	return static_cast <vtkModel *>(this->GetNextItemAsObject());
+  return static_cast <vtkModel *>(this->GetNextItemAsObject());
 }
 
 //--------------------------------------------------------------------------
 vtkIdType vtkModelCollection::GetNumberOfModels()
 {
-	return this->GetNumberOfItems();
+  return this->GetNumberOfItems();
 }
 
 //----------------------------------------------------------------------------

@@ -50,84 +50,84 @@ vtkCxxRevisionMacro(vtkHaptic, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 vtkHaptic::vtkHaptic() {
-	this->Name = "";
-	this->Tools = vtkScenarioObjectCollection::New();
+  this->Name = "";
+  this->Tools = vtkScenarioObjectCollection::New();
 }
 
 //--------------------------------------------------------------------------
 vtkHaptic::~vtkHaptic() {
-	this->Tools->Delete();
+  this->Tools->Delete();
 }
 
 //--------------------------------------------------------------------------
 void vtkHaptic::SetName(const char * name)
 {
-	this->Name = name;
+  this->Name = name;
 }
 
 //--------------------------------------------------------------------------
 const char * vtkHaptic::GetName()
 {
-	return this->Name;
+  return this->Name;
 }
 
 //----------------------------------------------------------------------------
 void vtkHaptic::SetTools(vtkScenarioObjectCollection * collection)
 {
-	this->Tools->RemoveAllItems();
+  this->Tools->RemoveAllItems();
 
-	collection->InitTraversal();
-	while(vtkScenarioObject * tool = collection->GetNextObject())
-	{
-		if(tool->GetObjectType() == vtkScenarioObject::Tool)
-		{
-			this->AddTool(vtkTool::SafeDownCast(tool));
-		}
-	}
+  collection->InitTraversal();
+  while(vtkScenarioObject * tool = collection->GetNextObject())
+  {
+    if(tool->GetObjectType() == vtkScenarioObject::Tool)
+    {
+      this->AddTool(vtkTool::SafeDownCast(tool));
+    }
+  }
 
 }
 
 //----------------------------------------------------------------------------
 vtkScenarioObjectCollection * vtkHaptic::GetTools()
 {
-	return this->Tools;
+  return this->Tools;
 }
 
 //----------------------------------------------------------------------------
 void vtkHaptic::AddTool(vtkTool * tool)
 {
-	this->Tools->AddObject(tool);
+  this->Tools->AddObject(tool);
 }
 
 //----------------------------------------------------------------------------
 void vtkHaptic::ReplaceTool(vtkIdType index, vtkTool* tool)
 {
-	this->Tools->ReplaceObject(index, tool);
+  this->Tools->ReplaceObject(index, tool);
 }
 
 //----------------------------------------------------------------------------
 void vtkHaptic::RemoveTool(vtkIdType index)
 {
-	this->Tools->RemoveItem(index);
+  this->Tools->RemoveItem(index);
 }
 
 //----------------------------------------------------------------------------
 vtkIdType vtkHaptic::GetNumberOfTools()
 {
-	return this->Tools->GetNumberOfItems();
+  return this->Tools->GetNumberOfItems();
 }
 
 //----------------------------------------------------------------------------
 vtkTool * vtkHaptic::GetTool(vtkIdType id)
 {
-	return vtkTool::SafeDownCast(this->Tools->GetObject(id));
+  return vtkTool::SafeDownCast(this->Tools->GetObject(id));
 }
 
 //--------------------------------------------------------------------------
 void vtkHaptic::PrintSelf(ostream& os,vtkIndent indent) {
 
-	this->Superclass::PrintSelf(os, indent);
+  this->Superclass::PrintSelf(os, indent);
 
-	os << indent << "Name: " << this->Name << std::endl;
+  os << indent << "Name: " << this->Name << std::endl;
 
 }

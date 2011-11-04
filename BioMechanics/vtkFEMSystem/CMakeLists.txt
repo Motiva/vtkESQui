@@ -27,13 +27,13 @@ OPTION (USE_DOLFIN "Set this option if you want to enable DOLFIN")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/CMake/Modules/")
 
 IF(USE_GETFEM)
-	FIND_PACKAGE(GetFEM++ REQUIRED)
-	INCLUDE_DIRECTORIES(${GETFEM_INCLUDE_DIRS})
+  FIND_PACKAGE(GetFEM++ REQUIRED)
+  INCLUDE_DIRECTORIES(${GETFEM_INCLUDE_DIRS})
 ENDIF(USE_GETFEM)
 
 IF(USE_DOLFIN)
-	FIND_PACKAGE(Dolfin REQUIRED)
-	INCLUDE_DIRECTORIES(${DOLFIN_INCLUDE_DIRS})
+  FIND_PACKAGE(Dolfin REQUIRED)
+  INCLUDE_DIRECTORIES(${DOLFIN_INCLUDE_DIRS})
 ENDIF(USE_DOLFIN)
 
 
@@ -56,18 +56,18 @@ ENDIF(DOLFIN_FOUND)
 #  )
 
 #SET_SOURCE_FILES_PROPERTIES(
-#	vtkVelocityVerletSolver.cxx
-#	PROPERTIES
-#	WRAP_EXCLUDE 1
-#	)
+#  vtkVelocityVerletSolver.cxx
+#  PROPERTIES
+#  WRAP_EXCLUDE 1
+#  )
 
 # List the kits from VTK that are needed by this project.
 SET(vtkFEMSystem_LIBS
-	vtkCommon
-	vtkFiltering
-	vtkRendering
-	vtkGraphics
-	vtkIO
+  vtkCommon
+  vtkFiltering
+  vtkRendering
+  vtkGraphics
+  vtkIO
 )
 
 #-----------------------------------------------------------------------------
@@ -102,53 +102,53 @@ ELSE(BUILD_SHARED_LIBS)
 ENDIF(BUILD_SHARED_LIBS)
 
 IF(VTK_FOUND)
-	# If this is a build tree, provide an option for putting this
-	# project's executables and libraries in with VTK's.
-	IF (EXISTS ${VTK_DIR}/bin)
-		OPTION(USE_VTK_OUTPUT_PATHS
-		"Use VTK's output directory for this project's executables and libraries."
-		OFF)
-		MARK_AS_ADVANCED (USE_VTK_OUTPUT_PATHS)
-		IF (USE_VTK_OUTPUT_PATHS)
-			SET (LIBRARY_OUTPUT_PATH ${VTK_DIR}/bin)
-			SET (EXECUTABLE_OUTPUT_PATH ${VTK_DIR}/bin)
-		ENDIF (USE_VTK_OUTPUT_PATHS)
-	ENDIF (EXISTS ${VTK_DIR}/bin)
+  # If this is a build tree, provide an option for putting this
+  # project's executables and libraries in with VTK's.
+  IF (EXISTS ${VTK_DIR}/bin)
+    OPTION(USE_VTK_OUTPUT_PATHS
+    "Use VTK's output directory for this project's executables and libraries."
+    OFF)
+    MARK_AS_ADVANCED (USE_VTK_OUTPUT_PATHS)
+    IF (USE_VTK_OUTPUT_PATHS)
+      SET (LIBRARY_OUTPUT_PATH ${VTK_DIR}/bin)
+      SET (EXECUTABLE_OUTPUT_PATH ${VTK_DIR}/bin)
+    ENDIF (USE_VTK_OUTPUT_PATHS)
+  ENDIF (EXISTS ${VTK_DIR}/bin)
 
-	# Create the header to configure the classes.
-	CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/vtkFEMSystemConfigure.h.in
-		${PROJECT_BINARY_DIR}/${PROJECT_NAME}Configure.h
-		@ONLY IMMEDIATE)
+  # Create the header to configure the classes.
+  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/vtkFEMSystemConfigure.h.in
+    ${PROJECT_BINARY_DIR}/${PROJECT_NAME}Configure.h
+    @ONLY IMMEDIATE)
 
-	# Use wrapping hints for this project.
-	SET(VTK_WRAP_HINTS "${PROJECT_SOURCE_DIR}/hints")
+  # Use wrapping hints for this project.
+  SET(VTK_WRAP_HINTS "${PROJECT_SOURCE_DIR}/hints")
 
-	# Create the instantiator for these classes.
-	SET(VTK_USE_INSTANTIATOR_NEW 1)
-	VTK_MAKE_INSTANTIATOR3("${PROJECT_NAME}Instantiator"
-	vtkFEMSystemInstantiator_SRCS
-	"${vtkFEMSystem_SRCS}"
-	"VTK_${PROJECT_NAME}_EXPORT"
-	${PROJECT_BINARY_DIR}
-	"${PROJECT_NAME}Configure.h")
+  # Create the instantiator for these classes.
+  SET(VTK_USE_INSTANTIATOR_NEW 1)
+  VTK_MAKE_INSTANTIATOR3("${PROJECT_NAME}Instantiator"
+  vtkFEMSystemInstantiator_SRCS
+  "${vtkFEMSystem_SRCS}"
+  "VTK_${PROJECT_NAME}_EXPORT"
+  ${PROJECT_BINARY_DIR}
+  "${PROJECT_NAME}Configure.h")
 
-	#getFEM library includes & includes (/CMake/Modules/FindGetFEM++.cmake)
-	IF(GETFEM_FOUND)
-		INCLUDE_DIRECTORIES(${GETFEM_INCLUDE_DIR})
-		SET(vtkFEMSystem_LIBS ${vtkFEMSystem_LIBS} ${GETFEM_LIBRARY})
-		LINK_DIRECTORIES( ${LINK_DIRECTORIES} ${GETFEM_LIBRARY_DIR})
-	ENDIF(GETFEM_FOUND)
-	
-	IF(DOLFIN_FOUND)
+  #getFEM library includes & includes (/CMake/Modules/FindGetFEM++.cmake)
+  IF(GETFEM_FOUND)
+    INCLUDE_DIRECTORIES(${GETFEM_INCLUDE_DIR})
+    SET(vtkFEMSystem_LIBS ${vtkFEMSystem_LIBS} ${GETFEM_LIBRARY})
+    LINK_DIRECTORIES( ${LINK_DIRECTORIES} ${GETFEM_LIBRARY_DIR})
+  ENDIF(GETFEM_FOUND)
+  
+  IF(DOLFIN_FOUND)
         SET(vtkFEMSystem_LIBS ${vtkFEMSystem_LIBS} dolfin)
     ENDIF(DOLFIN_FOUND)
-	
+  
 
-	# Create the library.
-	ADD_LIBRARY(${PROJECT_NAME} ${vtkFEMSystem_SRCS} ${vtkFEMSystemInstantiator_SRCS})
-	TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${vtkFEMSystem_LIBS})
+  # Create the library.
+  ADD_LIBRARY(${PROJECT_NAME} ${vtkFEMSystem_SRCS} ${vtkFEMSystemInstantiator_SRCS})
+  TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${vtkFEMSystem_LIBS})
 
-	#TCL Wrapping not supported 
+  #TCL Wrapping not supported 
 
 SUBDIRS(Testing)
 ENDIF(VTK_FOUND)

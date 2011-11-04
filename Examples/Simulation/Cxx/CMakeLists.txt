@@ -28,9 +28,9 @@ SET(KIT_LIBS
     ${PROJECT_NAME}Common
     vtkRendering
     vtkVolumeRendering
-	vtkGraphics 
-	vtkCommon
-	vtkHybrid
+  vtkGraphics 
+  vtkCommon
+  vtkHybrid
 )
 
 # Set your list of TCL libraries here.
@@ -42,8 +42,8 @@ SET(KIT_TCL_LIBS
     vtkRenderingTCL
     vtkVolumeRenderingTCL
     vtkGraphicsTCL
-	vtkCommonTCL
-	vtkHybridTCL
+  vtkCommonTCL
+  vtkHybridTCL
 )
  
 IF(APPLE)

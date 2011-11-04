@@ -129,14 +129,14 @@ IF(VTK_FOUND)
   SET(VTK_WRAP_HINTS "${PROJECT_SOURCE_DIR}/Wrapping/hints")
   # Create Tcl wrappers if VTK is wrapped in Tcl.
   IF(VTK_WRAP_TCL)
-	
-		OPTION(VTKESQUI_WRAP_TCL
-						"Wrap classes into the TCL interpreted language."
-						ON)
-		
-		IF(VTKESQUI_WRAP_TCL)
-			INCLUDE(${VTK_CMAKE_DIR}/vtkWrapTcl.cmake)
-		ENDIF(VTKESQUI_WRAP_TCL)
+  
+    OPTION(VTKESQUI_WRAP_TCL
+            "Wrap classes into the TCL interpreted language."
+            ON)
+    
+    IF(VTKESQUI_WRAP_TCL)
+      INCLUDE(${VTK_CMAKE_DIR}/vtkWrapTcl.cmake)
+    ENDIF(VTKESQUI_WRAP_TCL)
 
   ENDIF(VTK_WRAP_TCL)
   
@@ -210,7 +210,7 @@ IF(VTK_FOUND)
   IF(VTKESQUI_USE_FEM)
     INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkFEMSystem)
   ENDIF(VTKESQUI_USE_FEM)
-	
+  
   #
   # Build Documentation
   #

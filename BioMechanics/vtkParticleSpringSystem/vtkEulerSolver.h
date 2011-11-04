@@ -55,33 +55,33 @@ class vtkParticle;
 
 class VTK_vtkParticleSpringSystem_EXPORT vtkEulerSolver : public vtkMotionEquationSolver {
 public:
-	//!Type Revision Macro
-	vtkTypeRevisionMacro(vtkEulerSolver, vtkMotionEquationSolver);
-	//! Create a new euler solver
-	static vtkEulerSolver * New();
-	//! Print object values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Type Revision Macro
+  vtkTypeRevisionMacro(vtkEulerSolver, vtkMotionEquationSolver);
+  //! Create a new euler solver
+  static vtkEulerSolver * New();
+  //! Print object values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initialize equation motion solver
-	virtual void Init();
+  //! Initialize equation motion solver
+  virtual void Init();
 
-	//! Compute next step for every particle
-	/*!
-	 * \param particles collection of particles
-	 * \param dt time step
-	 */
-	virtual void ComputeNextStep(vtkParticleCollection * particles, double dt);
+  //! Compute next step for every particle
+  /*!
+   * \param particles collection of particles
+   * \param dt time step
+   */
+  virtual void ComputeNextStep(vtkParticleCollection * particles, double dt);
 
 protected:
-	vtkEulerSolver();
-	~vtkEulerSolver();
+  vtkEulerSolver();
+  ~vtkEulerSolver();
 
 private:
-	vtkEulerSolver(const vtkEulerSolver&);            // Not implemented.
-	void operator=(const vtkEulerSolver&);           // Not implemented.
+  vtkEulerSolver(const vtkEulerSolver&);            // Not implemented.
+  void operator=(const vtkEulerSolver&);           // Not implemented.
 
-	//! Reset the solver
-	void Reset();
+  //! Reset the solver
+  void Reset();
 };
 
 #endif

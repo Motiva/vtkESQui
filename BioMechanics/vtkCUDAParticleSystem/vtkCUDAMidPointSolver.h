@@ -53,36 +53,36 @@ class vtkCUDAParticleSystem;
 
 class VTK_vtkCUDAParticleSystem_EXPORT vtkCUDAMidPointSolver : public vtkCUDAMotionEquationSolver {
 public:
-	//!Type Revision Macro
-	vtkTypeRevisionMacro(vtkCUDAMidPointSolver, vtkCUDAMotionEquationSolver);
-	//! Create a new euler solver
-	static vtkCUDAMidPointSolver * New();
-	//! Print object values
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //!Type Revision Macro
+  vtkTypeRevisionMacro(vtkCUDAMidPointSolver, vtkCUDAMotionEquationSolver);
+  //! Create a new euler solver
+  static vtkCUDAMidPointSolver * New();
+  //! Print object values
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initialize equation motion solver
-	virtual void Init();
+  //! Initialize equation motion solver
+  virtual void Init();
 
-	//! Compute next step for every particle
-	/*!
-	 * \param p particle position vector
-	 * \param v particle velocity vector
-	 * \param a particle acceleration vector
-	 */
-	virtual void ComputeNextStep(float *p, float *v, float *a);
+  //! Compute next step for every particle
+  /*!
+   * \param p particle position vector
+   * \param v particle velocity vector
+   * \param a particle acceleration vector
+   */
+  virtual void ComputeNextStep(float *p, float *v, float *a);
 
 protected:
-	vtkCUDAMidPointSolver();
-	~vtkCUDAMidPointSolver();
+  vtkCUDAMidPointSolver();
+  ~vtkCUDAMidPointSolver();
 
 private:
-	vtkCUDAMidPointSolver(const vtkCUDAMidPointSolver&);            // Not implemented.
-	void operator=(const vtkCUDAMidPointSolver&);           // Not implemented.
+  vtkCUDAMidPointSolver(const vtkCUDAMidPointSolver&);            // Not implemented.
+  void operator=(const vtkCUDAMidPointSolver&);           // Not implemented.
 
-	//! Intermediate position vector
-	float * p1;
-	//! Intermediate velocity vector
-	float * v1;
+  //! Intermediate position vector
+  float * p1;
+  //! Intermediate velocity vector
+  float * v1;
 };
 
 #endif

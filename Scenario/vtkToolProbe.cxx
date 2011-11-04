@@ -52,9 +52,9 @@ vtkStandardNewMacro(vtkToolProbe);
 //----------------------------------------------------------------------------
 vtkToolProbe::vtkToolProbe()
 {
-	this->ToolModel = Probe;
-	this->Stick = NULL;
-	this->Tip = NULL;
+  this->ToolModel = Probe;
+  this->Stick = NULL;
+  this->Tip = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -65,80 +65,80 @@ vtkToolProbe::~vtkToolProbe()
 //----------------------------------------------------------------------------
 void vtkToolProbe::Init()
 {
-	//Check if elements has been set
-	if(this->Stick && this->Tip)
-	{
-		//Remove any remaining item
-		this->Elements->RemoveAllItems();
-		//Elements must be inserted in this order
-		if(!this->Stick->GetName()) this->Stick->SetName("Stick");
-		this->AddElement(this->Stick);
-		if(!this->Tip->GetName()) this->Tip->SetName("Tip");
-		this->AddElement(this->Tip);
-	}
-	else
-	{
-		//Check number of elements
-		if(this->Elements->GetNumberOfElements() == 2)
-		{
-			this->Stick = this->Elements->GetElement(0);
-			this->Tip = this->Elements->GetElement(1);
-		}
-		else
-		{
-			vtkErrorMacro("vtkToolGrasper has not been correctly initialized.");
-		}
-	}
+  //Check if elements has been set
+  if(this->Stick && this->Tip)
+  {
+    //Remove any remaining item
+    this->Elements->RemoveAllItems();
+    //Elements must be inserted in this order
+    if(!this->Stick->GetName()) this->Stick->SetName("Stick");
+    this->AddElement(this->Stick);
+    if(!this->Tip->GetName()) this->Tip->SetName("Tip");
+    this->AddElement(this->Tip);
+  }
+  else
+  {
+    //Check number of elements
+    if(this->Elements->GetNumberOfElements() == 2)
+    {
+      this->Stick = this->Elements->GetElement(0);
+      this->Tip = this->Elements->GetElement(1);
+    }
+    else
+    {
+      vtkErrorMacro("vtkToolGrasper has not been correctly initialized.");
+    }
+  }
 
-	Superclass::Init();
+  Superclass::Init();
 }
 
 //----------------------------------------------------------------------------
 void vtkToolProbe::SetStick(vtkScenarioElement * e)
 {
-	this->Stick = e;
+  this->Stick = e;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolProbe::SetTip(vtkScenarioElement * e)
 {
-	this->Tip = e;
+  this->Tip = e;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolProbe::Yaw(double angle)
 {
-	double step = angle - this->YawAngle;
-	if(step != 0)
-	{
-		this->RotateY(step);
-		this->YawAngle = angle;
-	}
+  double step = angle - this->YawAngle;
+  if(step != 0)
+  {
+    this->RotateY(step);
+    this->YawAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolProbe::Pitch(double angle)
 {
-	double step = angle - this->PitchAngle;
-	if(step != 0)
-	{
-		this->RotateX(step);
-		this->PitchAngle = angle;
-	}
+  double step = angle - this->PitchAngle;
+  if(step != 0)
+  {
+    this->RotateX(step);
+    this->PitchAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolProbe::Roll(double angle)
 {
-	double step = angle - this->RollAngle;
-	if(step != 0)
-	{
-		this->RotateZ(step);
-		this->RollAngle = angle;
-	}
+  double step = angle - this->RollAngle;
+  if(step != 0)
+  {
+    this->RotateZ(step);
+    this->RollAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolProbe::PrintSelf(ostream& os,vtkIndent indent) {
-	this->Superclass::PrintSelf(os,indent);
+  this->Superclass::PrintSelf(os,indent);
 }

@@ -31,17 +31,17 @@ SET_SOURCE_FILES_PROPERTIES(
 SET_SOURCE_FILES_PROPERTIES(
     vtkVelocityVerletSolver.cxx
     vtkRK4Solver.cxx
-	PROPERTIES
-	WRAP_EXCLUDE 1
-	)
+  PROPERTIES
+  WRAP_EXCLUDE 1
+  )
 
 # List the kits from VTK that are needed by this project.
 SET(vtkParticleSpringSystem_LIBS
-  	vtkCommon
-	vtkFiltering
-	vtkRendering
-	vtkGraphics
-	vtkIO
+    vtkCommon
+  vtkFiltering
+  vtkRendering
+  vtkGraphics
+  vtkIO
 )
 
 #-----------------------------------------------------------------------------

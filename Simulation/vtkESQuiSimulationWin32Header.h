@@ -47,10 +47,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #if defined(WIN32)&& !defined(VTKESQUI_STATIC)
 
 #if defined(vtkESQuiSimulation_EXPORTS)
-//	#undef VTK_ESQUI_SIMULATION_EXPORT
+//  #undef VTK_ESQUI_SIMULATION_EXPORT
 #define VTK_ESQUI_SIMULATION_EXPORT __declspec(dllexport)
 #else
-//	#undef VTK_ESQUI_SIMULATION_EXPORT
+//  #undef VTK_ESQUI_SIMULATION_EXPORT
 #define VTK_ESQUI_SIMULATION_EXPORT __declspec(dllimport)
 #endif
 

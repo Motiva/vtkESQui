@@ -54,53 +54,53 @@ class vtkParticle;
 class VTK_vtkParticleSpringSystem_EXPORT vtkRK4Solver : public vtkMotionEquationSolver {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkRK4Solver, vtkObject);
-	//! Create new Runge-Kutta Solver
-	static vtkRK4Solver * New();
-	//! Print object info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkRK4Solver, vtkObject);
+  //! Create new Runge-Kutta Solver
+  static vtkRK4Solver * New();
+  //! Print object info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initialize solver
-	virtual void Init();
+  //! Initialize solver
+  virtual void Init();
 
-	//! Compute next step for every particle
-	/*!
-	* \param particles collection of particles
-	* \param deltaT time step
-	*/
-	virtual void ComputeNextStep(vtkParticleCollection * particles, double deltaT);
+  //! Compute next step for every particle
+  /*!
+  * \param particles collection of particles
+  * \param deltaT time step
+  */
+  virtual void ComputeNextStep(vtkParticleCollection * particles, double deltaT);
 
 protected:
-	vtkRK4Solver();
-	~vtkRK4Solver();
+  vtkRK4Solver();
+  ~vtkRK4Solver();
 
 private:
-	vtkRK4Solver(const vtkRK4Solver&);            // Not implemented.
-	void operator=(const vtkRK4Solver&);           // Not implemented.
+  vtkRK4Solver(const vtkRK4Solver&);            // Not implemented.
+  void operator=(const vtkRK4Solver&);           // Not implemented.
 
-	//! 1st order derivative x
-	vtkDoubleArray * dx1;
-	//! 1st order derivative v
-	vtkDoubleArray * dv1;
-	//! 2nd order derivative x
-	vtkDoubleArray * dx2;
-	//! 2nd order derivative v
-	vtkDoubleArray * dv2;
-	//! 3rd order derivative x
-	vtkDoubleArray * dx3;
-	//! 3rd order derivative v
-	vtkDoubleArray * dv3;
-	//! 3rd order derivative x
-	vtkDoubleArray * dx4;
-	//! 3rd order derivative v
-	vtkDoubleArray * dv4;
+  //! 1st order derivative x
+  vtkDoubleArray * dx1;
+  //! 1st order derivative v
+  vtkDoubleArray * dv1;
+  //! 2nd order derivative x
+  vtkDoubleArray * dx2;
+  //! 2nd order derivative v
+  vtkDoubleArray * dv2;
+  //! 3rd order derivative x
+  vtkDoubleArray * dx3;
+  //! 3rd order derivative v
+  vtkDoubleArray * dv3;
+  //! 3rd order derivative x
+  vtkDoubleArray * dx4;
+  //! 3rd order derivative v
+  vtkDoubleArray * dv4;
 
-	//! Evaluate derivatives on each step
-	void Evaluate(vtkParticleCollection * particles, vtkDoubleArray * dX, vtkDoubleArray * dV, double deltaT);
+  //! Evaluate derivatives on each step
+  void Evaluate(vtkParticleCollection * particles, vtkDoubleArray * dX, vtkDoubleArray * dV, double deltaT);
 
-	//! Reset equation motion solver
-	void Reset();
+  //! Reset equation motion solver
+  void Reset();
 };
 
 #endif

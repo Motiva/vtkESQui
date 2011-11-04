@@ -53,8 +53,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #if defined(vtkESQuiBioMechanics_EXPORTS)
     #define VTK_ESQUI_BIOMECHANICS_EXPORT __declspec(dllexport)
   #else
-	#undef VTK_ESQUI_BIOMECHANICS_EXPORT
-	#define VTK_ESQUI_BIOMECHANICS_EXPORT __declspec( dllimport )
+  #undef VTK_ESQUI_BIOMECHANICS_EXPORT
+  #define VTK_ESQUI_BIOMECHANICS_EXPORT __declspec( dllimport )
   #endif
 
 #else

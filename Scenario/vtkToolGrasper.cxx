@@ -56,10 +56,10 @@ vtkStandardNewMacro(vtkToolGrasper);
 //----------------------------------------------------------------------------
 vtkToolGrasper::vtkToolGrasper()
 {
-	this->ToolModel = Grasper;
-	this->Stick = this->LeftLever = this->RightLever = NULL;
-	this->Opening = 0;
-	this->OpeningAngle = 30;
+  this->ToolModel = Grasper;
+  this->Stick = this->LeftLever = this->RightLever = NULL;
+  this->Opening = 0;
+  this->OpeningAngle = 30;
 }
 
 //----------------------------------------------------------------------------
@@ -70,188 +70,188 @@ vtkToolGrasper::~vtkToolGrasper()
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Init()
 {
-	//Check if elements has been set
-	if(this->Stick && this->LeftLever && this->RightLever)
-	{
-		//Remove any remaining item
-		this->Elements->RemoveAllItems();
-		//Elements must be inserted in this order
-		if(!this->Stick->GetName() || strcmp(this->Stick->GetName(), "") == 0)
-			this->Stick->SetName("Stick");
-		this->AddElement(this->Stick);
-		if(!this->LeftLever->GetName() || strcmp(this->LeftLever->GetName(), "") == 0)
-			this->LeftLever->SetName("LeftLever");
-		this->AddElement(this->LeftLever);
-		if(!this->RightLever->GetName() || strcmp(this->RightLever->GetName(), "") == 0)
-			this->RightLever->SetName("RightLever");
-		this->AddElement(this->RightLever);
-	}
-	else
-	{
-		if(this->GetNumberOfElements() == 3)
-		{
-			this->Stick = this->GetElement(0);
-			this->LeftLever = this->GetElement(1);
-			this->RightLever = this->GetElement(2);
-		}
-		else
-		{
-			vtkErrorMacro("vtkToolGrasper has not been correctly initialized.");
-		}
-	}
+  //Check if elements has been set
+  if(this->Stick && this->LeftLever && this->RightLever)
+  {
+    //Remove any remaining item
+    this->Elements->RemoveAllItems();
+    //Elements must be inserted in this order
+    if(!this->Stick->GetName() || strcmp(this->Stick->GetName(), "") == 0)
+      this->Stick->SetName("Stick");
+    this->AddElement(this->Stick);
+    if(!this->LeftLever->GetName() || strcmp(this->LeftLever->GetName(), "") == 0)
+      this->LeftLever->SetName("LeftLever");
+    this->AddElement(this->LeftLever);
+    if(!this->RightLever->GetName() || strcmp(this->RightLever->GetName(), "") == 0)
+      this->RightLever->SetName("RightLever");
+    this->AddElement(this->RightLever);
+  }
+  else
+  {
+    if(this->GetNumberOfElements() == 3)
+    {
+      this->Stick = this->GetElement(0);
+      this->LeftLever = this->GetElement(1);
+      this->RightLever = this->GetElement(2);
+    }
+    else
+    {
+      vtkErrorMacro("vtkToolGrasper has not been correctly initialized.");
+    }
+  }
 
-	//Initialize super class
-	Superclass::Init();
+  //Initialize super class
+  Superclass::Init();
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::SetStick(vtkScenarioElement * e)
 {
-	this->Stick = e;
+  this->Stick = e;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::SetLeftLever(vtkScenarioElement * e)
 {
-	this->LeftLever = e;
+  this->LeftLever = e;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::SetRightLever(vtkScenarioElement * e)
 {
-	this->RightLever = e;
+  this->RightLever = e;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Open(){
-	if(this->IsClosed()) {
-		this->SetOpening(1);
-	}
+  if(this->IsClosed()) {
+    this->SetOpening(1);
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Close(){
-	if(!this->IsClosed()) {
-		this->SetOpening(0);
-	}
+  if(!this->IsClosed()) {
+    this->SetOpening(0);
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::SetOpening(double opening) {
-	if(this->Opening != opening)
-	{
-		//cout << "vtkToolGrasper::SetOpening: " << opening << "\n";
-		double step = opening - this->Opening;
+  if(this->Opening != opening)
+  {
+    //cout << "vtkToolGrasper::SetOpening: " << opening << "\n";
+    double step = opening - this->Opening;
 
-		//Left Lever
-		this->LeftLever->RotateX(-this->OpeningAngle*step);
-		this->LeftLever->Update();
-		//Right Lever
-		this->RightLever->RotateX(this->OpeningAngle*step);
-		this->RightLever->Update();
+    //Left Lever
+    this->LeftLever->RotateX(-this->OpeningAngle*step);
+    this->LeftLever->Update();
+    //Right Lever
+    this->RightLever->RotateX(this->OpeningAngle*step);
+    this->RightLever->Update();
 
-		this->Opening = opening;
-	}
+    this->Opening = opening;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::SetDepth(double position)
 {
-	//cout << "vtkToolGrasper::SetDepth: " << position << "\n";
-	double o = this->Opening;
-	//Grasper is clamped before being translated
-	this->SetOpening(0);
-	Superclass::SetDepth(position);
-	//Grasper' opening state is restored
-	this->SetOpening(o);
+  //cout << "vtkToolGrasper::SetDepth: " << position << "\n";
+  double o = this->Opening;
+  //Grasper is clamped before being translated
+  this->SetOpening(0);
+  Superclass::SetDepth(position);
+  //Grasper' opening state is restored
+  this->SetOpening(o);
 
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::RotateX(double angle)
 {
-	//cout << "vtkToolGrasper::RotateX: " << angle << "\n";
-	double o = this->Opening;
-	//Grasper is clamped before being rotated
-	this->SetOpening(0);
-	//this->Reset();
-	Superclass::RotateX(angle);
-	//this->Restore();
-	//Grasper' opening state is restored
-	this->SetOpening(o);
+  //cout << "vtkToolGrasper::RotateX: " << angle << "\n";
+  double o = this->Opening;
+  //Grasper is clamped before being rotated
+  this->SetOpening(0);
+  //this->Reset();
+  Superclass::RotateX(angle);
+  //this->Restore();
+  //Grasper' opening state is restored
+  this->SetOpening(o);
 
-	//Yaw angle value is updated
-	//this->YawAngle += angle;
+  //Yaw angle value is updated
+  //this->YawAngle += angle;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::RotateY(double angle)
 {
-	//cout << "vtkToolGrasper::RotateY: " << angle << "\n";
-	double o = this->Opening;
-	//Grasper is clamped before being rotated
-	this->SetOpening(0);
-	Superclass::RotateY(angle);
-	//Grasper' opening state is restored
-	this->SetOpening(o);
+  //cout << "vtkToolGrasper::RotateY: " << angle << "\n";
+  double o = this->Opening;
+  //Grasper is clamped before being rotated
+  this->SetOpening(0);
+  Superclass::RotateY(angle);
+  //Grasper' opening state is restored
+  this->SetOpening(o);
 
-	// Pitch angle value is updated
-	//this->PitchAngle += angle;
+  // Pitch angle value is updated
+  //this->PitchAngle += angle;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::RotateZ(double angle)
 {
-	//cout << "vtkToolGrasper::RotateY: " << angle << "\n";
-	double o = this->Opening;
-	//Grasper is clamped before being rotated
-	this->SetOpening(0);
-	Superclass::RotateZ(angle);
-	//Grasper' opening state is restored
-	this->SetOpening(o);
+  //cout << "vtkToolGrasper::RotateY: " << angle << "\n";
+  double o = this->Opening;
+  //Grasper is clamped before being rotated
+  this->SetOpening(0);
+  Superclass::RotateZ(angle);
+  //Grasper' opening state is restored
+  this->SetOpening(o);
 
-	//this->RollAngle += angle;
+  //this->RollAngle += angle;
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Yaw(double angle)
 {
-	double step = angle - this->YawAngle;
-	if(step != 0)
-	{
-		this->RotateY(step);
-		this->YawAngle = angle;
-	}
+  double step = angle - this->YawAngle;
+  if(step != 0)
+  {
+    this->RotateY(step);
+    this->YawAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Pitch(double angle)
 {
-	double step = angle - this->PitchAngle;
-	if(step != 0)
-	{
-		this->RotateX(step);
-		this->PitchAngle = angle;
-	}
+  double step = angle - this->PitchAngle;
+  if(step != 0)
+  {
+    this->RotateX(step);
+    this->PitchAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::Roll(double angle)
 {
-	double step = angle - this->RollAngle;
-	if(step != 0)
-	{
-		this->RotateZ(step);
-		this->RollAngle = angle;
-	}
+  double step = angle - this->RollAngle;
+  if(step != 0)
+  {
+    this->RotateZ(step);
+    this->RollAngle = angle;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkToolGrasper::PrintSelf(ostream& os,vtkIndent indent) {
-	this->Superclass::PrintSelf(os,indent);
-	os << indent << "Opening: " << this->Opening << endl;
-	os << indent << "Opening Angle: " << this->OpeningAngle << endl;
-	os << indent << "Yaw Angle: " << this->YawAngle << endl;
-	os << indent << "Pitch Angle: " << this->PitchAngle << endl;
-	os << indent << "Roll Angle: " << this->RollAngle << endl;
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Opening: " << this->Opening << endl;
+  os << indent << "Opening Angle: " << this->OpeningAngle << endl;
+  os << indent << "Yaw Angle: " << this->YawAngle << endl;
+  os << indent << "Pitch Angle: " << this->PitchAngle << endl;
+  os << indent << "Roll Angle: " << this->RollAngle << endl;
 }

@@ -61,137 +61,137 @@ vtkStandardNewMacro(vtkScenario);
 //----------------------------------------------------------------------------
 vtkScenario::vtkScenario() {
 
-	this->Initialized = 0;
-	this->Objects = vtkScenarioObjectCollection::New();
+  this->Initialized = 0;
+  this->Objects = vtkScenarioObjectCollection::New();
 
 }
 
 //----------------------------------------------------------------------------
 vtkScenario::~vtkScenario(){
-	this->Objects->RemoveAllItems();
-	this->Objects->Delete();
+  this->Objects->RemoveAllItems();
+  this->Objects->Delete();
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::SetObjects(vtkScenarioObjectCollection * collection)
 {
-	this->Objects->RemoveAllItems();
+  this->Objects->RemoveAllItems();
 
-	collection->InitTraversal();
-	while(vtkScenarioObject * object = collection->GetNextObject())
-	{
-		this->AddObject(object);
-	}
+  collection->InitTraversal();
+  while(vtkScenarioObject * object = collection->GetNextObject())
+  {
+    this->AddObject(object);
+  }
 
 }
 
 //----------------------------------------------------------------------------
 vtkScenarioObjectCollection * vtkScenario::GetObjects()
 {
-	return this->Objects;
+  return this->Objects;
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::AddObject(vtkScenarioObject* object)
 {
-	object->SetId(this->GetNumberOfObjects());
-	object->SetRenderWindow(this->RenderWindow);
-	this->Objects->AddObject(object);
+  object->SetId(this->GetNumberOfObjects());
+  object->SetRenderWindow(this->RenderWindow);
+  this->Objects->AddObject(object);
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::ReplaceObject(vtkIdType index,vtkScenarioObject* object)
 {
-	object->SetId(index);
-	this->Objects->ReplaceObject(index, object);
+  object->SetId(index);
+  this->Objects->ReplaceObject(index, object);
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::RemoveObject(vtkIdType index)
 {
-	this->Objects->RemoveItem(index);
+  this->Objects->RemoveItem(index);
 }
 
 //----------------------------------------------------------------------------
 vtkIdType vtkScenario::GetNumberOfObjects()
 {
-	return this->Objects->GetNumberOfItems();
+  return this->Objects->GetNumberOfItems();
 }
 
 //----------------------------------------------------------------------------
 vtkScenarioObject * vtkScenario::GetObject(vtkIdType id)
 {
-	return this->Objects->GetObject(id);
+  return this->Objects->GetObject(id);
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::SetRenderWindow(vtkRenderWindow *window) {
-	this->RenderWindow = window;
-	this->Renderer= RenderWindow->GetRenderers()->GetFirstRenderer();
+  this->RenderWindow = window;
+  this->Renderer= RenderWindow->GetRenderers()->GetFirstRenderer();
 }
 
 //----------------------------------------------------------------------------
 vtkRenderWindow* vtkScenario::GetRenderWindow() {
-	return this->RenderWindow;
+  return this->RenderWindow;
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::Init()
 {
-	if(!this->Initialized && this->RenderWindow)
-	{
-		this->Objects->InitTraversal();
-		int i = 0;
-		while(vtkScenarioObject * o = this->Objects->GetNextObject())
-		{
-			o->SetRenderWindow(this->RenderWindow);
-			o->SetRenderer(this->Renderer);
-			o->SetId(i);
+  if(!this->Initialized && this->RenderWindow)
+  {
+    this->Objects->InitTraversal();
+    int i = 0;
+    while(vtkScenarioObject * o = this->Objects->GetNextObject())
+    {
+      o->SetRenderWindow(this->RenderWindow);
+      o->SetRenderer(this->Renderer);
+      o->SetId(i);
 
-			if(!o->IsInitialized()) o->Init();
+      if(!o->IsInitialized()) o->Init();
 
-			//Add all actors to the render window
-			for(int id = 0; id<o->GetNumberOfElements(); id++)
-			{
-				vtkScenarioElement * e = o->GetElement(id);
+      //Add all actors to the render window
+      for(int id = 0; id<o->GetNumberOfElements(); id++)
+      {
+        vtkScenarioElement * e = o->GetElement(id);
 
-				//Display every visible model. Hiding model is done by vtkModel:Hide()
-				vtkModelCollection * models = e->GetModels();
-				models->InitTraversal();
-				while(vtkModel * m = models->GetNextModel()){
-					this->Renderer->AddActor(m->GetActor());
-				}
+        //Display every visible model. Hiding model is done by vtkModel:Hide()
+        vtkModelCollection * models = e->GetModels();
+        models->InitTraversal();
+        while(vtkModel * m = models->GetNextModel()){
+          this->Renderer->AddActor(m->GetActor());
+        }
 
-			}
-			i++;
-		}
-		this->Initialized = 1;
-	}
+      }
+      i++;
+    }
+    this->Initialized = 1;
+  }
 }
 
 //----------------------------------------------------------------------------
 void vtkScenario::Update()
 {
-	//cout << "vtkScenario::Update()" << endl;
-	//Process every scenario object and perform an update on it
-	this->Objects->InitTraversal();
-	while(vtkScenarioObject * object = this->Objects->GetNextObject())
-	{
-		object->Modified();
-		object->Update();
-	}
-	this->RenderWindow->Render();
+  //cout << "vtkScenario::Update()" << endl;
+  //Process every scenario object and perform an update on it
+  this->Objects->InitTraversal();
+  while(vtkScenarioObject * object = this->Objects->GetNextObject())
+  {
+    object->Modified();
+    object->Update();
+  }
+  this->RenderWindow->Render();
 }
 
 //--------------------------------------------------------------------------
 void vtkScenario::PrintSelf(ostream&os, vtkIndent indent)
 {
-	if(this->Name) os << indent << "Name: " << this->Name << "\n";
-	os << indent << "NumberOfObjects: " << this->Objects->GetNumberOfObjects() << endl;
-	this->Objects->InitTraversal();
-	while(vtkScenarioObject * o = this->Objects->GetNextObject())
-	{
-		o->Print(os);
-	}
+  if(this->Name) os << indent << "Name: " << this->Name << "\n";
+  os << indent << "NumberOfObjects: " << this->Objects->GetNumberOfObjects() << endl;
+  this->Objects->InitTraversal();
+  while(vtkScenarioObject * o = this->Objects->GetNextObject())
+  {
+    o->Print(os);
+  }
 
 }

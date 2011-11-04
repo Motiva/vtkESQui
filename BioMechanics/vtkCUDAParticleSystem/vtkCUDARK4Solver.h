@@ -52,51 +52,51 @@ class vtkCUDAParticleSystem;
 class VTK_vtkCUDAParticleSystem_EXPORT vtkCUDARK4Solver : public vtkCUDAMotionEquationSolver {
 public:
 
-	//! Type revision macro
-	vtkTypeRevisionMacro(vtkCUDARK4Solver, vtkObject);
-	//! Create new Runge-Kutta Solver
-	static vtkCUDARK4Solver * New();
-	//! Print object info
-	void PrintSelf(ostream& os, vtkIndent indent);
+  //! Type revision macro
+  vtkTypeRevisionMacro(vtkCUDARK4Solver, vtkObject);
+  //! Create new Runge-Kutta Solver
+  static vtkCUDARK4Solver * New();
+  //! Print object info
+  void PrintSelf(ostream& os, vtkIndent indent);
 
-	//! Initialize equation motion solver
-	virtual void Init();
+  //! Initialize equation motion solver
+  virtual void Init();
 
-	//! Compute next step for every particle
-	/*!
-	 * \param p particle position vector
-	 * \param v particle velocity vector
-	 * \param a particle acceleration vector
-	*/
-	virtual void ComputeNextStep(float *p, float *v, float *a);
+  //! Compute next step for every particle
+  /*!
+   * \param p particle position vector
+   * \param v particle velocity vector
+   * \param a particle acceleration vector
+  */
+  virtual void ComputeNextStep(float *p, float *v, float *a);
 
 protected:
-	vtkCUDARK4Solver();
-	~vtkCUDARK4Solver();
+  vtkCUDARK4Solver();
+  ~vtkCUDARK4Solver();
 
 private:
-	vtkCUDARK4Solver(const vtkCUDARK4Solver&);            // Not implemented.
-	void operator=(const vtkCUDARK4Solver&);           // Not implemented.
+  vtkCUDARK4Solver(const vtkCUDARK4Solver&);            // Not implemented.
+  void operator=(const vtkCUDARK4Solver&);           // Not implemented.
 
-	//! Position 1st order derivative
-	float * dx1;
-	//! Velocity 1st order derivative
-	float * dv1;
-	//! 2nd order derivative x
-	float * dx2;
-	//! 2nd order derivative v
-	float * dv2;
-	//! 3rd order derivative x
-	float * dx3;
-	//! 3rd order derivative v
-	float * dv3;
-	//! 4rd order derivative x
-	float * dx4;
-	//! 4rd order derivative v
-	float * dv4;
+  //! Position 1st order derivative
+  float * dx1;
+  //! Velocity 1st order derivative
+  float * dv1;
+  //! 2nd order derivative x
+  float * dx2;
+  //! 2nd order derivative v
+  float * dv2;
+  //! 3rd order derivative x
+  float * dx3;
+  //! 3rd order derivative v
+  float * dv3;
+  //! 4rd order derivative x
+  float * dx4;
+  //! 4rd order derivative v
+  float * dv4;
 
-	//! Evaluate derivatives on each step
-	void Evaluate(float *p, float *v, float *a, double deltaT, int order);
+  //! Evaluate derivatives on each step
+  void Evaluate(float *p, float *v, float *a, double deltaT, int order);
 
 };
 
