@@ -150,11 +150,11 @@ int main(int argc, char * argv[])
 	pss->SetColor(1,0,0);
 	pss->SetOpacity(1.0);
 	pss->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
-	pss->SetSpringCoefficient(150);
-	pss->SetDistanceCoefficient(1.1);
-	pss->SetDampingCoefficient(5);//Friction
+	pss->SetSpring(150);
+	pss->SetDistance(1.1);
+	pss->SetDamping(5);//Friction
 	pss->SetMass(.5);
-	pss->SetDeltaT(0.001);//1ms
+	pss->SetTimeStep(0.001);//1ms
 	pss->Init();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();

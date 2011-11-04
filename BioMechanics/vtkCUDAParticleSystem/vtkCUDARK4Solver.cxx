@@ -77,9 +77,9 @@ void vtkCUDARK4Solver::Init()
 //----------------------------------------------------------------------------
 void vtkCUDARK4Solver::ComputeNextStep(float *p, float *v, float *a)
 {
-	double dt05 = this->DeltaTime*0.5;
-	double dt1_6 = this->DeltaTime/6;
-	double dt = this->DeltaTime;
+	double dt05 = this->TimeStep*0.5;
+	double dt1_6 = this->TimeStep/6;
+	double dt = this->TimeStep;
 
 	this->Evaluate(p, v, a, dt05, 1);
 	this->Evaluate(p, v, a, dt05, 2);

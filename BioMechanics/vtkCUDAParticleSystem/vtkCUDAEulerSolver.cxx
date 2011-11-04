@@ -53,9 +53,9 @@ void vtkCUDAEulerSolver::ComputeNextStep(float *p, float *v, float *a)
 	//CUDA procedure
 
 	//Vn+1 = Vn + dt*At
-	integrateSystem(this->dVel, this->dAcc, this->DeltaTime, this->NumberOfParticles);
+	integrateSystem(this->dVel, this->dAcc, this->TimeStep, this->NumberOfParticles);
 	//Xn+1 = Xn + dt*Vn+1
-	integrateSystem(this->dPos, this->dVel, this->DeltaTime, this->NumberOfParticles);
+	integrateSystem(this->dPos, this->dVel, this->TimeStep, this->NumberOfParticles);
 
 	// Copy Device -> host
 	copyArrayFromDevice(p, this->dPos, 0, memSize);

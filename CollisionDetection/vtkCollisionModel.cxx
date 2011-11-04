@@ -156,12 +156,8 @@ void vtkCollisionModel::Init()
 	// Configure visualization
 	this->Sphere = vtkSphereSource::New();
 	this->Glyphs = vtkGlyph3D::New();
-	this->Glyphs->SetInputConnection(this->GetOutputPort());
 	this->Sphere->SetRadius(this->Radius);
-	this->Glyphs->SetSource(this->Sphere->GetOutput());
 	this->Glyphs->ScalingOff();
-
-	this->Mapper->SetInput(this->Glyphs->GetOutput());
 
 	this->Modified();
 }
@@ -196,7 +192,7 @@ int vtkCollisionModel::RequestData(
 	if(this->Status)
 	{
 		//collision visualization mesh
-		output->DeepCopy(input);
+		output->ShallowCopy(input);
 
 		//If source is defined -> Synchronize mesh
 		if(source)
@@ -223,10 +219,11 @@ int vtkCollisionModel::RequestData(
 		this->Actor->SetVisibility(this->Visibility);
 		if(this->IsVisible())
 		{
-			this->Glyphs->Modified();
+			this->Glyphs->SetInput(output);
+			this->Glyphs->SetSource(this->Sphere->GetOutput());
+			this->Mapper->SetInput(this->Glyphs->GetOutput());
 			this->Actor->GetProperty()->SetColor(this->Color);
 			this->Actor->GetProperty()->SetOpacity(this->Opacity);
-			this->Mapper->Modified();
 		}
 
 		//Update object position
@@ -234,7 +231,7 @@ int vtkCollisionModel::RequestData(
 		this->Transform->Update();
 
 		//FIXME: output empty
-		this->TransformFilter->SetInput(output);
+		this->TransformFilter->SetInput(input);
 		this->TransformFilter->Update();
 
 		//Transformed mesh for collision detection purposes

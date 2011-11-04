@@ -41,8 +41,8 @@ void vtkCUDAVelocityVerletSolver::Init()
 //----------------------------------------------------------------------------
 void vtkCUDAVelocityVerletSolver::ComputeNextStep(float *p, float *v, float *a)
 {
-	double dt05 = this->DeltaTime*0.5;
-	double dt = this->DeltaTime;
+	double dt05 = this->TimeStep*0.5;
+	double dt = this->TimeStep;
 
 	// Velocity Verlet Equations
 	// * Xn+1 = Xn + Vn*dt + 0.5*An*dt

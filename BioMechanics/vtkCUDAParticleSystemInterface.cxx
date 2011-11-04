@@ -64,13 +64,13 @@ vtkStandardNewMacro(vtkCUDAParticleSystemInterface);
 vtkCUDAParticleSystemInterface::vtkCUDAParticleSystemInterface()
 {
 	this->System = vtkCUDAParticleSystem::New();
-	this->SpringCoefficient = 0.0;
-	this->DistanceCoefficient = 0;
-	this->DampingCoefficient = 0;
-	this->DeltaT = 0;
+	this->Spring = 0.0;
+	this->Distance = 0;
+	this->Damping = 0;
+	this->TimeStep = 0;
 	this->Mass = 0;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
-	this->DeltaT = 0;
+	this->TimeStep = 0;
 	this->SolverType = vtkCUDAMotionEquationSolver::VelocityVerlet;
 }
 
@@ -89,11 +89,11 @@ void vtkCUDAParticleSystemInterface::Init()
 	this->System->SetInput(this->GetInput());
 	//Set common parameters
 	this->System->SetGravity(this->Gravity);
-	this->System->SetDeltaTime(this->DeltaT);
+	this->System->SetTimeStep(this->TimeStep);
 	//Set Mass-Spring System parameters
-	this->System->SetDistanceCoefficient(this->DistanceCoefficient);
-	this->System->SetSpringCoefficient(this->SpringCoefficient);//Friction
-	this->System->SetDampingCoefficient(this->DampingCoefficient);//Friction
+	this->System->SetDistance(this->Distance);
+	this->System->SetSpring(this->Spring);//Friction
+	this->System->SetDamping(this->Damping);//Friction
 	this->System->SetMass(this->Mass);
 	this->System->SetSolverType(this->SolverType);
 	//Initialize system
@@ -200,10 +200,10 @@ void vtkCUDAParticleSystemInterface::InsertDisplacement(vtkIdType id, double x, 
 void vtkCUDAParticleSystemInterface::PrintSelf(ostream& os, vtkIndent indent)
 {
 	this->Superclass::PrintSelf(os,indent);
-	os << indent << "SpringCoefficient: " << this->SpringCoefficient << endl;
-	os << indent << "DampingCoefficient: " << this->DampingCoefficient << endl;
-	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << endl;
+	os << indent << "SpringCoefficient: " << this->Spring << endl;
+	os << indent << "DampingCoefficient: " << this->Damping << endl;
+	os << indent << "DistanceCoefficient: " << this->Distance << endl;
 	os << indent << "Mass: " << this->Mass << endl;
-	os << indent << "DeltaT: " << this->DeltaT << endl;
+	os << indent << "DeltaT: " << this->TimeStep << endl;
 	os << indent << "SolverType: " << this->SolverType << endl;
 }

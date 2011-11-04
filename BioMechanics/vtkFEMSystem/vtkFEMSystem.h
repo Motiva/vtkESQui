@@ -86,7 +86,7 @@ public:
 	//! Set damping coefficient
 	vtkSetMacro(DampingCoefficient, double);	// Damping coefficient
 	//! Set time step
-	vtkSetMacro(DeltaT, double);				// dt for every step
+	vtkSetMacro(TimeStep, double);				// dt for every step
 	//! Set mass of system particles
 	vtkSetMacro(Mass, double);					// Mass of all points (future work: specify different masses for different "layers")
 	//! Set rigidity factor.
@@ -114,7 +114,7 @@ protected:
 	//! Damping coefficient
 	double DampingCoefficient;
 	//! Equation time step
-	double DeltaT;
+	double TimeStep;
 	//! Mass for each system particle
 	double Mass;
 	//! Size of particle neighborhood. The big

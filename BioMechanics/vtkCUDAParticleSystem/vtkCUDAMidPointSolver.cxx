@@ -47,8 +47,8 @@ void vtkCUDAMidPointSolver::Init()
 //----------------------------------------------------------------------------
 void vtkCUDAMidPointSolver::ComputeNextStep(float *p, float *v, float *a)
 {
-	double dt05 = this->DeltaTime*0.5;
-	double dt = this->DeltaTime;
+	double dt05 = this->TimeStep*0.5;
+	double dt = this->TimeStep;
 
 	// MidPoint Equations
 	// * Xn+1 = Xn + K2x ; K1x = Vn*dt, K2x = K1x + 0.5*K1v, K1v = An*dt ;

@@ -69,21 +69,21 @@ public:
 	//! Get spring identifier
 	vtkGetMacro(Id, vtkIdType);
 	//! Set spring coefficient
-	vtkSetMacro(SpringCoefficient, double);
+	vtkSetMacro(K, double);
 	//! Get spring coefficient
-	vtkGetMacro(SpringCoefficient, double);
+	vtkGetMacro(K, double);
 	//! Set damping coefficient
-	vtkSetMacro(DampingCoefficient, double);
+	vtkSetMacro(Damping, double);
 	//! Get damping coefficient
-	vtkGetMacro(DampingCoefficient, double);
+	vtkGetMacro(Damping, double);
 	//! Set distance coefficient. Percentage
-	vtkSetMacro(DistanceCoefficient, double);
+	vtkSetMacro(Distance, double);
 	//! Get distance coefficient. Percentage
-	vtkGetMacro(DistanceCoefficient, double);
+	vtkGetMacro(Distance, double);
 	//! Set time step. (ms)
-	vtkSetMacro(DeltaT, double);					// dt for every step
+	vtkSetMacro(TimeStep, double);					// dt for every step
 	//! Get time step. (ms)
-	vtkGetMacro(DeltaT, double);
+	vtkGetMacro(TimeStep, double);
 	//! Set rest length
 	vtkGetMacro(RestLength, double);					// Distance between particles
 
@@ -115,13 +115,13 @@ protected:
 	//! Spring Identifier
 	vtkIdType Id;
 	//! Spring Coefficient, stiffness. k; F = -kx
-	double SpringCoefficient;
+	double K;
 	//! Damping Coefficient
-	double DampingCoefficient;
+	double Damping;
 	//! Distance Coefficient
-	double DistanceCoefficient;
+	double Distance;
 	//! Time step,
-	double DeltaT;
+	double TimeStep;
 
 	//! Spring rest length
 	double RestLength;

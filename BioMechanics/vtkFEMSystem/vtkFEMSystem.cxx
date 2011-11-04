@@ -16,7 +16,7 @@ vtkFEMSystem::vtkFEMSystem()
 	this->SpringCoefficient = 0.0;
 	this->DistanceCoefficient = 0;
 	this->DampingCoefficient = 0;
-	this->DeltaT = 0;
+	this->TimeStep = 0;
 	this->Mass = 0;
 	this->RigidityFactor = 0;
 	this->ContactIds = NULL;

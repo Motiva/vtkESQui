@@ -78,13 +78,13 @@ public:
 
 	//Parameters for Particle-Spring System
 	//! Set spring coefficient
-	vtkSetMacro(SpringCoefficient, double);		// Spring coefficient
+	vtkSetMacro(Spring, double);		// Spring coefficient
 	//! Set distance coefficient. Percentage
-	vtkSetMacro(DistanceCoefficient, double);	// Distance constraint coefficient
+	vtkSetMacro(Distance, double);	// Distance constraint coefficient
 	//! Set damping coefficient
-	vtkSetMacro(DampingCoefficient, double);	// Damping coefficient
+	vtkSetMacro(Damping, double);	// Damping coefficient
 	//! Set time step
-	vtkSetMacro(DeltaT, double);				// dt for every step
+	vtkSetMacro(TimeStep, double);				// dt for every step
 	//! Set mass of system particles
 	vtkSetMacro(Mass, double);					// Mass of all points (future work: specify different masses for different "layers")
 	//! Set residual error
@@ -142,7 +142,7 @@ protected:
 	 * Spring stiffness coefficient: resistance offered by the spring to a
 	 * deformation. F[p(i)] = -(K*dNorm-L)*(d(p[i])/dNorm);
 	 */
-	double SpringCoefficient;
+	double Spring;
 	//! Distance coefficient.
 	/*!
 	 * Maximum distance of linear elongation. For instance, a distance
@@ -150,11 +150,11 @@ protected:
 	 * until it reaches 2 times its initial length. For higher values, the
 	 * stiffness coefficient is modified dynamically.
 	 */
-	double DistanceCoefficient;
+	double Distance;
 	//! Damping coefficient
-	double DampingCoefficient;
+	double Damping;
 	//! Equation time step
-	double DeltaT;
+	double TimeStep;
 	//! Mass for each system particle
 	double Mass;
 	//! Residual error tolerance

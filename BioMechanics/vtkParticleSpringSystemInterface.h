@@ -83,15 +83,15 @@ public:
 	virtual void Init();
 
 	//! Set the distance coefficient
-	vtkSetMacro(DistanceCoefficient, double);
+	vtkSetMacro(Distance, double);
 	//! Set the damping coefficient
-	vtkSetMacro(DampingCoefficient, double);
+	vtkSetMacro(Damping, double);
 	//! Set the damping coefficient
-	vtkSetMacro(SpringCoefficient, double);
+	vtkSetMacro(Spring, double);
 	//! Set the mass value
 	vtkSetMacro(Mass, double);
 	//! Set the time step
-	vtkSetMacro(DeltaT, double);
+	vtkSetMacro(TimeStep, double);
 	//! Set motion equation solver type.
 	vtkSetMacro(SolverType, vtkMotionEquationSolver::MotionEquationSolverType);
 
@@ -120,7 +120,7 @@ protected:
 
 	// PSS specific parameters
 	//! Distance coefficient.
-	double DistanceCoefficient;
+	double Distance;
 	//! Damping coefficient.
 	/*!
 	 * Damping coefficient behaviour:\n
@@ -128,12 +128,12 @@ protected:
 	 * - = 1 Critically Damped. The system returns to equilibrium as quickly as possible without oscillating
 	 * - > 1 Over-Damped. The system returns (exponentially decays) to equilibrium without oscillating
 	 */
-	double DampingCoefficient;
+	double Damping;
 	//! Spring Coefficient
 	/*!
 	 * Commonly known as K, defines the spring rigidity.
 	 */
-	double SpringCoefficient;
+	double Spring;
 	//! Mass of each particle
 	/*!
 	 * Mass value for every particle of the system. All particles must be set to the same value.
@@ -145,7 +145,7 @@ protected:
 	 * Deformation process time interval. The configuration is crucial, for greater values the system
 	 * could become unstable.
 	 */
-	double DeltaT;
+	double TimeStep;
 
 	//! Motion equation solver type
 	/*!

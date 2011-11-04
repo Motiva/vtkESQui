@@ -147,11 +147,11 @@ int main(int argc, char * argv[])
 	vtkSmartPointer<vtkParticleSpringSystem> def = vtkSmartPointer<vtkParticleSpringSystem>::New();
 	def->SetInput(mesh);
 	def->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
-	def->SetSpringCoefficient(150);
-	def->SetDistanceCoefficient(10);
-	def->SetDampingCoefficient(5);//Friction
+	def->SetSpring(150);
+	def->SetDistance(10);
+	def->SetDamping(5);//Friction
 	def->SetMass(.5);
-	def->SetDeltaT(0.001);//1ms
+	def->SetTimeStep(0.001);//1ms
 	def->Init();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();

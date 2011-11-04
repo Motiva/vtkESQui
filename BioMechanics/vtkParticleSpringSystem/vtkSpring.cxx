@@ -17,10 +17,10 @@ vtkStandardNewMacro(vtkSpring);
 //----------------------------------------------------------------------------
 vtkSpring::vtkSpring()
 {
-	this->SpringCoefficient = 0.0;
-	this->DistanceCoefficient = 0.0;
-	this->DampingCoefficient = 0.0;
-	this->DeltaT = 0.0;
+	this->K = 0.0;
+	this->Distance = 0.0;
+	this->Damping = 0.0;
+	this->TimeStep = 0.0;
 	this->RestLength = 0.0;
 	this->Direction[0] = 0.0;
 	this->Direction[1] = 0.0;
@@ -95,8 +95,8 @@ void vtkSpring::PrintSelf(ostream& os, vtkIndent indent)
 {
 	this->Superclass::PrintSelf(os,indent);
 	os << indent << "Id: " << this->Id << "\n";
-	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << "\n";
-	os << indent << "DampingCoefficient: " << this->DampingCoefficient << "\n";
+	os << indent << "DistanceCoefficient: " << this->Distance << "\n";
+	os << indent << "DampingCoefficient: " << this->Damping << "\n";
 	os << indent << "Distance: " << this->RestLength << "\n";
 	os << indent << "Direction: (" << this->Direction[0] << ", "
 									<< this->Direction[1] << ", "

@@ -64,13 +64,13 @@ vtkStandardNewMacro(vtkParticleSpringSystemInterface);
 vtkParticleSpringSystemInterface::vtkParticleSpringSystemInterface()
 {
 	this->ParticleSpringSystem = vtkParticleSpringSystem::New();
-	this->SpringCoefficient = 0.0;
-	this->DistanceCoefficient = 0;
-	this->DampingCoefficient = 0;
-	this->DeltaT = 0;
+	this->Spring = 0.0;
+	this->Distance = 0;
+	this->Damping = 0;
+	this->TimeStep = 0;
 	this->Mass = 0;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
-	this->DeltaT = 0;
+	this->TimeStep = 0;
 	this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
 }
 
@@ -89,11 +89,11 @@ void vtkParticleSpringSystemInterface::Init()
 	this->ParticleSpringSystem->SetInput(this->GetInput());
 	//Set common parameters
 	this->ParticleSpringSystem->SetGravity(this->Gravity);
-	this->ParticleSpringSystem->SetDeltaT(this->DeltaT);
+	this->ParticleSpringSystem->SetTimeStep(this->TimeStep);
 	//Set Mass-Spring System parameters
-	this->ParticleSpringSystem->SetDistanceCoefficient(this->DistanceCoefficient);
-	this->ParticleSpringSystem->SetSpringCoefficient(this->SpringCoefficient);//Friction
-	this->ParticleSpringSystem->SetDampingCoefficient(this->DampingCoefficient);//Friction
+	this->ParticleSpringSystem->SetDistance(this->Distance);
+	this->ParticleSpringSystem->SetSpring(this->Spring);//Friction
+	this->ParticleSpringSystem->SetDamping(this->Damping);//Friction
 	this->ParticleSpringSystem->SetMass(this->Mass);
 	this->ParticleSpringSystem->SetSolverType(this->SolverType);
 	//Initialize system
@@ -200,10 +200,10 @@ void vtkParticleSpringSystemInterface::InsertDisplacement(vtkIdType id, double x
 void vtkParticleSpringSystemInterface::PrintSelf(ostream& os, vtkIndent indent)
 {
 	this->Superclass::PrintSelf(os,indent);
-	os << indent << "SpringCoefficient: " << this->SpringCoefficient << endl;
-	os << indent << "DampingCoefficient: " << this->DampingCoefficient << endl;
-	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << endl;
+	os << indent << "SpringCoefficient: " << this->Spring << endl;
+	os << indent << "DampingCoefficient: " << this->Damping << endl;
+	os << indent << "DistanceCoefficient: " << this->Distance << endl;
 	os << indent << "Mass: " << this->Mass << endl;
-	os << indent << "DeltaT: " << this->DeltaT << endl;
+	os << indent << "DeltaT: " << this->TimeStep << endl;
 	os << indent << "SolverType: " << this->SolverType << endl;
 }

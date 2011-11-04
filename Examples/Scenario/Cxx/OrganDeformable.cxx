@@ -217,11 +217,11 @@ int main(int argc, char * argv[])
 	def->SetColor(0,1,0);
 	def->SetVisibility(0);
 	def->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
-	def->SetSpringCoefficient(350);
-	def->SetDistanceCoefficient(10);
-	def->SetDampingCoefficient(5);//Friction
+	def->SetSpring(350);
+	def->SetDistance(10);
+	def->SetDamping(5);//Friction
 	def->SetMass(.1);
-	def->SetDeltaT(simrate);//10ms
+	def->SetTimeStep(simrate);//10ms
 
 	vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
 	element->SetId(0);

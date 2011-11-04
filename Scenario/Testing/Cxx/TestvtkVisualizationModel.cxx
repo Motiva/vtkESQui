@@ -49,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkCamera.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
+#include "vtkXMLPolyDataReader.h"
 
 #include "vtkVisualizationModel.h"
 
@@ -61,8 +62,11 @@ int TestvtkVisualizationModel(int argc, char * argv[])
 	const char * filename ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1.vtp";
 	const char * tfilename ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg";
 
+	vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+	reader->SetFileName(filename);
+
 	vtkSmartPointer<vtkVisualizationModel> model = vtkSmartPointer<vtkVisualizationModel>::New();
-	model->SetFileName(filename);
+	model->SetInput(reader->GetOutput());
 	model->SetTextureFileName(tfilename);
 	model->SetVisibility(1);
 	model->SetOpacity(1.0);

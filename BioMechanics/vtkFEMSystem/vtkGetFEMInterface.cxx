@@ -212,7 +212,7 @@ void vtkGetFEMInterface::Solve()
 
 	//Transient
 	this->Model->add_fem_data("v", *(this->MF_U), 1, 2);
-	this->Model->add_initialized_scalar_data("dt", this->DeltaT);
+	this->Model->add_initialized_scalar_data("dt", this->TimeStep);
 	size_type ibddt;
 	scalar_type alpha;
 
@@ -256,9 +256,9 @@ void vtkGetFEMInterface::Solve()
 
 	int T = 2;
 	scalar_type sol_t = 0;
-	for (scalar_type t = 0; t < T; t += this->DeltaT)
+	for (scalar_type t = 0; t < T; t += this->TimeStep)
 	{
-		sol_t = t+this->DeltaT;
+		sol_t = t+this->TimeStep;
 
 		/*gmm::resize(F, mf_rhs.nb_dof()*N);
 		getfem::interpolation_function(mf_rhs, F, sol_grad, NEUMANN_BOUNDARY_NUM);

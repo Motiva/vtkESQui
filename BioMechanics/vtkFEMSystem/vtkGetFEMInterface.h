@@ -161,8 +161,8 @@ public:
 	vtkGetMacro(Restitution, scalar_type);
 
 	//!Set Delta T
-	vtkSetMacro(DeltaT, scalar_type);
-	vtkGetMacro(DeltaT, scalar_type);
+	vtkSetMacro(TimeStep, scalar_type);
+	vtkGetMacro(TimeStep, scalar_type);
 
 	//!Set Residual Error
 	vtkSetMacro(Residual, scalar_type);
@@ -246,7 +246,7 @@ protected:
 	//!Residual Error for iterative solver
 	scalar_type Residual;
 	//!DeltaT
-	scalar_type DeltaT;
+	scalar_type TimeStep;
 
 	//Time Scheme Parameters
 	//!Solver Time Scheme

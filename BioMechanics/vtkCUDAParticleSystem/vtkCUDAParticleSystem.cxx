@@ -24,10 +24,10 @@ vtkStandardNewMacro(vtkCUDAParticleSystem);
 vtkCUDAParticleSystem::vtkCUDAParticleSystem()
 {
 	this->Initialized = false;
-	this->SpringCoefficient = 0.0;
-	this->DistanceCoefficient = 0;
-	this->DampingCoefficient = 0;
-	this->DeltaTime = 0;
+	this->Spring = 0.0;
+	this->Distance = 0;
+	this->Damping = 0;
+	this->TimeStep = 0;
 	this->Mass = 1;
 	this->Residual = 1e-6;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
@@ -139,7 +139,7 @@ void vtkCUDAParticleSystem::Init()
 	//Initialize motion equation solver
 	this->Solver->SetDeformationModel(this);
 	this->Solver->SetNumberOfParticles(this->NumberOfParticles);
-	this->Solver->SetDeltaTime(this->DeltaTime);
+	this->Solver->SetDeltaTime(this->TimeStep);
 	this->Solver->SetResidual(this->Residual);
 	this->Solver->Init();
 
@@ -269,8 +269,8 @@ void vtkCUDAParticleSystem::ComputeForces()
 
 		float L = this->hLength[i];
 		double dNorm = vtkMath::Norm(d);
-		double K = this->SpringCoefficient;
-		double damping = this->DampingCoefficient;
+		double K = this->Spring;
+		double damping = this->Damping;
 		double Ad = (dNorm-L);
 
 		// Measure Spring/Damping Force
@@ -348,10 +348,10 @@ void vtkCUDAParticleSystem::PrintSelf(ostream& os, vtkIndent indent)
 
 	os << indent << "NumberOfParticles: " << this->NumberOfParticles << endl;
 	os << indent << "NumberOfSprings: " << this->NumberOfSprings << endl;
-	os << indent << "SpringCoefficient: " << this->SpringCoefficient << endl;
-	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << endl;
-	os << indent << "DampingCoefficient: " << this->DampingCoefficient << endl;
-	os << indent << "DeltaT: " << this->DeltaTime << endl;
+	os << indent << "SpringCoefficient: " << this->Spring << endl;
+	os << indent << "DistanceCoefficient: " << this->Distance << endl;
+	os << indent << "DampingCoefficient: " << this->Damping << endl;
+	os << indent << "DeltaT: " << this->TimeStep << endl;
 	os << indent << "Mass: " << this->Mass << endl;
 	os << indent << "Residual: " << this->Residual << endl;
 }

@@ -162,11 +162,11 @@ int TestvtkParticleSpringSystemInterface(int argc, char * argv[])
 	system->SetColor(1,0,0);
 	system->SetOpacity(1.0);
 	system->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
-	system->SetSpringCoefficient(250);
-	system->SetDistanceCoefficient(10);
-	system->SetDampingCoefficient(5);//Friction
+	system->SetSpring(250);
+	system->SetDistance(1);
+	system->SetDamping(5);//Friction
 	system->SetMass(.5);
-	system->SetDeltaT(0.001);//10ms
+	system->SetTimeStep(0.001);//10ms
 	system->Init();
 
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();

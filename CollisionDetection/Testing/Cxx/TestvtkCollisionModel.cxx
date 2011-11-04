@@ -12,8 +12,6 @@
 #include "vtkPoints.h"
 #include "vtkIdList.h"
 #include "vtkSmartPointer.h"
-#include "vtkSphereSource.h"
-#include "vtkSmartPointer.h"
 
 #include "vtkCollisionModel.h"
 
@@ -21,8 +19,11 @@ int TestvtkCollisionModel(int argc, char * argv[]){
 
 	const char * fnc ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp";
 
+	vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+	reader->SetFileName(fnc);
+
 	vtkSmartPointer<vtkCollisionModel> model = vtkSmartPointer<vtkCollisionModel>::New();
-	model->SetFileName(fnc);
+	model->SetInput(reader->GetOutput());
 	model->SetOpacity(0.5);
 	model->SetColor(0,1,1);
 	model->SetRadius(0.05);

@@ -47,7 +47,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInformation.h"
 
 #include "vtkPolyData.h"
-#include "vtkXMLPolyDataReader.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkTransform.h"
 #include "vtkTransformPolyDataFilter.h"
@@ -90,7 +89,7 @@ void vtkVisualizationModel::Init()
 
 	//Texture will be added
 	if(this->TextureFileName){
-		this->TextureMap->SetInput(this->Reader->GetOutput());
+		this->TextureMap->SetInput(this->GetInput());
 		this->TextureMap->PreventSeamOn();
 
 		this->TextureCoords->SetInputConnection(this->TextureMap->GetOutputPort());

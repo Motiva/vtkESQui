@@ -72,7 +72,7 @@ public:
 	vtkSetMacro(NumberOfParticles, double);// NumberOfParticles
 
 	//! Set time step
-	vtkSetMacro(DeltaTime, double);
+	vtkSetMacro(TimeStep, double);
 
 	//! Set residual error
 	vtkSetMacro(Residual, double);// NumberOfParticles
@@ -109,7 +109,7 @@ protected:
 	int NumberOfParticles;
 
 	//! Time step
-	double DeltaTime;
+	double TimeStep;
 
 	//! Residual Error
 	double Residual;

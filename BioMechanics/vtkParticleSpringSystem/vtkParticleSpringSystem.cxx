@@ -26,10 +26,10 @@ vtkStandardNewMacro(vtkParticleSpringSystem);
 //----------------------------------------------------------------------------
 vtkParticleSpringSystem::vtkParticleSpringSystem()
 {
-	this->SpringCoefficient = 0.0;
-	this->DistanceCoefficient = 1;
-	this->DampingCoefficient = 0;
-	this->DeltaT = 0;
+	this->Spring = 0.0;
+	this->Distance = 1;
+	this->Damping = 0;
+	this->TimeStep = 0;
 	this->Mass = 0;
 	this->Residual = 1e-6;
 	this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
@@ -132,7 +132,7 @@ int vtkParticleSpringSystem::RequestData(
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
 	// Solve motion equation
-	this->Solver->ComputeNextStep(this->Particles, this->DeltaT);
+	this->Solver->ComputeNextStep(this->Particles, this->TimeStep);
 
 	output->ShallowCopy(input);
 
@@ -158,10 +158,10 @@ void vtkParticleSpringSystem::CreateSpring(vtkParticle * p0, vtkParticle * p1)
 {
 	vtkSpring * spring = vtkSpring::New();
 	spring->SetId(this->Springs->GetNumberOfItems());
-	spring->SetDistanceCoefficient(this->DistanceCoefficient);
-	spring->SetDampingCoefficient(this->DampingCoefficient);
-	spring->SetSpringCoefficient(this->SpringCoefficient);
-	spring->SetDeltaT(this->DeltaT);
+	spring->SetDistance(this->Distance);
+	spring->SetDamping(this->Damping);
+	spring->SetK(this->Spring);
+	spring->SetTimeStep(this->TimeStep);
 	spring->InsertNextParticle(p0);
 	spring->InsertNextParticle(p1);
 
@@ -245,13 +245,13 @@ void vtkParticleSpringSystem::ComputeForces()
 		vtkMath::Subtract(p0->GetVelocity(), spring->GetParticle(1)->GetVelocity(), v); // v = (v0[0]-v1[0], v0[1]-v1[1], v0[2]-v1[2])
 		double L = spring->GetRestLength();
 		double dNorm = vtkMath::Norm(d);
-		double damping = spring->GetDampingCoefficient();
+		double damping = spring->GetDamping();
 		double Ad = (dNorm-L);
 
 		//Dynamic Stiffness (Hyperelasticity)
-		double K = spring->GetSpringCoefficient();
+		double K = spring->GetK();
 		double r = dNorm/L;
-		if(r > this->DistanceCoefficient)
+		if(r > this->Distance)
 			K *= r;
 
 		// Measure Spring/Damping Force
@@ -288,10 +288,10 @@ void vtkParticleSpringSystem::PrintSelf(ostream& os, vtkIndent indent)
 
 	os << indent << "NumberOfParticles: " << this->Particles->GetNumberOfParticles() << endl;
 	os << indent << "NumberOfSprings: " << this->Springs->GetNumberOfItems() << endl;
-	os << indent << "SpringCoefficient: " << this->SpringCoefficient << endl;
-	os << indent << "DistanceCoefficient: " << this->DistanceCoefficient << endl;
-	os << indent << "DampingCoefficient: " << this->DampingCoefficient << endl;
-	os << indent << "DeltaT: " << this->DeltaT << endl;
+	os << indent << "SpringCoefficient: " << this->Spring << endl;
+	os << indent << "DistanceCoefficient: " << this->Distance << endl;
+	os << indent << "DampingCoefficient: " << this->Damping << endl;
+	os << indent << "DeltaT: " << this->TimeStep << endl;
 	os << indent << "Mass: " << this->Mass << endl;
 	os << indent << "Residual: " << this->Residual << endl;
 }

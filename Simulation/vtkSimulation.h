@@ -117,7 +117,7 @@ public:
 	vtkCollisionCollection * GetCollisions();
 
 	//! Set haptic device timer refresh rate (s)
-	vtkSetMacro(HapticTimerRate, double);
+	vtkSetMacro(InteractionTimerRate, double);
 
 	//! Set simulation refresh rate (s)
 	vtkSetMacro(SimulationTimerRate, double);
@@ -126,7 +126,7 @@ public:
 	vtkSetMacro(RenderTimerRate, double);
 
 	//! Get haptic device timer refresh rate (s)
-	vtkGetMacro(HapticTimerRate, double);
+	vtkGetMacro(InteractionTimerRate, double);
 
 	//! Get simulation refresh rate (s)
 	vtkGetMacro(SimulationTimerRate, double);
@@ -135,7 +135,7 @@ public:
 	vtkGetMacro(RenderTimerRate, double);
 
 	//! Get haptic device timer identifier
-	vtkGetMacro(HapticTimerId, vtkIdType);
+	vtkGetMacro(InteractionTimerId, vtkIdType);
 
 	//! Get simulation timer identifier
 	vtkGetMacro(SimulationTimerId, vtkIdType);
@@ -143,21 +143,21 @@ public:
 	//! Get render timer identifier
 	vtkGetMacro(RenderTimerId, vtkIdType);
 
-	//! Set the use of haptic in the simulation
-	vtkSetMacro(UseHaptic, bool);
-	//! Get the use of haptic in the simulation
-	vtkGetMacro(UseHaptic, bool);
+	//! Set the interaction in the simulation
+	vtkSetMacro(Interaction, bool);
+	//! Get the interaction in the simulation
+	vtkGetMacro(Interaction, bool);
 
-	//! nable the use of haptic
-	vtkBooleanMacro(UseHaptic, bool);
+	//! Enable the user interaction
+	vtkBooleanMacro(Interaction, bool);
 
-	//! Set the verbose mode
-	vtkSetMacro(Verbose, bool);
-	//! Get the verbose mode
-	vtkGetMacro(Verbose, bool);
+	//! Set the collision detection
+	vtkSetMacro(Collision, bool);
+	//! Get the collision detection
+	vtkGetMacro(Collision, bool);
 
 	//!Enable the verbose
-	vtkBooleanMacro(Verbose, bool);
+	vtkBooleanMacro(Collision, bool);
 
 	//! Set Gravity Force (m/s2)
 	vtkSetVector3Macro(Gravity, double);
@@ -170,11 +170,11 @@ public:
 	//! Starts the simulation
 	void Run();
 
-	//!Update the simulation Manager. The whole Scenario is updated
+	//!Update the simulation scenario
 	void UpdateScenario();
 
-	//!Update the haptic state and obtains the value of the force feedback for the haptic device
-	void UpdateHaptic();
+	//!Update user interaction values
+	void UpdateInteraction();
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
 	//BTX
@@ -196,8 +196,8 @@ protected:
 	//!Simulation callback command. Acts as a multirate timer
 	vtkCallbackCommand * Callback;
 
-	vtkIdType HapticTimerId;
-	double HapticTimerRate;
+	vtkIdType InteractionTimerId;
+	double InteractionTimerRate;
 	vtkIdType SimulationTimerId;
 	double SimulationTimerRate;
 	vtkIdType RenderTimerId;
@@ -215,11 +215,11 @@ protected:
 	//!collision detection library
 	vtkCollisionDetection* CollisionDetection;
 
-	//! Enable/disable haptic device usage
-	bool UseHaptic;
+	//! Enable/disable user interaction
+	bool Interaction;
 
-	//! Enable/disable verbose mode
-	bool Verbose;
+	//! Enable/disable collision detection
+	bool Collision;
 
 	//! Gravitational force
 	double Gravity[3];

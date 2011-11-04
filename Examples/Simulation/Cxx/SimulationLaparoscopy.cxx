@@ -208,13 +208,13 @@ int main(int argc, char * argv[])
 	def_organ->SetFileName(fn3d);
 	def_organ->SetVisibility(0);
 	def_organ->SetColor(0.0, 1.0, 0.0);
-	def_organ->SetDeltaT(simrate);
+	def_organ->SetTimeStep(simrate);
 	def_organ->SetGravity(0.0, 0.0, 0.0);
 
 	//Set particle-spring system specific parameters
-	def_organ->SetSpringCoefficient(300);
-	def_organ->SetDampingCoefficient(5);
-	def_organ->SetDistanceCoefficient(20);
+	def_organ->SetSpring(300);
+	def_organ->SetDamping(5);
+	def_organ->SetDistance(1.0);
 	def_organ->SetMass(.1);
 	def_organ->SetSolverType(vtkMotionEquationSolver::RungeKutta4);
 
@@ -248,13 +248,13 @@ int main(int argc, char * argv[])
 	def_stomach->SetFileName(fn4d);
 	def_stomach->SetVisibility(0);
 	def_stomach->SetColor(0.0, 1.0, 0.0);
-	def_stomach->SetDeltaT(simrate);
+	def_stomach->SetTimeStep(simrate);
 	def_stomach->SetGravity(0.0, 0.0, 0.0);
 
 	//Set particle-spring system specific parameters
-	def_stomach->SetSpringCoefficient(300);
-	def_stomach->SetDampingCoefficient(5);
-	def_stomach->SetDistanceCoefficient(20);
+	def_stomach->SetSpring(300);
+	def_stomach->SetDamping(5);
+	def_stomach->SetDistance(1.0);
 	def_stomach->SetMass(1);
 	def_stomach->SetSolverType(vtkMotionEquationSolver::RungeKutta4);
 
@@ -334,7 +334,7 @@ int main(int argc, char * argv[])
 	simulation->SetInteractorStyle(style);
 	simulation->SetRenderTimerRate(renrate);
 	simulation->SetSimulationTimerRate(simrate);
-	simulation->SetHapticTimerRate(haprate);
+	simulation->SetInteractionTimerRate(haprate);
 	simulation->Init();
 
 	simulation->Run();
