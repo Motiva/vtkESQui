@@ -16,8 +16,8 @@ CVS
 .pydevproject
 .settings
 
-# Sync script files
-sync.sh
+# Script files
+*.sh
 
 # Temporary files
 *.swp
