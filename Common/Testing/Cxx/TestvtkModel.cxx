@@ -49,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkCamera.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
+#include "vtkXMLPolyDataReader.h"
 
 #include "vtkModel.h"
 
@@ -60,8 +61,11 @@ int TestvtkModel(int argc, char * argv[])
 {
 	const char * filename ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Meshes/ellipsoid16_16_1.vtp";
 
+	vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+	reader->SetFileName(filename);
+
 	vtkSmartPointer<vtkModel> model = vtkSmartPointer<vtkModel>::New();
-	model->SetFileName(filename);
+	model->SetInput(reader->GetOutput());
 	model->SetColor(0.0 ,1.0 , 0.0);
 	model->Init();
 
@@ -78,11 +82,6 @@ int TestvtkModel(int argc, char * argv[])
 	iren->SetRenderWindow(renWin);
 
 	vtkActor * actor = model->GetActor();
-
-	//vtkActor * actor = vtkActor::New();
-	//vtkPolyDataMapper * mapper = vtkPolyDataMapper::New();
-	//mapper->SetInput(model->GetOutput());
-	//actor->SetMapper(mapper);
 
 	renderer->AddActor(actor);
 	renderer->SetBackground(1,1,1);

@@ -23,7 +23,6 @@ WRAP_EXCLUDE
 # Set your list of libraries here.
 SET(KIT_LIBS 
 vtkCommon
-vtkIO
 vtkRendering
 vtkFiltering
 )
@@ -31,7 +30,6 @@ vtkFiltering
 # Set your list of TCL libraries here.
 SET(KIT_TCL_LIBS 
 vtkCommonTCL
-vtkIOTCL
 vtkRenderingTCL
 vtkFilteringTCL
 )
@@ -39,7 +37,6 @@ vtkFilteringTCL
 # Set your list of Python libraries here.
 SET(KIT_PYTHON_LIBS 
 vtkCommonPythonD
-vtkIOPythonD
 vtkRenderingPythonD
 vtkFilteringPythonD
 )

@@ -45,7 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInformationVector.h"
 #include "vtkObjectFactory.h"
 #include "vtkStreamingDemandDrivenPipeline.h"
-#include "vtkXMLPolyDataReader.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkSmoothPolyDataFilter.h"
@@ -75,7 +74,6 @@ vtkModel::vtkModel()
 	this->Visibility = 1;
 
 	this->Matrix = NULL;
-	this->Reader = NULL;
 	this->Actor = NULL;
 	this->Mapper = NULL;
 	this->HashMap = NULL;
@@ -87,7 +85,6 @@ vtkModel::vtkModel()
 //--------------------------------------------------------------------------
 vtkModel::~vtkModel()
 {
-	if(this->Reader) this->Reader->Delete();
 	if(this->HashMap) this->HashMap->Delete();
 }
 
@@ -165,14 +162,10 @@ void vtkModel::Init()
 {
 	if(!this->Initialized)
 	{
-		//Retrieve model input from file
-		if(this->FileName) {
-			this->Reader = vtkXMLPolyDataReader::New();
-			this->Reader->SetFileName(this->FileName);
-			this->Reader->Update();
-			this->SetInputConnection(this->Reader->GetOutputPort());
-		}
+		//Synchronization hashMap
+		this->HashMap = vtkIdList::New();
 
+		//Displaying purposes
 		this->Actor = vtkActor::New();
 		this->Mapper = vtkPolyDataMapper::New();
 
@@ -183,8 +176,6 @@ void vtkModel::Init()
 		}
 
 		this->Actor->SetMapper(this->Mapper);
-
-		this->HashMap = vtkIdList::New();
 
 		//Set as initialized
 		this->Initialized = 1;
@@ -212,6 +203,8 @@ int vtkModel::RequestData(
 	//Output
 	vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
+	output->ShallowCopy(input);
+
 	//If source is defined -> Synchronize mesh
 	if(source)
 	{
@@ -219,10 +212,10 @@ int vtkModel::RequestData(
 
 		if(this->HashMap->GetNumberOfIds() == 0)
 		{
-			this->BuildHashMap(input, source);
+			this->BuildHashMap(output, source);
 		}
 
-		vtkPoints * points = input->GetPoints();
+		vtkPoints * points = output->GetPoints();
 		for(int i=0; i < points->GetNumberOfPoints(); i++){
 			double * p = source->GetPoint(this->HashMap->GetId(i));
 			points->SetPoint(i, p);
@@ -237,12 +230,10 @@ int vtkModel::RequestData(
 		this->Actor->GetProperty()->SetColor(this->Color);
 		this->Actor->GetProperty()->SetOpacity(this->Opacity);
 
-		this->Mapper->SetInput(input);
+		this->Mapper->SetInput(output);
 		this->Mapper->Modified();
 		this->Mapper->Update();
 	}
-
-	output->ShallowCopy(input);
 
 	return 1;
 }
@@ -273,7 +264,7 @@ void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
 //--------------------------------------------------------------------------
 void vtkModel::Hide()
 {
-	this->Visibility = 0.0;
+	this->Visibility = 0;
 }
 
 //--------------------------------------------------------------------------

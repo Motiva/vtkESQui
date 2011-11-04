@@ -197,9 +197,6 @@ public:
 	//!
 	vtkMatrix4x4 * GetMatrix();
 
-	//void SetTransform(vtkTransform * m);
-	//vtkTransform * GetTransform();
-
 	//!Get dataset mapper
 	/*!
 	 * Dataset mapper of the model actor
@@ -319,9 +316,6 @@ protected:
 
 	//! model data file name
 	char * FileName;
-
-	//! Model data file reader
-	vtkXMLPolyDataReader * Reader;
 
 	//! Transform Matrix
 	vtkMatrix4x4 * Matrix;
