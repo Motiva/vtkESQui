@@ -167,7 +167,7 @@ int main(int argc, char * argv[])
   EDM->SetWarpScaleFactor(warp);
   EDM->SetImageSpacing(s);
   EDM->SetInput(mesh);
-  EDM->Init();
+  EDM->Initialize();
 
   EDM->Print(cout);
 

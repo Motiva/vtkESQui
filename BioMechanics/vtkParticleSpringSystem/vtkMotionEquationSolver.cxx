@@ -36,7 +36,7 @@ void vtkMotionEquationSolver::SetDeformationModel(vtkParticleSpringSystem * mode
 }
 
 //----------------------------------------------------------------------------
-void vtkMotionEquationSolver::Init()
+void vtkMotionEquationSolver::Initialize()
 {
   for(int i=0; i< this->NumberOfParticles; i++)
   {

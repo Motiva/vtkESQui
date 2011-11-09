@@ -62,7 +62,7 @@ public:
   void PrintSelf(ostream& os, vtkIndent indent);
 
   //! Initialize solver
-  virtual void Init();
+  virtual void Initialize();
 
   //! Compute next step for every particle
   /*!

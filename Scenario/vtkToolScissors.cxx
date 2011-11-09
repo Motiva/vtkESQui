@@ -61,9 +61,9 @@ vtkToolScissors::~vtkToolScissors()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolScissors::Init()
+void vtkToolScissors::Initialize()
 {
-  Superclass::Init();
+  Superclass::Initialize();
 }
 
 //----------------------------------------------------------------------------

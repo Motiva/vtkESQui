@@ -231,13 +231,12 @@ int main(int argc, char * argv[])
   element->SetVisualizationModel(vis);
   element->SetCollisionModel(col);
   element->SetDeformationModel(def);
-  element->Init();
 
   element->Update();
 
   vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
   organ->AddElement(element);
-  organ->Init();
+  organ->Update();
 
   /*vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
   mapper->SetInput(col->GetOutput(1));

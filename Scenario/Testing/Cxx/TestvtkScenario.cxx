@@ -112,17 +112,14 @@ int TestvtkScenario(int argc, char * argv[])
   element->SetDeformationModel(def);
   element->SetPosition(3.0, 2.5, 0.0);
   element->SetOrientation(25, -15, 30);
-  element->Init();
 
   vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
   organ->AddElement(element);
-  organ->Init();
 
   organ->Update();
 
   scenario->SetRenderWindow(renWin);
   scenario->AddObject(organ);
-  scenario->Init();
 
   scenario->Update();
 

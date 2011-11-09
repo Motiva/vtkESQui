@@ -22,7 +22,7 @@ vtkVelocityVerletSolver::~vtkVelocityVerletSolver()
 
 
 //----------------------------------------------------------------------------
-void vtkVelocityVerletSolver::Init()
+void vtkVelocityVerletSolver::Initialize()
 {
   for(int i=0; i< NumberOfParticles; i++)
   {

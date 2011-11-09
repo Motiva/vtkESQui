@@ -89,12 +89,6 @@ public:
     Extra = 2
   };
 
-  //! Abstract initialization function
-  /*!
-   * This method initializes the Element physical values, scale, position, etc...
-   */
-  virtual void Init();
-
   //! Assign the identifying key of the Element
   /*!
    *\sa GetId()
@@ -401,6 +395,12 @@ protected:
 
   vtkScenarioElement();
   ~vtkScenarioElement();
+
+  //! Abstract initialization function
+  /*!
+   * This method initializes the Element physical values, scale, position, etc...
+   */
+  virtual void Initialize();
 
   //! Process the algorithm request (Update).
   virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);

@@ -84,7 +84,7 @@ public:
   /*!
    * Pure virtual method must be implemented in subclasses
    */
-  virtual void Init() = 0;
+  virtual void Initialize() = 0;
 
   //! Compute next step for every particle
   /*!

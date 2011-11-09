@@ -63,7 +63,7 @@ public:
   void PrintSelf(ostream& os, vtkIndent indent);
 
   //! Initialize equation motion solver
-  virtual void Init();
+  virtual void Initialize();
 
   //! Compute next step for every particle
   /*!

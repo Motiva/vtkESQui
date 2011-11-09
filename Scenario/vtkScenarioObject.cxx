@@ -81,7 +81,7 @@ vtkScenarioObject::~vtkScenarioObject()
 }
 
 //--------------------------------------------------------------------------
-void vtkScenarioObject::Init()
+void vtkScenarioObject::Initialize()
 {
   if(!this->Initialized)
   {
@@ -94,8 +94,6 @@ void vtkScenarioObject::Init()
       if(this->ObjectType == Tool) e->SetType(vtkScenarioElement::Tool);
       else if(this->ObjectType == Organ) e->SetType(vtkScenarioElement::Organ);
 
-      //Initialize object elements
-      if(!e->IsInitialized()) e->Init();
     }
     this->Initialized = 1;
   }
@@ -113,6 +111,9 @@ int vtkScenarioObject::RequestData(vtkInformation *vtkNotUsed(request),
 
   // get the input and output
   //vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
+  //Initialize
+  if(!this->Initialized) this->Initialize();
 
   //Reset previous collisions
   this->Collisions->RemoveAllItems();

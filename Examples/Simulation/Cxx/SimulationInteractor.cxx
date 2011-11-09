@@ -216,7 +216,7 @@ int main(int argc, char * argv[])
   grasper->SetStick(stick);
   grasper->SetLeftLever(left);
   grasper->SetRightLever(right);
-  grasper->Init();
+  grasper->Initialize();
 
   //Probe
   //Generate tool's first element (stick)
@@ -269,12 +269,12 @@ int main(int argc, char * argv[])
   probe->SetName("grasper");
   probe->SetStick(stick_r);
   probe->SetTip(tip_r);
-  probe->Init();
+  probe->Initialize();
 
   /**********  Init Scene Environment  ********/
   scenario->AddObject(grasper);
   scenario->AddObject(probe);
-  scenario->Init();
+  scenario->Initialize();
 
   /********** Lights  **********/
   ren1->GetLights()->InitTraversal();

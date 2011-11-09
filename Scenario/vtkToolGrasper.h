@@ -95,7 +95,7 @@ public:
   /*!
    * This function initializes the tool whose mesh is described on a VTK file
    */
-  virtual void Init();
+  virtual void Initialize();
 
   //! Open the grasper moving piece models
   /*!

@@ -70,7 +70,7 @@ int TestvtkVisualizationModel(int argc, char * argv[])
   model->SetTextureFileName(tfilename);
   model->SetVisibility(1);
   model->SetOpacity(1.0);
-  model->Init();
+  model->Initialize();
 
   model->Update();
 

@@ -155,7 +155,7 @@ int main(int argc, char * argv[])
   pss->SetDamping(5);//Friction
   pss->SetMass(.5);
   pss->SetTimeStep(0.001);//1ms
-  pss->Init();
+  pss->Initialize();
 
   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 

@@ -45,6 +45,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkInformationVector.h"
 #include "vtkObjectFactory.h"
 #include "vtkStreamingDemandDrivenPipeline.h"
+#include "vtkXMLPolyDataReader.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkSmoothPolyDataFilter.h"
@@ -158,10 +159,19 @@ vtkIdList * vtkModel::GetHashMap()
 }
 
 //--------------------------------------------------------------------------
-void vtkModel::Init()
+void vtkModel::Initialize()
 {
   if(!this->Initialized)
   {
+    //Generate input from file if not specified
+    if(!this->GetInput() && this->FileName)
+    {
+      this->Reader = vtkXMLPolyDataReader::New();
+      this->Reader->SetFileName(this->FileName);
+      this->Reader->Update();
+      this->SetInput(0,this->Reader->GetOutput());
+    }
+
     //Synchronization hashMap
     this->HashMap = vtkIdList::New();
 
@@ -207,6 +217,9 @@ int vtkModel::RequestData(
   //Output
   vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
+  //Initialize model
+  if(!this->Initialized) this->Initialize();
+
   //If source is defined -> Synchronize mesh
   if(source)
   {
@@ -229,7 +242,9 @@ int vtkModel::RequestData(
     this->SmoothFilter->SetSource(source);
     this->SmoothFilter->Update();
     output->ShallowCopy(this->SmoothFilter->GetOutput());
-  }else
+
+  }
+  else
   {
     output->ShallowCopy(input);
   }
@@ -248,8 +263,9 @@ int vtkModel::RequestData(
   return 1;
 }
 
+//TODO: Remove this
 //--------------------------------------------------------------------------
-void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
+/*void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
 {
   vtkDebugMacro("Build model hashmap.")
 
@@ -269,7 +285,7 @@ void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
     vtkIdType id = locator->FindClosestPoint(point);
     this->HashMap->SetId(i, id);
   }
-}
+}*/
 
 //--------------------------------------------------------------------------
 void vtkModel::Hide()

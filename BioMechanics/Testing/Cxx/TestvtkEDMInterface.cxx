@@ -166,7 +166,7 @@ int TestvtkEDMInterface(int argc, char * argv[])
   EDM->SetNumberOfIterations(500);
   EDM->SetWarpScaleFactor(0.001);
   EDM->SetInput(mesh);
-  EDM->Init();
+  EDM->Initialize();
 
   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 

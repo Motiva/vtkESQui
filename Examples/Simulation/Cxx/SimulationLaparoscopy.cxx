@@ -273,7 +273,7 @@ int main(int argc, char * argv[])
   scenario->AddObject(leftGrasper);
   scenario->AddObject(organ);
   //scenario->AddObject(stomach);
-  scenario->Init();
+  scenario->Initialize();
 
   //stomach->Translate(0, 0, -2);
 

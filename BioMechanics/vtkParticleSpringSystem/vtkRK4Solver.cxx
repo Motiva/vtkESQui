@@ -36,7 +36,7 @@ vtkRK4Solver::~vtkRK4Solver()
 }
 
 //----------------------------------------------------------------------------
-void vtkRK4Solver::Init()
+void vtkRK4Solver::Initialize()
 {
   for(int i=0; i< NumberOfParticles; i++)
   {

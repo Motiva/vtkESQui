@@ -49,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTransform.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
+#include "vtkSmoothPolyDataFilter.h"
 #include "vtkXMLPolyDataReader.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
@@ -81,9 +82,9 @@ vtkParticleSpringSystemInterface::~vtkParticleSpringSystemInterface()
 }
 
 //--------------------------------------------------------------------------
-void vtkParticleSpringSystemInterface::Init()
+void vtkParticleSpringSystemInterface::Initialize()
 {
-  this->Superclass::Init();
+  this->Superclass::Initialize();
 
   //Set input data
   this->ParticleSpringSystem->SetInput(this->GetInput());
@@ -97,7 +98,7 @@ void vtkParticleSpringSystemInterface::Init()
   this->ParticleSpringSystem->SetMass(this->Mass);
   this->ParticleSpringSystem->SetSolverType(this->SolverType);
   //Initialize system
-  this->ParticleSpringSystem->Init();
+  this->ParticleSpringSystem->Initialize();
 
   //Once the system has been initialized the boundary conditions are set
   //TODO: Enable boundary conditions
@@ -139,6 +140,19 @@ int vtkParticleSpringSystemInterface::RequestData(
 
   //cout << this->GetClassName() << "::RequestData(" << this->GetName() << ")\n";
 
+  if(source)
+  {
+    this->SmoothFilter->SetInput(input);
+    this->SmoothFilter->SetSource(source);
+    this->SmoothFilter->Update();
+    output->ShallowCopy(this->SmoothFilter->GetOutput());
+
+  }
+  else
+  {
+    output->ShallowCopy(input);
+  }
+
   if(this->Status)
   {
     //Force recalculation of the output in every step
@@ -146,25 +160,6 @@ int vtkParticleSpringSystemInterface::RequestData(
     this->ParticleSpringSystem->Update();
 
     vtkPolyData * out = this->ParticleSpringSystem->GetOutput();
-
-    //If source is defined -> Synchronize mesh
-    if(source)
-    {
-      if(this->HashMap->GetNumberOfIds() == 0)
-      {
-        //Build collision mesh hash map
-        this->BuildHashMap(input, source);
-      }
-
-      //Synchronize/Modify visualization mesh
-      vtkPoints * points = source->GetPoints();
-      for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
-      {
-        int id = this->HashMap->GetId(i);
-        double * p = out->GetPoint(id);
-        points->SetPoint(i, p);
-      }
-    }
 
     //Set visualization parameters
     this->Actor->SetVisibility(this->Visibility);

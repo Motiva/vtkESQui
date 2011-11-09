@@ -91,7 +91,7 @@ public:
   /*!
    * This method initializes the tool physical values, scale, position, etc...
    */
-  virtual void Init();
+  virtual void Initialize();
 
 protected:
 

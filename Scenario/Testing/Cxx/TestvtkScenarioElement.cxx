@@ -80,14 +80,12 @@ int TestvtkScenarioElement(int argc, char * argv[])
   vis->SetTextureFileName(tfn);
   vis->SetOpacity(1.0);
   vis->SetColor(1.0, 1.0, 1.0);
-  vis->Init();
 
   vtkSmartPointer<vtkCollisionModel> col = vtkSmartPointer<vtkCollisionModel>::New();
   col->SetName("vtkbioeng");
   col->SetFileName(cfn);
   col->SetOpacity(0.5);
   col->SetColor(0.0, 0.0, 1.0);
-  col->Init();
 
   //Deformation model. Particle-Spring system
   vtkSmartPointer<vtkParticleSpringSystemInterface> def = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
@@ -95,7 +93,6 @@ int TestvtkScenarioElement(int argc, char * argv[])
   def->SetFileName(fn);
   def->SetOpacity(1.0);
   def->SetColor(0.0, 1.0, 0.0);
-  def->Init();
 
   vtkSmartPointer<vtkScenarioElement> element = vtkSmartPointer<vtkScenarioElement>::New();
   element->SetId(0);
@@ -105,7 +102,6 @@ int TestvtkScenarioElement(int argc, char * argv[])
   element->SetVisualizationModel(vis);
   element->SetCollisionModel(col);
   element->SetDeformationModel(def);
-  element->Init();
 
   element->RotateZ(35);
   element->Update();

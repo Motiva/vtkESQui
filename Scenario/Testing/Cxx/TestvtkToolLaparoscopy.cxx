@@ -100,7 +100,6 @@ int TestvtkToolLaparoscopy(int argc, char * argv[])
   stick->SetOrientation(0, 0, -20);
   stick->SetVisualizationModel(vis);
   stick->SetCollisionModel(col);
-  stick->Init();
 
   stick->Update();
 
@@ -125,14 +124,14 @@ int TestvtkToolLaparoscopy(int argc, char * argv[])
   ball->SetOrientation(0, 0, -20);
   ball->SetVisualizationModel(visb);
   ball->SetCollisionModel(colb);
-  ball->Init();
 
   ball->Update();
 
   vtkSmartPointer<vtkToolDummy> tool = vtkSmartPointer<vtkToolDummy>::New();
   tool->AddElement(stick);
   tool->AddElement(ball);
-  tool->Init();
+
+  tool->Update();
 
   tool->Print(cout);
 

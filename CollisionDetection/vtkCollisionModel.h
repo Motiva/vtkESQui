@@ -79,7 +79,7 @@ public:
    * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
    * - Input: vtkPolyData object \n
    */
-  virtual void Init();
+  virtual void Initialize();
 
   //!Set the model direction (WXYZ)
   vtkSetVector3Macro(Direction, double);

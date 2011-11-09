@@ -1,3 +1,4 @@
+
 import vtk
 import vtkesqui
 
@@ -15,13 +16,15 @@ source.DeepCopy(input)
 #Smooth (deform) source mesh
 smooth = vtk.vtkSmoothPolyDataFilter()
 smooth.SetInput(source)
-smooth.SetNumberOfIterations(100)
+smooth.SetNumberOfIterations(200)
 
 #Model input mesh will be adapted to the source
-model = vtkesqui.vtkModel()
+model = vtkesqui.vtkDeformationModel()
 model.SetInput(input)
 model.SetSource(smooth.GetOutput())
-model.SetColor(0.5, 0.5, 1.0)
+model.SetColor(0.5 ,0.5 , 1.0)
+model.SetRadius(0.01)
+model.Init()
 
 #A call to update method is made to force the model to be at its last state
 model.Update();

@@ -167,7 +167,7 @@ int TestvtkParticleSpringSystemInterface(int argc, char * argv[])
   system->SetDamping(5);//Friction
   system->SetMass(.5);
   system->SetTimeStep(0.001);//10ms
-  system->Init();
+  system->Initialize();
 
   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 

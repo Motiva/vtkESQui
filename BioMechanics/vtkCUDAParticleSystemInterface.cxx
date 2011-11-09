@@ -81,9 +81,9 @@ vtkCUDAParticleSystemInterface::~vtkCUDAParticleSystemInterface()
 }
 
 //--------------------------------------------------------------------------
-void vtkCUDAParticleSystemInterface::Init()
+void vtkCUDAParticleSystemInterface::Initialize()
 {
-  this->Superclass::Init();
+  this->Superclass::Initialize();
 
   //Set input data
   this->System->SetInput(this->GetInput());

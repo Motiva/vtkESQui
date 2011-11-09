@@ -169,7 +169,7 @@ vtkMatrix4x4 * vtkScenarioElement::GetMatrix(){
 }
 
 //----------------------------------------------------------------------------
-void vtkScenarioElement::Init()
+void vtkScenarioElement::Initialize()
 {
   if(!this->Initialized)
   {
@@ -214,10 +214,7 @@ void vtkScenarioElement::Init()
       this->Models->InitTraversal();
       while (vtkModel * model = this->Models->GetNextModel())
       {
-        if(!model->IsInitialized()){
-          model->SetMatrix(this->Matrix);
-          model->Init();
-        }
+        model->SetMatrix(this->Matrix);
       }
     }
     else vtkErrorMacro("A scenario element should have at least a visualization model");
@@ -236,6 +233,8 @@ int vtkScenarioElement::RequestData(
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
   vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
+  if(this->Initialized) this->Initialize();
 
   this->UpdateProgress(0.10);
 

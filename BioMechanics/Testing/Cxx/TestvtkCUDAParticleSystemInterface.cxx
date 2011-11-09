@@ -167,7 +167,7 @@ int TestvtkCUDAParticleSystemInterface(int argc, char * argv[])
   system->SetDampingCoefficient(5);//Friction
   system->SetMass(.5);
   system->SetTimeStep(0.001);//1ms
-  system->Init();
+  system->Initialize();
 
   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 

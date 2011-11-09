@@ -107,9 +107,9 @@ void vtkEDMInterface::SetImageSpacing(double spacing)
 }
 
 //--------------------------------------------------------------------------
-void vtkEDMInterface::Init()
+void vtkEDMInterface::Initialize()
 {
-  this->Superclass::Init();
+  this->Superclass::Initialize();
 
   //Save input data
   vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
@@ -238,20 +238,15 @@ int vtkEDMInterface::RequestData(
     //If source is defined -> Synchronize mesh
     if(source)
     {
-      if(this->HashMap->GetNumberOfIds() == 0)
-      {
-        //Build collision mesh hash map
-        this->BuildHashMap(input, source);
-      }
+      this->SmoothFilter->SetInput(out);
+      this->SmoothFilter->SetSource(source);
+      this->SmoothFilter->Update();
+      output->ShallowCopy(this->SmoothFilter->GetOutput());
 
-      //Synchronize/Modify visualization mesh
-      vtkPoints * points = source->GetPoints();
-      for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
-      {
-        int id = this->HashMap->GetId(i);
-        double * p = out->GetPoint(id);
-        points->SetPoint(i, p);
-      }
+    }
+    else
+    {
+      output->ShallowCopy(out);
     }
 
     //Set visualization parameters

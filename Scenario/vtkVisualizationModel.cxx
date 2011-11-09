@@ -83,9 +83,9 @@ vtkVisualizationModel::~vtkVisualizationModel() {
 }
 
 //--------------------------------------------------------------------------
-void vtkVisualizationModel::Init()
+void vtkVisualizationModel::Initialize()
 {
-  this->Superclass::Init();
+  this->Superclass::Initialize();
 
   //Texture will be added
   if(this->TextureFileName){

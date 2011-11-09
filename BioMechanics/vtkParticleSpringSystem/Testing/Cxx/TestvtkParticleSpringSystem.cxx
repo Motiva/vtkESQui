@@ -152,7 +152,7 @@ int main(int argc, char * argv[])
   def->SetDamping(5);//Friction
   def->SetMass(.5);
   def->SetTimeStep(0.001);//1ms
-  def->Init();
+  def->Initialize();
 
   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 

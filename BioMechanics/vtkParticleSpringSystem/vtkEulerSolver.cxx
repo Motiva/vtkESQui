@@ -22,7 +22,7 @@ vtkEulerSolver::~vtkEulerSolver()
 
 
 //----------------------------------------------------------------------------
-void vtkEulerSolver::Init()
+void vtkEulerSolver::Initialize()
 {
   for(int i=0; i< NumberOfParticles; i++)
   {

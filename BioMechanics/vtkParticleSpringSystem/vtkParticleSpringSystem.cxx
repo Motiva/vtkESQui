@@ -26,6 +26,7 @@ vtkStandardNewMacro(vtkParticleSpringSystem);
 //----------------------------------------------------------------------------
 vtkParticleSpringSystem::vtkParticleSpringSystem()
 {
+  this->Initialized = 0;
   this->Spring = 0.0;
   this->Distance = 1;
   this->Damping = 0;
@@ -46,7 +47,7 @@ vtkParticleSpringSystem::~vtkParticleSpringSystem()
 }
 
 //----------------------------------------------------------------------------
-void vtkParticleSpringSystem::Init()
+void vtkParticleSpringSystem::Initialize()
 {
   vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
   //Ensure mesh is at its last state
@@ -108,10 +109,10 @@ void vtkParticleSpringSystem::Init()
   this->Solver->SetDeformationModel(this);
   this->Solver->SetNumberOfParticles(this->Particles->GetNumberOfItems());
   this->Solver->SetResidual(this->Residual);
-  this->Solver->Init();
+  this->Solver->Initialize();
 
-  //Raise update event
-  this->Modified();
+  this->Initialized = 1;
+
 }
 
 //----------------------------------------------------------------------------
@@ -130,6 +131,9 @@ int vtkParticleSpringSystem::RequestData(
   // Get the input and output
   vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
   vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
+  //Initialize System
+  if(!this->Initialized) this->Initialize();
 
   // Solve motion equation
   this->Solver->ComputeNextStep(this->Particles, this->TimeStep);

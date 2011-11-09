@@ -104,14 +104,12 @@ int TestvtkOrgan(int argc, char * argv[])
   element->SetVisualizationModel(vis);
   element->SetCollisionModel(col);
   element->SetDeformationModel(def);
-  element->Init();
 
   element->RotateZ(35);
   element->Update();
 
   vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
   organ->AddElement(element);
-  organ->Init();
 
   organ->Print(cout);
 

@@ -162,7 +162,7 @@ int main(int argc, char * argv[])
   tool->SetStick(stick);
   tool->SetLeftLever(left);
   tool->SetRightLever(right);
-  tool->Init();
+  tool->Initialize();
 
   tool->Translate(position);
   tool->RotateX(-10);

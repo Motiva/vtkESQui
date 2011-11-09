@@ -137,9 +137,9 @@ void vtkCollisionModel::RemoveAllCollisions()
 }
 
 //--------------------------------------------------------------------------
-void vtkCollisionModel::Init()
+void vtkCollisionModel::Initialize()
 {
-  this->Superclass::Init();
+  this->Superclass::Initialize();
 
   this->Collisions = vtkCollisionCollection::New();
 
@@ -158,8 +158,6 @@ void vtkCollisionModel::Init()
   this->Glyphs = vtkGlyph3D::New();
   this->Sphere->SetRadius(this->Radius);
   this->Glyphs->ScalingOff();
-
-  this->Modified();
 }
 
 //----------------------------------------------------------------------------
@@ -189,6 +187,8 @@ int vtkCollisionModel::RequestData(
 
   //cout << this->GetClassName() << "::RequestData (" << this->GetName() << ")\n";
 
+  if(!this->Initialized) this->Initialize();
+
   if(this->Status)
   {
     //If source is defined -> Synchronize mesh
@@ -196,27 +196,16 @@ int vtkCollisionModel::RequestData(
     {
       vtkDebugMacro("Model source is present\n");
 
-      /*if(this->HashMap->GetNumberOfIds() == 0)
-       {
-         this->BuildHashMap(output, source);
-       }
-
-       vtkPoints * points = output->GetPoints();
-       for(int i=0; i < points->GetNumberOfPoints(); i++){
-         double * p = source->GetPoint(this->HashMap->GetId(i));
-         points->SetPoint(i, p);
-         //double * po = input->GetPoint(i);
-         //if(i==20) cout << "ps: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
-       }*/
-
       this->SmoothFilter->SetInput(input);
       this->SmoothFilter->SetSource(source);
       this->SmoothFilter->Update();
-      output->ShallowCopy(this->SmoothFilter->GetOutput());
+
+      this->TransformFilter->SetInput(this->SmoothFilter->GetOutput());
+
     }
     else
     {
-      output->ShallowCopy(input);
+      this->TransformFilter->SetInput(input);
     }
 
     //Set visualization parameters
@@ -234,10 +223,10 @@ int vtkCollisionModel::RequestData(
     this->Transform->SetMatrix(this->Matrix);
     this->Transform->Update();
 
-    this->TransformFilter->SetInput(input);
     this->TransformFilter->Update();
 
     //Transformed mesh for collision detection purposes
+    output->ShallowCopy(this->SmoothFilter->GetOutput());
     outputTx->ShallowCopy(this->TransformFilter->GetOutput());
   }
   else

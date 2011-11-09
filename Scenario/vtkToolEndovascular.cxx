@@ -62,9 +62,9 @@ vtkToolEndovascular::~vtkToolEndovascular() {
 }
 
 //--------------------------------------------------------------------------
-void vtkToolEndovascular::Init()
+void vtkToolEndovascular::Initialize()
 {
-  Superclass::Init();
+  Superclass::Initialize();
   double * orientation = this->GetElement(0)->GetOrientation();
   this->YawAngle = orientation[0];
   this->PitchAngle = orientation[1];

@@ -136,7 +136,7 @@ vtkRenderWindow* vtkScenario::GetRenderWindow() {
 }
 
 //----------------------------------------------------------------------------
-void vtkScenario::Init()
+void vtkScenario::Initialize()
 {
   if(!this->Initialized && this->RenderWindow)
   {
@@ -147,8 +147,6 @@ void vtkScenario::Init()
       o->SetRenderWindow(this->RenderWindow);
       o->SetRenderer(this->Renderer);
       o->SetId(i);
-
-      if(!o->IsInitialized()) o->Init();
 
       //Add all actors to the render window
       for(int id = 0; id<o->GetNumberOfElements(); id++)

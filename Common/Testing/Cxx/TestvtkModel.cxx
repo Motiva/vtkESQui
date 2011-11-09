@@ -67,7 +67,6 @@ int TestvtkModel(int argc, char * argv[])
   vtkSmartPointer<vtkModel> model = vtkSmartPointer<vtkModel>::New();
   model->SetInput(reader->GetOutput());
   model->SetColor(0.0 ,1.0 , 0.0);
-  model->Init();
 
   // A call to update method is made to force the model to be at its last state
   model->Update();

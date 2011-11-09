@@ -199,7 +199,7 @@ void vtkSimulation::Init() {
   this->RenderTimerId = this->Interactor->CreateRepeatingTimer(1000*this->RenderTimerRate);
 
   //Initialize visualization scenario
-  this->Scenario->Init();
+  this->Scenario->Initialize();
 
   //Initialize collision detection process
   if(this->Collision)

@@ -76,7 +76,7 @@ public:
   /*!
     This function initializes the tool whose mesh is described on a VTK file
    */
-  virtual void Init();
+  virtual void Initialize();
 
   //! Set the tool's opening according with the value given in the "Opening" parameter
   /*!

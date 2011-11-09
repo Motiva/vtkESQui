@@ -74,7 +74,7 @@ public:
   /*!
    * Create springs, particles and the links between them.
    */
-  void Init();
+  void Initialize();
 
   //Parameters for Particle-Spring System
   //! Set spring coefficient
@@ -129,6 +129,9 @@ protected:
 
   //! VTK method for system update. Must be implemented
   int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
+
+  //! Initialized flag
+  bool Initialized;
 
   //Particle-Spring System
   //! Collection of springs

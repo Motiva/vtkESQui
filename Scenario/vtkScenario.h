@@ -159,7 +159,7 @@ public:
   bool IsInitialized(){return this->Initialized;};
 
   //!Initialize Scenario
-  void Init();
+  void Initialize();
 
   //!Update the whole Scenario
   /*!

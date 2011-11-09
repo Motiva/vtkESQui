@@ -142,7 +142,7 @@ int main(int argc, char * argv[])
   FEMSystem->SetMass(0.1);
   FEMSystem->SetDeltaT(0.001);
   FEMSystem->SetRigidityFactor(2);
-  FEMSystem->Init();
+  FEMSystem->Initialize();
 
   vtkRenderer * renderer = vtkRenderer::New();
 
@@ -151,7 +151,7 @@ int main(int argc, char * argv[])
   plotter->SetRadius(0.025);
   plotter->SetResolution(16);
   plotter->SetRenderer(renderer);
-  plotter->Init();
+  plotter->Initialize();
 
   //Locate contact points
   vtkPointLocator * locator = vtkPointLocator::New();

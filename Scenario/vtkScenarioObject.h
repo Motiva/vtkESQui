@@ -88,9 +88,6 @@ public:
         Extra = 2
   };
 
-  //!Initialization function
-  virtual void Init();
-
   //! Assign the identifying key of the object
   /*!
   *\sa GetId()
@@ -321,6 +318,9 @@ protected:
 
   vtkScenarioObject();
   ~vtkScenarioObject();
+
+  //!Initialization function
+  virtual void Initialize();
 
   //! Process the algorithm request (Update).
   virtual int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);

@@ -18,10 +18,12 @@ smooth.SetInput(source)
 smooth.SetNumberOfIterations(100)
 
 #Model input mesh will be adapted to the source
-model = vtkesqui.vtkModel()
+model = vtkesqui.vtkVisualizationModel()
 model.SetInput(input)
 model.SetSource(smooth.GetOutput())
-model.SetColor(0.5, 0.5, 1.0)
+#model.SetColor(0.5, 0.5, 1.0)
+model.SetTextureFileName("/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg")
+model.Init()
 
 #A call to update method is made to force the model to be at its last state
 model.Update();
@@ -38,7 +40,7 @@ m = vtk.vtkPolyDataMapper()
 m.SetInput(source)
 a = vtk.vtkActor()
 a.SetMapper(m)
-a.GetProperty().SetOpacity(0.5)
+a.GetProperty().SetOpacity(0.1)
 ren.AddActor(a)
 
 ren.AddActor(actor)

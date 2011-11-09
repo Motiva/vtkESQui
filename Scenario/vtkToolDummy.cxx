@@ -74,9 +74,9 @@ vtkToolDummy::~vtkToolDummy()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolDummy::Init() {
+void vtkToolDummy::Initialize() {
 
-  Superclass::Init();
+  Superclass::Initialize();
 /*  vtkPiece * piece;
 
   for (vtkIdType id = 0; id < this->Pieces->GetNumberOfPieces(); id++)

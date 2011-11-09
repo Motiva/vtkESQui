@@ -72,13 +72,6 @@ public:
   //!Print class values
   void PrintSelf(ostream& os, vtkIndent indent);
 
-  //!Initialize the deformation model
-  /*!
-   * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
-   * - Input: vtkPolyData object \n
-   */
-  virtual void Init();
-
   //! Set Gravity Force (m/s2)
   vtkSetVector3Macro(Gravity, double);
   //! Get Gravity Force (m/s2)
@@ -128,6 +121,14 @@ protected:
 
   vtkDeformationModel();
   ~vtkDeformationModel();
+
+  //!Initialize the deformation model
+  /*!
+   * The model has to be initialized in order to be updated. At least one of these 2 parameters must be previously defined: \n
+   * - Input: vtkPolyData object \n
+   * - FileName: path to a .vtp file.
+   */
+  virtual void Initialize();
 
   //! Gravitation force
   double Gravity[3];

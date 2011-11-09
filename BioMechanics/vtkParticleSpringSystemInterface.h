@@ -80,7 +80,7 @@ public:
    * - DeltaT: time step of deformation process
    * - SolverType: motion equation solver type
    */
-  virtual void Init();
+  virtual void Initialize();
 
   //! Set the distance coefficient
   vtkSetMacro(Distance, double);

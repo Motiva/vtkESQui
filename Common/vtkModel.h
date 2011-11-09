@@ -226,13 +226,6 @@ public:
   //! Get synchronization hash map
   vtkIdList * GetHashMap();
 
-  //!Virtual initialization function
-  /*!
-   * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
-   * - Input: vtkPolyData object \n
-   */
-  virtual void Init();
-
   //! Hide scenario model.
   /*!
    * Must be implemented in inherited classes
@@ -298,7 +291,15 @@ protected:
   virtual int FillInputPortInformation(int port, vtkInformation *info);
   virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-  virtual void BuildHashMap(vtkPolyData * a, vtkPolyData * b);
+  //!Virtual initialization function
+  /*!
+   * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
+   * - Input: vtkPolyData object \n
+   */
+  virtual void Initialize();
+
+  //TODO: Remove this
+  //virtual void BuildHashMap(vtkPolyData * a, vtkPolyData * b);
 
   //! Model Id
   vtkIdType Id;
@@ -331,6 +332,9 @@ protected:
 
   //! Synchronization HashMap
   vtkIdList * HashMap;
+
+  //! Input file reader
+  vtkXMLPolyDataReader * Reader;
 
   //! Model initialization flag
   bool Initialized;

@@ -27,7 +27,7 @@ int TestvtkCollisionModel(int argc, char * argv[]){
   model->SetOpacity(0.5);
   model->SetColor(0,1,1);
   model->SetRadius(0.05);
-  model->Init();
+  model->Initialize();
 
   // A call to update method is made to force the model to be at its last state
   model->Update();

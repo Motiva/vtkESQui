@@ -18,7 +18,7 @@ int main(int argc, char * argv[])
   vtkDolfinInterface * Dolfin = vtkDolfinInterface::New();
 
   Dolfin->SetFileName(filename);
-  Dolfin->Init();
+  Dolfin->Initialize();
 
   return 0;
 }

@@ -63,7 +63,7 @@ vtkToolProbe::~vtkToolProbe()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolProbe::Init()
+void vtkToolProbe::Initialize()
 {
   //Check if elements has been set
   if(this->Stick && this->Tip)
@@ -90,7 +90,7 @@ void vtkToolProbe::Init()
     }
   }
 
-  Superclass::Init();
+  Superclass::Initialize();
 }
 
 //----------------------------------------------------------------------------

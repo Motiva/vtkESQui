@@ -71,9 +71,9 @@ vtkDeformationModel::~vtkDeformationModel() {
 }
 
 //--------------------------------------------------------------------------
-void vtkDeformationModel::Init()
+void vtkDeformationModel::Initialize()
 {
-  this->Superclass::Init();
+  this->Superclass::Initialize();
 
   this->BoundaryConditions = vtkBoundaryConditionCollection::New();
 

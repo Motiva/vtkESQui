@@ -63,9 +63,9 @@ vtkToolLaparoscopy::~vtkToolLaparoscopy() {
 }
 
 //--------------------------------------------------------------------------
-void vtkToolLaparoscopy::Init()
+void vtkToolLaparoscopy::Initialize()
 {
-  Superclass::Init();
+  Superclass::Initialize();
 
   double * orientation = this->GetElement(0)->GetOrientation();
   this->YawAngle = orientation[0];

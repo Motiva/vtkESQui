@@ -87,7 +87,7 @@ int main(int argc, char * argv[])
 
   //Assign render window for display purposes
   cath->SetRenderWindow(renWin);
-  cath->Init();
+  cath->Initialize();
 
   iren->Initialize();
 

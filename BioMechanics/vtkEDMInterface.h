@@ -81,7 +81,7 @@ public:
    * - NumberOfIterations: Maximum number of iterations
    * - WarpScaleFactor: Deformation scale factor
    */
-  virtual void Init();
+  virtual void Initialize();
 
   //!Set maximum number of iterations
   /*!

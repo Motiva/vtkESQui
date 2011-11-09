@@ -68,7 +68,7 @@ vtkToolGrasper::~vtkToolGrasper()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolGrasper::Init()
+void vtkToolGrasper::Initialize()
 {
   //Check if elements has been set
   if(this->Stick && this->LeftLever && this->RightLever)
@@ -101,7 +101,7 @@ void vtkToolGrasper::Init()
   }
 
   //Initialize super class
-  Superclass::Init();
+  Superclass::Initialize();
 }
 
 //----------------------------------------------------------------------------

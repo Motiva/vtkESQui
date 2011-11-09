@@ -64,9 +64,9 @@ vtkToolCatheter::~vtkToolCatheter()
 }
 
 //----------------------------------------------------------------------------
-void vtkToolCatheter::Init()
+void vtkToolCatheter::Initialize()
 {
-  Superclass::Init();
+  Superclass::Initialize();
 }
 
 //----------------------------------------------------------------------------

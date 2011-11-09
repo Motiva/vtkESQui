@@ -102,7 +102,6 @@ int main(int argc, char * argv[])
   stick->SetOrientation(0, 0, -20);
   stick->SetVisualizationModel(vis);
   stick->SetCollisionModel(col);
-  stick->Init();
 
   //Second element (tip)
   vtkSmartPointer<vtkVisualizationModel> visb = vtkSmartPointer<vtkVisualizationModel>::New();
@@ -125,12 +124,10 @@ int main(int argc, char * argv[])
   tip->SetOrientation(0, 0, -20);
   tip->SetVisualizationModel(visb);
   tip->SetCollisionModel(colb);
-  tip->Init();
 
   vtkSmartPointer<vtkToolProbe> tool = vtkSmartPointer<vtkToolProbe>::New();
   tool->SetStick(stick);
   tool->SetTip(tip);
-  tool->Init();
 
   tool->SetDepth(1);
   tool->Update();

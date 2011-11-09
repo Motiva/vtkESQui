@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
   getFEM->SetRestitution(0.6); //Restitution parameter (Paoli-Schaltzmann)
 
   //Initialize
-  getFEM->Init();
+  getFEM->Initialize();
 
   //Solve
   getFEM->Solve();
