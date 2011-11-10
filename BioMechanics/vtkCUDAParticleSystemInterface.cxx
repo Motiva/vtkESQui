@@ -72,6 +72,9 @@ vtkCUDAParticleSystemInterface::vtkCUDAParticleSystemInterface()
   this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
   this->TimeStep = 0;
   this->SolverType = vtkCUDAMotionEquationSolver::VelocityVerlet;
+
+  //Force to 1 input only
+  this->SetNumberOfInputPorts(1);
 }
 
 //----------------------------------------------------------------------------
@@ -129,15 +132,12 @@ int vtkCUDAParticleSystemInterface::RequestData(
 
   //Get the input and output
   vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-  //Optional input
-  vtkPolyData * source = 0;
-  if(sourceInfo){
-    source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
-  }
   //Output
   vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
   //cout << this->GetClassName() << "::RequestData(" << this->GetName() << ")\n";
+
+  if(!this->Initialized) this->Initialize();
 
   if(this->Status == Enabled)
   {
@@ -146,25 +146,6 @@ int vtkCUDAParticleSystemInterface::RequestData(
     this->System->Update();
 
     vtkPolyData * out = this->System->GetOutput();
-
-    //If source is defined -> Synchronize mesh
-    if(source)
-    {
-      if(this->HashMap->GetNumberOfIds() == 0)
-      {
-        //Build collision mesh hash map
-        this->BuildHashMap(input, source);
-      }
-
-      //Synchronize/Modify visualization mesh
-      vtkPoints * points = source->GetPoints();
-      for(int i = 0; i<this->HashMap->GetNumberOfIds(); i++)
-      {
-        int id = this->HashMap->GetId(i);
-        double * p = out->GetPoint(id);
-        points->SetPoint(i, p);
-      }
-    }
 
     //Set visualization parameters
     this->Actor->SetVisibility(this->Visibility);

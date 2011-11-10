@@ -103,7 +103,7 @@ int TestvtkScenarioElement(int argc, char * argv[])
   element->SetCollisionModel(col);
   element->SetDeformationModel(def);
 
-  element->RotateZ(35);
+  //element->RotateZ(35);
   element->Update();
   /*
 

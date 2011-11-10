@@ -85,6 +85,7 @@ vtkVisualizationModel::~vtkVisualizationModel() {
 //--------------------------------------------------------------------------
 void vtkVisualizationModel::Initialize()
 {
+  //cout << this->GetClassName() << "::Initialize()\n";
   this->Superclass::Initialize();
 
   //Texture will be added
@@ -105,43 +106,6 @@ void vtkVisualizationModel::Initialize()
     this->Actor->SetTexture(this->Texture);
   }
 }
-
-//----------------------------------------------------------------------------
-/*int vtkVisualizationModel::RequestData(
-    vtkInformation *vtkNotUsed(request),
-    vtkInformationVector **inputVector,
-    vtkInformationVector *outputVector) {
-
-  vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-  vtkInformation *outInfo = outputVector->GetInformationObject(0);
-
-  //Get the input and output
-  vtkPolyData *input = vtkPolyData::SafeDownCast(
-      inInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-  //Output
-  vtkPolyData *output = vtkPolyData::SafeDownCast(
-      outInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-  if(this->Status)
-  {
-    //Set visualization parameters
-    this->Actor->SetVisibility(this->Visibility);
-    if(this->IsVisible())
-    {
-      this->Actor->GetProperty()->SetColor(this->Color);
-      this->Actor->GetProperty()->SetOpacity(this->Opacity);
-
-      this->Mapper->Modified();
-      this->Mapper->Update();
-    }
-  }
-
-  output->ShallowCopy(input);
-
-  return 1;
-
-}*/
 
 //--------------------------------------------------------------------------
 void vtkVisualizationModel::PrintSelf(ostream& os,vtkIndent indent) {

@@ -12,10 +12,11 @@ fnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vt
 cfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
 tfnb ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
 
+
 # Generate tool's first element (stick)
 vis = vtkesqui.vtkVisualizationModel();
 vis.SetName("stick_vis");
-vis.SetFileName(fn);
+vis.SetInput(istick);
 vis.SetTextureFileName(tfn);
 vis.SetOpacity(1.0);
 vis.SetColor(1.0, 1.0, 1.0);
@@ -34,7 +35,6 @@ stick.SetPosition(3.0, 0.0, 0.0);
 stick.SetOrientation(0, 0, -20);
 stick.SetVisualizationModel(vis);
 stick.SetCollisionModel(col);
-stick.Init();
 
 # Second element (tip)
 visb = vtkesqui.vtkVisualizationModel();
@@ -57,12 +57,10 @@ tip.SetPosition(3.0, 0.0, 0.0);
 tip.SetOrientation(0, 0, -20);
 tip.SetVisualizationModel(visb);
 tip.SetCollisionModel(colb);
-tip.Init();
 
 tool = vtkesqui.vtkToolProbe();
 tool.SetStick(stick);
 tool.SetTip(tip);
-tool.Init();
 
 tool.SetDepth(1);
 tool.Update();

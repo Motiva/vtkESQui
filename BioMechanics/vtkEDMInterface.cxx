@@ -203,6 +203,8 @@ int vtkEDMInterface::RequestData(
   //Output
   vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
+  if(!this->Initialized) this->Initialize();
+
   if(this->Status)
   {
     if(this->Reset)

@@ -105,8 +105,8 @@ int TestvtkOrgan(int argc, char * argv[])
   element->SetCollisionModel(col);
   element->SetDeformationModel(def);
 
-  element->RotateZ(35);
   element->Update();
+  element->RotateZ(35);
 
   vtkSmartPointer<vtkOrgan> organ = vtkSmartPointer<vtkOrgan>::New();
   organ->AddElement(element);

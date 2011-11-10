@@ -87,19 +87,16 @@ public:
    */
   vtkGetStringMacro(TextureFileName);
 
-  //! Abstract initialization function
-  /*!
-   * This method initializes the tool physical values, scale, position, etc...
-   */
-  virtual void Initialize();
-
 protected:
 
   vtkVisualizationModel();
   ~vtkVisualizationModel();
 
-  //! Process the algorithm request (Update).
-  //virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  //! Abstract initialization function
+  /*!
+   * This method initializes the tool physical values, scale, position, etc...
+   */
+  virtual void Initialize();
 
 private:
   vtkVisualizationModel (const vtkVisualizationModel &);

@@ -47,6 +47,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkMath.h"
 #include "vtkIdList.h"
 #include "vtkPointLocator.h"
+#include "vtkSmartPointer.h"
+#include "vtkXMLPolyDataReader.h"
 
 #include "vtkModelCollection.h"
 #include "vtkCollisionModel.h"
@@ -60,9 +62,6 @@ vtkStandardNewMacro(vtkScenarioElement);
 
 //--------------------------------------------------------------------------
 vtkScenarioElement::vtkScenarioElement() {
-
-  this->SetNumberOfInputPorts(0);
-  this->SetNumberOfOutputPorts(1);
 
   this->Id = -1;
   this->Name = NULL;
@@ -85,6 +84,7 @@ vtkScenarioElement::vtkScenarioElement() {
   this->Transform = NULL;
   this->Matrix = NULL;
 
+  this->SynchronizationMap = NULL;
   this->CollisionModel = NULL;
   this->VisualizationModel = NULL;
   this->DeformationModel = NULL;
@@ -189,12 +189,27 @@ void vtkScenarioElement::Initialize()
 
     if(this->VisualizationModel)
     {
+      if(this->VisualizationModel->GetFileName())
+      {
+        vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+        reader->SetFileName(this->VisualizationModel->GetFileName());
+        reader->Update();
+        this->VisualizationModel->SetInput(reader->GetOutput());
+      }
+
       this->VisualizationModel->SetObjectId(this->ObjectId);
       this->VisualizationModel->SetId(this->Id);
       this->Models->AddModel(this->VisualizationModel);
 
       if(this->CollisionModel)
       {
+        if(this->CollisionModel->GetFileName())
+        {
+          vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+          reader->SetFileName(this->CollisionModel->GetFileName());
+          reader->Update();
+          this->CollisionModel->SetInput(reader->GetOutput());
+        }
         this->CollisionModel->SetObjectId(this->ObjectId);
         this->CollisionModel->SetId(this->Id);
         //Set optional (synchronisation) input
@@ -203,11 +218,40 @@ void vtkScenarioElement::Initialize()
 
         if(this->DeformationModel)
         {
+          if(this->DeformationModel->GetFileName())
+          {
+            vtkSmartPointer<vtkXMLPolyDataReader> reader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
+            reader->SetFileName(this->DeformationModel->GetFileName());
+            reader->Update();
+            this->DeformationModel->SetInput(reader->GetOutput());
+          }
           this->DeformationModel->SetObjectId(this->ObjectId);
           this->DeformationModel->SetId(this->Id);
-          //Set optional (synchronisation) input
-          this->DeformationModel->SetInput(1, this->VisualizationModel->GetOutput());
+          //Set optional (synchronization) input
           this->Models->AddModel(this->DeformationModel);
+
+          //Synchronize between Deformation and visualization model
+          this->VisualizationModel->SetInput(1, this->DeformationModel->GetOutput());
+
+          //Build Synchronization Map
+          this->SynchronizationMap = vtkIdList::New();
+
+          vtkPolyData * a = vtkPolyData::SafeDownCast(this->CollisionModel->GetInput());
+          vtkPolyData * b = vtkPolyData::SafeDownCast(this->VisualizationModel->GetInput());
+          //Create point locator to generate id map
+          vtkSmartPointer<vtkPointLocator> locator =
+              vtkSmartPointer<vtkPointLocator>::New();
+          locator->SetDataSet(b);
+
+          this->SynchronizationMap->SetNumberOfIds(a->GetNumberOfPoints());
+
+          for (int i=0; i<a->GetNumberOfPoints(); i++)
+          {
+            double * point = a->GetPoint(i);
+            vtkIdType id = locator->FindClosestPoint(point);
+            this->SynchronizationMap->SetId(i, id);
+          }
+
         }
       }
       //Set Transform matrix to the models
@@ -224,21 +268,11 @@ void vtkScenarioElement::Initialize()
 }
 
 //----------------------------------------------------------------------------
-int vtkScenarioElement::RequestData(
-    vtkInformation *vtkNotUsed(request),
-    vtkInformationVector **inputVector,
-    vtkInformationVector *outputVector) {
+void vtkScenarioElement::Update() {
 
-  //cout << "vtkScenarioElement::RequestData (" << this->GetName() << ")\n";
-  vtkInformation *outInfo = outputVector->GetInformationObject(0);
+  if(!this->Initialized) this->Initialize();
 
-  vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-  if(this->Initialized) this->Initialize();
-
-  this->UpdateProgress(0.10);
-
-  //Update sequence
+    //Update sequence
   //Save last position & calculate kinematic vales
   this->Velocity[0] = this->Position[0];
   this->Velocity[1] = this->Position[1];
@@ -270,8 +304,6 @@ int vtkScenarioElement::RequestData(
     this->CollisionModel->Modified();
     this->CollisionModel->Update();
 
-    this->UpdateProgress(0.25);
-
     //Update deformation model with detected collisions
     if(this->DeformationModel)
     {
@@ -287,7 +319,7 @@ int vtkScenarioElement::RequestData(
         }
 
         // Translate Collision-Deformation point ids
-        int id = this->CollisionModel->GetHashMap()->GetId(c->GetPointId(objectId));
+        int id = this->SynchronizationMap->GetId(c->GetPointId(objectId));
         //double * p = this->VisualizationModel->GetOutput()->GetPoint(id);
         //c->SetPointId(1, id);
         //c->SetPoint(1, p);
@@ -300,14 +332,11 @@ int vtkScenarioElement::RequestData(
       this->DeformationModel->Update();
 
     }
-    this->UpdateProgress(0.50);
     this->CollisionModel->RemoveAllCollisions();
   }
 
   this->VisualizationModel->Modified();
   this->VisualizationModel->Update();
-
-  this->UpdateProgress(0.75);
 
   //Get movement parameters
   if(this->CollisionModel)
@@ -318,12 +347,6 @@ int vtkScenarioElement::RequestData(
     this->DeltaT = this->CollisionModel->GetDeltaT();
   }
 
-  this->UpdateProgress(1.0);
-
-  //Set visualization mesh as output
-  output->ShallowCopy(this->VisualizationModel->GetOutput());
-
-  return 1;
 }
 
 //--------------------------------------------------------------------------

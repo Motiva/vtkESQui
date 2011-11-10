@@ -1,26 +1,27 @@
 import vtk
 import vtkesqui
 
-# Data source
+#Data source
 sphere = vtk.vtkSphereSource()
 sphere.SetPhiResolution(12)
 sphere.SetThetaResolution(12)
 sphere.Update()
 
-#Define model input and source
 input = sphere.GetOutput()
-source = vtk.vtkPolyData()
-source.DeepCopy(input)
 
-#Smooth (deform) source mesh
-smooth = vtk.vtkSmoothPolyDataFilter()
-smooth.SetInput(source)
-smooth.SetNumberOfIterations(100)
+#Define model source
+cube = vtk.vtkCubeSource()
+cube.SetXLength(0.6)
+cube.SetYLength(0.6)
+cube.SetZLength(0.6)
+cube.Update()
+
+source = cube.GetOutput()
 
 #Model input mesh will be adapted to the source
 model = vtkesqui.vtkModel()
 model.SetInput(input)
-model.SetSource(smooth.GetOutput())
+model.SetSource(source)
 model.SetColor(0.5, 0.5, 1.0)
 
 #A call to update method is made to force the model to be at its last state
@@ -35,7 +36,7 @@ iren.SetRenderWindow(renWin)
 actor = model.GetActor()
 
 m = vtk.vtkPolyDataMapper()
-m.SetInput(source)
+m.SetInput(input)
 a = vtk.vtkActor()
 a.SetMapper(m)
 a.GetProperty().SetOpacity(0.5)

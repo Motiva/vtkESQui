@@ -223,9 +223,6 @@ public:
    */
   virtual vtkPolyData *GetSource();
 
-  //! Get synchronization hash map
-  vtkIdList * GetHashMap();
-
   //! Hide scenario model.
   /*!
    * Must be implemented in inherited classes
@@ -329,9 +326,6 @@ protected:
 
   //! Filter used to synchronize/match input & source meshes
   vtkSmoothPolyDataFilter * SmoothFilter;
-
-  //! Synchronization HashMap
-  vtkIdList * HashMap;
 
   //! Input file reader
   vtkXMLPolyDataReader * Reader;

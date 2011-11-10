@@ -73,6 +73,9 @@ vtkParticleSpringSystemInterface::vtkParticleSpringSystemInterface()
   this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0;
   this->TimeStep = 0;
   this->SolverType = vtkMotionEquationSolver::VelocityVerlet;
+
+  //Force to 1 input only
+  this->SetNumberOfInputPorts(1);
 }
 
 //----------------------------------------------------------------------------
@@ -125,33 +128,16 @@ int vtkParticleSpringSystemInterface::RequestData(
     vtkInformationVector *outputVector) {
 
   vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-  vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
   //Get the input and output
   vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-  //Optional input
-  vtkPolyData * source = 0;
-  if(sourceInfo){
-    source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
-  }
   //Output
   vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
   //cout << this->GetClassName() << "::RequestData(" << this->GetName() << ")\n";
 
-  if(source)
-  {
-    this->SmoothFilter->SetInput(input);
-    this->SmoothFilter->SetSource(source);
-    this->SmoothFilter->Update();
-    output->ShallowCopy(this->SmoothFilter->GetOutput());
-
-  }
-  else
-  {
-    output->ShallowCopy(input);
-  }
+  if(!this->Initialized) this->Initialize();
 
   if(this->Status)
   {

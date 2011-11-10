@@ -51,6 +51,7 @@ class vtkPolyData;
 class vtkIdList;
 class vtkTransform;
 class vtkMatrix4x4;
+class vtkXMLPolyDataReader;
 
 class vtkModel;
 class vtkModelCollection;
@@ -68,12 +69,12 @@ class vtkCollisionCollection;
  * model (vtkDeformatioModel_).
  */
 
-class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioElement: public vtkPolyDataAlgorithm {
+class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioElement: public vtkObject {
 
 public:
 
   //! Type revision macro
-  vtkTypeRevisionMacro(vtkScenarioElement,vtkPolyDataAlgorithm);
+  vtkTypeRevisionMacro(vtkScenarioElement,vtkObject);
   //! Create new object
   static vtkScenarioElement * New();
   //! Return the class name
@@ -391,6 +392,8 @@ public:
   //! Check if element has been initialized
   bool IsInitialized();
 
+  void Update();
+
 protected:
 
   vtkScenarioElement();
@@ -403,7 +406,7 @@ protected:
   virtual void Initialize();
 
   //! Process the algorithm request (Update).
-  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
+  //virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
   //! Element identifier
   vtkIdType Id;
@@ -449,6 +452,9 @@ protected:
 
   //! Scale factor (size)
   double Scale[3];
+
+  //! Synchronization Map
+  vtkIdList * SynchronizationMap;
 
   //! Element transform
   vtkTransform * Transform;

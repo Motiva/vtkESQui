@@ -53,10 +53,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkActor.h"
 #include "vtkMatrix4x4.h"
 #include "vtkProperty.h"
-#include "vtkPointLocator.h"
-#include "vtkPointData.h"
-#include "vtkIdList.h"
-#include "vtkMath.h"
 
 vtkCxxRevisionMacro(vtkModel, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkModel);
@@ -77,16 +73,21 @@ vtkModel::vtkModel()
   this->Matrix = NULL;
   this->Actor = NULL;
   this->Mapper = NULL;
-  this->HashMap = NULL;
 
   //optional second input
+  this->SetNumberOfInputPorts(1);
   this->SetNumberOfInputPorts(2);
 }
 
 //--------------------------------------------------------------------------
 vtkModel::~vtkModel()
 {
-  if(this->HashMap) this->HashMap->Delete();
+  if(this->Initialized)
+  {
+    this->Mapper->Delete();
+    this->Actor->Delete();
+    this->SmoothFilter->Delete();
+  }
 }
 
 //----------------------------------------------------------------------------
@@ -152,29 +153,12 @@ vtkPolyDataMapper* vtkModel::GetMapper()
 {
   return this->Mapper;
 }
-//--------------------------------------------------------------------------
-vtkIdList * vtkModel::GetHashMap()
-{
-  return this->HashMap;
-}
 
 //--------------------------------------------------------------------------
 void vtkModel::Initialize()
 {
   if(!this->Initialized)
   {
-    //Generate input from file if not specified
-    if(!this->GetInput() && this->FileName)
-    {
-      this->Reader = vtkXMLPolyDataReader::New();
-      this->Reader->SetFileName(this->FileName);
-      this->Reader->Update();
-      this->SetInput(0,this->Reader->GetOutput());
-    }
-
-    //Synchronization hashMap
-    this->HashMap = vtkIdList::New();
-
     //Smooth Filter
     this->SmoothFilter = vtkSmoothPolyDataFilter::New();
     this->SmoothFilter->SetNumberOfIterations(10);
@@ -211,6 +195,7 @@ int vtkModel::RequestData(
   vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
   //Optional input
   vtkPolyData * source = 0;
+
   if(sourceInfo){
     source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
   }
@@ -224,19 +209,6 @@ int vtkModel::RequestData(
   if(source)
   {
     vtkDebugMacro("Model source is present\n");
-
-    /*if(this->HashMap->GetNumberOfIds() == 0)
-    {
-      this->BuildHashMap(output, source);
-    }
-
-    vtkPoints * points = output->GetPoints();
-    for(int i=0; i < points->GetNumberOfPoints(); i++){
-      double * p = source->GetPoint(this->HashMap->GetId(i));
-      points->SetPoint(i, p);
-      //double * po = input->GetPoint(i);
-      //if(i==20) cout << "ps: " << p[0] << ", " << p[1] << ", " << p[2] <<  " | po: " << po[0] << ", " << po[1] << ", " << po[2] << "\n";
-    }*/
 
     this->SmoothFilter->SetInput(input);
     this->SmoothFilter->SetSource(source);
@@ -262,30 +234,6 @@ int vtkModel::RequestData(
 
   return 1;
 }
-
-//TODO: Remove this
-//--------------------------------------------------------------------------
-/*void vtkModel::BuildHashMap(vtkPolyData * a, vtkPolyData * b)
-{
-  vtkDebugMacro("Build model hashmap.")
-
-  //Force data to be updated
-  a->Update();
-  b->Update();
-
-  //Create point locator to generate id map
-  vtkPointLocator * locator = vtkPointLocator::New();
-  locator->SetDataSet(b);
-
-  this->HashMap->SetNumberOfIds(a->GetNumberOfPoints());
-
-  for (int i=0; i<a->GetNumberOfPoints(); i++)
-  {
-    double * point = a->GetPoint(i);
-    vtkIdType id = locator->FindClosestPoint(point);
-    this->HashMap->SetId(i, id);
-  }
-}*/
 
 //--------------------------------------------------------------------------
 void vtkModel::Hide()

@@ -70,11 +70,12 @@ int TestvtkVisualizationModel(int argc, char * argv[])
   model->SetTextureFileName(tfilename);
   model->SetVisibility(1);
   model->SetOpacity(1.0);
-  model->Initialize();
 
   model->Update();
 
-  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  model->Print(cout);
+
+  /*vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
   vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
   renWin->SetSize(500,500);
@@ -93,9 +94,9 @@ int TestvtkVisualizationModel(int argc, char * argv[])
 
   renWin->Render();
 
-  iren->Start();
+  iren->Start();*/
 
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 

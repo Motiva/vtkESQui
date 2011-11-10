@@ -19,7 +19,7 @@ vis.SetColor(1.0, 0.0, 1.0)
 col = vtkesqui.vtkCollisionModel()
 col.SetName("ball_vtkbioeng")
 col.SetFileName(cfn)
-col.SetOpacity(0.5)
+col.SetOpacity(1.0)
 col.SetColor(0.0, 0.0, 1.0)
 
 # Deformation Model
@@ -27,7 +27,7 @@ defo = vtkesqui.vtkParticleSpringSystemInterface()
 defo.SetName("ball_ParticleSpringSystem")
 defo.SetFileName(dfn)
 defo.SetOpacity(0.5)
-defo.SetColor(0.0, 0.0, 1.0)
+defo.SetColor(1.0, 1.0, 1.0)
 
 ball = vtkesqui.vtkScenarioElement()
 ball.SetId(0)
@@ -38,7 +38,10 @@ ball.SetVisualizationModel(vis)
 ball.SetCollisionModel(col)
 ball.SetDeformationModel(defo)
 
-ball.Update()
+organ = vtkesqui.vtkOrgan()
+organ.AddElement(ball)
+
+organ.Update()
 
 ren = vtk.vtkRenderer()
 renWin = vtk.vtkRenderWindow()
