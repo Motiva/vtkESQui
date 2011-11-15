@@ -190,16 +190,10 @@ int vtkEDMInterface::RequestData(
     vtkInformationVector *outputVector) {
 
   vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
-  vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
   vtkInformation *outInfo = outputVector->GetInformationObject(0);
 
   //Get the input and output
   vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-  //Optional input
-  vtkPolyData * source = 0;
-  if(sourceInfo){
-    source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
-  }
   //Output
   vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
@@ -236,20 +230,6 @@ int vtkEDMInterface::RequestData(
     this->DeformableMesh->Update();
 
     vtkPolyData * out = this->DeformableMesh->GetOutput();
-
-    //If source is defined -> Synchronize mesh
-    if(source)
-    {
-      this->SmoothFilter->SetInput(out);
-      this->SmoothFilter->SetSource(source);
-      this->SmoothFilter->Update();
-      output->ShallowCopy(this->SmoothFilter->GetOutput());
-
-    }
-    else
-    {
-      output->ShallowCopy(out);
-    }
 
     //Set visualization parameters
     this->Actor->SetVisibility(this->Visibility);

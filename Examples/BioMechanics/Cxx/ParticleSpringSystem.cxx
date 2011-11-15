@@ -146,7 +146,8 @@ int main(int argc, char * argv[])
 
   vtkSmartPointer<vtkParticleSpringSystemInterface> pss = vtkSmartPointer<vtkParticleSpringSystemInterface>::New();
   pss->SetName("ball_def_c10");
-  pss->SetFileName(filename);
+  //pss->SetFileName(filename);
+  pss->SetInput(mesh);
   pss->SetColor(1,0,0);
   pss->SetOpacity(1.0);
   pss->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
@@ -155,7 +156,7 @@ int main(int argc, char * argv[])
   pss->SetDamping(5);//Friction
   pss->SetMass(.5);
   pss->SetTimeStep(0.001);//1ms
-  pss->Initialize();
+  pss->Update();
 
   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 

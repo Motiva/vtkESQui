@@ -1,6 +1,7 @@
 SET(KIT vtkESQuiCommon)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
   TestvtkModel.cxx
+  TestvtkSyncPolyDataFilter.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})

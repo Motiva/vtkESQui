@@ -51,7 +51,7 @@ class vtkPolyDataMapper;
 class vtkTransform;
 class vtkMatrix4x4;
 class vtkActor;
-class vtkSmoothPolyDataFilter;
+class vtkSyncPolyDataFilter;
 
 //!This class represents an abstract model on a scenario element.
 /*!
@@ -295,9 +295,6 @@ protected:
    */
   virtual void Initialize();
 
-  //TODO: Remove this
-  //virtual void BuildHashMap(vtkPolyData * a, vtkPolyData * b);
-
   //! Model Id
   vtkIdType Id;
 
@@ -324,11 +321,8 @@ protected:
   //! Tool piece actor
   vtkActor * Actor;
 
-  //! Filter used to synchronize/match input & source meshes
-  vtkSmoothPolyDataFilter * SmoothFilter;
-
-  //! Input file reader
-  vtkXMLPolyDataReader * Reader;
+  //! Filter used to synchronize/match input & source model meshes
+  vtkSyncPolyDataFilter * SyncFilter;
 
   //! Model initialization flag
   bool Initialized;

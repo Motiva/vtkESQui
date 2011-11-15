@@ -11,6 +11,7 @@ SET(UKIT COMMON)  #Uppercase Kit Name
 SET (Kit_SRCS 
 vtkModel.cxx
 vtkModelCollection.cxx
+vtkSyncPolyDataFilter.cxx
 vtkTimerCallback.cxx
 )
 

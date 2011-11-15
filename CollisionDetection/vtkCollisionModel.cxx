@@ -47,7 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkXMLPolyDataReader.h"
-#include "vtkSmoothPolyDataFilter.h"
+#include "vtkSyncPolyDataFilter.h"
 #include "vtkTransformPolyDataFilter.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
@@ -196,11 +196,11 @@ int vtkCollisionModel::RequestData(
     {
       vtkDebugMacro("Model source is present\n");
 
-      this->SmoothFilter->SetInput(input);
-      this->SmoothFilter->SetSource(source);
-      this->SmoothFilter->Update();
+      this->SyncFilter->SetInput(input);
+      this->SyncFilter->SetSource(source);
+      this->SyncFilter->Update();
 
-      this->TransformFilter->SetInput(this->SmoothFilter->GetOutput());
+      this->TransformFilter->SetInput(this->SyncFilter->GetOutput());
 
     }
     else
@@ -226,7 +226,7 @@ int vtkCollisionModel::RequestData(
     this->TransformFilter->Update();
 
     //Transformed mesh for collision detection purposes
-    output->ShallowCopy(this->SmoothFilter->GetOutput());
+    output->ShallowCopy(this->SyncFilter->GetOutput());
     outputTx->ShallowCopy(this->TransformFilter->GetOutput());
   }
   else

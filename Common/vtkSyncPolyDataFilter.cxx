@@ -39,7 +39,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
-#include "vtkModel.h"
+#include "vtkSyncPolyDataFilter.h"
 
 #include "vtkInformation.h"
 #include "vtkInformationVector.h"
@@ -48,55 +48,44 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkXMLPolyDataReader.h"
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
-#include "vtkSyncPolyDataFilter.h"
-#include "vtkTransform.h"
-#include "vtkActor.h"
+#include "vtkSmoothPolyDataFilter.h"
+#include "vtkIdList.h"
+#include "vtkPointLocator.h"
 #include "vtkMatrix4x4.h"
 #include "vtkProperty.h"
 
-vtkCxxRevisionMacro(vtkModel, "$Revision: 0.1 $");
-vtkStandardNewMacro(vtkModel);
+vtkCxxRevisionMacro(vtkSyncPolyDataFilter, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkSyncPolyDataFilter);
 
 //--------------------------------------------------------------------------
-vtkModel::vtkModel()
+vtkSyncPolyDataFilter::vtkSyncPolyDataFilter()
 {
-  this->Id = -1;
-  this->ObjectId = -1;
-  this->Name = NULL;
-  this->FileName = NULL;
-  this->Initialized = 0;
-  this->Status = 1;
-  this->Color[0]=this->Color[1]=this->Color[2]=1.0;
-  this->Opacity = 1.0;
-  this->Visibility = 1;
-
-  this->Matrix = NULL;
-  this->Actor = NULL;
-  this->Mapper = NULL;
+  this->HashMap = NULL;
+  this->Locator = NULL;
+  this->Smoothing = 0;
 
   //optional second input
   this->SetNumberOfInputPorts(2);
+  this->SetNumberOfOutputPorts(1);
 }
 
 //--------------------------------------------------------------------------
-vtkModel::~vtkModel()
+vtkSyncPolyDataFilter::~vtkSyncPolyDataFilter()
 {
-  if(this->Initialized)
-  {
-    this->Mapper->Delete();
-    this->Actor->Delete();
-    this->SyncFilter->Delete();
+  if(this->Initialized){
+    this->HashMap->Delete();
+    this->Locator->Delete();
   }
 }
 
 //----------------------------------------------------------------------------
-void vtkModel::SetSource(vtkPolyData *source)
+void vtkSyncPolyDataFilter::SetSource(vtkPolyData *source)
 {
   this->SetInput(1, source);
 }
 
-//----------------------------------------------------------------------------
-vtkPolyData *vtkModel::GetSource()
+//----------------------------------- -----------------------------------------
+vtkPolyData *vtkSyncPolyDataFilter::GetSource()
 {
   if (this->GetNumberOfInputConnections(1) < 1)
   {
@@ -108,7 +97,7 @@ vtkPolyData *vtkModel::GetSource()
 
 
 //---------------------------------------------------------------------------
-int vtkModel::FillInputPortInformation(int port, vtkInformation *info)
+int vtkSyncPolyDataFilter::FillInputPortInformation(int port, vtkInformation *info)
 {
   if(!this->Superclass::FillInputPortInformation(port, info))
   {
@@ -123,54 +112,37 @@ int vtkModel::FillInputPortInformation(int port, vtkInformation *info)
 }
 
 //----------------------------------------------------------------------------
-int vtkModel::FillOutputPortInformation(int, vtkInformation* info)
+int vtkSyncPolyDataFilter::FillOutputPortInformation(int, vtkInformation* info)
 {
   info->Set(vtkDataObject::DATA_TYPE_NAME(), "vtkPolyData");
   return 1;
 }
 
-//----------------------------------------------------------------------------
-void vtkModel::SetMatrix(vtkMatrix4x4 * m)
-{
-  this->Matrix = m;
-}
-
-//----------------------------------------------------------------------------
-vtkMatrix4x4 * vtkModel::GetMatrix()
-{
-  return this->Matrix;
-}
-
-//----------------------------------------------------------------------------
-vtkActor * vtkModel::GetActor()
-{
-  return this->Actor;
-}
-
-//----------------------------------------------------------------------------
-vtkPolyDataMapper* vtkModel::GetMapper()
-{
-  return this->Mapper;
-}
-
 //--------------------------------------------------------------------------
-void vtkModel::Initialize()
+void vtkSyncPolyDataFilter::Initialize()
 {
   if(!this->Initialized)
   {
-    //Displaying purposes
-    this->Actor = vtkActor::New();
-    this->Mapper = vtkPolyDataMapper::New();
+    vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput(0));
+    vtkPolyData * source = vtkPolyData::SafeDownCast(this->GetInput(1));
 
-    this->SyncFilter = vtkSyncPolyDataFilter::New();
+    this->Locator = vtkPointLocator::New();
+    this->Locator->SetDataSet(source);
+    this->Locator->BuildLocator();
 
-    //Set actor transformation matrix
-    if(this->Matrix)
+    this->HashMap = vtkIdList::New();
+    this->HashMap->SetNumberOfIds(input->GetNumberOfPoints());
+
+    this->SmoothFilter = vtkSmoothPolyDataFilter::New();
+    this->SmoothFilter->SetNumberOfIterations(5);
+
+    for(int i=0; i<input->GetNumberOfPoints(); i++)
     {
-      this->Actor->SetUserMatrix(this->Matrix);
+      double * p = input->GetPoint(i);
+      this->HashMap->SetId(i,this->Locator->FindClosestPoint(p));
     }
 
-    this->Actor->SetMapper(this->Mapper);
+    vtkDebugMacro("vtkSyncPolyDataFilter has been initialized.");
 
     //Set as initialized
     this->Initialized = 1;
@@ -179,7 +151,7 @@ void vtkModel::Initialize()
 }
 
 //----------------------------------------------------------------------------
-int vtkModel::RequestData(
+int vtkSyncPolyDataFilter::RequestData(
     vtkInformation *vtkNotUsed(request),
     vtkInformationVector **inputVector,
     vtkInformationVector *outputVector) {
@@ -199,77 +171,44 @@ int vtkModel::RequestData(
   //Output
   vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-  //Initialize model
-  if(!this->Initialized) this->Initialize();
-
   //If source is defined -> Synchronize mesh
   if(source)
   {
+    //Initialize filter
+    if(!this->Initialized) this->Initialize();
+
     vtkDebugMacro("Model source is present\n");
 
-    this->SyncFilter->SetInput(input);
-    this->SyncFilter->SetSource(source);
-    this->SyncFilter->Update();
+    //Synchronize input and source points
+    for(int i=0; i<input->GetNumberOfPoints(); i++)
+    {
+      double * p = source->GetPoint(this->HashMap->GetId(i));
+      input->GetPoints()->SetPoint(i,p);
+    }
 
-    output->ShallowCopy(this->SyncFilter->GetOutput());
+    if(this->Smoothing)
+    {
+      this->SmoothFilter->SetInput(input);
+      this->SmoothFilter->Update();
+      output->ShallowCopy(this->SmoothFilter->GetOutput());
+    }
+    else
+    {
+      output->ShallowCopy(input);
+    }
+
   }
   else
   {
     output->ShallowCopy(input);
   }
 
-  //Set visualization parameters
-  this->Actor->SetVisibility(this->Visibility);
-
-  if(this->Status){
-    this->Actor->GetProperty()->SetColor(this->Color);
-    this->Actor->GetProperty()->SetOpacity(this->Opacity);
-
-    this->Mapper->SetInput(output);
-    this->Mapper->Modified();
-  }
-
   return 1;
+
 }
 
 //--------------------------------------------------------------------------
-void vtkModel::Hide()
+void vtkSyncPolyDataFilter::PrintSelf(ostream&os, vtkIndent indent)
 {
-  this->Visibility = 0;
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::Show()
-{
-  this->Visibility = 1;
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::Disable()
-{
-  this->Status = 0;
-  this->Hide();
-  this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::Enable()
-{
-  this->Status = 1;
-  this->Show();
-  this->Modified();
-}
-
-//--------------------------------------------------------------------------
-void vtkModel::PrintSelf(ostream&os, vtkIndent indent)
-{
-  os << indent << "Id: " << this->Id << "\n";
-  os << indent << "ObjectId: " << this->ObjectId << "\n";
-  os << indent << "Model Type: " << this->ModelType << "\n";
-  os << indent << "Status: " << this->Status << "\n";
-  if(this->Name) os << indent << "Name: " << this->Name << "\n";
-  if(this->FileName) os << indent << "FileName: " << this->FileName << "\n";
-  os << indent << "Color: " << this->Color[0] << ", " << this->Color[1] << ", " << this->Color[2] << endl;
-  os << indent << "Opacity: " << this->Opacity << endl;
 
 }
