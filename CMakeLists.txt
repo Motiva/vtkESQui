@@ -111,20 +111,6 @@ IF(VTK_FOUND)
       ${PROJECT_BINARY_DIR}/${PROJECT_NAME}Configure.h
   )
 
-  #TODO: Change SUBDIRS Command to ADD_SUBDIRECTORY. This command is deprecated
-  SUBDIRS (
-    BioMechanics
-    CollisionDetection
-    Common
-    Scenario
-    Simulation
-    #Utilities
-  )
-
-  IF(VTKESQUI_USE_HAPTICS)
-    SUBDIRS( ${SUBDIRS} Haptics)
-  ENDIF(VTKESQUI_USE_HAPTICS)
-
   # Use wrapping hints for this project.
   SET(VTK_WRAP_HINTS "${PROJECT_SOURCE_DIR}/Wrapping/hints")
   # Create Tcl wrappers if VTK is wrapped in Tcl.
@@ -165,7 +151,7 @@ IF(VTK_FOUND)
 
   OPTION(BUILD_EXAMPLES "Build Examples." OFF)
   IF (BUILD_EXAMPLES)
-    SUBDIRS(${PROJECT_SOURCE_DIR}/Examples)
+    ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/Examples)
   ENDIF (BUILD_EXAMPLES)
  
   #
@@ -173,10 +159,11 @@ IF(VTK_FOUND)
   #
 
   INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
+  INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Common)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Scenario)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Simulation)
+  INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Interaction)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Utilities)
-  INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Common)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkParticleSpringSystem)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkExplicitDeformableModel)
@@ -215,7 +202,7 @@ IF(VTK_FOUND)
   # Build Documentation
   #
   IF (BUILD_DOCUMENTATION)
-    SUBDIRS(${PROJECT_SOURCE_DIR}/Documentation)
+    ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/Documentation)
   ENDIF (BUILD_DOCUMENTATION)
   
   #
@@ -226,5 +213,16 @@ IF(VTK_FOUND)
     INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkCUDAParticleSystem)
   ENDIF(VTKESQUI_USE_CUDA)
   
+  # Add Subdirectories
+  ADD_SUBDIRECTORY(Common)
+  ADD_SUBDIRECTORY(CollisionDetection)
+  ADD_SUBDIRECTORY(BioMechanics)
+  ADD_SUBDIRECTORY(Scenario)
+  ADD_SUBDIRECTORY(Interaction)
+  ADD_SUBDIRECTORY(Simulation)
+  
+  IF(VTKESQUI_USE_HAPTICS)
+    ADD_SUBDIRECTORY(Haptics)
+  ENDIF(VTKESQUI_USE_HAPTICS)
   
 ENDIF (VTK_FOUND)
