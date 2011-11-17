@@ -69,4 +69,4 @@ vtkFilteringPythonD
 INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 #-----------------------------------------------------------------------------
 
-SUBDIRS(Testing)
+ADD_SUBDIRECTORY(Testing)

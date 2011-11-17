@@ -10,8 +10,7 @@ SET(UKIT MANAGER)  #Uppercase Kit Name
 # Kit_SRCS variable.
 SET (Kit_SRCS 
 vtkSimulation.cxx
-#vtkSimulationSimulation.cxx
-vtkSimulationInteractorStyle.cxx
+#vtkSimulationInteractorStyle.cxx
 )
 
 # Set your list of libraries here.
@@ -19,6 +18,7 @@ SET(KIT_LIBS
 ${PROJECT_NAME}Common
 ${PROJECT_NAME}Scenario
 ${PROJECT_NAME}CollisionDetection
+${PROJECT_NAME}Interaction
 vtkCommon
 vtkRendering 
 )
@@ -28,6 +28,7 @@ SET(KIT_TCL_LIBS
 ${PROJECT_NAME}CommonTCL
 ${PROJECT_NAME}ScenarioTCL
 ${PROJECT_NAME}CollisionDetectionTCL
+${PROJECT_NAME}InteractionTCL
 vtkCommonTCL
 vtkRenderingTCL
 )
@@ -37,6 +38,7 @@ SET(KIT_PYTHON_LIBS
 ${PROJECT_NAME}CommonPythonD
 ${PROJECT_NAME}ScenarioPythonD
 ${PROJECT_NAME}CollisionDetectionPythonD
+${PROJECT_NAME}InteractionPythonD
 vtkCommonPythonD
 vtkRenderingPythonD
 )
@@ -77,4 +79,4 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 #-----------------------------------------------------------------------------
 
 # Subdirs to be added
-SUBDIRS(Testing)
+ADD_SUBDIRECTORY(Testing)

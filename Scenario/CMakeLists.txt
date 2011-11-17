@@ -93,4 +93,4 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 #-----------------------------------------------------------------------------
 
 # Subdirs to be added
-SUBDIRS(Testing)
+ADD_SUBDIRECTORY(Testing)

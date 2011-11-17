@@ -5,7 +5,7 @@ Before you try to add a new BMM, make sure its compilation and execution is corr
 1.- Create a new folder here and copy all the new BMM classes
 2.- You may have to implement a new Interface to the BMM (inherit vtkBiomechanicalModel). Place it in /src/Scenario and add the source file to the CMakeLists.txt in the src/Scenario Folder.
 3.- Add Subdirs command to the CMakeLists.txt located in this folder
- * SUBDIRS('BMMName')
+ * ADD_SUBDIRECTORY('BMMName')
 4.- Add the following lines to the vtkESQui root CmakeLists.txt:
  * INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/src/BMM/BMMName)
 5.- Optionally, You may want to add functionality to the SRML Importer (src/Utilities/vtkSRMLImporter).

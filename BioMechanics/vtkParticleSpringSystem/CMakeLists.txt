@@ -112,5 +112,5 @@ IF(VTK_FOUND)
 
  #TCL Wrapping not supported 
 
-SUBDIRS(Testing)
+ADD_SUBDIRECTORY(Testing)
 ENDIF(VTK_FOUND)

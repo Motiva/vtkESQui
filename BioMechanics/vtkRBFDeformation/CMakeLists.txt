@@ -107,5 +107,5 @@ IF(VTK_FOUND)
   TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${vtkRBFDeformation_LIBS})
 
   #TCL Wrapping not supported 
-SUBDIRS(Testing)
+ADD_SUBDIRECTORY(Testing)
 ENDIF(VTK_FOUND)

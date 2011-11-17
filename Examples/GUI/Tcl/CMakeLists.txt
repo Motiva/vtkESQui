@@ -42,7 +42,7 @@ IF (VTKESQUI_CAN_BUILD)
   #
 
   IF (VTKESQUI_USE_HAPTICS)
-    SUBDIRS (
+    ADD_SUBDIRECTORY (
       src/Tools
       src/Scenario
       src/Common
@@ -54,7 +54,7 @@ IF (VTKESQUI_CAN_BUILD)
       src/Test
     )
   ELSE (VTKESQUI_USE_HAPTICS)
-    SUBDIRS (
+    ADD_SUBDIRECTORY (
       src/Tools
       src/Scenario  
       src/Common
@@ -109,7 +109,7 @@ IF (VTKESQUI_CAN_BUILD)
 
   OPTION(BUILD_EXAMPLES "Build examples." OFF)
   IF (BUILD_EXAMPLES)
-    SUBDIRS(Examples)
+    ADD_SUBDIRECTORY(Examples)
   ENDIF (BUILD_EXAMPLES)
   
   #

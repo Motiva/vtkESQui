@@ -77,12 +77,12 @@ INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonBlock.cmake)
 
 # Subdirs to be added
 
-SUBDIRS(Testing)
-SUBDIRS(vtkParticleSpringSystem)
-SUBDIRS(vtkExplicitDeformableModel)
+ADD_SUBDIRECTORY(Testing)
+ADD_SUBDIRECTORY(vtkParticleSpringSystem)
+ADD_SUBDIRECTORY(vtkExplicitDeformableModel)
 IF(VTKESQUI_USE_FEM)
-  SUBDIRS(vtkFEMSystem)
+  ADD_SUBDIRECTORY(vtkFEMSystem)
 ENDIF(VTKESQUI_USE_FEM)
 IF(VTKESQUI_USE_CUDA)
-  SUBDIRS(vtkCUDAParticleSystem)
+  ADD_SUBDIRECTORY(vtkCUDAParticleSystem)
 ENDIF(VTKESQUI_USE_CUDA)
