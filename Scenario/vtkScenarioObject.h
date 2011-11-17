@@ -67,12 +67,12 @@ class vtkScenarioElementCollection;
 * (see vtkCollisionCollection), has been included in this this class.
 */
 
-class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioObject: public vtkPolyDataAlgorithm {
+class VTK_ESQUI_SCENARIO_EXPORT vtkScenarioObject: public vtkObject {
 
 public:
 
   //!Type revision macro
-  vtkTypeRevisionMacro(vtkScenarioObject,vtkPolyDataAlgorithm);
+  vtkTypeRevisionMacro(vtkScenarioObject,vtkObject);
   //! Create new organ
   static vtkScenarioObject * New();
   //!Return the class name
@@ -314,6 +314,8 @@ public:
   */
   void CleanCollisions();
 
+  virtual void Update();
+
 protected:
 
   vtkScenarioObject();
@@ -323,7 +325,7 @@ protected:
   virtual void Initialize();
 
   //! Process the algorithm request (Update).
-  virtual int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
+  //virtual int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
 
   //! Object identifier
   vtkIdType Id;

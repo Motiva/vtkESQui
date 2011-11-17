@@ -58,9 +58,6 @@ vtkStandardNewMacro(vtkScenarioObject);
 //--------------------------------------------------------------------------
 vtkScenarioObject::vtkScenarioObject() {
 
-  this->SetNumberOfInputPorts(0);
-  this->SetNumberOfOutputPorts(1);
-
   this->Id = -1;
   this->Name = NULL;
   this->RenderWindow = NULL;
@@ -93,19 +90,16 @@ void vtkScenarioObject::Initialize()
       e->SetId(id);
       if(this->ObjectType == Tool) e->SetType(vtkScenarioElement::Tool);
       else if(this->ObjectType == Organ) e->SetType(vtkScenarioElement::Organ);
-
     }
     this->Initialized = 1;
   }
 }
 
 //--------------------------------------------------------------------------
-int vtkScenarioObject::RequestData(vtkInformation *vtkNotUsed(request),
-    vtkInformationVector **inputVector,
-    vtkInformationVector *outputVector)
+void vtkScenarioObject::Update()
 {
 
-  //cout << "vtkScenarioObject::RequestData" << endl;
+  //cout << "vtkScenarioObject::Update" << endl;
 
   //Initialize
   if(!this->Initialized) this->Initialize();
@@ -116,11 +110,9 @@ int vtkScenarioObject::RequestData(vtkInformation *vtkNotUsed(request),
   this->Elements->InitTraversal();
   while (vtkScenarioElement * e =this->Elements->GetNextElement())
   {
-    e->Modified();
     e->Update();
   }
 
-  return 1;
 }
 
 //--------------------------------------------------------------------------

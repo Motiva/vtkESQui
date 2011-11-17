@@ -82,6 +82,7 @@ void vtkToolLaparoscopy::SetDepth(double depth)
     Superclass::Translate(0, 0, step);
     this->Depth = depth;
   }
+  this->Update();
 }
 
 //--------------------------------------------------------------------------
@@ -112,6 +113,7 @@ void vtkToolLaparoscopy::RotateX(double angle)
   //Rotate X
   Superclass::RotateX(angle);
   this->Restore();
+  this->Update();
 }
 
 //--------------------------------------------------------------------------
@@ -121,25 +123,14 @@ void vtkToolLaparoscopy::RotateY(double angle)
   //Rotate Y
   Superclass::RotateY(angle);
   this->Restore();
+  this->Update();
 }
 
 //--------------------------------------------------------------------------
 void vtkToolLaparoscopy::RotateZ(double angle)
 {
   Superclass::RotateZ(angle);
-}
-
-
-//--------------------------------------------------------------------------
-double *  vtkToolLaparoscopy::GetContactForceValue() {
-  return this->ForceFeedback;
-}
-
-//--------------------------------------------------------------------------
-void vtkToolLaparoscopy::SetForceFeedback(float Force[]){
-  this->ForceFeedback[0] = Force[0];
-  this->ForceFeedback[1] = Force[1];
-  this->ForceFeedback[2] = Force[2];
+  this->Update();
 }
 
 //----------------------------------------------------------------------------
@@ -173,6 +164,18 @@ void vtkToolLaparoscopy::Roll(double angle)
     this->RotateZ(step);
     this->RollAngle = angle;
   }
+}
+
+//--------------------------------------------------------------------------
+double *  vtkToolLaparoscopy::GetContactForceValue() {
+  return this->ForceFeedback;
+}
+
+//--------------------------------------------------------------------------
+void vtkToolLaparoscopy::SetForceFeedback(float Force[]){
+  this->ForceFeedback[0] = Force[0];
+  this->ForceFeedback[1] = Force[1];
+  this->ForceFeedback[2] = Force[2];
 }
 
 //--------------------------------------------------------------------------

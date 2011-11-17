@@ -81,15 +81,6 @@ public:
    */
   virtual void Initialize();
 
-  //! Sets the probe yaw angle
-  void Yaw(double angle);
-
-  //! Sets the probe pitch angle
-  void Pitch(double angle);
-
-  //! Sets the probe roll angle
-  void Roll(double angle);
-
 protected:  
 
   vtkToolProbe();

@@ -31,16 +31,6 @@ def main():
   fn3c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
 
   # Left Tool (Probe)
-  # Create visualization window
-  ren = vtk.vtkRenderer()
-  renWin = vtk.vtkRenderWindow()
-  renWin.AddRenderer(ren)
-  iren = vtk.vtkRenderWindowInteractor()
-  iren.SetRenderWindow(renWin)
-  
-  ren.SetBackground(1.0, 1.0, 1.0)
-  renWin.SetSize(800, 600)
-
   # Visualization model
   vis_stick_l = vtkesqui.vtkVisualizationModel()
   vis_stick_l.SetName("vis_stick_l")
@@ -172,13 +162,11 @@ def main():
   grasper_r.SetRightLever(r_lever_r)
   
   scenario = vtkesqui.vtkScenario()
-  scenario.SetRenderWindow(renWin)
   
   scenario.AddObject(probe_l)
   scenario.AddObject(grasper_r)
-  scenario.Update()
   
-  camera = ren.GetActiveCamera()
+  camera = vtk.vtkCamera()
   camera.SetPosition(0, 0, 6)
   camera.SetFocalPoint(0, 0, -6)
   camera.Yaw(0)
@@ -187,10 +175,15 @@ def main():
   camera.ParallelProjectionOff()
   camera.SetViewAngle(70)
   
+  scenario.SetCamera(camera)
+  
+  scenario.Update()
+  
   style = vtkesqui.vtkDefaultInteractorStyle()
   style.SetScenario(scenario)
   style.Initialize()
 
+  iren = scenario.GetRenderWindowInteractor()
   iren.SetInteractorStyle(style)
   iren.Initialize()
   

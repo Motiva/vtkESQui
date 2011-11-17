@@ -270,9 +270,11 @@ void vtkScenarioElement::Initialize()
 //----------------------------------------------------------------------------
 void vtkScenarioElement::Update() {
 
+  //cout << "vtkScenarioElement::Update" << endl;
+
   if(!this->Initialized) this->Initialize();
 
-    //Update sequence
+  //Update sequence
   //Save last position & calculate kinematic vales
   this->Velocity[0] = this->Position[0];
   this->Velocity[1] = this->Position[1];

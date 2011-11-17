@@ -106,39 +106,6 @@ void vtkToolProbe::SetTip(vtkScenarioElement * e)
 }
 
 //----------------------------------------------------------------------------
-void vtkToolProbe::Yaw(double angle)
-{
-  double step = angle - this->YawAngle;
-  if(step != 0)
-  {
-    this->RotateY(step);
-    this->YawAngle = angle;
-  }
-}
-
-//----------------------------------------------------------------------------
-void vtkToolProbe::Pitch(double angle)
-{
-  double step = angle - this->PitchAngle;
-  if(step != 0)
-  {
-    this->RotateX(step);
-    this->PitchAngle = angle;
-  }
-}
-
-//----------------------------------------------------------------------------
-void vtkToolProbe::Roll(double angle)
-{
-  double step = angle - this->RollAngle;
-  if(step != 0)
-  {
-    this->RotateZ(step);
-    this->RollAngle = angle;
-  }
-}
-
-//----------------------------------------------------------------------------
 void vtkToolProbe::PrintSelf(ostream& os,vtkIndent indent) {
   this->Superclass::PrintSelf(os,indent);
 }

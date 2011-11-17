@@ -47,21 +47,25 @@ POSSIBILITY OF SUCH DAMAGE.
 
 class vtkRenderWindow;
 class vtkRenderer;
+class vtkRenderWindowInteractor;
+class vtkCamera;
+class vtkLight;
+class vtkLightCollection;
 
 class vtkScenarioObject;
 class vtkScenarioObjectCollection;
 
 //!Implementation of a surgical simulation scenario.
 /*!
- * In vtkESQui framework a surgical scenario is implemented with this
- * class.\n
- * All the elements in the scenario (objects, tools...) are stored in a
- * collection, Objects. Any scenario object should be previously defined
- * (all of its required parameters set) before being inserted/added to the
- * scenario.\n
- * Apart from scenario objects, a vtkRenderWindow object must be assigned
- * before object initialization for displaying purposes.
- */
+* In vtkESQui framework a surgical scenario is implemented with this
+* class.\n
+* All the elements in the scenario (objects, tools...) are stored in a
+* collection, Objects. Any scenario object should be previously defined
+* (all of its required parameters set) before being inserted/added to the
+* scenario.\n
+* Apart from scenario objects, a vtkRenderWindow object must be assigned
+* before object initialization for displaying purposes.
+*/
 
 class VTK_ESQUI_SCENARIO_EXPORT vtkScenario: public vtkObject
 {
@@ -78,63 +82,147 @@ public:
 
   //! Assign model name
   /*!
-   *\sa GetName()
-   */
+  *\sa GetName()
+  */
   vtkSetStringMacro(Name);
 
   //!Return model name
   /*!
-   *\sa SetName(const char * name)
-   */
+  *\sa SetName(const char * name)
+  */
   vtkGetStringMacro(Name);
+
+  //! Set the scenario background color
+  /*!
+  * By default in RGB mode is [1,1,1]
+  */
+  vtkSetVector3Macro(Background, double);
+
+  //! Get the scenario background color
+  /*!
+  * Note: in RGB mode
+  */
+  vtkGetVector3Macro(Background, double);
+
+  //! Set the scenario window size
+  /*!
+  * By default is 800,600
+  */
+  vtkSetVector2Macro(WindowSize, int);
+
+  //! Get the scenario window size
+  vtkGetVector3Macro(WindowSize, int);
 
   //!Set the collection of objects of the scenario
   /*!
-   * \param collection collection of objects to be inserted to the scenario
-   * \sa GetObjects()
-   */
+  * \param collection collection of objects to be inserted to the scenario
+  * \sa GetObjects()
+  */
   void SetObjects(vtkScenarioObjectCollection * collection);
 
   //!Get the collection of objects of the scenario
   /*!
-   * \sa SetObjects(vtkScenarioObjectCollection * collection)
-   */
+  * \sa SetObjects(vtkScenarioObjectCollection * collection)
+  */
   vtkScenarioObjectCollection * GetObjects();
 
   //!Insert object to the scenario
   /*!
-   * The object will be inserted at the end of the list
-   * \param object vtkScenarioObject object to be inserted
-   * \return position of the added object.
-   * \sa InsertObject(vtkScenarioObject * object)
-   */
+  * The object will be inserted at the end of the list
+  * \param object vtkScenarioObject object to be inserted
+  * \return position of the added object.
+  * \sa InsertObject(vtkScenarioObject * object)
+  */
   void AddObject(vtkScenarioObject * object);
 
   //!Insert an object in the specified position
   /*!
-   * If the given position is not empty, the content is replaced by the new model
-   * \param index index of the list where the object will be added
-   * \param object vtkScenarioObject object to be inserted
-   * \sa InsertNextObject(vtkScenarioObject * object)
-   */
+  * If the given position is not empty, the content is replaced by the new model
+  * \param index index of the list where the object will be added
+  * \param object vtkScenarioObject object to be inserted
+  * \sa InsertNextObject(vtkScenarioObject * object)
+  */
   void ReplaceObject(vtkIdType index, vtkScenarioObject * object);
 
   //!Delete the object at the specified id from the scenario
   /*!
-   * It will only remove the object from the collection, it does not free memory
-   * \param index index of the object to be removed
-   */
+  * It will only remove the object from the collection, it does not free memory
+  * \param index index of the object to be removed
+  */
   void RemoveObject(vtkIdType index);
 
   //!Return the object at the specified position
   /*!
-   * \param id index of the object to be returned
-   * \return vtkScenarioObject object
-   */
+  * \param id index of the object to be returned
+  * \return vtkScenarioObject object
+  */
   vtkScenarioObject * GetObject(vtkIdType id);
 
   //!Return number of objects in the scenario
   vtkIdType GetNumberOfObjects();
+
+  //!Set the collection of lights of the scenario
+  /*!
+  * \param collection collection of lights to be inserted to the scenario
+  * \sa GetLights()
+  */
+  void SetLights(vtkLightCollection * collection);
+
+  //!Get the collection of lights of the scenario
+  /*!
+  * \sa SetLights(vtkLightCollection * collection)
+  */
+  vtkLightCollection * GetLights();
+
+  //!Insert light to the scenario
+  /*!
+  * The light will be inserted at the end of the list
+  * \param light vtkLight light to be inserted
+  * \return position of the added light.
+  * \sa InsertLight(vtkLight * light)
+  */
+  void AddLight(vtkLight * light);
+
+  //!Insert an light in the specified position
+  /*!
+  * If the given position is not empty, the content is replaced by the new model
+  * \param index index of the list where the light will be added
+  * \param light vtkLight light to be inserted
+  * \sa InsertNextLight(vtkLight * light)
+  */
+  void ReplaceLight(vtkIdType index, vtkLight * light);
+
+  //!Delete the light at the specified id from the scenario
+  /*!
+  * It will only remove the light from the collection, it does not free memory
+  * \param index index of the light to be removed
+  */
+  void RemoveLight(vtkIdType index);
+
+  //!Return the light at the specified position
+  /*!
+  * \param id index of the light to be returned
+  * \return vtkLight light
+  */
+  vtkLight * GetLight(vtkIdType id);
+
+  //!Return number of lights in the scenario
+  vtkIdType GetNumberOfLights();
+
+  //!Set camera to the scenario
+  /*!
+  * The camera will be inserted at the end of the list
+  * \param camera vtkCamera camera to be inserted
+  * \return position of the added camera.
+  * \sa InsertCamera(vtkCamera * camera)
+  */
+  void SetCamera(vtkCamera * camera);
+
+  //!Return the scenario camera
+  /*!
+  * \return vtkCamera camera
+  */
+  vtkCamera * GetCamera();
 
   //!Set/Get legend display
   vtkSetMacro(Collision, bool);
@@ -144,34 +232,46 @@ public:
 
   //!Assign the render window of the scenario
   /*!
-   * \param window render window for displaying purposes
-   * \sa GetRenderWindow()
-   */
+  * \param window render window for displaying purposes
+  * \sa GetRenderWindow()
+  */
   void SetRenderWindow(vtkRenderWindow *window);
 
   //!Return the render window of the scenario
   /*!
-   * \sa SetRenderWindow(vtkRenderWindow *Renderer)
-   */
+  * \sa SetRenderWindow(vtkRenderWindow *Renderer)
+  */
   vtkRenderWindow *GetRenderWindow();
 
-  //! Check if scenario has been initialized
-  bool IsInitialized(){return this->Initialized;};
+  //!Assign the render window interactor of the scenario
+  /*!
+  * \param window render window interactor
+  * \sa GetRenderWindowInteractor()
+  */
+  void SetRenderWindowInteractor(vtkRenderWindowInteractor *iren);
 
-  //!Initialize Scenario
-  void Initialize();
+  //!Return the render window interactor
+  /*!
+  * \sa SetRenderWindowInteractor(vtkRenderWindowInteractor *iren)
+  */
+  vtkRenderWindowInteractor *GetRenderWindowInteractor();
 
   //!Update the whole Scenario
   /*!
-   * Collision Detection is processed. If any contact has occurred the related tools and objects will be updated
-   */
+  * Collision Detection is processed. If any contact has occurred the related tools and objects will be updated
+  */
   void Update();
+
+  //!Render the scenario
+  /*!
+  * Render window of the scenario is updated
+  */
+  void Render();
 
 protected:
 
   vtkScenario();
   ~vtkScenario();
-
 
   //! Name of the scenario
   char* Name;
@@ -179,16 +279,38 @@ protected:
   //! Initialization flag
   bool Initialized;
 
+  //!Enable collision detection
+  bool Collision;
+
+  //! Background color
+  double Background[3];
+
+  //! Window size
+  int WindowSize[2];
+
   //!Scenario render window
   vtkRenderWindow * RenderWindow;
+
   //!Scenario renderer
   vtkRenderer * Renderer;
+
+  //!Render window interactor
+  vtkRenderWindowInteractor * RenderWindowInteractor;
 
   //!Collection of the scenario objects
   vtkScenarioObjectCollection * Objects;
 
-  //!Enable collision detection
-  bool Collision;
+  //!Collection of lights
+  vtkLightCollection * Lights;
+
+  //!Scenario camera
+  vtkCamera * Camera;
+
+  //! Check if scenario has been initialized
+  bool IsInitialized(){return this->Initialized;};
+
+  //!Initialize Scenario
+  void Initialize();
 
 private:
 

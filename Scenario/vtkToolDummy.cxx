@@ -83,7 +83,7 @@ void vtkToolDummy::Initialize() {
   {
     piece = this->GetPiece(id);
     piece->SetRenderWindow(this->RenderWindow);
-    piece->Init();
+    piece->Initialize();
 
     this->Actors->AddItem((vtkActor*) piece->GetActor());
     this->Transforms->AddItem((vtkTransform*) piece->GetTransform());

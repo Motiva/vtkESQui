@@ -44,13 +44,20 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkObjectFactory.h"
 #include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
 #include "vtkRendererCollection.h"
+#include "vtkCamera.h"
+#include "vtkLight.h"
+#include "vtkLightCollection.h"
 
 #include "vtkScenarioObject.h"
 #include "vtkScenarioObjectCollection.h"
 #include "vtkScenarioElement.h"
 #include "vtkScenarioElementCollection.h"
 #include "vtkModel.h"
+#include "vtkVisualizationModel.h"
+#include "vtkCollisionModel.h"
+#include "vtkDeformationModel.h"
 #include "vtkActor.h"
 #include "vtkVisualizationModel.h"
 #include "vtkModelCollection.h"
@@ -62,7 +69,14 @@ vtkStandardNewMacro(vtkScenario);
 vtkScenario::vtkScenario() {
 
   this->Initialized = 0;
+  this->Camera = NULL;
   this->Objects = vtkScenarioObjectCollection::New();
+  this->Lights = vtkLightCollection::New();
+  this->Background[0] = 1.0;
+  this->Background[1] = 1.0;
+  this->Background[2] = 1.0;
+  this->WindowSize[0] = 800;
+  this->WindowSize[1] = 600;
 
 }
 
@@ -70,6 +84,8 @@ vtkScenario::vtkScenario() {
 vtkScenario::~vtkScenario(){
   this->Objects->RemoveAllItems();
   this->Objects->Delete();
+  this->Lights->RemoveAllItems();
+  this->Lights->Delete();
 }
 
 //----------------------------------------------------------------------------
@@ -125,9 +141,69 @@ vtkScenarioObject * vtkScenario::GetObject(vtkIdType id)
 }
 
 //----------------------------------------------------------------------------
+void vtkScenario::SetLights(vtkLightCollection * collection)
+{
+  this->Lights->RemoveAllItems();
+
+  collection->InitTraversal();
+  while(vtkLight * light = collection->GetNextItem())
+  {
+    this->AddLight(light);
+  }
+}
+
+//----------------------------------------------------------------------------
+vtkLightCollection * vtkScenario::GetLights()
+{
+  return this->Lights;
+}
+
+//----------------------------------------------------------------------------
+void vtkScenario::AddLight(vtkLight* light)
+{
+  this->Lights->AddItem(light);
+}
+
+//----------------------------------------------------------------------------
+void vtkScenario::ReplaceLight(vtkIdType index,vtkLight* light)
+{
+  this->Lights->ReplaceItem(index, light);
+}
+
+//----------------------------------------------------------------------------
+void vtkScenario::RemoveLight(vtkIdType index)
+{
+  this->Lights->RemoveItem(index);
+}
+
+//----------------------------------------------------------------------------
+vtkIdType vtkScenario::GetNumberOfLights()
+{
+  return this->Lights->GetNumberOfItems();
+}
+
+//----------------------------------------------------------------------------
+vtkLight * vtkScenario::GetLight(vtkIdType id)
+{
+  return vtkLight::SafeDownCast(this->Lights->GetItemAsObject(id));
+}
+
+//----------------------------------------------------------------------------
+void vtkScenario::SetCamera(vtkCamera* camera)
+{
+  if(this->Camera) this->Camera->Delete();
+  this->Camera = camera;
+}
+
+//----------------------------------------------------------------------------
+vtkCamera * vtkScenario::GetCamera()
+{
+  return this->Camera;
+}
+
+//----------------------------------------------------------------------------
 void vtkScenario::SetRenderWindow(vtkRenderWindow *window) {
   this->RenderWindow = window;
-  this->Renderer= RenderWindow->GetRenderers()->GetFirstRenderer();
 }
 
 //----------------------------------------------------------------------------
@@ -136,34 +212,79 @@ vtkRenderWindow* vtkScenario::GetRenderWindow() {
 }
 
 //----------------------------------------------------------------------------
+void vtkScenario::SetRenderWindowInteractor(vtkRenderWindowInteractor *iren) {
+  this->RenderWindowInteractor = iren;
+}
+
+//----------------------------------------------------------------------------
+vtkRenderWindowInteractor * vtkScenario::GetRenderWindowInteractor() {
+  return this->RenderWindowInteractor;
+}
+
+//----------------------------------------------------------------------------
 void vtkScenario::Initialize()
 {
-  if(!this->Initialized && this->RenderWindow)
+  if(!this->Initialized)
   {
-    this->Objects->InitTraversal();
-    int i = 0;
-    while(vtkScenarioObject * o = this->Objects->GetNextObject())
+    if(!this->RenderWindow)
     {
+      this->Renderer = vtkRenderer::New();
+      this->RenderWindow = vtkRenderWindow::New();
+      this->RenderWindow->AddRenderer(this->Renderer);
+
+      this->RenderWindowInteractor = vtkRenderWindowInteractor::New();
+      this->RenderWindowInteractor->SetRenderWindow(this->RenderWindow);
+    }
+    else
+    {
+      this->Renderer = this->RenderWindow->GetRenderers()->GetFirstRenderer();
+      this->RenderWindowInteractor = this->RenderWindow->GetInteractor();
+    }
+
+    this->RenderWindow->SetSize(this->WindowSize);
+    this->Renderer->SetBackground(this->Background);
+
+    //Set scenario camera
+    this->Renderer->SetActiveCamera(this->Camera);
+
+    //Add lights to the scenario
+    this->Lights->InitTraversal();
+    while(vtkLight * l = this->Lights->GetNextItem())
+    {
+      this->Renderer->AddLight(l);
+    }
+
+    for(int i=0; i < this->Objects->GetNumberOfObjects(); i++)
+    {
+      vtkScenarioObject * o = this->Objects->GetObject(i);
       o->SetRenderWindow(this->RenderWindow);
       o->SetRenderer(this->Renderer);
       o->SetId(i);
+      o->Update();
 
-      //Add all actors to the render window
-      for(int id = 0; id<o->GetNumberOfElements(); id++)
+      //Add actors to the render window if active
+      vtkScenarioElementCollection * elements = o->GetElements();
+      elements->InitTraversal();
+      while(vtkScenarioElement * e = elements->GetNextElement())
       {
-        vtkScenarioElement * e = o->GetElement(id);
-
-        //Display every visible model. Hiding model is done by vtkModel:Hide()
-        vtkModelCollection * models = e->GetModels();
-        models->InitTraversal();
-        while(vtkModel * m = models->GetNextModel()){
-          this->Renderer->AddActor(m->GetActor());
+        if(e->GetVisualizationModel())
+        {
+          this->Renderer->AddActor(e->GetVisualizationModel()->GetActor());
         }
-
+        if(e->GetCollisionModel())
+        {
+          this->Renderer->AddActor(e->GetCollisionModel()->GetActor());
+        }
+        if(e->GetDeformationModel())
+        {
+          this->Renderer->AddActor(e->GetDeformationModel()->GetActor());
+        }
       }
-      i++;
+
+      this->RenderWindow->GetInteractor()->Initialize();
+
+      this->Initialized = 1;
     }
-    this->Initialized = 1;
   }
 }
 
@@ -171,13 +292,31 @@ void vtkScenario::Initialize()
 void vtkScenario::Update()
 {
   //cout << "vtkScenario::Update()" << endl;
+
+  if(!this->Initialized) this->Initialize();
+
   //Process every scenario object and perform an update on it
   this->Objects->InitTraversal();
-  while(vtkScenarioObject * object = this->Objects->GetNextObject())
+  while(vtkScenarioObject * o = this->Objects->GetNextObject())
   {
-    object->Modified();
-    object->Update();
+    //o->Modified();
+    //o->Update();
+    vtkScenarioElementCollection * elements = o->GetElements();
+    elements->InitTraversal();
+    while(vtkScenarioElement * e = elements->GetNextElement())
+    {
+      if(e->GetDeformationModel())
+      {
+        //Update object deformation
+      }
+    }
   }
+
+}
+
+//----------------------------------------------------------------------------
+void vtkScenario::Render()
+{
   this->RenderWindow->Render();
 }
 
