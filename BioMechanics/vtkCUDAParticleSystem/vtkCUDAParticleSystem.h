@@ -52,7 +52,7 @@ class vtkMassProperties;
 //! Implementation of the particle-spring deformation model
 /*!
  * The system is compounded of several collections of elements: springs, particles, links.
- * There are some system properties to define material behavior. All these properties must be set prior to the initialization Init()
+ * There are some system properties to define material behavior. All these properties must be set prior to the initialization Initialize()
  */
 
 class VTK_vtkCUDAParticleSystem_EXPORT vtkCUDAParticleSystem : public vtkPolyDataAlgorithm {
@@ -119,7 +119,7 @@ protected:
   int RequestData(vtkInformation *vtkNotUsed(request), vtkInformationVector **inputVector, vtkInformationVector *outputVector);
 
   // Model Parameters
-  //! Init flag
+  //! Initialize flag
   bool Initialized;
   //! System total number of Particles
   int NumberOfParticles;

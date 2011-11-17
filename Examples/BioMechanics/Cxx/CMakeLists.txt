@@ -21,22 +21,13 @@ ENDIF(VTKESQUI_USE_HAPTICS)
 
  # Set your list of libraries here.
 SET(KIT_LIBS 
-    ${PROJECT_NAME}Scenario
-    ${PROJECT_NAME}CollisionDetection
-    vtkRendering
+  ${PROJECT_NAME}Scenario
+  ${PROJECT_NAME}BioMechanics
+  ${PROJECT_NAME}CollisionDetection
+  vtkRendering
   vtkGraphics 
   vtkCommon
   vtkHybrid
-)
-
-# Set your list of TCL libraries here.
-SET(KIT_TCL_LIBS 
-    ${PROJECT_NAME}ScenarioTCL
-    ${PROJECT_NAME}SimulationTCL
-    vtkRenderingTCL
-    vtkGraphicsTCL
-  vtkCommonTCL
-  vtkHybridTCL
 )
  
 IF(APPLE)

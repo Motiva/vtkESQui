@@ -132,7 +132,6 @@ int main(int argc, char * argv[])
 
   scenario->SetRenderWindow(renWin);
   scenario->AddObject(probe);
-  scenario->Initialize();
 
   scenario->Update();
 

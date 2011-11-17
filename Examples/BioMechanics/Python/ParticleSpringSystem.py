@@ -2,7 +2,6 @@
 import vtk
 import vtkesqui
 import time
-from Scientific.Visualization.VRML2 import Camera
 
 class vtkTimerCallback():
    def __init__(self):

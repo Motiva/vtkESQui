@@ -7,7 +7,6 @@ SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
-    SimulationInteractor
     SimulationLaparoscopy
     #SimulationLaparoscopyVR
 )
@@ -33,19 +32,6 @@ SET(KIT_LIBS
   vtkHybrid
 )
 
-# Set your list of TCL libraries here.
-SET(KIT_TCL_LIBS 
-    #${PROJECT_NAME}UtilitiesTCL
-    ${PROJECT_NAME}ScenarioTCL
-    ${PROJECT_NAME}SimulationTCL
-    ${PROJECT_NAME}CommonTCL
-    vtkRenderingTCL
-    vtkVolumeRenderingTCL
-    vtkGraphicsTCL
-  vtkCommonTCL
-  vtkHybridTCL
-)
- 
 IF(APPLE)
     SET(EXECUTABLE_FLAG MACOSX_BUNDLE)
 ENDIF(APPLE)

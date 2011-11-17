@@ -271,10 +271,10 @@ int main(int argc, char * argv[])
   probe->SetTip(tip_r);
   probe->Initialize();
 
-  /**********  Init Scene Environment  ********/
+  /**********  Initialize Scene Environment  ********/
   scenario->AddObject(grasper);
   scenario->AddObject(probe);
-  scenario->Initialize();
+  scenario->Update();
 
   /********** Lights  **********/
   ren1->GetLights()->InitTraversal();
@@ -304,10 +304,10 @@ int main(int argc, char * argv[])
   camera->SetViewAngle(70);
 
   /**********  Simulation Setup  ********/
-  vtkSmartPointer<vtkSimulationInteractorStyle> style = vtkSmartPointer<vtkSimulationInteractorStyle>::New();
+  vtkSmartPointer<vtkDefaultInteractorStyle> style = vtkSmartPointer<vtkDefaultInteractorStyle>::New();
   //style->DebugOn();
   style->SetScenario(scenario);
-  style->Init();
+  style->Initialize();
 
   grasper->Translate(-3,0,0);
   grasper->RotateY(-15);

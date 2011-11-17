@@ -3,16 +3,14 @@
 # the source files and libraries
 #
 
-SET(KIT ESQUIHapticsExamples)   #Kit Name
-SET(UKIT ESQUIHAPTICSEXAMPLES)  #Uppercase Kit Name
+SET(KIT ESQUIExamples)   #Kit Name
+SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
-#VSP and IHP Examples cannot be compiled simultaneously due to dll conflicts
 SET(Kit_SRCS
-    HapticIHPExample
-    HapticLSWExample
-    HapticVSPExample
- )
- 
+    SimulationLaparoscopy
+    #SimulationLaparoscopyVR
+)
+
 #-----------------------------------------------------------------------------
 # Include common Haptics CMake code. 
 # Note: Should be located before KitCommonBlock INCLUDE command
@@ -23,14 +21,14 @@ ENDIF(VTKESQUI_USE_HAPTICS)
 
  # Set your list of libraries here.
 SET(KIT_LIBS 
-  ${PROJECT_NAME}Haptics
   ${PROJECT_NAME}Scenario
+  ${PROJECT_NAME}Common
   vtkRendering
   vtkGraphics 
   vtkCommon
   vtkHybrid
 )
- 
+
 IF(APPLE)
     SET(EXECUTABLE_FLAG MACOSX_BUNDLE)
 ENDIF(APPLE)

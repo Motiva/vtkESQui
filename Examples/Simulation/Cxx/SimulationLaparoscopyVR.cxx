@@ -332,7 +332,7 @@ int main(int argc, char * argv[])
   camera->SetViewAngle(70);
 
   /**********  Simulation Setup  ********/
-  vtkSimulationInteractorStyle * style = vtkSimulationInteractorStyle::New();
+  vtkDefaultInteractorStyle * style = vtkDefaultInteractorStyle::New();
   style->SetScenario(scenario);
   //iren->SetInteractorStyle(style);
 
@@ -341,7 +341,7 @@ int main(int argc, char * argv[])
   simulation->SetRenderTimerRate(0.02);
   simulation->SetSimulationTimerRate(0.01);
   simulation->SetHapticTimerRate(0.001);
-  simulation->Init();
+  simulation->Initialize();
 
   simulation->Run();
 

@@ -144,15 +144,6 @@ IF(VTK_FOUND)
       ENDIF (WIN32)
     ENDIF (VTKESQUI_WRAP_PYTHON)
   ENDIF (VTK_WRAP_PYTHON)
-  
-  #
-  # Build examples too.
-  #
-
-  OPTION(BUILD_EXAMPLES "Build Examples." OFF)
-  IF (BUILD_EXAMPLES)
-    ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/Examples)
-  ENDIF (BUILD_EXAMPLES)
  
   #
   # Include path(s) of the local classes of the project
@@ -163,13 +154,21 @@ IF(VTK_FOUND)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Scenario)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Simulation)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Interaction)
-  #INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Utilities)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkParticleSpringSystem)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkExplicitDeformableModel)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkExplicitDeformableModel/Filters)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/CollisionDetection)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/CollisionDetection/vtkbioeng)
+  
+  #
+  # Build examples too.
+  #
+
+  OPTION(BUILD_EXAMPLES "Build Examples." OFF)
+  IF (BUILD_EXAMPLES)
+    ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/Examples)
+  ENDIF (BUILD_EXAMPLES)
   
   IF(VTKESQUI_USE_HAPTICS)
     

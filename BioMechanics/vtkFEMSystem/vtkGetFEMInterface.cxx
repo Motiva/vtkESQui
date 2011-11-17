@@ -89,7 +89,7 @@ void vtkGetFEMInterface::Init()
   std::cout << "Mesh nb points:" << this->Mesh->nb_points() << "\n";
   std::cout << "Mesh nb convex:" << this->Mesh->nb_convex() << "\n";
 
-  //Init MF_U, MF_RHS and MF_VM
+  //Initialize MF_U, MF_RHS and MF_VM
   this->MF_U = new getfem::mesh_fem(*(this->Mesh));
   this->MF_VM = new getfem::mesh_fem(*(this->Mesh));
   this->MF_RHS = new getfem::mesh_fem(*(this->Mesh));
@@ -98,7 +98,7 @@ void vtkGetFEMInterface::Init()
   this->MF_U->set_qdim(dim_type(N));
   this->MF_VM->set_qdim(dim_type(N));
 
-  //Init the integration method
+  //Initialize the integration method
   this->MIM = new getfem::mesh_im(*(this->Mesh));
   getfem::pfem pf_u = getfem::fem_descriptor(FEM_TYPE);
   getfem::pfem pf_mult_cont = getfem::fem_descriptor(FEM_TYPE_CONT);
@@ -128,12 +128,12 @@ void vtkGetFEMInterface::Init()
   //Set boundary conditions
   this->SelectBoundaries();
 
-  //Init DOFs
+  //Initialize DOFs
   this->MF_U->nb_dof();
   this->MF_RHS->nb_dof();
   this->MF_VM->nb_dof();
 
-  //Init FEM Model
+  //Initialize FEM Model
   this->Model = new getfem::model();
 
   std::cout << "FEM Elastodynamic problem has been correctly initialized\n";

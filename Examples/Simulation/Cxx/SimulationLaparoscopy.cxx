@@ -63,7 +63,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkOrgan.h"
 
 #include "vtkSimulation.h"
-#include "vtkSimulationInteractorStyle.h"
+#include "vtkDefaultInteractorStyle.h"
 #include "vtkParticleSpringSystemInterface.h"
 
 //!This test perform a standard execution of the ESQUI simulation of a laparoscopic scenario.
@@ -272,32 +272,8 @@ int main(int argc, char * argv[])
   /**********  Initialize Scenario  ********/
   scenario->AddObject(leftGrasper);
   scenario->AddObject(organ);
-  //scenario->AddObject(stomach);
-  scenario->Initialize();
 
-  //stomach->Translate(0, 0, -2);
-
-  //Debug purposes
-  /*vtkSmartPointer<vtkActor> ac0 = vtkSmartPointer<vtkActor>::New();
-  vtkSmartPointer<vtkPolyDataMapper> mc0 = vtkSmartPointer<vtkPolyDataMapper>::New();
-  mc0->SetInput(col_stick->GetOutput(1));
-  ac0->SetMapper(mc0);
-  ac0->GetProperty()->SetColor(0,1,0);
-  ren1->AddActor(ac0);
-
-  vtkSmartPointer<vtkActor> ac1 = vtkSmartPointer<vtkActor>::New();
-  vtkSmartPointer<vtkPolyDataMapper> mc1 = vtkSmartPointer<vtkPolyDataMapper>::New();
-  mc0->SetInput(col_lever_l->GetOutput(1));
-  ac1->SetMapper(mc1);
-  ac1->GetProperty()->SetColor(0,1,0);
-  ren1->AddActor(ac1);
-
-  vtkSmartPointer<vtkActor> ac2 = vtkSmartPointer<vtkActor>::New();
-  vtkSmartPointer<vtkPolyDataMapper> mc2 = vtkSmartPointer<vtkPolyDataMapper>::New();
-  mc2->SetInput(col_lever_r->GetOutput(1));
-  ac2->SetMapper(mc2);
-  ac2->GetProperty()->SetColor(0,1,0);
-  ren1->AddActor(ac2);*/
+  scenario->Update();
 
   /********** Lights  **********/
   ren1->GetLights()->InitTraversal();
@@ -327,7 +303,7 @@ int main(int argc, char * argv[])
   camera->SetViewAngle(70);
 
   /**********  Simulation Setup  ********/
-  vtkSmartPointer<vtkSimulationInteractorStyle> style = vtkSmartPointer<vtkSimulationInteractorStyle>::New();
+  vtkSmartPointer<vtkDefaultInteractorStyle> style = vtkSmartPointer<vtkDefaultInteractorStyle>::New();
 
   vtkSimulation * simulation = vtkSimulation::New();
   simulation->SetScenario(scenario);
@@ -335,7 +311,7 @@ int main(int argc, char * argv[])
   simulation->SetRenderTimerRate(renrate);
   simulation->SetSimulationTimerRate(simrate);
   simulation->SetInteractionTimerRate(haprate);
-  simulation->Init();
+  simulation->Initialize();
 
   simulation->Run();
 
