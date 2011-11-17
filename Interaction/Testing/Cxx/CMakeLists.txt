@@ -1,18 +1,13 @@
-SET(KIT vtkESQuiUtilities)
+SET(KIT vtkESQuiInteraction)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
-  TestvtkSRMLImporter.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})
 TARGET_LINK_LIBRARIES(${KIT}CxxTests 
-    ${PROJECT_NAME}Utilities
-    ${PROJECT_NAME}Scenario
-    ${PROJECT_NAME}Simulation
-    vtkCommon  
-  vtkGraphics 
-  vtkFiltering
-  vtkHybrid
-  )
+  ${PROJECT_NAME}Interaction
+  vtkCommon
+  vtkRendering 
+  vtkIO)
 
 SET (TestsToRun ${Tests})
 REMOVE (TestsToRun ${KIT}CxxTests.cxx)

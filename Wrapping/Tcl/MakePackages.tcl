@@ -10,6 +10,6 @@ pkg_mkIndex -direct -verbose vtkesquibiomechanics
 pkg_mkIndex -direct -verbose vtkesquicommon
 pkg_mkIndex -direct -verbose vtkesquisimulation
 pkg_mkIndex -direct -verbose vtkesquiscenario
-pkg_mkIndex -direct -verbose vtkesquiutilities
 pkg_mkIndex -direct -verbose vtkesquihaptics
+pkg_mkIndex -direct -verbose vtkesquiinteraction
 exit

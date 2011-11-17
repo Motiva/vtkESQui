@@ -56,20 +56,20 @@ class vtkScenario;
  * Mouse and keyboard events are handled and further actions, such as
  * rotations or translations, implemented.
  */
-class VTK_ESQUI_SIMULATION_EXPORT vtkSimulationInteractorStyle : public vtkInteractorStyleTrackballCamera {
+class VTK_ESQUI_SIMULATION_EXPORT vtkDefaultInteractorStyle : public vtkInteractorStyleTrackballCamera {
 
 public:
   //! Type revision macro
-  vtkTypeRevisionMacro(vtkSimulationInteractorStyle,vtkInteractorStyleTrackballCamera);
+  vtkTypeRevisionMacro(vtkDefaultInteractorStyle,vtkInteractorStyleTrackballCamera);
 
   //! Create new vtkSimulationInteractorStyle object
-  static vtkSimulationInteractorStyle *New();
+  static vtkDefaultInteractorStyle *New();
 
   //! Return class name
   const char *GetClassName() {return "vtkSimulationInteractorStyle";};
 
   //! Initialization of the simulation style
-  void Init();
+  void Initialize();
 
   //! Handle onKeyPress event
   virtual void OnKeyPress();
@@ -91,6 +91,11 @@ public:
   virtual void OnRightButtonDown();
   //! Handle onRightButtonUp event
   virtual void OnRightButtonUp();
+
+  //! Handle OnMouseWheelForward event
+  virtual void OnMouseWheelForward();
+  //! Handle OnMouseWheelBackward event
+  virtual void OnMouseWheelBackward();
 
   //! Set interactor scenario
   /*!
@@ -127,8 +132,8 @@ public:
   vtkGetMacro(Scale, double);
 
 protected:
-  vtkSimulationInteractorStyle();
-  ~vtkSimulationInteractorStyle();
+  vtkDefaultInteractorStyle();
+  ~vtkDefaultInteractorStyle();
 
   // Returns stroed tool identifier
   int GetToolId(int id);
@@ -163,7 +168,7 @@ protected:
   bool Initialized;
 
 private:
-  vtkSimulationInteractorStyle (const vtkSimulationInteractorStyle &);//NotImplemented
-  void operator =(const vtkSimulationInteractorStyle &);//Not Implemented
+  vtkDefaultInteractorStyle (const vtkDefaultInteractorStyle &);//NotImplemented
+  void operator =(const vtkDefaultInteractorStyle &);//Not Implemented
 };
 #endif

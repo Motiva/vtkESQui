@@ -40,7 +40,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 
-#include "vtkSimulationInteractorStyle.h"
+#include "vtkDefaultInteractorStyle.h"
 
 #include "vtkObjectFactory.h"
 #include "vtkRenderWindow.h"
@@ -56,14 +56,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTool.h"
 #include "vtkToolGrasper.h"
 
-#include "vtkOrgan.h"
-
-vtkCxxRevisionMacro(vtkSimulationInteractorStyle, "$Revision: 0.1 $");
-vtkStandardNewMacro(vtkSimulationInteractorStyle);
+vtkCxxRevisionMacro(vtkDefaultInteractorStyle, "$Revision: 0.1 $");
+vtkStandardNewMacro(vtkDefaultInteractorStyle);
 
 //----------------------------------------------------------------------------
 
-vtkSimulationInteractorStyle::vtkSimulationInteractorStyle()
+vtkDefaultInteractorStyle::vtkDefaultInteractorStyle()
 {
   this->PreviousPosition[0] = this->PreviousPosition[1] = 0;
   this->LeftButtonPressed = this->RightButtonPressed = 0;
@@ -77,37 +75,37 @@ vtkSimulationInteractorStyle::vtkSimulationInteractorStyle()
 }
 
 //--------------------------------------------------------------------------
-vtkSimulationInteractorStyle::~vtkSimulationInteractorStyle()
+vtkDefaultInteractorStyle::~vtkDefaultInteractorStyle()
 {
   this->ToolIds->Delete();
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::SetScenario(vtkScenario * s)
+void vtkDefaultInteractorStyle::SetScenario(vtkScenario * s)
 {
   this->Scenario = s;
 }
 
 //--------------------------------------------------------------------------
-vtkScenario * vtkSimulationInteractorStyle::GetScenario()
+vtkScenario * vtkDefaultInteractorStyle::GetScenario()
 {
   return this->Scenario;
 }
 
 //--------------------------------------------------------------------------
-int vtkSimulationInteractorStyle::GetToolId(int id)
+int vtkDefaultInteractorStyle::GetToolId(int id)
 {
   return this->ToolIds->GetId(id);
 }
 
 //--------------------------------------------------------------------------
-int vtkSimulationInteractorStyle::GetNumberOfTools()
+int vtkDefaultInteractorStyle::GetNumberOfTools()
 {
   return this->ToolIds->GetNumberOfIds();
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::Init()
+void vtkDefaultInteractorStyle::Initialize()
 {
   if(!this->Initialized)
   {
@@ -130,9 +128,9 @@ void vtkSimulationInteractorStyle::Init()
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::OnKeyPress()
+void vtkDefaultInteractorStyle::OnKeyPress()
 {
-  //get the keypress
+  //get the pressed key
   vtkRenderWindowInteractor *rwi = this->Interactor;
   std::string key = rwi->GetKeySym();
 
@@ -140,159 +138,150 @@ void vtkSimulationInteractorStyle::OnKeyPress()
   if(key.compare("c") == 0)
   {
     this->Mode = !this->Mode;
-  }
 
-  if(!this->Mode)
-  {
-    //Camera Mode
-    vtkDebugMacro("Camera Mode On");
-    if(key.compare("Up") == 0)
-    {
-      this->Camera->Elevation(1);
-    }
-    if(key.compare("Down") == 0)
-    {
-      vtkDebugMacro("RotateX (Down)");
-      this->Camera->Elevation(-1);
-    }
-    if(key.compare("Left") == 0)
-    {
-      vtkDebugMacro("RotateY (Left)");
-      this->Camera->Azimuth(1);
-    }
-    if(key.compare("Right") == 0)
-    {
-      vtkDebugMacro("RotateY (Right)");
-      this->Camera->Azimuth(-1);
-    }
-  }
-  else
-  {
-    if(this->GetNumberOfTools() > 0)
-    {
-      //Tool control mode
+    if(this->Mode){
       vtkDebugMacro("Tool Mode On");
-      //Tool selection
-      if(key.compare("0") == 0)
-      {
-        vtkDebugMacro("Select Tool (0)");
-        this->ActiveToolId = this->GetToolId(0);
-      }
-      if(key.compare("1") == 0)
-      {
-        vtkDebugMacro("Select Tool (1)");
-        if (this->GetNumberOfTools() > 1)
-        {
-          this->ActiveToolId = this->GetToolId(1);
-        }
-      }
-      if(key.compare("2") == 0)
-      {
-        vtkDebugMacro("Select Tool (2)");
-        if (this->GetNumberOfTools() > 2)
-        {
-          this->ActiveToolId = this->GetToolId(2);
-        }
-      }
+    }
+    else vtkDebugMacro("Camera Mode On");
+  }
+  else if(key.compare("q") == 0)
+  {
+    vtkDebugMacro("Exit Application");
+    exit(0);
+  }
 
-      vtkTool * t = vtkTool::SafeDownCast(this->Scenario->GetObject(this->ActiveToolId));
-
-      if(t && t->GetToolType() == vtkTool::Laparoscopy)
+  if(this->Scenario)
+  {
+    if(!this->Mode)
+    {
+      if(key.compare("Up") == 0)
       {
-        vtkToolLaparoscopy * tool = vtkToolLaparoscopy::SafeDownCast(t);
-
-        //Laparoscopy tool movement
-        if(key.compare("Up") == 0)
-        {
-          vtkDebugMacro("RotateX (Up)");
-          tool->RotateX(1);
-        }
-        if(key.compare("Down") == 0)
-        {
-          vtkDebugMacro("RotateX (Down)");
-          tool->RotateX(-1);
-        }
-        if(key.compare("Left") == 0)
-        {
-          vtkDebugMacro("RotateY (Left)");
-          tool->RotateY(1);
-        }
-        if(key.compare("Right") == 0)
-        {
-          vtkDebugMacro("RotateY (Right)");
-          tool->RotateY(-1);
-        }
-        if(key.compare("x") == 0)
-        {
-          vtkDebugMacro("Roll Tool Left");
-          tool->RotateZ(-10);
-        }
-        if(key.compare("z") == 0)
-        {
-          vtkDebugMacro("Roll Tool Right");
-          tool->RotateZ(10);
-        }
-        if(key.compare("Prior") == 0)
-        {
-          vtkDebugMacro("Push Forward");
-          tool->Push();
-        }
-        if(key.compare("Next") == 0)
-        {
-          vtkDebugMacro("Pull Back");
-          tool->Pull();
-        }
-        if(key.compare("n") == 0)
-        {
-          //vtkDebugMacro("Reset");
-          //tool->Reset();
-          vtkOrgan * o = vtkOrgan::SafeDownCast(this->Scenario->GetObject(1));
-          o->RotateX(15);
-        }
-        if(key.compare("m") == 0)
-        {
-          //vtkDebugMacro("Restore");
-          //tool->Restore();
-          vtkOrgan * o = vtkOrgan::SafeDownCast(this->Scenario->GetObject(1));
-          o->RotateX(-15);
-        }
-        //Specific grasper movements
-        if(tool->GetToolModel() == vtkToolLaparoscopy::Grasper){
-          vtkToolGrasper * grasper = vtkToolGrasper::SafeDownCast(t);
-          if(key.compare("a") == 0)
-          {
-            vtkDebugMacro("Open Tool");
-            grasper->Open();
-          }
-          if(key.compare("s") == 0)
-          {
-            vtkDebugMacro("Close Tool");
-            grasper->Close();
-          }
-        }
+        vtkDebugMacro("Camera RotateX (Up)");
+        this->Camera->Elevation(1);
+      }
+      if(key.compare("Down") == 0)
+      {
+        vtkDebugMacro("Camera RotateX (Down)");
+        this->Camera->Elevation(-1);
+      }
+      if(key.compare("Left") == 0)
+      {
+        vtkDebugMacro("Camera RotateY (Left)");
+        this->Camera->Azimuth(1);
+      }
+      if(key.compare("Right") == 0)
+      {
+        vtkDebugMacro("Camera RotateY (Right)");
+        this->Camera->Azimuth(-1);
       }
     }
-    if(key.compare("q") == 0)
+    else
     {
-      vtkDebugMacro("Exit Application");
-      exit(0);
+      if(this->GetNumberOfTools() > 0)
+      {
+        //Tool selection
+        if(key.compare("0") == 0)
+        {
+          vtkDebugMacro("Select Tool (0)");
+          this->ActiveToolId = this->GetToolId(0);
+        }
+        if(key.compare("1") == 0)
+        {
+          vtkDebugMacro("Select Tool (1)");
+          if (this->GetNumberOfTools() > 1)
+          {
+            this->ActiveToolId = this->GetToolId(1);
+          }
+        }
+        if(key.compare("2") == 0)
+        {
+          vtkDebugMacro("Select Tool (2)");
+          if (this->GetNumberOfTools() > 2)
+          {
+            this->ActiveToolId = this->GetToolId(2);
+          }
+        }
+
+        vtkTool * t = vtkTool::SafeDownCast(this->Scenario->GetObject(this->ActiveToolId));
+
+        if(t && t->GetToolType() == vtkTool::Laparoscopy)
+        {
+          vtkToolLaparoscopy * tool = vtkToolLaparoscopy::SafeDownCast(t);
+
+          //Laparoscopy tool movement
+          if(key.compare("Up") == 0)
+          {
+            vtkDebugMacro("RotateX (Up)");
+            tool->RotateX(1);
+          }
+          else if(key.compare("Down") == 0)
+          {
+            vtkDebugMacro("RotateX (Down)");
+            tool->RotateX(-1);
+          }
+          else if(key.compare("Left") == 0)
+          {
+            vtkDebugMacro("RotateY (Left)");
+            tool->RotateY(1);
+          }
+          else if(key.compare("Right") == 0)
+          {
+            vtkDebugMacro("RotateY (Right)");
+            tool->RotateY(-1);
+          }
+          else if(key.compare("x") == 0)
+          {
+            vtkDebugMacro("Roll Tool Left");
+            tool->RotateZ(-10);
+          }
+          else if(key.compare("z") == 0)
+          {
+            vtkDebugMacro("Roll Tool Right");
+            tool->RotateZ(10);
+          }
+          else if(key.compare("Prior") == 0)
+          {
+            vtkDebugMacro("Push Forward");
+            tool->Push();
+          }
+          else if(key.compare("Next") == 0)
+          {
+            vtkDebugMacro("Pull Back");
+            tool->Pull();
+          }
+          //Specific grasper movements
+          if(tool->GetToolModel() == vtkToolLaparoscopy::Grasper){
+            vtkToolGrasper * grasper = vtkToolGrasper::SafeDownCast(t);
+            if(key.compare("a") == 0)
+            {
+              vtkDebugMacro("Open Tool");
+              grasper->Open();
+            }
+            if(key.compare("s") == 0)
+            {
+              vtkDebugMacro("Close Tool");
+              grasper->Close();
+            }
+          }
+        }
+      }
     }
   }
   // forward events
   vtkInteractorStyleTrackballCamera::OnKeyPress();
 }
 
-void vtkSimulationInteractorStyle::OnMouseMove()
+void vtkDefaultInteractorStyle::OnMouseMove()
 {
   int pick[2];
   this->GetInteractor()->GetEventPosition(pick);
 
   if(Mode)
   {
-    int x = -this->Scale*(pick[0] - this->PreviousPosition[0]);
-    int y = this->Scale*(pick[1] - this->PreviousPosition[1]);
+    double x = -this->Scale*(pick[0] - this->PreviousPosition[0]);
+    double y = this->Scale*(pick[1] - this->PreviousPosition[1]);
 
-    if(this->GetNumberOfTools())
+    if(this->Scenario && this->GetNumberOfTools() > 0)
     {
       vtkTool * t = vtkTool::SafeDownCast(this->Scenario->GetObject(this->ActiveToolId));
       if(t->GetToolType() == vtkTool::Laparoscopy)
@@ -303,10 +292,6 @@ void vtkSimulationInteractorStyle::OnMouseMove()
           tool->RotateY(x);
           tool->RotateX(y);
         }
-        else if (this->RightButtonPressed)
-        {
-          tool->SetDepth((tool->GetDepth()+0.5*y));
-        }
       }
     }
   }
@@ -316,38 +301,72 @@ void vtkSimulationInteractorStyle::OnMouseMove()
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::OnLeftButtonDown()
+void vtkDefaultInteractorStyle::OnLeftButtonDown()
 {
   this->LeftButtonPressed = 1;
   this->GetInteractor()->GetEventPosition(this->PreviousPosition);
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::OnLeftButtonUp()
+void vtkDefaultInteractorStyle::OnLeftButtonUp()
 {
   this->LeftButtonPressed = 0;
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::OnMiddleButtonDown()
+void vtkDefaultInteractorStyle::OnMiddleButtonDown()
 {
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::OnMiddleButtonUp()
+void vtkDefaultInteractorStyle::OnMiddleButtonUp()
 {
 
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::OnRightButtonDown()
+void vtkDefaultInteractorStyle::OnRightButtonDown()
 {
   this->RightButtonPressed = 1;
   this->GetInteractor()->GetEventPosition(this->PreviousPosition);
 }
 
 //--------------------------------------------------------------------------
-void vtkSimulationInteractorStyle::OnRightButtonUp()
+void vtkDefaultInteractorStyle::OnRightButtonUp()
 {
   this->RightButtonPressed = 0;
+}
+
+//--------------------------------------------------------------------------
+void vtkDefaultInteractorStyle::OnMouseWheelForward()
+{
+  if(Mode)
+  {
+    if(this->Scenario && this->GetNumberOfTools() > 0)
+    {
+      vtkTool * t = vtkTool::SafeDownCast(this->Scenario->GetObject(this->ActiveToolId));
+      if(t->GetToolType() == vtkTool::Laparoscopy)
+      {
+        vtkToolLaparoscopy * tool = vtkToolLaparoscopy::SafeDownCast(t);
+        tool->SetDepth(tool->GetDepth()+this->Scale);
+      }
+    }
+  }
+}
+
+//--------------------------------------------------------------------------
+void vtkDefaultInteractorStyle::OnMouseWheelBackward()
+{
+  if(Mode)
+    {
+      if(this->Scenario && this->GetNumberOfTools() > 0)
+      {
+        vtkTool * t = vtkTool::SafeDownCast(this->Scenario->GetObject(this->ActiveToolId));
+        if(t->GetToolType() == vtkTool::Laparoscopy)
+        {
+          vtkToolLaparoscopy * tool = vtkToolLaparoscopy::SafeDownCast(t);
+          tool->SetDepth(tool->GetDepth()-this->Scale);
+        }
+      }
+    }
 }

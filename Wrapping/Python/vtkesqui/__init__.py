@@ -43,7 +43,7 @@ from libvtkESQuiBioMechanicsPython import *
 from libvtkESQuiCollisionDetectionPython import *
 from libvtkESQuiScenarioPython import *
 from libvtkESQuiSimulationPython import *
-from libvtkESQuiUtilitiesPython import *
+from libvtkESQuiInteractionPython import *
 
 # the vtk.kits variable tells us which kits we actually have
 kits = ['common', 'biomechanics', 'collision', 'scenario', 'simulation', 'utilities']
