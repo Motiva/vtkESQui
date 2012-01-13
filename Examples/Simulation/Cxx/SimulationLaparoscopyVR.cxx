@@ -338,9 +338,9 @@ int main(int argc, char * argv[])
 
   vtkSimulation * simulation = vtkSimulation::New();
   simulation->SetScenario(scenario);
-  simulation->SetRenderTimerRate(0.02);
-  simulation->SetSimulationTimerRate(0.01);
-  simulation->SetHapticTimerRate(0.001);
+  simulation->SetRenderTimerRate(20);
+  simulation->SetSimulationTimerRate(10);
+  simulation->SetHapticTimerRate(1);
   simulation->Initialize();
 
   simulation->Run();

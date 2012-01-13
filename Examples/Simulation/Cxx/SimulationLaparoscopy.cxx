@@ -97,9 +97,9 @@ int main(int argc, char * argv[])
   position[1]=0;
   position[2]=0;
 
-  double simrate = 0.001;
-  double renrate = 0.04;
-  double haprate = 0.001;
+  double simrate = 1;
+  double renrate = 40;
+  double haprate = 1;
 
   /**********  Render Window Definitions  ********/
   vtkSmartPointer<vtkRenderer> ren1 =

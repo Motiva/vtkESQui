@@ -4,10 +4,43 @@ import sys
 import vtk
 import vtkesqui
 
+class vtkTimerCallback():
+  def __init__(self):
+    self.timer_count = 0
+    self.round = 1
+ 
+  def execute(self,obj,event):
+    #print self.timer_count
+    
+    #Round Timer 
+    if (self.timer_count % 100 == 0):
+      print "Step"
+      #print(self.element)
+      if self.round == 1:
+        self.round = 0
+        self.element.Disable()
+      else:
+        self.round = 1
+        self.element.Enable()
+      self.element.Update()
+    
+    #start = time.time()
+    #self.organs
+    #rate = 1/(time.time() - start)
+    #print rate
+    obj.GetRenderWindow().Render()
+    self.timer_count += 1
+
 tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
 
-# Generate scenario element
+# Scene center
+sp = vtk.vtkSphereSource()
+sp.SetRadius(0.02)
+sp.Update();
 
+center = sp.GetOutput()
+
+# Generate scenario element
 sphere = vtk.vtkSphereSource()
 sphere.SetPhiResolution(12)
 sphere.SetThetaResolution(12)
@@ -50,12 +83,18 @@ stick.Update()
 ren = vtk.vtkRenderer()
 renWin = vtk.vtkRenderWindow()
 renWin.AddRenderer(ren)
-renWin.SetWindowName("vtkESQui - ScenarioElement")
 iren = vtk.vtkRenderWindowInteractor()
 iren.SetRenderWindow(renWin)
 
 ren.AddActor(vis.GetActor())
 ren.AddActor(col.GetActor())
+
+m = vtk.vtkPolyDataMapper()
+m.SetInput(center)
+a = vtk.vtkActor()
+a.SetMapper(m)
+a.GetProperty().SetColor(1.0, 0.5, 0.5)
+ren.AddActor(a)
 
 ren.SetBackground(1.0, 1.0, 1.0)
 renWin.SetSize(500, 500)
@@ -64,7 +103,12 @@ ren.ResetCamera()
 ren.GetActiveCamera().Azimuth(45)
 iren.Initialize()
 
-renWin.Render()
+# Sign up to receive TimerEvent
+cb = vtkTimerCallback()
+iren.AddObserver('TimerEvent', cb.execute)
+# 10ms timer
+timerId = iren.CreateRepeatingTimer(10);
+cb.element = stick
 
 iren.Start()
 

@@ -3,58 +3,6 @@ import vtk
 import vtkesqui
 import time
 
-class vtkTimerCallback():
-  def __init__(self):
-    self.timer_count = 0
- 
-  def execute(self,obj,event):
-    #print self.timer_count
-    
-    start = time.time()
-    self.scenario.Update()
-    #rate = 1/(time.time() - start)
-    #print rate
-    self.timer_count += 1
-    if (self.timer_count % 20 == 0):
-      self.scenario.Render()
-
-def createBall(i):
-  
-  fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
-  fnc ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
-  fntl = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg";
-  fntr = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg";
-  fntb = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/bothball.jpg";
-  
-  # Add an Organ
-  # Visualization model
-  vis_ball = vtkesqui.vtkVisualizationModel()
-  #vis_ball.SetName("vis_ball"+str(i))
-  vis_ball.SetFileName("/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp")
-  vis_ball.SetTextureFileName("/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg")
-  vis_ball.SetOpacity(1.0)
-
-  # Collision model
-  col_ball = vtkesqui.vtkCollisionModel()
-  col_ball.SetName("col_ball_vtkbioeng"+str(i))
-  col_ball.SetFileName("/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp")
-  col_ball.SetOpacity(1.0)
-
-  # Organ element (ball)
-  #x = -3 + i*2.0
-  e_ball = vtkesqui.vtkScenarioElement()
-  #e_ball.SetName("e_ball"+str(i))
-  e_ball.SetPosition(2*i, -2, -3)
-  e_ball.SetOrientation(15, -0, 0)
-  e_ball.SetVisualizationModel(vis_ball)
-  e_ball.SetCollisionModel(col_ball)
-
-  ball = vtkesqui.vtkOrgan()
-  #ball.SetName("ball_"+str(i))
-  ball.AddElement(e_ball)
-  
-  return ball
-  
 def main():
 
   fn0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
@@ -66,10 +14,13 @@ def main():
   fn0t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
   fn3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
   fn3c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
+  fn4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
+  fn4c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp";
+  fn4d = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp";
+  fn4t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/liver.jpg";
+  fn5 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/cavity.vtp";
+  fn5t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/intestine2.jpg";
 
-  #Create scenario
-  scenario = vtkesqui.vtkScenario()
-  
   # Left Tool (Probe)
   # Visualization model
   vis_stick_l = vtkesqui.vtkVisualizationModel()
@@ -89,7 +40,7 @@ def main():
   # First tool element (stick_l)
   stick_l = vtkesqui.vtkScenarioElement()
   stick_l.SetName("stick_l")
-  stick_l.SetPosition(-3.0, 0.0, 0.0)
+  stick_l.SetPosition(-4.0, 0.0, 0.0)
   stick_l.SetOrientation(0, 0, 20)
   stick_l.SetOrigin(0,0,6)
   stick_l.SetVisualizationModel(vis_stick_l)
@@ -113,7 +64,7 @@ def main():
   # Second tool element (tip_l)
   tip_l = vtkesqui.vtkScenarioElement()
   tip_l.SetName("tip_l")
-  tip_l.SetPosition(-3.0, 0.0, 0.0)
+  tip_l.SetPosition(-4.0, 0.0, 0.0)
   tip_l.SetOrientation(0, 0, 20)
   tip_l.SetOrigin(0,0,6)
   tip_l.SetVisualizationModel(vis_tip_l)
@@ -142,7 +93,7 @@ def main():
   # First tool element (stick_r)
   stick_r = vtkesqui.vtkScenarioElement()
   stick_r.SetName("stick_r")
-  stick_r.SetPosition(3.0, 0.0, 0.0)
+  stick_r.SetPosition(4.0, 0.0, 0.0)
   stick_r.SetOrientation(0, 0, -20)
   stick_r.SetOrigin(0,0,6)
   stick_r.SetVisualizationModel(vis_stick_r)
@@ -166,13 +117,13 @@ def main():
   # Second tool element (l_lever_r)
   l_lever_r = vtkesqui.vtkScenarioElement()
   l_lever_r.SetName("l_lever_r")
-  l_lever_r.SetPosition(3.0, 0.0, 0.0)
+  l_lever_r.SetPosition(4.0, 0.0, 0.0)
   l_lever_r.SetOrientation(0, 0, -20)
   l_lever_r.SetOrigin(0,0,6)
   l_lever_r.SetVisualizationModel(vis_l_lever_r)
   l_lever_r.SetCollisionModel(col_l_lever_r)
   
-    # Visualization model
+  # Visualization model
   vis_r_lever_r = vtkesqui.vtkVisualizationModel()
   vis_r_lever_r.SetName("vis_r_lever_r")
   vis_r_lever_r.SetFileName(fn2)
@@ -190,7 +141,7 @@ def main():
   # Second tool element (r_lever_r)
   r_lever_r = vtkesqui.vtkScenarioElement()
   r_lever_r.SetName("r_lever_r")
-  r_lever_r.SetPosition(3.0, 0.0, 0.0)
+  r_lever_r.SetPosition(4.0, 0.0, 0.0)
   r_lever_r.SetOrientation(0, 0, -20)
   r_lever_r.SetOrigin(0,0,6)
   r_lever_r.SetVisualizationModel(vis_r_lever_r)
@@ -201,15 +152,69 @@ def main():
   grasper_r.SetLeftLever(l_lever_r)
   grasper_r.SetRightLever(r_lever_r)
   
-    # Add objects to the scenario
+  # Add an Organ
+  # Visualization model
+  vis_ball = vtkesqui.vtkVisualizationModel()
+  vis_ball.SetName("vis_ball")
+  vis_ball.SetFileName(fn4)
+  vis_ball.SetTextureFileName(fn4t)
+  vis_ball.SetOpacity(1.0)
+  
+  # Collision model
+  col_ball = vtkesqui.vtkCollisionModel()
+  col_ball.SetName("col_ball_vtkbioeng")
+  col_ball.SetFileName(fn4c)
+  col_ball.SetOpacity(0.2)
+  
+  # Deformation model
+  def_ball = vtkesqui.vtkParticleSpringSystemInterface()
+  def_ball.SetName("def_ball_particle")
+  def_ball.SetFileName(fn4d)
+  def_ball.SetOpacity(0.2)
+  def_ball.SetSpring(150)
+  def_ball.SetDistance(1.0)
+  def_ball.SetDamping(3)
+  def_ball.SetMass(.1)
+  def_ball.SetTimeStep(0.001)
+  
+  # Organ element (ball)
+  e_ball = vtkesqui.vtkScenarioElement()
+  e_ball.SetName("ball")
+  e_ball.SetPosition(0.0, 0.0, -2.0)
+  e_ball.SetOrientation(0, 0, 0)
+  e_ball.SetVisualizationModel(vis_ball)
+  e_ball.SetCollisionModel(col_ball)
+  e_ball.SetDeformationModel(def_ball)
+  
+  ball = vtkesqui.vtkOrgan()
+  ball.AddElement(e_ball)
+  
+  # Add an Organ (Cavity)
+  # Visualization model
+  vis_cavity = vtkesqui.vtkVisualizationModel()
+  vis_cavity.SetName("vis_cavity")
+  vis_cavity.SetFileName(fn5)
+  vis_cavity.SetTextureFileName(fn5t)
+  vis_cavity.SetOpacity(1.0)
+  
+  # Organ element (cavity)
+  e_cavity = vtkesqui.vtkScenarioElement()
+  e_cavity.SetName("cavity")
+  e_cavity.SetPosition(0.0, 0.0, -2.0)
+  e_cavity.SetOrientation(-30, 0, 0)
+  e_cavity.SetVisualizationModel(vis_cavity)
+  
+  cavity = vtkesqui.vtkOrgan()
+  cavity.AddElement(e_cavity)
+  
+  scenario = vtkesqui.vtkScenario()
+  scenario.SetName("vtkESQui - Laparoscopy")
+  #scenario.SetRenderWindow(renWin)
+  
   scenario.AddObject(probe_l)
   scenario.AddObject(grasper_r)
-
-  #for i in range(2):
-  #i = 0
-  
-  b = createBall(0)
-  scenario.AddObject(b)
+  scenario.AddObject(ball)
+  scenario.AddObject(cavity)
   
   # Scenario camera
   camera = vtk.vtkCamera()
@@ -220,6 +225,7 @@ def main():
   camera.Pitch(-15)
   camera.ParallelProjectionOff()
   camera.SetViewAngle(70)
+  camera.Dolly(1.2)
   scenario.SetCamera(camera)
   
   #/********** Lights  **********/
@@ -227,27 +233,29 @@ def main():
   headLight.SetLightTypeToHeadlight()
   headLight.PositionalOn()
   headLight.SetIntensity(0.8)
-  headLight.SetConeAngle(20)
+  headLight.SetConeAngle(60)
   scenario.AddLight(headLight)
   
   ambientLight = vtk.vtkLight()
-  ambientLight.SetIntensity(0.8)
-  ambientLight.SetLightTypeToHeadlight()
+  ambientLight.SetLightTypeToSceneLight()
   ambientLight.PositionalOff()
+  ambientLight.SetPosition(0,1,1)
+  ambientLight.SetIntensity(0.5)
   scenario.AddLight(ambientLight)
 
-  # Force the scenario to initialize
-  scenario.Update()
+  style = vtkesqui.vtkDefaultInteractorStyle()
   
-  # Sign up to receive TimerEvent
-  iren = scenario.GetRenderWindowInteractor()
-  cb = vtkTimerCallback()
-  iren.AddObserver('TimerEvent', cb.execute)
-  # 1ms timer
-  timerId = iren.CreateRepeatingTimer(1);
-  cb.scenario = scenario
+  simulation = vtkesqui.vtkSimulation()
+  simulation.SetScenario(scenario)
+  simulation.SetInteractorStyle(style)
+  simulation.SetRenderTimerRate(30)
+  simulation.SetSimulationTimerRate(1)
+  simulation.SetInteractionTimerRate(1)
+  simulation.InteractionOn()
+  simulation.CollisionOn()
+  simulation.Initialize()
   
-  iren.Start()
-
+  simulation.Run()
+  
 if __name__ == '__main__':
   main()

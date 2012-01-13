@@ -10,20 +10,30 @@ class vtkTimerCallback():
    def execute(self,obj,event):
        #print self.timer_count
        
+       
        start = time.time()
        #self.actor.SetPosition(self.timer_count, self.timer_count,0);
        self.ball.Modified()
        self.ball.Update()
        rate = 1/(time.time() - start)
-       print rate
+       #print rate
+
        iren = obj
        iren.GetRenderWindow().Render()
+       
+       if (self.timer_count % 500 == 0):
+         print "col"
+         # Add a collision
+         self.defo.InsertDisplacement(19, 0.2, 0.05, 0.0)
+         self.defo.InsertDisplacement(20, 0.35, 0.05, 0.0)
+         self.defo.InsertDisplacement(21, 0.2, 0.05, 0.0)
+         
        self.timer_count += 1
 
 def main():
 
   fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
-  tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg"
+  tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/muscle.jpg"
   cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
   dfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp"
 
@@ -49,7 +59,7 @@ def main():
   defo.SetFileName(dfn)
   defo.SetOpacity(0.5)
   defo.SetVisibility(1)
-  defo.SetColor(0.0, 1.0, 0.0)
+  defo.SetColor(1.0, 1.0, 1.0)
   defo.SetSpring(150)
   defo.SetDistance(1.0)
   defo.SetDamping(3)
@@ -67,14 +77,10 @@ def main():
 
   ball.Update()
 
-  # Add a collision
-  defo.InsertDisplacement(19, 0.2, 0.05, 0.0)
-  defo.InsertDisplacement(20, 0.35, 0.05, 0.0)
-  defo.InsertDisplacement(21, 0.2, 0.05, 0.0)
-
   ren = vtk.vtkRenderer()
   renWin = vtk.vtkRenderWindow()
   renWin.AddRenderer(ren)
+  renWin.SetWindowName("vtkESQui - Particle Spring System")
   iren = vtk.vtkRenderWindowInteractor()
   iren.SetRenderWindow(renWin)
 
@@ -83,7 +89,7 @@ def main():
   ren.AddActor(defo.GetActor())
 
   ren.SetBackground(0.8, 0.8, 0.9)
-  renWin.SetSize(500, 500)
+  renWin.SetSize(800, 600)
 
   ren.ResetCamera()
   camera = ren.GetActiveCamera()
@@ -96,9 +102,9 @@ def main():
   cb = vtkTimerCallback()
   cb.ball = ball
   iren.AddObserver('TimerEvent', cb.execute)
-  timerId = iren.CreateRepeatingTimer(1);
+  timerId = iren.CreateRepeatingTimer(1)
   cb.renderTimerId = timerId
-  
+  cb.defo = defo
   
   iren.Start()
   

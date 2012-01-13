@@ -390,9 +390,9 @@ vtkSimulationInteractorStyle style
 vtkSimulation simulation
 simulation SetScenario scenario
 simulation SetInteractorStyle style
-simulation SetRenderTimerRate 0.02
-simulation SetSimulationTimerRate 0.01
-simulation SetHapticTimerRate 0.001
+simulation SetRenderTimerRate 20
+simulation SetSimulationTimerRate 10
+simulation SetHapticTimerRate 1
 simulation Init
 
 # render the image
