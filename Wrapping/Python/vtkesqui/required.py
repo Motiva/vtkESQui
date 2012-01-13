@@ -6,4 +6,4 @@ from vtkESQuiBioMechanics import *
 from vtkESQuiCollisionDetection import *
 from vtkESQuiScenario import *
 from vtkESQuiSimulation import *
-from vtkESQuiUtilities import *
+from vtkESQuiInteraction import *

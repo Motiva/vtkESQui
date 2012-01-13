@@ -46,7 +46,7 @@ from libvtkESQuiSimulationPython import *
 from libvtkESQuiInteractionPython import *
 
 # the vtk.kits variable tells us which kits we actually have
-kits = ['common', 'biomechanics', 'collision', 'scenario', 'simulation', 'utilities']
+kits = ['common', 'biomechanics', 'collision', 'scenario', 'simulation', 'interaction']
 
 # Try to load optional kits.  The helper function checks if the
 # ImportError is actually a link error.
