@@ -53,6 +53,8 @@ vtkCollision::vtkCollision() {
   this->CollisionType = ToolTool;
   this->ObjectIds = vtkIdList::New();
   this->ObjectIds->SetNumberOfIds(2);
+  this->ObjectTypes = vtkIdList::New();
+  this->ObjectTypes->SetNumberOfIds(2);
   this->ElementIds = vtkIdList::New();
   this->ElementIds->SetNumberOfIds(2);
   this->PointIds = vtkIdList::New();
@@ -68,6 +70,7 @@ vtkCollision::vtkCollision() {
 vtkCollision::~vtkCollision()
 {
   this->ObjectIds->Delete();
+  this->ObjectTypes->Delete();
   this->ElementIds->Delete();
   this->PointIds->Delete();
   this->CellIds->Delete();
@@ -83,6 +86,17 @@ void vtkCollision::SetObjectId(int i, int id)
 //--------------------------------------------------------------------------
 int vtkCollision::GetObjectId(int i){
   return this->ObjectIds->GetId(i);
+}
+
+//--------------------------------------------------------------------------
+void vtkCollision::SetObjectType(int i, int type)
+{
+  this->ObjectTypes->SetId(i, type);
+}
+
+//--------------------------------------------------------------------------
+int vtkCollision::GetObjectType(int i){
+  return this->ObjectTypes->GetId(i);
 }
 
 //--------------------------------------------------------------------------

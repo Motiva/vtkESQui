@@ -52,6 +52,7 @@ vtkCxxRevisionMacro(vtkCollisionDetection, "$Revision: 0.1 $");
 vtkCollisionDetection::vtkCollisionDetection(){
   this->Models = vtkModelCollection::New();
   this->Collisions = vtkCollisionCollection::New();
+  this->Mode = Full;
 }
 
 //--------------------------------------------------------------------------

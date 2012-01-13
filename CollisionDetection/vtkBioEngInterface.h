@@ -66,7 +66,7 @@ public:
   /*!
   * This method will vary depending on the collision detection library
   */
-  void Init();
+  void Initialize();
 
   //! Update the collision detection library
   /*!

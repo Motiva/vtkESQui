@@ -49,14 +49,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkPolyData.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkTransform.h"
-#include "vtkTransformPolyDataFilter.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
 #include "vtkTexture.h"
 #include "vtkTextureMapToSphere.h"
 #include "vtkTransformTextureCoords.h"
 #include "vtkJPEGReader.h"
-#include "vtkIdList.h"
+
+#include "vtkSyncPolyDataFilter.h"
 
 vtkCxxRevisionMacro(vtkVisualizationModel, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkVisualizationModel);
@@ -64,22 +64,24 @@ vtkStandardNewMacro(vtkVisualizationModel);
 //--------------------------------------------------------------------------
 vtkVisualizationModel::vtkVisualizationModel() {
 
-  this->SetModelType(vtkModel::Visualization);
+  this->SetType(vtkModel::Visualization);
   this->TextureFileName = NULL;
-  this->Texture = vtkTexture::New();
-  this->TextureReader = vtkJPEGReader::New();
-  this->TextureMap = vtkTextureMapToSphere::New();
-  this->TextureCoords = vtkTransformTextureCoords::New();
+  this->Texture = NULL;
+  this->TextureReader = NULL;
+  this->TextureMap = NULL;
+  this->TextureCoords = NULL;
 
 }
 
 //--------------------------------------------------------------------------
 vtkVisualizationModel::~vtkVisualizationModel() {
 
-  if(this->Texture) this->Texture->Delete();
-  if(this->TextureReader) this->TextureReader->Delete();
-  if(this->TextureMap) this->TextureMap->Delete();
-  if(this->TextureCoords) this->TextureCoords->Delete();
+  if(this->Initialized){
+    this->Texture->Delete();
+    this->TextureReader->Delete();
+    this->TextureMap->Delete();
+    this->TextureCoords->Delete();
+  }
 }
 
 //--------------------------------------------------------------------------
@@ -90,21 +92,88 @@ void vtkVisualizationModel::Initialize()
 
   //Texture will be added
   if(this->TextureFileName){
-    this->TextureMap->SetInput(this->GetInput());
-    this->TextureMap->PreventSeamOn();
-
-    this->TextureCoords->SetInputConnection(this->TextureMap->GetOutputPort());
-    this->TextureCoords->SetScale(1, 1, 1);
-
-    this->Mapper->SetInputConnection(this->TextureCoords->GetOutputPort());
-
-    this->TextureReader->SetFileName(this->TextureFileName);
-
-    this->Texture->SetInputConnection(this->TextureReader->GetOutputPort());
-    this->Texture->InterpolateOn();
-
-    this->Actor->SetTexture(this->Texture);
+    this->Texture = vtkTexture::New();
+    this->TextureReader = vtkJPEGReader::New();
+    this->TextureMap = vtkTextureMapToSphere::New();
+    this->TextureCoords = vtkTransformTextureCoords::New();
   }
+}
+
+//----------------------------------------------------------------------------
+int vtkVisualizationModel::RequestData(
+    vtkInformation *vtkNotUsed(request),
+    vtkInformationVector **inputVector,
+    vtkInformationVector *outputVector) {
+
+  vtkInformation *inInfo = inputVector[0]->GetInformationObject(0);
+  vtkInformation *sourceInfo = inputVector[1]->GetInformationObject(0);
+  vtkInformation *outInfo = outputVector->GetInformationObject(0);
+
+  //Get the input and output
+  vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+  //Optional input
+  vtkPolyData * source = 0;
+
+  if(sourceInfo){
+    source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
+  }
+  //Output
+  vtkPolyData *output = vtkPolyData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
+  //Initialize model
+  if(!this->Initialized) this->Initialize();
+
+  //If source is defined -> Synchronize mesh
+  if(source)
+  {
+    vtkDebugMacro("Model source is present\n");
+
+    this->SyncFilter->SetInput(input);
+    this->SyncFilter->SetSource(source);
+    this->SyncFilter->Update();
+
+    output->ShallowCopy(this->SyncFilter->GetOutput());
+  }
+  else
+  {
+    output->ShallowCopy(input);
+  }
+
+  //Set visualization parameters
+  this->Actor->SetVisibility(this->Visibility);
+
+  if(this->Status){
+
+  	if(this->TextureFileName)
+  	{
+  		this->Texture->SetInputConnection(this->TextureReader->GetOutputPort());
+
+  		this->TextureMap->SetInput(this->GetInput());
+  		this->TextureMap->PreventSeamOn();
+
+  		this->TextureReader->SetFileName(this->TextureFileName);
+  		//this->TextureCoords->SetInputConnection(this->TextureMap->GetOutputPort());
+  		//this->TextureCoords->SetScale(1, 1, 1);
+
+  		//this->Texture->InterpolateOn();
+
+  		this->Mapper->SetInputConnection(this->TextureMap->GetOutputPort());
+  		this->Actor->SetTexture(this->Texture);
+  	}
+  	else
+  	{
+  		this->Mapper->SetInput(input);
+  	}
+
+  	this->Actor->GetProperty()->SetColor(this->Color);
+  	this->Actor->GetProperty()->SetOpacity(this->Opacity);
+
+  	this->Actor->SetMapper(this->Mapper);
+
+  	this->Mapper->Modified();
+  }
+
+  return 1;
 }
 
 //--------------------------------------------------------------------------

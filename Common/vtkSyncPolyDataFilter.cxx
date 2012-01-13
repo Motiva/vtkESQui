@@ -73,8 +73,8 @@ vtkSyncPolyDataFilter::vtkSyncPolyDataFilter()
 vtkSyncPolyDataFilter::~vtkSyncPolyDataFilter()
 {
   if(this->Initialized){
-    this->HashMap->Delete();
-    this->Locator->Delete();
+    if(this->Locator) this->Locator->Delete();
+    if(this->HashMap) this->HashMap->Delete();
   }
 }
 

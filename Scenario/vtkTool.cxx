@@ -55,7 +55,7 @@ vtkCxxRevisionMacro(vtkTool, "$Revision: 0.1 $");
 
 //--------------------------------------------------------------------------
 vtkTool::vtkTool() {
-  this->ObjectType = vtkScenarioObject::Tool;
+  this->Type = vtkScenarioObject::Tool;
 }
 
 //--------------------------------------------------------------------------

@@ -103,6 +103,22 @@ public:
    */
   vtkIdType GetObjectId(int id);
 
+  //! Set the type of the object at the i position
+  /*!
+   * \param id collection index
+   * \param objectType object type
+   * \sa GetObjectId()
+   */
+  void SetObjectType(int id, vtkIdType objectType);
+
+  //! Get the type of the object at the specified index
+  /*!
+   * \param id collection index
+   * \return Type of the object
+   * \sa SetObjectId(int id, vtkIdType objectType)
+   */
+  vtkIdType GetObjectType(int id);
+
   //! Set the id of the element at the i position
   /*!
    * \param id collection index
@@ -226,6 +242,9 @@ protected:
 
   //! Collided objects identifiers
   vtkIdList * ObjectIds;
+
+  //! Collided objects identifiers
+  vtkIdList * ObjectTypes;
 
   //! Clashed point cell identifier
   vtkIdList * CellIds;

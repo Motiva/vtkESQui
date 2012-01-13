@@ -45,7 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkStreamingDemandDrivenPipeline.h"
 #include "vtkInformationVector.h"
 #include "vtkInformation.h"
-#include "vtkAppendPolyData.h"
 
 #include "vtkModel.h"
 #include "vtkScenarioElement.h"
@@ -57,7 +56,7 @@ vtkStandardNewMacro(vtkOrgan);
 //----------------------------------------------------------------------------
 vtkOrgan::vtkOrgan()
 {
-  this->ObjectType = vtkScenarioObject::Organ;
+  this->Type = vtkScenarioObject::Organ;
 }
 
 //--------------------------------------------------------------------------

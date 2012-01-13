@@ -47,7 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 class vtkScenario;
 class vtkRenderWindowInteractor;
-class vtkSimulationInteractorStyle;
+class vtkDefaultInteractorStyle;
 class vtkCollisionDetection;
 class vtkCollisionCollection;
 class vtkCallbackCommand;
@@ -96,13 +96,13 @@ public:
   /*!
    * \sa GetInteractorStyle()
    */
-  void SetInteractorStyle(vtkSimulationInteractorStyle * style);
+  void SetInteractorStyle(vtkDefaultInteractorStyle * style);
 
   //! Get simulation interactor style
   /*!
    * \sa SetInteractor(vtkSimulationInteractorStyle *style)
    */
-  vtkSimulationInteractorStyle * GetInteractorStyle();
+  vtkDefaultInteractorStyle * GetInteractorStyle();
 
   //! Set the simulation scenario: organs, tools, etc...
   /*!
@@ -113,25 +113,55 @@ public:
   //! Return the scenario of the simulation
   vtkScenario * GetScenario();
 
-  //! Return the collision collection
+  //! Set the collision mode to simple
+  /*!
+   * The simulation must be initialized to set the collision mode
+   */
+  void SetCollisionModeToSimple();
+
+  //! Set the collision mode to extended
+  /*!
+   * The simulation must be initialized to set the collision mode
+   */
+  void SetCollisionModeToExtended();
+
+  //! Set the collision mode to full
+  /*!
+   * The simulation must be initialized to set the collision mode
+   */
+  void SetCollisionModeToFull();
+
+  //! Get the simulation object collisions
   vtkCollisionCollection * GetCollisions();
 
-  //! Set haptic device timer refresh rate (s)
+  //! Assign Element name
+  /*!
+   *\sa GetName()
+   */
+  vtkSetStringMacro(Name);
+
+  //! Return Element scale
+  /*!
+   *\sa SetName(const char * name)
+   */
+  vtkGetStringMacro(Name);
+
+  //! Set haptic device timer refresh rate (ms)
   vtkSetMacro(InteractionTimerRate, double);
 
-  //! Set simulation refresh rate (s)
+  //! Set simulation refresh rate (ms)
   vtkSetMacro(SimulationTimerRate, double);
 
-  //! Set render refresh rate (s)
+  //! Set render refresh rate (ms)
   vtkSetMacro(RenderTimerRate, double);
 
-  //! Get haptic device timer refresh rate (s)
+  //! Get haptic device timer refresh rate (ms)
   vtkGetMacro(InteractionTimerRate, double);
 
-  //! Get simulation refresh rate (s)
+  //! Get simulation refresh rate (ms)
   vtkGetMacro(SimulationTimerRate, double);
 
-  //! Get render refresh rate (s)
+  //! Get render refresh rate (ms)
   vtkGetMacro(RenderTimerRate, double);
 
   //! Get haptic device timer identifier
@@ -165,16 +195,19 @@ public:
   vtkGetVector3Macro(Gravity, double);
 
   //! Initializes the simulation (Haptic, Manager, etc...)
-  void Init();
+  void Initialize();
 
   //! Starts the simulation
   void Run();
 
+  //!Render simulation scenario
+  void Render();
+
   //!Update the simulation scenario
-  void UpdateScenario();
+  void Step();
 
   //!Update user interaction values
-  void UpdateInteraction();
+  void Interact();
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
   //BTX
@@ -203,6 +236,9 @@ protected:
   vtkIdType RenderTimerId;
   double RenderTimerRate;
 
+  //! Simulation name
+  char * Name;
+
   //!Simulation scenario
   vtkScenario * Scenario;
 
@@ -210,7 +246,7 @@ protected:
   vtkRenderWindowInteractor *Interactor;
 
   //!Window interactor style to control simulation objects
-  vtkSimulationInteractorStyle *InteractorStyle;
+  vtkDefaultInteractorStyle *InteractorStyle;
 
   //!collision detection library
   vtkCollisionDetection* CollisionDetection;

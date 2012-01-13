@@ -186,6 +186,10 @@ void vtkScenarioElement::Initialize()
     this->Matrix = this->Transform->GetMatrix();
 
     this->Models = vtkModelCollection::New();
+    //Set model object type
+    vtkModel::vtkObjectType type;
+    if(this->Type == Tool) type = vtkModel::Tool;
+    else if(this->Type == Organ) type = vtkModel::Organ;
 
     if(this->VisualizationModel)
     {
@@ -197,8 +201,9 @@ void vtkScenarioElement::Initialize()
         this->VisualizationModel->SetInput(reader->GetOutput());
       }
 
-      this->VisualizationModel->SetObjectId(this->ObjectId);
       this->VisualizationModel->SetId(this->Id);
+      this->VisualizationModel->SetObjectId(this->ObjectId);
+      this->VisualizationModel->SetObjectType(type);
       this->Models->AddModel(this->VisualizationModel);
 
       if(this->CollisionModel)
@@ -210,9 +215,10 @@ void vtkScenarioElement::Initialize()
           reader->Update();
           this->CollisionModel->SetInput(reader->GetOutput());
         }
-        this->CollisionModel->SetObjectId(this->ObjectId);
         this->CollisionModel->SetId(this->Id);
-        //Set optional (synchronisation) input
+        this->CollisionModel->SetObjectId(this->ObjectId);
+        this->CollisionModel->SetObjectType(type);
+        //Set optional (synchronization) input
         this->CollisionModel->SetInput(1, this->VisualizationModel->GetOutput());
         this->Models->AddModel(this->CollisionModel);
 
@@ -225,8 +231,9 @@ void vtkScenarioElement::Initialize()
             reader->Update();
             this->DeformationModel->SetInput(reader->GetOutput());
           }
-          this->DeformationModel->SetObjectId(this->ObjectId);
           this->DeformationModel->SetId(this->Id);
+          this->DeformationModel->SetObjectId(this->ObjectId);
+          this->DeformationModel->SetObjectType(type);
           //Set optional (synchronization) input
           this->Models->AddModel(this->DeformationModel);
 
@@ -300,6 +307,7 @@ void vtkScenarioElement::Update() {
 
   if(this->CollisionModel)
   {
+    this->CollisionModel->SetObjectId(this->ObjectId);
     //Update collision model point positions and compute collisions
     this->CollisionModel->SetVelocity(this->Velocity);
     this->CollisionModel->SetAcceleration(this->Acceleration);
@@ -330,13 +338,14 @@ void vtkScenarioElement::Update() {
         this->DeformationModel->InsertDisplacement(id, c->GetDisplacement());
       }
 
+      this->DeformationModel->SetObjectId(this->ObjectId);
       this->DeformationModel->Modified();
       this->DeformationModel->Update();
-
     }
     this->CollisionModel->RemoveAllCollisions();
   }
 
+  this->VisualizationModel->SetObjectId(this->ObjectId);
   this->VisualizationModel->Modified();
   this->VisualizationModel->Update();
 
@@ -361,6 +370,10 @@ void vtkScenarioElement::Translate(double * vector)
 void vtkScenarioElement::Translate(double x, double y, double z) {
   //cout << this->GetName() << "::Translate: " << x << ", " << y << ", " << z << endl;
   this->Transform->Translate(x, y, z);
+  //Modify tool origin (rotation point)
+  this->Origin[0] += x;
+  this->Origin[1] += y;
+  this->Origin[2] -= z;
   this->Modified();
 }
 

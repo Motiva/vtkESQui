@@ -104,13 +104,13 @@ public:
   /*!
   *\sa GetType()
   */
-  vtkSetMacro(ObjectType, vtkScenarioObject::vtkScenarioObjectType);
+  vtkSetMacro(Type, vtkScenarioObject::vtkScenarioObjectType);
 
   //! Returns the type of the object
   /*!
   *\sa SetType(vtkScenarioObjectType)
   */
-  vtkGetMacro(ObjectType, vtkScenarioObject::vtkScenarioObjectType);
+  vtkGetMacro(Type, vtkScenarioObject::vtkScenarioObjectType);
 
   //! Assign the object status
   /*!
@@ -330,7 +330,7 @@ protected:
   //! Object identifier
   vtkIdType Id;
   //! Object Type (Tool, Organ, etc...)
-  vtkScenarioObjectType ObjectType;
+  vtkScenarioObjectType Type;
   //! Object Name
   char * Name;
   //! Object State

@@ -60,6 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkPointLocator.h"
 #include "vtkTransform.h"
 #include "vtkMath.h"
+#include "vtkSmartPointer.h"
 
 #include "vtkCollision.h"
 #include "vtkCollisionCollection.h"
@@ -73,7 +74,7 @@ vtkCollisionModel::vtkCollisionModel() {
   //Collision model has 2 outputs
   this->SetNumberOfOutputPorts(2);
 
-  this->ModelType = vtkModel::Collision;
+  this->Type = vtkModel::Collision;
 
   this->DeltaT = 1.0;
   this->Velocity[0]=this->Velocity[1]=this->Velocity[2]=0.0;
@@ -91,10 +92,14 @@ vtkCollisionModel::vtkCollisionModel() {
 //--------------------------------------------------------------------------
 vtkCollisionModel::~vtkCollisionModel()
 {
-  if(this->Sphere) this->Sphere->Delete();
-  if(this->Glyphs) this->Glyphs->Delete();
-  if(this->Transform) this->Transform->Delete();
-  if(this->TransformFilter) this->TransformFilter->Delete();
+  if(this->Initialized){
+    this->Collisions->Delete();
+    this->Sphere->Delete();
+    this->Glyphs->Delete();
+    this->Transform->Delete();
+    this->TransformFilter->Delete();
+  }
+
 }
 
 //----------------------------------------------------------------------------
@@ -189,6 +194,9 @@ int vtkCollisionModel::RequestData(
 
   if(!this->Initialized) this->Initialize();
 
+  //Set visualization parameters
+  this->Actor->SetVisibility(this->Visibility);
+
   if(this->Status)
   {
     //If source is defined -> Synchronize mesh
@@ -201,43 +209,47 @@ int vtkCollisionModel::RequestData(
       this->SyncFilter->Update();
 
       this->TransformFilter->SetInput(this->SyncFilter->GetOutput());
+      output->ShallowCopy(this->SyncFilter->GetOutput());
 
     }
     else
     {
       this->TransformFilter->SetInput(input);
-    }
-
-    //Set visualization parameters
-    this->Actor->SetVisibility(this->Visibility);
-    if(this->IsVisible())
-    {
-      this->Glyphs->SetInput(output);
-      this->Glyphs->SetSource(this->Sphere->GetOutput());
-      this->Mapper->SetInput(this->Glyphs->GetOutput());
-      this->Actor->GetProperty()->SetColor(this->Color);
-      this->Actor->GetProperty()->SetOpacity(this->Opacity);
+      output->ShallowCopy(input);
     }
 
     //Update object position
     this->Transform->SetMatrix(this->Matrix);
     this->Transform->Update();
 
+    this->TransformFilter->SetTransform(this->Transform);
     this->TransformFilter->Update();
 
-    //Transformed mesh for collision detection purposes
-    output->ShallowCopy(this->SyncFilter->GetOutput());
-    outputTx->ShallowCopy(this->TransformFilter->GetOutput());
-  }
-  else
-  {
-    //collision visualization mesh
-    output->ShallowCopy(input);
-    //Transformed mesh for collision detection purposes
-    outputTx->ShallowCopy(input);
+    //double * pt = this->Transform->GetPosition();
+    //double * ptf = vtkTransform::SafeDownCast(this->TransformFilter->GetTransform())->GetPosition();
+    //cout << "pt:["<<pt[0]<<","<<pt[1]<<","<<pt[2]<<"]\tptf:["<<ptf[0]<<","<<ptf[1]<<","<<ptf[2]<<"]\n";
+
+    this->Glyphs->SetInput(outputTx);
+    this->Glyphs->SetSource(this->Sphere->GetOutput());
+    this->Mapper->SetInput(this->Glyphs->GetOutput());
+    vtkSmartPointer<vtkMatrix4x4> m = vtkSmartPointer<vtkMatrix4x4>::New();
+    m->Identity();
+    this->Actor->SetUserMatrix(m);
+    this->Actor->GetProperty()->SetColor(this->Color);
+    this->Actor->GetProperty()->SetOpacity(this->Opacity);
+
   }
 
+  //Transformed mesh for collision detection purposes
+  outputTx->ShallowCopy(this->TransformFilter->GetOutput());
+
   return 1;
+}
+
+//--------------------------------------------------------------------------
+vtkPolyData * vtkCollisionModel::GetTransformedOutput()
+{
+  return this->GetOutput(1);
 }
 
 //--------------------------------------------------------------------------

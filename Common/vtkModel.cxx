@@ -61,7 +61,9 @@ vtkStandardNewMacro(vtkModel);
 vtkModel::vtkModel()
 {
   this->Id = -1;
+  this->Type = Visualization;
   this->ObjectId = -1;
+  this->ObjectType = Tool;
   this->Name = NULL;
   this->FileName = NULL;
   this->Initialized = 0;
@@ -236,19 +238,21 @@ int vtkModel::RequestData(
 void vtkModel::Hide()
 {
   this->Visibility = 0;
+  this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::Show()
 {
   this->Visibility = 1;
+  this->Modified();
 }
 
 //--------------------------------------------------------------------------
 void vtkModel::Disable()
 {
   this->Status = 0;
-  this->Hide();
+  this->Visibility = 0;
   this->Modified();
 }
 
@@ -256,7 +260,7 @@ void vtkModel::Disable()
 void vtkModel::Enable()
 {
   this->Status = 1;
-  this->Show();
+  this->Visibility = 1;
   this->Modified();
 }
 
@@ -265,11 +269,13 @@ void vtkModel::PrintSelf(ostream&os, vtkIndent indent)
 {
   os << indent << "Id: " << this->Id << "\n";
   os << indent << "ObjectId: " << this->ObjectId << "\n";
-  os << indent << "Model Type: " << this->ModelType << "\n";
-  os << indent << "Status: " << this->Status << "\n";
+  os << indent << "Model Type: " << this->Type << "\n";
   if(this->Name) os << indent << "Name: " << this->Name << "\n";
   if(this->FileName) os << indent << "FileName: " << this->FileName << "\n";
-  os << indent << "Color: " << this->Color[0] << ", " << this->Color[1] << ", " << this->Color[2] << endl;
+  os << indent << "Status: " << this->Status << "\n";
+  os << indent << "Visibility: " << this->Visibility << endl;
   os << indent << "Opacity: " << this->Opacity << endl;
+  os << indent << "Color: " << this->Color[0] << ", " << this->Color[1] << ", " << this->Color[2] << endl;
+
 
 }

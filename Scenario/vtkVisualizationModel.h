@@ -91,6 +91,7 @@ protected:
 
   vtkVisualizationModel();
   ~vtkVisualizationModel();
+  virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
   //! Abstract initialization function
   /*!

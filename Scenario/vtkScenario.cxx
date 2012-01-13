@@ -69,14 +69,19 @@ vtkStandardNewMacro(vtkScenario);
 vtkScenario::vtkScenario() {
 
   this->Initialized = 0;
-  this->Camera = NULL;
-  this->Objects = vtkScenarioObjectCollection::New();
-  this->Lights = vtkLightCollection::New();
   this->Background[0] = 1.0;
   this->Background[1] = 1.0;
   this->Background[2] = 1.0;
   this->WindowSize[0] = 800;
   this->WindowSize[1] = 600;
+  this->Name = NULL;
+  this->Renderer = NULL;
+  this->RenderWindow = NULL;
+  this->RenderWindowInteractor = NULL;
+  this->Camera = NULL;
+
+  this->Objects = vtkScenarioObjectCollection::New();
+  this->Lights = vtkLightCollection::New();
 
 }
 
@@ -98,7 +103,6 @@ void vtkScenario::SetObjects(vtkScenarioObjectCollection * collection)
   {
     this->AddObject(object);
   }
-
 }
 
 //----------------------------------------------------------------------------
@@ -242,6 +246,10 @@ void vtkScenario::Initialize()
     }
 
     this->RenderWindow->SetSize(this->WindowSize);
+    if(this->Name)
+    {
+      this->RenderWindow->SetWindowName(this->Name);
+    }
     this->Renderer->SetBackground(this->Background);
 
     //Set scenario camera
@@ -259,7 +267,6 @@ void vtkScenario::Initialize()
       vtkScenarioObject * o = this->Objects->GetObject(i);
       o->SetRenderWindow(this->RenderWindow);
       o->SetRenderer(this->Renderer);
-      o->SetId(i);
       o->Update();
 
       //Add actors to the render window if active
@@ -299,8 +306,6 @@ void vtkScenario::Update()
   this->Objects->InitTraversal();
   while(vtkScenarioObject * o = this->Objects->GetNextObject())
   {
-    //o->Modified();
-    //o->Update();
     vtkScenarioElementCollection * elements = o->GetElements();
     elements->InitTraversal();
     while(vtkScenarioElement * e = elements->GetNextElement())
@@ -308,6 +313,7 @@ void vtkScenario::Update()
       if(e->GetDeformationModel())
       {
         //Update object deformation
+        e->Update();
       }
     }
   }

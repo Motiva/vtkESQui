@@ -69,16 +69,15 @@ vtkBioEngInterface::vtkBioEngInterface(){
 //--------------------------------------------------------------------------
 vtkBioEngInterface::~vtkBioEngInterface()
 {
+  if(this->DetectionFilter) this->DetectionFilter->Delete();
   if(this->Matrix0) this->Matrix0->Delete();
   if(this->Matrix1) this->Matrix1->Delete();
 
   if(this->Collisions) this->Collisions->Delete();
-
-  if(this->DetectionFilter) this->DetectionFilter->Delete();
 }
 
 //--------------------------------------------------------------------------
-void vtkBioEngInterface::Init()
+void vtkBioEngInterface::Initialize()
 {
   //Create internal class objects
   this->DetectionFilter = vtkCollisionDetectionFilter::New();
@@ -117,116 +116,159 @@ void vtkBioEngInterface::Update()
         if((m0->GetObjectId() != m1->GetObjectId())
             && (!m0->IsDisabled() && !m1->IsDisabled()))
         {
-          //Each collision model transformed polydata (mx->GetOutput(1) is set as an input of the CDL
-          this->DetectionFilter->SetInput(0, m0->GetOutput(1));
-          this->DetectionFilter->SetInput(1, m1->GetOutput(1));
-
-          //Transformation matrixes
-          this->DetectionFilter->SetMatrix(0, Matrix0);
-          this->DetectionFilter->SetMatrix(1, Matrix1);
-
-          this->DetectionFilter->Update();
-
-          vtkIdType numberOfCollisions = this->DetectionFilter->GetNumberOfContacts();
-
-          //Calculate displacement from object velocity
-          double d[3];
-          m0->GetVelocity(d);
-          vtkMath::MultiplyScalar(d, m0->GetDeltaT());
-          //Use second collided model (m1) if the first one (m0) is static
-          if(vtkMath::Norm(d) == 0)
+          bool check = false;
+          if(this->Mode == Simple)
           {
-            m1->GetVelocity(d);
-            vtkMath::MultiplyScalar(d, m1->GetDeltaT());
-          }
 
-          for(int i =0; i < numberOfCollisions; i++)
-          {
-            vtkIdList * pointIds = vtkIdList::New();
-            vtkIdList * cellIds = vtkIdList::New();
-            cellIds->SetNumberOfIds(2);
-            pointIds->SetNumberOfIds(2);
-
-            //There has been a collision. A new collision will be created, filling the collision info
-            cellIds->SetId(0, this->DetectionFilter->GetContactCells(0)->GetValue(i));
-            cellIds->SetId(1, this->DetectionFilter->GetContactCells(1)->GetValue(i));
-
-            //Get both point ids and coordinates from collision meshes
-            //Note: mx->GetOutput(1)
-            vtkPoints * points0 = m0->GetOutput(1)->GetCell(cellIds->GetId(0))->GetPoints();
-            vtkIdList * pointIds0 = m0->GetOutput(1)->GetCell(cellIds->GetId(0))->GetPointIds();
-            vtkPoints * points1 = m1->GetOutput(1)->GetCell(cellIds->GetId(1))->GetPoints();
-            vtkIdList * pointIds1 = m1->GetOutput(1)->GetCell(cellIds->GetId(1))->GetPointIds();
-
-            //Find closest points in cells
-            double dmin = 10e6;
-            for(int j=0;j<points0->GetNumberOfPoints(); j++)
+            //Check if m0 is tool and m1 is an organ model and viceversa
+            if ((m0->GetObjectType() == vtkModel::Tool &&
+                m1->GetObjectType() == vtkModel::Organ) ||
+                (m1->GetObjectType() == vtkModel::Tool &&
+                    m0->GetObjectType() == vtkModel::Organ))
             {
-              //const double * p0 = points0->GetPoint(j);
-              //cout << "p0["<<j<<"]: (" << p0[0] << ", " << p0[1] << ", "  << p0[2] << ")\n";
-              for(int k=j;k<points1->GetNumberOfPoints();k++)
+              check = true;
+            }
+          }
+          else if(this->Mode == Extended)
+          {
+            //Check:
+            // * m0 is tool and m1 is organ and viceversa
+            // * m0 is tool and m1 is tool
+            if ((m0->GetObjectType() == vtkModel::Tool &&
+                m1->GetObjectType() == vtkModel::Organ) ||
+                (m1->GetObjectType() == vtkModel::Tool &&
+                    m0->GetObjectType() == vtkModel::Organ) ||
+                    (m1->GetObjectType() == vtkModel::Tool &&
+                        m0->GetObjectType() == vtkModel::Tool))
+            {
+              check = true;
+            }
+          }
+          else check = true;
+
+          if(check)
+          {
+            //Each collision model transformed polydata (mx->GetOutput(1) or
+            //mx->GetTransformedOutput()) is set as an input of the CDL
+            this->DetectionFilter->SetInput(0, m0->GetTransformedOutput());
+            this->DetectionFilter->SetInput(1, m1->GetTransformedOutput());
+
+            //Transformation matrixes
+            this->DetectionFilter->SetMatrix(0, Matrix0);
+            this->DetectionFilter->SetMatrix(1, Matrix1);
+
+            this->DetectionFilter->Update();
+
+            vtkIdType numberOfCollisions = this->DetectionFilter->GetNumberOfContacts();
+
+            /*if(numberOfCollisions)
+            {
+              std::cout << m0->GetName() << ":" << m1->GetName() << " [" << numberOfCollisions << "]\n";
+              //double * bt0 = m0->GetTransformedOutput()->GetBounds();
+              //double * bt1 = m1->GetTransformedOutput()->GetBounds();
+              //cout << "["<< setprecision(3)<<bt0[0]<<","<<bt0[1]<<","<<bt0[2]<<","<<bt0[3]<<","<<bt0[4]<<","<<bt1[5]<<
+              //  "] | ["<<bt1[0]<<","<<bt1[1]<<","<<bt1[2]<<","<<bt1[3]<<","<<bt1[4]<<","<<bt1[5]<<"]\n";
+            }*/
+
+            //Calculate displacement from object velocity
+            double d[3];
+            m0->GetVelocity(d);
+            vtkMath::MultiplyScalar(d, m0->GetDeltaT());
+            //Use second collided model (m1) if the first one (m0) is static
+            if(vtkMath::Norm(d) == 0)
+            {
+              m1->GetVelocity(d);
+              vtkMath::MultiplyScalar(d, m1->GetDeltaT());
+            }
+
+            for(int i =0; i < numberOfCollisions; i++)
+            {
+              vtkIdList * pointIds = vtkIdList::New();
+              vtkIdList * cellIds = vtkIdList::New();
+              cellIds->SetNumberOfIds(2);
+              pointIds->SetNumberOfIds(2);
+
+              //There has been a collision. A new collision will be created, filling the collision info
+              cellIds->SetId(0, this->DetectionFilter->GetContactCells(0)->GetValue(i));
+              cellIds->SetId(1, this->DetectionFilter->GetContactCells(1)->GetValue(i));
+
+              //Get both point ids and coordinates from collision meshes
+              vtkPoints * points0 = m0->GetTransformedOutput()->GetCell(cellIds->GetId(0))->GetPoints();
+              vtkIdList * pointIds0 = m0->GetTransformedOutput()->GetCell(cellIds->GetId(0))->GetPointIds();
+              vtkPoints * points1 = m1->GetTransformedOutput()->GetCell(cellIds->GetId(1))->GetPoints();
+              vtkIdList * pointIds1 = m1->GetTransformedOutput()->GetCell(cellIds->GetId(1))->GetPointIds();
+
+              //Find closest points in cells
+              double dmin = 10e6;
+              for(int j=0;j<points0->GetNumberOfPoints(); j++)
               {
-                //const double * p1 = points1->GetPoint(k);
-                //cout << "p1["<<k<<"]: (" << p1[0] << ", " << p1[1] << ", "  << p1[2] << ")\n";
-                double dist = vtkMath::Distance2BetweenPoints(points0->GetPoint(j), points1->GetPoint(k));
-                //cout << dist << endl;
-                if (dist<dmin)
+                //const double * p0 = points0->GetPoint(j);
+                //cout << "p0["<<j<<"] {"<< pointIds0->GetId(0) << "}: (" << p0[0] << ", " << p0[1] << ", "  << p0[2] << ")\n";
+                for(int k=j;k<points1->GetNumberOfPoints();k++)
                 {
-                  pointIds->SetId(0,j);
-                  pointIds->SetId(1,k);
-                  dmin=dist;
+                  //const double * p1 = points1->GetPoint(k);
+                  //cout << "p1["<<k<<"] {"<< pointIds1->GetId(0) << "}: (" << p1[0] << ", " << p1[1] << ", "  << p1[2] << ")\n";
+                  double dist = vtkMath::Distance2BetweenPoints(points0->GetPoint(j), points1->GetPoint(k));
+                  //cout << dist << endl;
+                  if (dist<dmin)
+                  {
+                    pointIds->SetId(0,j);
+                    pointIds->SetId(1,k);
+                    dmin=dist;
+                  }
                 }
               }
+
+              //New collision is created
+              vtkCollision * collision = vtkCollision::New();
+
+              //Now only tool-organ collisions are being checked
+              collision->SetCollisionType(vtkCollision::ToolOrgan);
+
+              for (int kd=0;kd<2;kd++)
+              {
+                vtkModel * m = m0;
+                vtkIdList * pointIds = pointIds0;
+                vtkPoints * points =  points0;
+                if(kd==1){
+                  m = m1;
+                  pointIds = pointIds1;
+                  points =  points1;
+                }
+
+                //Set collision parameters
+                collision->SetObjectId(kd, m->GetObjectId());
+                collision->SetObjectType(kd, m->GetObjectType());
+                collision->SetElementId(kd, m->GetId());
+                collision->SetCellId(kd, cellIds->GetId(kd));
+                //Set visualization (hashmap) point id
+                collision->SetPointId(kd, pointIds->GetId(kd));
+                collision->SetPoint(kd, points->GetPoint(kd));
+              }
+
+              //Set distance between points
+              collision->SetDistance(dmin);
+              //Set displacement
+              collision->SetDisplacement(d);
+
+              // Find collision in the collection whenever the collision has a displacement
+              if(vtkMath::Norm(d) > 0 && m1->GetCollisions()->FindCollision(collision) < 0)
+              {
+                //Not found -> Insert collision in the model
+                m0->AddCollision(collision);
+                m1->AddCollision(collision);
+                //Insert global collision
+                this->Collisions->InsertNextCollision(collision);
+              }
+              else
+              {
+                //Found -> Delete copy
+                collision->Delete();
+              }
+
+              pointIds->Delete();
+              cellIds->Delete();
             }
-
-            //New collision is created
-            vtkCollision * collision = vtkCollision::New();
-
-            //Now only tool-organ collisions are being checked
-            collision->SetCollisionType(vtkCollision::ToolOrgan);
-
-            //Set scenario object ids
-            collision->SetObjectId(0, m0->GetObjectId());
-            collision->SetObjectId(1, m1->GetObjectId());
-
-            //Set scenario element ids
-            collision->SetElementId(0, m0->GetId());
-            collision->SetElementId(1, m1->GetId());
-
-            //Tool cell point
-            collision->SetCellId(0, cellIds->GetId(0));
-            //Set visualization (hashmap) point id
-            collision->SetPointId(0, pointIds0->GetId(pointIds->GetId(0)));
-            collision->SetPoint(0, points0->GetPoint(pointIds->GetId(0)));
-
-            //Organ cell point
-            collision->SetCellId(1, cellIds->GetId(1));
-            //Set visualization (hashmap) point id
-            collision->SetPointId(1, pointIds1->GetId(pointIds->GetId(1)));
-            collision->SetPoint(1, points1->GetPoint(pointIds->GetId(1)));
-
-            //Set distance between points
-            collision->SetDistance(dmin);
-            //Set displacement
-            collision->SetDisplacement(d);
-
-            // Find collision in the collection whenever the collision has a displacement
-            if(vtkMath::Norm(d) > 0 && m1->GetCollisions()->FindCollision(collision) < 0)
-            {
-              //Not found -> Insert collision in the model
-              m0->AddCollision(collision);
-              m1->AddCollision(collision);
-              //Insert global collision
-              this->Collisions->InsertNextCollision(collision);
-            }
-            else
-            {
-              //Found -> Delete copy
-              collision->Delete();
-            }
-
-            pointIds->Delete();
-            cellIds->Delete();
           }
         }
       }

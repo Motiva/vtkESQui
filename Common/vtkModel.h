@@ -77,12 +77,18 @@ public:
   //! Return class name
   const char *GetClassName() {return "vtkModel";};
 
-  //!Tool type definitiion
+  //!Model type definition
   //BTX
   enum vtkModelType{
     Visualization = 0,
     Collision = 1,
     Deformation = 2
+  };
+
+  enum vtkObjectType{
+    Tool = 0,
+    Organ = 1,
+    Extra = 2
   };
   //ETX
 
@@ -97,27 +103,38 @@ public:
    */
   vtkGetMacro(Id, vtkIdType);
 
+  //!Set model type
+  /*!
+   * \sa vtlModelType GetModelType()
+   */
+  vtkSetMacro(Type, vtkModel::vtkModelType);
+  //!Return model type
+  /*!
+   * \sa SetModelType(vtkModelType)
+   */
+  vtkGetMacro(Type, vtkModel::vtkModelType);
+
   //!Set the object id of the model
   /*!
    * \sa int GetObjectId()
    */
   vtkSetMacro(ObjectId, int);
   //!Get the  object id of the model
-  /*/
+  /*!
    * \sa SetObjectId(int)
    */
   vtkGetMacro(ObjectId, int);
 
-  //!Set model type
+  //!Set model object type
   /*!
-   * \sa vtlModelType GetModelType()
+   * \sa vtkObjectType GetObjectType()
    */
-  vtkSetMacro(ModelType, vtkModel::vtkModelType);
-  //!Return model type
+  vtkSetMacro(ObjectType, vtkModel::vtkObjectType);
+  //!Return model object type
   /*!
-   * \sa SetModelType(vtkModelType)
+   * \sa SetObjectType(vtkObjectType)
    */
-  vtkGetMacro(ModelType, vtkModel::vtkModelType);
+  vtkGetMacro(ObjectType, vtkModel::vtkObjectType);
 
   //! Assign the model state
   /*!
@@ -298,13 +315,16 @@ protected:
   //! Model Id
   vtkIdType Id;
 
+  vtkModelType Type;
+
   //! Object Id
   vtkIdType ObjectId;
 
+  //! Object Type
+  vtkObjectType ObjectType;
+
   //! Model name
   char * Name;
-
-  vtkModelType ModelType;
 
   //! Model Status
   bool Status;

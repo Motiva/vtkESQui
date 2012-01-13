@@ -74,6 +74,15 @@ public:
   //!Print class values
   void PrintSelf(ostream& os, vtkIndent indent);
 
+  //BTX
+  //! Collision model object type
+  enum vtkCollsionObjectType
+  {
+    Tool = 0,
+    Organ = 1
+  };
+  //ETX
+
   //!Virtual initialization function
   /*!
    * The model has to be initialized in order to be updated. At least one parameter must be previously defined: \n
@@ -102,6 +111,12 @@ public:
   vtkSetMacro(Radius, double);
   //!Get the visualization sphere radius
   vtkGetMacro(Radius, double);
+
+  //! Get transformed output for collision detection
+  /*!
+   * \return transformed polydata. Point coordinates are modified.
+   */
+  vtkPolyData * GetTransformedOutput();
 
   //!Set detected collisions on the model
   /*!
@@ -170,6 +185,11 @@ protected:
 
   //! Collection of collisions
   vtkCollisionCollection * Collisions;
+
+  //BTX
+  //! Object type
+  vtkCollsionObjectType * ObjectType;
+  //ETX
 
 private:
   vtkCollisionModel (const vtkCollisionModel &);

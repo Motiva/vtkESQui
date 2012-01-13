@@ -68,7 +68,7 @@ vtkDefaultInteractorStyle::vtkDefaultInteractorStyle()
   this->Scenario = NULL;
   this->Camera = NULL;
   this->Mode = 0;
-  this->ToolIds = vtkIdList::New();
+  this->ToolIds = NULL;
   this->ActiveToolId = 0;
   this->Scale = 0.1;
   this->Initialized = 0;
@@ -77,7 +77,7 @@ vtkDefaultInteractorStyle::vtkDefaultInteractorStyle()
 //--------------------------------------------------------------------------
 vtkDefaultInteractorStyle::~vtkDefaultInteractorStyle()
 {
-  this->ToolIds->Delete();
+  if(this->Initialized) this->ToolIds->Delete();
 }
 
 //--------------------------------------------------------------------------
@@ -109,6 +109,9 @@ void vtkDefaultInteractorStyle::Initialize()
 {
   if(!this->Initialized)
   {
+    this->ToolIds = vtkIdList::New();
+    this->ToolIds->Initialize();
+
     if(this->Scenario)
     {
       this->Camera = this->Scenario->GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera();
@@ -116,7 +119,7 @@ void vtkDefaultInteractorStyle::Initialize()
       objects->InitTraversal();
       while(vtkScenarioObject * o = objects->GetNextObject())
       {
-        if(o->GetObjectType() == vtkScenarioObject::Tool)
+        if(o->GetType() == vtkScenarioObject::Tool)
         {
           this->ToolIds->InsertNextId(o->GetId());
         }
@@ -352,6 +355,7 @@ void vtkDefaultInteractorStyle::OnMouseWheelForward()
       }
     }
   }
+  else vtkInteractorStyleTrackballCamera::OnMouseWheelForward();
 }
 
 //--------------------------------------------------------------------------
@@ -369,4 +373,5 @@ void vtkDefaultInteractorStyle::OnMouseWheelBackward()
         }
       }
     }
+  else vtkInteractorStyleTrackballCamera::OnMouseWheelBackward();
 }

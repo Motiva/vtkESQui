@@ -69,6 +69,16 @@ public:
   vtkCollisionDetection();
   ~vtkCollisionDetection();
 
+  //!Enumeration of detection types
+  //BTX
+  enum vtkCollisionDetectionMode
+  {
+    Simple = 0, //Only check between tools and organs
+    Extended = 1, //Check between tools and organs, and between tools
+    Full = 2 //Check between tools and organs, between tools and between organs
+  };
+  //ETX
+
   //! Specify the collision models to be checked in the collision detection process
   void SetModels(vtkModelCollection * models);
 
@@ -81,6 +91,23 @@ public:
   //! Get total number of collisions detected
   int GetNumberOfCollisions();
 
+  //BTX
+  //!Set detection type
+  vtkSetMacro(Mode, vtkCollisionDetectionMode);
+
+  //!Get detection type
+  vtkGetMacro(Mode, vtkCollisionDetectionMode);
+  //ETX
+
+  //! Set type to simple
+  void SetModeToSimple(){this->Mode = Simple;};
+
+  //! Set type to extended
+  void SetModeToExtended(){this->Mode = Extended;};
+
+  //! Set type to full
+  void SetModeToFull(){this->Mode = Full;};
+
   //! Method used to detect the collision between organs and tools from the scene must be implemented in the CollisionDetectionLibrary we want to use
   /*!
   * Abstract method to be defined on each implementation class
@@ -91,9 +118,14 @@ public:
   /*!
   * Abstract method to be defined on each implementation class
   */
-  virtual void Init() = 0;
+  virtual void Initialize() = 0;
 
 protected:
+
+  //BTX
+  //! Collision detection mode
+  vtkCollisionDetectionMode Mode;
+  //ETX
 
   //! Collection of models
   /*!

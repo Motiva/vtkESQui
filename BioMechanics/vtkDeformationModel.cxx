@@ -59,7 +59,7 @@ vtkCxxRevisionMacro(vtkDeformationModel, "$Revision: 0.1 $");
 //--------------------------------------------------------------------------
 vtkDeformationModel::vtkDeformationModel() {
 
-  this->SetModelType(vtkModel::Deformation);
+  this->SetType(vtkModel::Deformation);
   this->Name = NULL;
   this->BoundaryConditions = NULL;
 }
