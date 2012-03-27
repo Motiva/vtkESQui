@@ -162,9 +162,9 @@ int TestvtkCUDAParticleSystemInterface(int argc, char * argv[])
   system->SetColor(1,0,0);
   system->SetOpacity(1.0);
   system->SetSolverType(vtkCUDAMotionEquationSolver::VelocityVerlet);
-  system->SetSpringCoefficient(250);
-  system->SetDistanceCoefficient(10);
-  system->SetDampingCoefficient(5);//Friction
+  system->SetSpring(250);
+  system->SetDistance(10);
+  system->SetDamping(5);//Friction
   system->SetMass(.5);
   system->SetTimeStep(0.001);//1ms
   system->Initialize();

@@ -139,7 +139,7 @@ void vtkCUDAParticleSystem::Init()
   //Initialize motion equation solver
   this->Solver->SetDeformationModel(this);
   this->Solver->SetNumberOfParticles(this->NumberOfParticles);
-  this->Solver->SetDeltaTime(this->TimeStep);
+  this->Solver->SetTimeStep(this->TimeStep);
   this->Solver->SetResidual(this->Residual);
   this->Solver->Init();
 
@@ -351,7 +351,7 @@ void vtkCUDAParticleSystem::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "SpringCoefficient: " << this->Spring << endl;
   os << indent << "DistanceCoefficient: " << this->Distance << endl;
   os << indent << "DampingCoefficient: " << this->Damping << endl;
-  os << indent << "DeltaT: " << this->TimeStep << endl;
+  os << indent << "TimeStep: " << this->TimeStep << endl;
   os << indent << "Mass: " << this->Mass << endl;
   os << indent << "Residual: " << this->Residual << endl;
 }

@@ -125,11 +125,11 @@ int main(int argc, char * argv[])
   vtkCUDAParticleSystem* system = vtkCUDAParticleSystem::New();
   system->SetInput(mesh);
   system->SetSolverType(vtkCUDAMotionEquationSolver::RungeKutta4);
-  system->SetSpringCoefficient(150);
-  system->SetDistanceCoefficient(10);
-  system->SetDampingCoefficient(5);//Friction
+  system->SetSpring(150);
+  system->SetDistance(10);
+  system->SetDamping(5);//Friction
   system->SetMass(.5);
-  system->SetDeltaTime(dt);//1ms
+  system->SetTimeStep(dt);//1ms
   system->Init();
 
   system->Print(cout);

@@ -60,6 +60,8 @@ POSSIBILITY OF SUCH DAMAGE.
 vtkCxxRevisionMacro(vtkCUDAParticleSystemInterface, "$Revision: 1.2 $");
 vtkStandardNewMacro(vtkCUDAParticleSystemInterface);
 
+//FIXME: Unify vtkCUDAParticleSystem and vtkParticleSystem
+
 //----------------------------------------------------------------------------
 vtkCUDAParticleSystemInterface::vtkCUDAParticleSystemInterface()
 {
@@ -139,7 +141,7 @@ int vtkCUDAParticleSystemInterface::RequestData(
 
   if(!this->Initialized) this->Initialize();
 
-  if(this->Status == Enabled)
+  if(this->Status)
   {
     //Force recalculation of the output in every step
     this->System->Modified();
