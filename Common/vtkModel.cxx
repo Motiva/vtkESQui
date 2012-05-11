@@ -160,6 +160,7 @@ void vtkModel::Initialize()
 {
   if(!this->Initialized)
   {
+    if(!this->Name) this->Name = "";
     //Displaying purposes
     this->Actor = vtkActor::New();
     this->Mapper = vtkPolyDataMapper::New();
