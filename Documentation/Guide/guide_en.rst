@@ -3,9 +3,9 @@ vtkESQui Developer's Guide
 ==========================
 
 :Author:   Jorge Ballesteros-Ruiz <jballesteros@itccanarias.org>
-:Version:  0.5.6
-:Web:      http://motivando.me
-:Date:     Aug 31th 2011
+:Version:  0.6
+:Web:      http://motivando.me/blog
+:Date:     Nov 4th 2011
 
 .. header:: 
      
@@ -51,7 +51,7 @@ The aim of this document is to describe the *vtkESQui* project, in a detailed ma
 Background
 ----------
 
-*vtkESQui* is a surgical simulation software platform. The purpose of this project to provide a framework which allows, in an easy way, to build a virtual simulation of minimallly invasive surgical techniques.
+*vtkESQui* is a surgical simulation software platform. The purpose of this project to provide a framework which allows, in an easy way, to build a virtual simulation of minimally invasive surgical techniques.
 
 This platform, is a vtk-based software project that has been implemented in C++. *vtkESQui* framework follows the standard folder structure for a vtk-based projects. A few access layers (wrappers) has been enabled to ease the use of the platform, such as: Tcl and Python. 
 
@@ -89,7 +89,7 @@ In vtkESQui platform, there are two ways of controlling the simulation objects, 
 
   .. note:: Haptic technology is a tactile feedback technology that estimulate the user sense of touch by applying forces and vibrations to the control device. It has been proved that haptic devices are extremely useful for training minimally invasive procedures, improving instrument control and making more realistic simulations. 
 
-Import of surgical scenarios into the *vtkESQui* framework is done from an SRML file, that contains all the information required to define a surgical simulation:
+Importation of surgical scenarios into the *vtkESQui* framework is done by reading SRML file, that contains all the information required to define a surgical simulation:
 
  * Simulation: Simulation parameters such as: type, time rates, etc...  
  * Environment
@@ -325,13 +325,11 @@ Id Object type        Description                  R/O
 1  vtkPolyData object Defines synchronization mesh Optional
 == ================== ============================ ========
 
-By default, main input data will be set as a vtkPolyData object. Optionally it could be read from a vtp file, specifying the *FileName* attribute. The optional input, source, will be specified as vtkPolyData object.
+By default, main input data shall be set as a vtkPolyData object. This first input is mandatory. The optional input, source, will be specified as vtkPolyData object.
 
 Prior to an update, an initialization of the object, through Init() function, is required, if the model is not included in a vtkScenarioElement_. In case the models is part of a vtkScenarioElement_ object, the element itself will initialize the model.
 
-After an update the object output will contain the synchronized mesh, if source mesh has been set.
-
-Every model has its own transform function with its own transform matrix. This matrix could be replaced by setting it before model initialization. According to transformation matrix values, the model actor will be updated. The transformed mesh will be available by retrieving the model actor.
+After an update the object output will contain the synchronized mesh, obtained through a smoothing process using vtkSmoothPolyData, if source mesh has been set.
 
 This class is inherited by vtkVisualizationModel_, vtkCollisionModel_ and vtkDeformationModel_.
 
@@ -375,6 +373,8 @@ At least a visualization model has to be defined in the scenario element. To ena
 Positional parameters, such as Position, Orientation, Scale, etc... must be set in this object. All the element models will be located and transformed according to the specified values.
 
 Prior to un update of the class, the initialization method, Init(),  should be executed. This method will initialize the element and subsequently all of its models. If a scenario model has been previously initialized it will not be synchronized with the rest of the object models.
+
+Every scenario element has its own transform function with its own transform matrix. This matrix will be set to every model of the element. According to transformation matrix values, the actor will be updated. The transformed mesh will be available by retrieving the actor.
 
 Please refer to the Doxygen documentation and the Examples_ section if you want to know more about this class.
 
@@ -859,7 +859,7 @@ vtkSimulation
 
 Implementation of the *vtkESQui* simulation process.
 
-Simulation process is executed with timer callback function that handles three timed threaded loops at different rates:
+Simulation process is executed with timer callback function that handles three time threaded loops at different rates:
 
  * **Scenario**: This module purpose is to display/update all the scenario objects. Acts as an observer, listening to any possible change that may affect any of the scenario objects.
  * **Collision**: A collision detection process that handles interaction between scenario object collision models. If any collision is detected, the scenario module is notified to apply changes to the objectes (deformation, displacements, etc..)
