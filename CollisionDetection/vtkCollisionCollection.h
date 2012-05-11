@@ -130,6 +130,9 @@ public:
   */
   void RemoveCollisions();
 
+  //! Return total number of collisions
+  int GetNumberOfCollisions();
+
 protected:
   vtkCollisionCollection() {};
   ~vtkCollisionCollection() {};

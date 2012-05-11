@@ -56,6 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkDeformationModel.h"
 #include "vtkCollisionCollection.h"
 #include "vtkCollision.h"
+#include "vtkMath.h"
 
 vtkCxxRevisionMacro(vtkScenarioElement, "$Revision: 0.1 $");
 vtkStandardNewMacro(vtkScenarioElement);
@@ -319,23 +320,14 @@ void vtkScenarioElement::Update() {
     {
       vtkCollisionCollection * collisions = this->CollisionModel->GetCollisions();
       collisions->InitTraversal();
-      //if(collisions->GetNumberOfItems() > 0) collisions->Print(cout);
       while(vtkCollision * c = collisions->GetNextCollision())
       {
-        int objectId = 0;
-        if(c->GetObjectId(1) == this->GetObjectId())
-        {
-          objectId = 1;
-        }
-
+        c->Print(cout);
         // Translate Collision-Deformation point ids
-        int id = this->SynchronizationMap->GetId(c->GetPointId(objectId));
-        //double * p = this->VisualizationModel->GetOutput()->GetPoint(id);
-        //c->SetPointId(1, id);
-        //c->SetPoint(1, p);
-
+        int id = this->SynchronizationMap->GetId(c->GetPointId());
+        cout << id << endl;
         //If displacement is zero (object is not moving) collision is ignored
-        this->DeformationModel->InsertDisplacement(id, c->GetDisplacement());
+        this->DeformationModel->InsertDisplacement(id, c->GetPointDisplacement());
       }
 
       this->DeformationModel->SetObjectId(this->ObjectId);

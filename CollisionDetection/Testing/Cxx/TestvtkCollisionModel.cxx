@@ -42,7 +42,7 @@ int TestvtkCollisionModel(int argc, char * argv[]){
   iren->SetRenderWindow(renWin);
 
   renderer->AddActor(model->GetActor());
-  renderer->SetBackground(1,1,1);
+  renderer->SetBackground(.3,.6,.3);
 
   renderer->ResetCamera();
   iren->Initialize();

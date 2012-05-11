@@ -174,6 +174,14 @@ vtkCollisionCollection * vtkSimulation::GetCollisions()
 }
 
 //----------------------------------------------------------------------------
+vtkIntArray * vtkSimulation::GetCollisionPairs()
+{
+  if(this->Collision) return this->CollisionDetection->GetCollisionPairs();
+  else return NULL;
+}
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkSimulation::Initialize() {
 
   //Configure simulation loop

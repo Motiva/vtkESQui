@@ -2,6 +2,8 @@ SET(KIT vtkESQuiCollisionDetection)
 CREATE_TEST_SOURCELIST(Tests ${KIT}CxxTests.cxx
   TestvtkCollisionCollection.cxx
   TestvtkCollisionModel.cxx
+  TestvtkCollisionDetectionFilter.cxx
+  TestvtkBioEngInterface.cxx
 )
 
 ADD_EXECUTABLE(${KIT}CxxTests ${Tests})

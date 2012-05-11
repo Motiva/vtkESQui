@@ -58,14 +58,12 @@ int TestvtkCollisionCollection(int argc, char * argv[])
   for (vtkIdType id = 0; id < 10; id++)
   {
     collision = vtkCollision::New();
-    collision->SetElementId(0, 0);
-    collision->SetElementId(0, 1);
-    collision->SetPoint(0, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-    collision->SetPointId(0, id);
-    collision->SetCellId(0, 1);
-    collision->SetPoint(1, vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
-    collision->SetPointId(1, id);
-    collision->SetCellId(0, 1);
+    collision->SetModelId(0);
+    collision->SetObjectId(1);
+    collision->SetCellId(2);
+    collision->SetCellNormal(vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
+    collision->SetPointId(id);
+    collision->SetPoint(vtkMath::Random(0,1), vtkMath::Random(0,1), vtkMath::Random(0,1));
 
     collection->InsertNextCollision(collision);
     std::cout << "Collision (" << id <<  ") has been inserted...\n";
@@ -81,7 +79,6 @@ int TestvtkCollisionCollection(int argc, char * argv[])
     collision = collection->GetNextCollision();
     collision->Print(std::cout);
     std::cout << "Collision (" << id <<  ") has been removed...\n";
-    //collection->RemoveItem(id);
     collision->Delete();
   }
   collection->RemoveAllItems();

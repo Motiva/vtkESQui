@@ -62,6 +62,18 @@ public:
   //!Return class name
   const char *GetClassName() {return "vtkBioEngInterface";};
 
+  //Set/Get bounding box tolerance
+  vtkSetMacro(BoxTolerance, double);
+  vtkGetMacro(BoxTolerance, double);
+
+  //Set/Get cell tolerance
+  vtkSetMacro(CellTolerance, double);
+  vtkGetMacro(CellTolerance, double);
+
+  //Set/Get number of cell per node
+  vtkSetMacro(NumberOfCellsPerNode, int);
+  vtkGetMacro(NumberOfCellsPerNode, int);
+
   //! Set up the collision detection library with the initial values,
   /*!
   * This method will vary depending on the collision detection library
@@ -84,10 +96,12 @@ protected:
   //!Collision detection filter
   vtkCollisionDetectionFilter *DetectionFilter;
 
-  //!Rotation matrix
-  vtkMatrix4x4 *Matrix0;
-  //!Rotation matrix
-  vtkMatrix4x4 *Matrix1;
+  //Box Tolerance
+  double BoxTolerance;
+  //Cell detection Tolerance
+  double CellTolerance;
+  //Number of cells per node
+  int NumberOfCellsPerNode;
 
 private:
 

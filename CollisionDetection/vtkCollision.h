@@ -45,20 +45,21 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiCollisionDetectionWin32Header.h"
 #include "vtkObject.h"
 
-class vtkPoints;
+//class vtkPoints;
 class vtkIdList;
-
+class vtkDoubleArray;
 
 //!This class contains the required information to define a collision.
 /*!
  * vtkCollision acts as data container storing all the useful information
  * of a scenario collision:\n
  *  - Type
- *  - Value
+ *  - ObjectId
+ *  - ModelId
+ *  - Cell Identifier
+ *  - Cell Normal
  *  - Point Identifier
- *  - Point Position
- *  All the information is stored in pair, one for each scenario object
- *  collided.
+ *  - Point Coordinates
  */
 
 class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkCollision : public vtkObject {
@@ -73,14 +74,12 @@ public:
   void PrintSelf(ostream& os, vtkIndent indent);
   //! Return class name
   const char *GetClassName() {return "vtkCollision";};
-
   
   //!Organ type definition
   enum vtkCollisionType{
     ToolOrgan = 0,
     ToolTool = 1
   };
-  
 
   //!Set collision type
   vtkSetMacro(CollisionType, vtkCollision::vtkCollisionType);
@@ -89,125 +88,116 @@ public:
 
   //! Set the id of the object at the i position
   /*!
-   * \param id collection index
    * \param objectId object identifier
    * \sa GetObjectId()
    */
-  void SetObjectId(int id, vtkIdType objectId);
+  vtkSetMacro(ObjectId, int);
 
   //! Get the index of the object
   /*!
-   * \param id collection index
    * \return Identifying key of the object
    * \sa SetObjectId(int id, vtkIdType objectid)
    */
-  vtkIdType GetObjectId(int id);
+  vtkGetMacro(ObjectId, int);
 
-  //! Set the type of the object at the i position
+  //! Set the id of the model at the i position
   /*!
-   * \param id collection index
-   * \param objectType object type
-   * \sa GetObjectId()
+   * \param elementId model identifier
+   * \sa GetModelId()
    */
-  void SetObjectType(int id, vtkIdType objectType);
+  vtkSetMacro(ModelId, int);
 
-  //! Get the type of the object at the specified index
+  //! Get the index of the model
   /*!
-   * \param id collection index
-   * \return Type of the object
-   * \sa SetObjectId(int id, vtkIdType objectType)
+   * \return Identifying key of the model
+   * \sa SetModelId(int id, vtkIdType modelId)
    */
-  vtkIdType GetObjectType(int id);
+  vtkGetMacro(ModelId, int);
 
-  //! Set the id of the element at the i position
+  //! Set the collided cell of the deformable model
   /*!
-   * \param id collection index
-   * \param elementId element identifier
-   * \sa GetElementId()
+   * \param value organ cell id
+   * \sa GetCellId()
    */
-  void SetElementId(int id, vtkIdType elementId);
+  vtkSetMacro(CellId, int);
 
-  //! Get the index of the element
+  //! Get the collided cell of the deformable model
   /*!
-   * \param id collection index
-   * \return Identifying key of the element
-   * \sa SetElementId(int id, vtkIdType elementId)
+   * \return cell id of the organ mesh
+   * \sa SetCellId(int value)
    */
-  vtkIdType GetElementId(int id);
+  vtkGetMacro(CellId, int);
+
+  //! Set the collided cell normal
+  /*!
+   * \param n normal vector
+   * \sa GetCellNormal()
+   */
+  vtkSetVector3Macro(CellNormal, double);
+
+  //! Get the collided cell of the deformable model
+  /*!
+   * \return normal vector
+   * \sa SetCellNormal(double * n)
+   */
+  vtkGetVector3Macro(CellNormal, double);
 
   //! Set the element mesh point identifier where the collision has occurred
   /*!
-   * \param id index of the element in the collection
    * \param pointId mesh point identifier
    * \sa GetPointId()
    */
-  void SetPointId(int id, int pointId);
+  vtkSetMacro(PointId, int);
 
   //! Get the collided point identifier
   /*!
-   * \param id index of the element in the collection
    * \return point id of the organ mesh
    * \sa SetPointId(int id, int pointId)
    */
-  int GetPointId(int id);
+  vtkGetMacro(PointId, int);
   
-  //! Set the element sync mesh point identifier where the collision has occurred
-  /*!
-   * \param id index of the element in the collection
-   * \param pointId sync mesh point identifier
-   * \sa GetPointId()
-   */
-  void SetSyncPointId(int id, int pointId);
-
-  //! Get the collided point identifier
-  /*!
-   * \param id index of the element in the collection
-   * \return point id of the organ mesh
-   * \sa SetPointId(int id, int pointId)
-   */
-  int GetSyncPointId(int id);
-
   //! Set the organ mesh point position of the collision
   /*!
-   * \param id index of the element in the collection
    * \param x x coordinate of the collision point
    * \param y y coordinate of the collision point
    * \param z z coordinate of the collision point
    * \sa GetPoint(int id)
    */
-  void SetPoint(int id, double x, double y, double z);
+  vtkSetVector3Macro(Point, double);
 
   //! Set the collided point position
   /*!
-   * \param id index of the element in the collection
    * \param point[] [x, y, z] coordinates vector of the collision point
    * \sa GetPoint(int id)
    */
-  void SetPoint(int id, double point[3]);
+  //void SetPoint(double point[3]);
   //! Returns collided point position
   /*!
-   * \param id index of the element in the collection
    * \return pointer to position [x, y, z] coordinates vector of the collision point
-   * \sa SetPoint(int id, double point[3])
-   * \sa SetPoint(int id, double x, double y, double z)
+   * \sa SetPoint(double point[3])
+   * \sa SetPoint(double x, double y, double z)
    */
-  double * GetPoint(int id);
+  vtkGetVector3Macro(Point, double);
 
-  //! Set the collided cell of the deformable model
+  //! Set the collided point normal
   /*!
-   * \param id index of the element in the collection
-   * \param value organ cell id
-   * \sa GetCellId()
+   * \param n normal vector
+   * \sa GetPointNormal()
    */
-  void SetCellId(int id, vtkIdType value);
+  vtkSetVector3Macro(PointNormal, double);
 
-  //! Get the collided cell of the deformable model
+  //! Get the collided point normal of the deformable model
   /*!
-   * \param id index of the element in the collection
-   * \return cell id of the organ mesh
-   * \sa SetCellId(int value)
+   * \return normal vector
+   * \sa SetPointNormal(double * n)
    */
-  int GetCellId(int id);
+  vtkGetVector3Macro(PointNormal, double);
+
+  //! Set the displacement vector of the collision
+  vtkSetVector3Macro(PointDisplacement, double);
+
+  //! Returns the direction vector of the collision
+  vtkGetVector3Macro(PointDisplacement, double);
 
   //! Set the scalar distance
   /*!
@@ -221,12 +211,6 @@ public:
    */
   vtkGetMacro(Distance, double);
 
-  //! Set the displacement vector of the collision
-  vtkSetVector3Macro(Displacement, double);
-
-  //! Returns the direction vector of the collision
-  vtkGetVector3Macro(Displacement, double);
-
   //! Performs a full detailed copy of the collision
   void DeepCopy(vtkCollision *info);
 
@@ -237,32 +221,32 @@ protected:
   //! Collision Type
   vtkCollisionType CollisionType;
 
-  //! Collided elements identifiers
-  vtkIdList * ElementIds;
+  //! Collided objects identifier
+  vtkIdType ObjectId;
 
-  //! Collided objects identifiers
-  vtkIdList * ObjectIds;
-
-  //! Collided objects identifiers
-  vtkIdList * ObjectTypes;
+  //! Collided model identifier
+  vtkIdType ModelId;
 
   //! Clashed point cell identifier
-  vtkIdList * CellIds;
+  vtkIdType CellId;
 
-  //! Point identifiers of the collided elements.
-  vtkIdList * PointIds;
+  //! Clashed point cell normal
+  double CellNormal[3];
 
-  //! Collision point on both objects
-  vtkPoints * Points;
+  //! Point identifier of the collided model
+  vtkIdType PointId;
 
-  //! Point identifiers of the synchronization meshes.
-  vtkIdList * SyncPointIds;
+  //! Collision point
+  double Point[3];
+
+  //! Collision point normal
+  double PointNormal[3];
+
+  //! Collision point displacement
+  double PointDisplacement[3];
 
   //! Scalar distance between points
   double Distance;
-
-  //! Displacement vector of the collision
-  double Displacement[3];
 
 private:
 

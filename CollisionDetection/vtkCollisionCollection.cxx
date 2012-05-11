@@ -86,11 +86,12 @@ vtkIdType vtkCollisionCollection::FindCollision(vtkCollision * collision)
   {
     local = this->GetCollision(id);
     if ((local) &&
-        (local->GetObjectId(0) == collision->GetObjectId(0)) &&
-        (local->GetObjectId(1) == collision->GetObjectId(1)) &&
-        (local->GetElementId(0) == collision->GetElementId(0)) &&
-        (local->GetElementId(1) == collision->GetElementId(1)) &&
-        (local->GetPointId(1) == collision->GetPointId(1)))
+        (local->GetObjectId() == collision->GetObjectId()) &&
+        (local->GetObjectId() == collision->GetObjectId()) &&
+        (local->GetModelId() == collision->GetModelId()) &&
+        (local->GetModelId() == collision->GetModelId()) &&
+        (local->GetPointId() == collision->GetPointId()) &&
+        (local->GetCellId() == collision->GetCellId()))
     {
       return id;
     }
@@ -116,6 +117,11 @@ void vtkCollisionCollection::RemoveCollision(vtkIdType id) {
 //--------------------------------------------------------------------------
 void vtkCollisionCollection::RemoveCollisions() {
   this->RemoveAllItems();
+}
+
+//--------------------------------------------------------------------------
+int vtkCollisionCollection::GetNumberOfCollisions() {
+  return this->GetNumberOfItems();
 }
 
 //----------------------------------------------------------------------------

@@ -50,6 +50,7 @@ class vtkCollisionModel;
 class vtkModelCollection;
 
 class vtkPolyData;
+class vtkIntArray;
 
 //! Generic base class for collision detection library interfaces
 /*!
@@ -90,6 +91,18 @@ public:
 
   //! Get total number of collisions detected
   int GetNumberOfCollisions();
+
+  //! Insert a new collision pair
+  void InsertNextCollisionPair(int c0, int c1);
+
+  //! Return the collided object id pairs
+  vtkIntArray * GetCollisionPairs();
+
+  //! Return a collision pair as a vector
+  void GetCollisionPair(int id, int * pair);
+
+  //! Get number of collision pairs
+  int GetNumberOfCollisionPairs();
 
   //BTX
   //!Set detection type
@@ -139,6 +152,12 @@ protected:
    * are stored in this collection.
    */
   vtkCollisionCollection * Collisions;
+
+  //! Collision Pairs
+  /*!
+   * Pair of collided objects ids 
+   */
+  vtkIntArray * CollisionPairs;
 
   //! Clear previous executions of the collision detection process
   /*!

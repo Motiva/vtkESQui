@@ -50,6 +50,7 @@ class vtkRenderWindowInteractor;
 class vtkDefaultInteractorStyle;
 class vtkCollisionDetection;
 class vtkCollisionCollection;
+class vtkIntArray;
 class vtkCallbackCommand;
 
 #ifndef VTKESQUI_USE_NO_HAPTICS
@@ -133,6 +134,9 @@ public:
 
   //! Get the simulation object collisions
   vtkCollisionCollection * GetCollisions();
+
+  //! Get the simulation object collisions
+  vtkIntArray * GetCollisionPairs();
 
   //! Assign Element name
   /*!

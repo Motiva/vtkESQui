@@ -52,6 +52,8 @@ vtkCxxRevisionMacro(vtkCollisionDetection, "$Revision: 0.1 $");
 vtkCollisionDetection::vtkCollisionDetection(){
   this->Models = vtkModelCollection::New();
   this->Collisions = vtkCollisionCollection::New();
+  this->CollisionPairs = vtkIntArray::New();
+  this->CollisionPairs->SetNumberOfComponents(2);
   this->Mode = Full;
 }
 
@@ -88,6 +90,26 @@ int vtkCollisionDetection::GetNumberOfCollisions()
 }
 
 //--------------------------------------------------------------------------
+void vtkCollisionDetection::InsertNextCollisionPair(int c0, int c1){
+  this->CollisionPairs->InsertNextTuple2(c0,c1);
+}
+
+//--------------------------------------------------------------------------
+vtkIntArray * vtkCollisionDetection::GetCollisionPairs(){
+  return this->CollisionPairs;
+}
+
+//--------------------------------------------------------------------------
+void vtkCollisionDetection::GetCollisionPair(int id, int * pair){
+  this->CollisionPairs->GetTupleValue(id, pair);
+}
+
+//--------------------------------------------------------------------------
+int vtkCollisionDetection::GetNumberOfCollisionPairs(){
+  return this->CollisionPairs->GetNumberOfTuples();
+}
+
+//--------------------------------------------------------------------------
 void vtkCollisionDetection::Reset()
 {
   //Clear collisions from previous executions
@@ -98,5 +120,10 @@ void vtkCollisionDetection::Reset()
     collision = this->Collisions->GetNextCollision();
   }
   this->Collisions->RemoveAllItems();
+  
+  while(this->CollisionPairs->GetNumberOfTuples() > 0)
+  {
+    this->CollisionPairs->RemoveFirstTuple();
+  }
 }
 

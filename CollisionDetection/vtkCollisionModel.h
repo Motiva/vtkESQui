@@ -45,11 +45,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkESQuiCollisionDetectionWin32Header.h"
 #include "vtkModel.h"
 
-class vtkTransformPolyDataFilter;
+class vtkPolyDataNormals;
 class vtkCollision;
 class vtkCollisionCollection;
 class vtkSphereSource;
 class vtkGlyph3D;
+class vtkFloatArray;
 
 //! vtkCollisionModel object defines a collision model based on a mesh (vtkPolyData).
 /*!
@@ -112,11 +113,12 @@ public:
   //!Get the visualization sphere radius
   vtkGetMacro(Radius, double);
 
-  //! Get transformed output for collision detection
-  /*!
-   * \return transformed polydata. Point coordinates are modified.
-   */
-  vtkPolyData * GetTransformedOutput();
+  //!Set display of collision by color
+  vtkSetMacro(DisplayCollisions, bool);
+  //!Get display of collision by color
+  vtkGetMacro(DisplayCollisions, bool);
+
+  vtkBooleanMacro(DisplayCollisions, bool);
 
   //!Set detected collisions on the model
   /*!
@@ -150,12 +152,20 @@ public:
   //!Remove all collisions from the model
   void RemoveAllCollisions();
 
+  //! Return total number of model collisions
+  int GetNumberOfCollisions();
+
+  //!Return cell normals of a collision model
+  vtkFloatArray * GetCellNormals();
+
+  //!Return point normals of a collision model
+  vtkFloatArray * GetPointNormals();
+
 protected:
 
   vtkCollisionModel();
   ~vtkCollisionModel();
 
-  int FillOutputPortInformation(int port, vtkInformation* info );
   //! Process the algorithm request (Update).
   virtual int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
@@ -171,17 +181,23 @@ protected:
   //! Glyph sphere radius
   double Radius;
 
-  //! Transform function
-  vtkTransform * Transform;
+  //! Display collision points
+  bool DisplayCollisions;
 
-  //! Transform filter of the model
-  vtkTransformPolyDataFilter *TransformFilter;
+  //! Surface normals for distance field computation
+  vtkPolyDataNormals *Normals;
 
   //! Sphere source for glyphs
   vtkSphereSource * Sphere;
 
   //! Glyphs display of points
   vtkGlyph3D * Glyphs;
+
+  //! Point scalars
+  vtkDoubleArray * Scalars;
+  
+  //! Color lookup table
+  vtkLookupTable * LUT;
 
   //! Collection of collisions
   vtkCollisionCollection * Collisions;

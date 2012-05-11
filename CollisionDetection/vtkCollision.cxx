@@ -43,6 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkObjectFactory.h"
 #include "vtkPoints.h"
+#include "vtkDoubleArray.h"
 #include "vtkIdList.h"
 
 vtkCxxRevisionMacro(vtkCollision, "$Revision: 0.1 $");
@@ -50,140 +51,48 @@ vtkStandardNewMacro(vtkCollision);
 
 //--------------------------------------------------------------------------
 vtkCollision::vtkCollision() {
-  this->CollisionType = ToolTool;
-  this->ObjectIds = vtkIdList::New();
-  this->ObjectIds->SetNumberOfIds(2);
-  this->ObjectTypes = vtkIdList::New();
-  this->ObjectTypes->SetNumberOfIds(2);
-  this->ElementIds = vtkIdList::New();
-  this->ElementIds->SetNumberOfIds(2);
-  this->PointIds = vtkIdList::New();
-  this->PointIds->SetNumberOfIds(2);
-  this->CellIds = vtkIdList::New();
-  this->CellIds->SetNumberOfIds(2);
-  this->Points = vtkPoints::New();
-  this->Points->SetDataTypeToDouble();
-  this->Points->SetNumberOfPoints(2);
+  this->CollisionType = vtkCollision::ToolOrgan;
+  this->ObjectId = -1;
+  this->ModelId = -1;
+  this->CellId = -1;
+  this->CellNormal[0] = this->CellNormal[1] = this->CellNormal[2] = 0;
+  this->PointId = -1;
+  this->Point[0] = this->Point[1] = this->Point[2] = 0;
+  this->PointDisplacement[0] = this->PointDisplacement[1] = this->PointDisplacement[2] = 0;
 }
 
 //--------------------------------------------------------------------------
 vtkCollision::~vtkCollision()
 {
-  this->ObjectIds->Delete();
-  this->ObjectTypes->Delete();
-  this->ElementIds->Delete();
-  this->PointIds->Delete();
-  this->CellIds->Delete();
-  this->Points->Delete();
-}
-
-//--------------------------------------------------------------------------
-void vtkCollision::SetObjectId(int i, int id)
-{
-  this->ObjectIds->SetId(i, id);
-}
-
-//--------------------------------------------------------------------------
-int vtkCollision::GetObjectId(int i){
-  return this->ObjectIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkCollision::SetObjectType(int i, int type)
-{
-  this->ObjectTypes->SetId(i, type);
-}
-
-//--------------------------------------------------------------------------
-int vtkCollision::GetObjectType(int i){
-  return this->ObjectTypes->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkCollision::SetElementId(int i, int id)
-{
-  this->ElementIds->SetId(i, id);
-}
-
-//--------------------------------------------------------------------------
-int vtkCollision::GetElementId(int i){
-  return this->ElementIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkCollision::SetPointId(int i, int id)
-{
-  this->PointIds->SetId(i, id);
-}
-
-//--------------------------------------------------------------------------
-int vtkCollision::GetPointId(int i){
-  return this->PointIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkCollision::SetSyncPointId(int i, int id)
-{
-  this->SyncPointIds->SetId(i, id);
-}
-
-//--------------------------------------------------------------------------
-int vtkCollision::GetSyncPointId(int i){
-  return this->SyncPointIds->GetId(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkCollision::SetPoint(int i, double x, double y, double z) {
-  this->Points->SetPoint(i, x, y, z);
-}
-
-//--------------------------------------------------------------------------
-void vtkCollision::SetPoint(int i, double point[3]) {
-  this->SetPoint(i, point[0],point[1],point[2]);
-}
-
-//--------------------------------------------------------------------------
-double * vtkCollision::GetPoint(int i){
-  return this->Points->GetPoint(i);
-}
-
-//--------------------------------------------------------------------------
-void vtkCollision::SetCellId(int i, vtkIdType value){
-  this->CellIds->SetId(i, value);
-}
-
-//--------------------------------------------------------------------------
-int vtkCollision::GetCellId(int i){
-  return this->CellIds->GetId(i);
 }
 
 //--------------------------------------------------------------------------
 void vtkCollision::DeepCopy(vtkCollision *info) {
-  info->ObjectIds->DeepCopy(this->ObjectIds);
-  info->ElementIds->DeepCopy(this->ElementIds);
-  info->PointIds->DeepCopy(this->PointIds);
-  info->SyncPointIds->DeepCopy(this->SyncPointIds);
-  info->CellIds->DeepCopy(this->CellIds);
-  info->Points->DeepCopy(this->Points);
+  info->ObjectId = this->ObjectId;
+  info->ModelId = this->ModelId;
+  info->CellId = this->CellId;
+  for (int i=0;i<3;i++){
+    info->CellNormal[i] = this->CellNormal[i];
+    info->Point[i] = this->Point[i];
+    info->PointDisplacement[i] = this->PointDisplacement[i];
+  }
   info->Distance = this->Distance;
-  info->Displacement[0] = this->Displacement[0];
-  info->Displacement[1] = this->Displacement[1];
-  info->Displacement[2] = this->Displacement[2];
 }
 
 //--------------------------------------------------------------------------
 void vtkCollision::PrintSelf(ostream&os, vtkIndent indent)
 {
   os << indent << "CollisionType: " << this->CollisionType << endl;
-  for(int i = 0; i< 2; i++)
-  {
-    os << indent << "Object["<< i <<"] Id: " << this->ObjectIds->GetId(i) << endl;
-    os << indent << "Element["<< i <<"] Id: " << this->ElementIds->GetId(i) << endl;
-    os << indent << "Cell[" << i <<"] Id: " << this->CellIds->GetId(i) << endl;
-    os << indent << "Point[" << i <<"] Id: " << this->PointIds->GetId(i)<< endl;
-    double * point = this->Points->GetPoint(i);
-    os << indent << "Point[" << i <<"] Position: " << point[0] << ", " << point[1] << ", " << point[2] << endl;
-  }
-  os << indent << "Displacement: " << this->Displacement[0] << ", " << this->Displacement[1] << ", " << this->Displacement[2] << endl;
+  os << indent << "ObjectId: " << this->ObjectId << endl;
+  os << indent << "ModelId: " << this->ModelId << endl;
+  os << indent << "CellId: " << this->CellId << endl;
+  double * n = this->CellNormal;
+  os << indent << "CellNormal: " << n[0] << ", " << n[1] << ", " << n[2] << endl;
+  os << indent << "PointId: " << this->PointId << endl;
+  os << indent << "Point: " << this->Point[0] << ", " << this->Point[1] << ", " << this->Point[2] << endl;
+  n = this->PointNormal;
+  os << indent << "PointNormal: " << n[0] << ", " << n[1] << ", " << n[2] << endl;
+  double * d = this->PointDisplacement;
+  os << indent << "PointDisplacement: " << d[0] << ", " << d[1] << ", " << d[2] << endl;
   os << indent << "Distance: " << this->Distance << endl;
 }
