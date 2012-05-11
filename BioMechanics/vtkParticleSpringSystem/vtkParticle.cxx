@@ -36,6 +36,7 @@ vtkParticle::vtkParticle()
   this->Force[1] = 0.0;
   this->Force[2] = 0.0;
   this->Springs = vtkSpringCollection::New();
+  this->Status = 1;
 }
 
 //----------------------------------------------------------------------------

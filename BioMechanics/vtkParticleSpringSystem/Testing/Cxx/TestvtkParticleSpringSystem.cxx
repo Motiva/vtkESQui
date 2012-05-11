@@ -142,10 +142,8 @@ int main(int argc, char * argv[])
   reader->SetFileName(filename);
   reader->Update();
 
-  vtkPolyData * mesh = reader->GetOutput();
-
   vtkSmartPointer<vtkParticleSpringSystem> def = vtkSmartPointer<vtkParticleSpringSystem>::New();
-  def->SetInput(mesh);
+  def->SetInputConnection(reader->GetOutputPort());
   def->SetSolverType(vtkMotionEquationSolver::VelocityVerlet);
   def->SetSpring(150);
   def->SetDistance(10);
@@ -153,6 +151,7 @@ int main(int argc, char * argv[])
   def->SetMass(.5);
   def->SetTimeStep(0.001);//1ms
   def->Initialize();
+  def->GetOutput()->Print(cout);
 
   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
@@ -167,7 +166,7 @@ int main(int argc, char * argv[])
 
   vtkSmartPointer<vtkPolyDataMapper> mapper =
       vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper->SetInput(mesh);
+  mapper->SetInputConnection(reader->GetOutputPort());
 
   vtkSmartPointer<vtkActor> actor =
       vtkSmartPointer<vtkActor>::New();
@@ -177,7 +176,7 @@ int main(int argc, char * argv[])
 
   vtkSmartPointer<vtkPolyDataMapper> mapper2 =
         vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper2->SetInput(def->GetOutput());
+  mapper2->SetInputConnection(def->GetOutputPort());
 
   vtkSmartPointer<vtkActor> actor2 =
         vtkSmartPointer<vtkActor>::New();

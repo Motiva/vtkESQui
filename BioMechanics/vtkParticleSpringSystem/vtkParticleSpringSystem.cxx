@@ -51,7 +51,7 @@ void vtkParticleSpringSystem::Initialize()
 {
   vtkPolyData * input = vtkPolyData::SafeDownCast(this->GetInput());
   //Ensure mesh is at its last state
-  input->Update();
+  //input->Update();
 
   //Initialize Particle System
   this->Particles = vtkParticleCollection::New();
@@ -135,12 +135,15 @@ int vtkParticleSpringSystem::RequestData(
   //Initialize System
   if(!this->Initialized) this->Initialize();
 
+  //TODO: Define ROI to refine deformation to a local area
+
   // Solve motion equation
   this->Solver->ComputeNextStep(this->Particles, this->TimeStep);
 
   output->ShallowCopy(input);
 
   //Update output points
+  //TODO: Use vtkWarpVector to apply deformation
   vtkPoints * points = output->GetPoints();
   for (int i=0; i < output->GetNumberOfPoints(); i++)
   {
