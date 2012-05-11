@@ -2,33 +2,52 @@
 import vtk
 import vtkesqui
 import time
+import random
 
 class vtkTimerCallback():
-   def __init__(self):
-       self.timer_count = 0
- 
-   def execute(self,obj,event):
-       #print self.timer_count
-       
-       
-       start = time.time()
-       #self.actor.SetPosition(self.timer_count, self.timer_count,0);
-       self.ball.Modified()
-       self.ball.Update()
-       rate = 1/(time.time() - start)
-       #print rate
+  def __init__(self):
+    self.timer_count = 0
+  
+  def execute(self,obj,event):
+    start = time.time()
+    self.ball.Modified()
+    self.ball.Update()
+    rate = 1/(time.time() - start)
+    #print rate
 
-       iren = obj
-       iren.GetRenderWindow().Render()
-       
-       if (self.timer_count % 500 == 0):
-         print "displacement"
-         # Add a displacement
-         self.defo.InsertDisplacement(18, 0.12, 0.02, 0.0)
-         self.defo.InsertDisplacement(19, 0.25, 0.05, 0.0)
-         self.defo.InsertDisplacement(20, 0.12, 0.02, 0.0)
-         
-       self.timer_count += 1
+    iren = obj
+    iren.GetRenderWindow().Render()
+    
+    if (self.timer_count % 500 == 0):
+      print "collision"
+      
+      cm = self.ball.GetCollisionModel()
+      normals = cm.GetCellNormals()
+      cid = 26
+      cps = [14,5,6]
+      cn = normals.GetTuple3(cid)
+      for i in cps:
+        pn = cm.GetPointNormals().GetTuple3(i)
+        c = vtkesqui.vtkCollision()
+        c.SetObjectId(0)
+        c.SetModelId(0)
+        c.SetCellId(cid)
+        c.SetCellNormal(cn)
+        c.SetPointId(i)
+        c.SetPoint(cm.GetOutput().GetPoint(i))
+        d = 0.2*random.random()
+        dsp = [0.0,0.0,0.0]
+        j = 0
+        for n in pn:
+          dsp[j] = d*n
+          j = j+1
+
+        c.SetPointDisplacement(dsp)
+        c.SetDistance(d)
+
+        cm.AddCollision(c)
+
+    self.timer_count += 1
 
 def main():
 
@@ -42,25 +61,25 @@ def main():
   vis.SetName("ball_vis")
   vis.SetFileName(fn)
   vis.SetTextureFileName(tfn)
-  vis.SetOpacity(1.0)
-  vis.SetColor(1.0, 1.0, 1.0)
 
   # Visualization Model
   col = vtkesqui.vtkCollisionModel()
   col.SetName("ball_vtkbioeng")
   col.SetFileName(cfn)
+  col.SetRadius(0.01)
   col.SetVisibility(1)
+  col.DisplayCollisionsOn()
   
   # Deformation Model
   defo = vtkesqui.vtkParticleSpringSystemInterface()
   defo.SetName("ball_defo")
   defo.SetFileName(dfn)
-  defo.SetOpacity(0.5)
+  defo.SetOpacity(0.8)
   defo.SetVisibility(1)
-  defo.SetColor(1.0, 1.0, 1.0)
+  defo.SetColor(.1, .1, .1)
   defo.SetSpring(150)
   defo.SetDistance(1.0)
-  defo.SetDamping(3)
+  defo.SetDamping(2)
   defo.SetMass(.5)
   defo.SetTimeStep(0.001)
 
@@ -102,7 +121,6 @@ def main():
   iren.AddObserver('TimerEvent', cb.execute)
   timerId = iren.CreateRepeatingTimer(1)
   cb.renderTimerId = timerId
-  cb.defo = defo
   
   iren.Start()
   

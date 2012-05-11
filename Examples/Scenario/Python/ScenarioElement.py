@@ -23,14 +23,14 @@ decimate.Update()
 input_col = decimate.GetOutput()
 
 vis = vtkesqui.vtkVisualizationModel();
-vis.SetName("stick_vis");
+vis.SetName("sphere_vis");
 vis.SetInput(input);
 vis.SetTextureFileName(tfn);
 vis.SetOpacity(1.0);
 vis.SetColor(1.0, 1.0, 1.0);
 
 col = vtkesqui.vtkCollisionModel();
-col.SetName("vtkbioeng");
+col.SetName("sphere_col");
 col.SetInput(input_col);
 col.SetOpacity(0.5);
 col.SetColor(0.0, 0.0, 1.0);
@@ -38,7 +38,7 @@ col.SetRadius(0.02)
 
 stick = vtkesqui.vtkScenarioElement();
 stick.SetId(0);
-stick.SetName("stick");
+stick.SetName("sphere");
 stick.SetOrigin(0.0, 0.0, 0.0);
 stick.SetPosition(3.0, 0.0, 0.0);
 stick.SetOrientation(0, 0, -20);
@@ -57,7 +57,7 @@ iren.SetRenderWindow(renWin)
 ren.AddActor(vis.GetActor())
 ren.AddActor(col.GetActor())
 
-ren.SetBackground(1.0, 1.0, 1.0)
+ren.SetBackground(0.3, 0.6, 0.3)
 renWin.SetSize(500, 500)
 
 ren.ResetCamera()

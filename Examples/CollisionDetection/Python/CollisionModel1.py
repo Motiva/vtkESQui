@@ -1,6 +1,7 @@
 
 import vtk
 import vtkesqui
+import random
 
 # Data source
 sphere = vtk.vtkSphereSource()
@@ -13,34 +14,30 @@ input = sphere.GetOutput()
 source = vtk.vtkPolyData()
 source.DeepCopy(input)
 
-#Smooth (deform) source mesh
-smooth = vtk.vtkSmoothPolyDataFilter()
-smooth.SetInput(source)
-smooth.SetNumberOfIterations(200)
-
 #Model input mesh will be adapted to the source
 model = vtkesqui.vtkCollisionModel()
+model.SetId(0)
 model.SetInput(input)
-model.SetSource(smooth.GetOutput())
-model.SetColor(0.5 ,0.5 , 1.0)
-model.SetRadius(0.01)
+model.SetRadius(0.02)
+model.DisplayCollisionsOn()
+model.Initialize()
 
-#A call to update method is made to force the model to be at its last state
-model.Update();
+#Insert a few collisions to the model
+p = [12, 23, 14, 25]
+for i in p:
+  c = vtkesqui.vtkCollision()
+  c.SetModelId(0)
+  c.SetPointId(i)
+  c.SetDistance(random.random()*0.5)
+  model.AddCollision(c)
+
+model.Update()
 
 ren = vtk.vtkRenderer()
 renWin = vtk.vtkRenderWindow()
 renWin.AddRenderer(ren)
 iren = vtk.vtkRenderWindowInteractor()
 iren.SetRenderWindow(renWin)
-
-# Display original mesh
-m = vtk.vtkPolyDataMapper()
-m.SetInput(source)
-a = vtk.vtkActor()
-a.SetMapper(m)
-a.GetProperty().SetOpacity(0.5)
-ren.AddActor(a)
 
 # Display model output (smoothed polydata)
 actor = model.GetActor()

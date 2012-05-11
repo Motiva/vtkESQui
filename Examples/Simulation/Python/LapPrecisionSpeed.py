@@ -96,41 +96,39 @@ class vtkTimerCallback():
   def updateRound(self):
     r = self.round
     items = self.items
+    organs = self.organs
     steps = self.steps
     angles = self.angles
     
-    #Check collisions
-    colls = self.simulation.GetCollisions()
+    #Check collisions object ids
+    colls = self.simulation.GetCollisionPairs()
     obIds = list()
     left = -1
     right = -1
-    if (colls and colls.GetNumberOfItems() > 0):
-      for i in range(colls.GetNumberOfItems()):
-        c = colls.GetCollision(i)
-        id0 = c.GetObjectId(0)
-        id1 = c.GetObjectId(1)
-        #Check first tool (Left)
-        if c.GetObjectType(0) == 0:
+    if (colls and colls.GetNumberOfTuples() > 0):
+      for i in range(colls.GetNumberOfTuples()):
+        c = colls.GetTuple2(i)
+        id0 = int(c[0])
+        id1 = int(c[1])
+
+        #Get tool and organ ids 
+        if id0 == 0 or id0 == 1:
           tid = id0
           oid = id1
-        else:
-          oid = id0
+        elif id1 == 0 or id1 == 1:
           tid = id1
+          oid = id0
+     
+        organ = self.organs[(oid-3)]       
 
-        for i in range(len(items)):
-          if items[i].GetId() == oid:
-            organ = items[i]
-        
         if tid == 1:
           #right (green) tool
           right = oid
           if oid%3 == 0:
             #green ball
-            print "remove(g): "+str(oid)
             organ.Disable()
           if oid%3 == 2 and left >= 0:
             #blue ball
-            print "remove(b): "+str(oid)
             organ.Disable()
             
         elif tid == 0:
@@ -138,11 +136,9 @@ class vtkTimerCallback():
           left = oid
           if oid%3 == 1:
             #red ball
-            print "remove(r): "+str(oid)
             organ.Disable()
           if oid%3 == 2 and right >= 0:
             #blue ball
-            print "remove(b): "+str(oid)
             organ.Disable()
     
     e = 0
