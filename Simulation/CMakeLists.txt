@@ -10,7 +10,6 @@ SET(UKIT MANAGER)  #Uppercase Kit Name
 # Kit_SRCS variable.
 SET (Kit_SRCS 
 vtkSimulation.cxx
-#vtkSimulationInteractorStyle.cxx
 )
 
 # Set your list of libraries here.

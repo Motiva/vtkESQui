@@ -270,6 +270,7 @@ Common               Project wide needed by the project
 Documentation        Documentation of the platform: Doxygen, user & developer guides
 Examples             List of examples implemented in C++, Python and Tcl
 Haptics              Classes that wrap the haptic device's API
+Interaction          User interaction of instruments
 Scenario             Management of the rendered objects
 Simulation           Simulation process execution
 Utilities            Scripts and C++ classes to share/export/import models
@@ -842,6 +843,28 @@ Immersion LSW tool interface class. This interface has been implemented to acces
 
 The haptic device could not be used unless a SetData command is sent to it. Once the tool has been initialized it could be accessed from a vtkESQui simulation process. 
 
+Interaction
+-----------
+
+=============================  ===============
+Class                          Description
+=============================  ===============
+vtkDefaultInteractorStyle_     Default keyboard & mouse interactor
+=============================  ===============
+
+vtkDefaultInteractorStyle
+............................
+
+Implementation of the simulation interactor style. Defines a standard keyboard layout for simulation control in laparoscopic techniques.
+
+.. image:: ../Doxygen/html/classvtkDefaultInteractorStyle__coll__graph.png
+   :scale: 200%
+   :align: center
+
+Mouse and keyboard events are handled and further actions, such as rotations or translations, implemented.
+
+Please refer to Examples_ section if you want to know more about this class.
+
 Simulation
 ----------
 
@@ -850,8 +873,7 @@ This module purpose is to manage the surgical simulation process, including the 
 =============================  ===============
 Class                          Description
 =============================  ===============
-vtkSimulation_                 Simulation process management
-vtkSimulationInteractorStyle_  Default keyboard & mouse interactor
+vtkSimulation_                 Surgical simulation process
 =============================  ===============
 
 vtkSimulation
@@ -872,19 +894,6 @@ The following code excerpt shows implementation of the simulation process:
    :literal:
    :start-line: 58
    :end-line: 87
-
-Please refer to Examples_ section if you want to know more about this class.
-
-vtkSimulationInteractorStyle
-............................
-
-Implementation of the simulation interactor style. Defines a standard keyboard layout for simulation control in laparoscopic techniques.
-
-.. image:: ../Doxygen/html/classvtkSimulationInteractorStyle__coll__graph.png
-   :scale: 200%
-   :align: center
-
-Mouse and keyboard events are handled and further actions, such as rotations or translations, implemented.
 
 Please refer to Examples_ section if you want to know more about this class.
 

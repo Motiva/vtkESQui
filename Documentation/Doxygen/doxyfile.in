@@ -31,14 +31,14 @@ PROJECT_NAME = vtkESQui
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER = 0.5.1
+PROJECT_NUMBER = 0.6.5
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
 # If a relative path is entered, it will be relative to the location 
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY = @PROJECT_BINARY_DIR@/Documentation/Doxygen/
+OUTPUT_DIRECTORY = @PROJECT_SOURCE_DIR@/Documentation/Doxygen/
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create 
 # 4096 sub-directories (in 2 levels) under the output directory of each output 
@@ -99,7 +99,7 @@ ALWAYS_DETAILED_SEC = NO
 # members were ordinary class members. Constructors, destructors and assignment 
 # operators of the base classes will not be shown.
 
-INLINE_INHERITED_MEMB = NO
+INLINE_INHERITED_MEMB = YES
 
 # If the FULL_PATH_NAMES tag is set to YES then Doxygen will prepend the full 
 # path before files name in the file list and in the header files. If set 
@@ -534,7 +534,7 @@ WARN_LOGFILE =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT = @PROJECT_SOURCE_DIR@/Common @PROJECT_SOURCE_DIR@/Haptics @PROJECT_SOURCE_DIR@/BioMechanics @PROJECT_SOURCE_DIR@/CollisionDetection @PROJECT_SOURCE_DIR@/Scenario @PROJECT_SOURCE_DIR@/Simulation @PROJECT_SOURCE_DIR@/Utilities 
+INPUT = @PROJECT_SOURCE_DIR@/Common @PROJECT_SOURCE_DIR@/Haptics @PROJECT_SOURCE_DIR@/Interaction @PROJECT_SOURCE_DIR@/BioMechanics @PROJECT_SOURCE_DIR@/CollisionDetection @PROJECT_SOURCE_DIR@/Scenario @PROJECT_SOURCE_DIR@/Simulation @PROJECT_SOURCE_DIR@/Utilities 
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
