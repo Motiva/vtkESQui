@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkSimulationInteractorStyle_h
 #define __vtkSimulationInteractorStyle_h
 
-#include "vtkESQuiSimulationWin32Header.h"
+#include "vtkESQuiInteractionWin32Header.h"
 #include "vtkInteractorStyleTrackballCamera.h"
 
 class vtkIdList;
@@ -56,7 +56,7 @@ class vtkScenario;
  * Mouse and keyboard events are handled and further actions, such as
  * rotations or translations, implemented.
  */
-class VTK_ESQUI_SIMULATION_EXPORT vtkDefaultInteractorStyle : public vtkInteractorStyleTrackballCamera {
+class VTK_ESQUI_INTERACTION_EXPORT vtkDefaultInteractorStyle : public vtkInteractorStyleTrackballCamera {
 
 public:
   //! Type revision macro
