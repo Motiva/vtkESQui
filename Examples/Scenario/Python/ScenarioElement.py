@@ -4,7 +4,7 @@ import sys
 import vtk
 import vtkesqui
 
-tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg";
+tfn ="/home/david/vtkESQuiData/Scenario/Textures/steel.jpg";
 
 # Generate scenario element
 

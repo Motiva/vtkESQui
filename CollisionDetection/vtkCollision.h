@@ -155,6 +155,20 @@ public:
    * \sa SetPointId(int id, int pointId)
    */
   vtkGetMacro(PointId, int);
+
+  //! Set the element deformation mesh point identifier where the collision has occurred
+  /*!
+   * \param pointId mesh point identifier
+   * \sa GetPointId()
+   */
+  vtkSetMacro(DefPointId, int);
+
+  //! Get the deformation point identifier
+  /*!
+   * \return point id of the element deformation mesh
+   * \sa SetPointId(int id, int pointId)
+   */
+  vtkGetMacro(DefPointId, int);
   
   //! Set the organ mesh point position of the collision
   /*!
@@ -235,6 +249,9 @@ protected:
 
   //! Point identifier of the collided model
   vtkIdType PointId;
+
+  //! Point identifier of the deformation model
+  vtkIdType DefPointId;
 
   //! Collision point
   double Point[3];

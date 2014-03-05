@@ -47,6 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkRenderWindowInteractor.h"
 
 #include "vtkDefaultInteractorStyle.h"
+#include "vtkSingleChannelInteractorStyle.h"
 #include "vtkScenario.h"
 #include "vtkScenarioObject.h"
 #include "vtkScenarioObjectCollection.h"
@@ -57,30 +58,25 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "vtkBioEngInterface.h"
 #include "vtkTool.h"
 
-void func ( vtkObject* caller, long unsigned int eventId, void* clientData, void* callData )
+#ifdef VTKESQUI_USE_HAPTICS
+#include "vtkHaptic.h"
+#endif
+
+void SimulationRenderingCallback ( vtkObject* caller, long unsigned int eventId, void* clientData, void* callData )
 {
-  vtkSimulation * sim = static_cast<vtkSimulation*>(clientData);
+	vtkSimulation * sim = static_cast<vtkSimulation*>(clientData);
 
-  if (vtkCommand::TimerEvent == eventId)
-  {
-    int tid = * static_cast<int *>(callData);
-    if (tid == sim->GetInteractionTimerId())
-    {
-      //cout << "Interaction\n";
-      sim->Interact();
-    }
-    if (tid == sim->GetSimulationTimerId())
-    {
-      //cout << "Step\n";
-      sim->Step();
-    }
-    else if (tid == sim->GetRenderTimerId())
-    {
-      //cout << "Render\n";
-      sim->Render();
-    }
-  }
-
+	if (vtkCommand::TimerEvent == eventId)
+	{
+		int tid = * static_cast<int *>(callData);
+		if (tid == sim->GetRenderTimerId())
+		{
+			//cout << "Step\n";
+			sim->Interact();
+			sim->Step();
+			sim->Render();
+		}
+	}
 }
 
 vtkCxxRevisionMacro(vtkSimulation, "$Revision: 0.1 $");
@@ -89,17 +85,17 @@ vtkStandardNewMacro(vtkSimulation);
 //----------------------------------------------------------------------------
 vtkSimulation::vtkSimulation()
 {
+  #ifdef VTKESQUI_USE_HAPTICS
+  this->HapticDevice = NULL;
+  #endif
   this->Scenario = NULL;
   this->Interactor = NULL;
   this->InteractorStyle = NULL;
-  this->InteractionTimerId = 0;
-  this->InteractionTimerRate = 0;
-  this->SimulationTimerId = 0;
-  this->SimulationTimerRate = 0;
   this->RenderTimerId = 0;
   this->RenderTimerRate = 0;
   this->Interaction = false;
   this->Collision = false;
+  this->Initialized = false;
   this->Gravity[0] = this->Gravity[1] = this->Gravity[2] = 0.0;
 
   this->Callback = vtkCallbackCommand::New();
@@ -125,13 +121,13 @@ vtkRenderWindowInteractor * vtkSimulation::GetInteractor()
 }
 
 //----------------------------------------------------------------------------
-void vtkSimulation::SetInteractorStyle(vtkDefaultInteractorStyle * style)
+void vtkSimulation::SetInteractorStyle(vtkInteractorStyle * style)
 {
   this->InteractorStyle = style;
 }
 
 //----------------------------------------------------------------------------
-vtkDefaultInteractorStyle * vtkSimulation::GetInteractorStyle()
+vtkInteractorStyle * vtkSimulation::GetInteractorStyle()
 {
   return this->InteractorStyle;
 }
@@ -169,7 +165,10 @@ void vtkSimulation::SetCollisionModeToFull()
 //----------------------------------------------------------------------------
 vtkCollisionCollection * vtkSimulation::GetCollisions()
 {
-  if(this->Collision) return this->CollisionDetection->GetCollisions();
+  if(this->Collision){
+		//this->CollisionDetection->Update();
+		return this->CollisionDetection->GetCollisions();
+	}
   else return NULL;
 }
 
@@ -184,8 +183,11 @@ vtkIntArray * vtkSimulation::GetCollisionPairs()
 //----------------------------------------------------------------------------
 void vtkSimulation::Initialize() {
 
+  if (this->Initialized) return;
+  this->Initialized = true;
+
   //Configure simulation loop
-  this->Callback->SetCallback(func);
+  this->Callback->SetCallback(SimulationRenderingCallback);
   this->Callback->SetClientData(this);
 
   //Initialize visualization scenario
@@ -201,22 +203,6 @@ void vtkSimulation::Initialize() {
 
   this->Interactor->AddObserver(vtkCommand::TimerEvent, this->Callback);
 
-  //Check for haptic device resfresh rate
-  if(this->InteractionTimerRate == 0)
-  {
-    vtkErrorMacro("Haptic Device refresh time has not been defined");
-  }
-
-  this->InteractionTimerId = this->Interactor->CreateRepeatingTimer(this->InteractionTimerRate);
-
-  //Check for simulation resfresh rate
-  if(this->SimulationTimerRate == 0)
-  {
-    vtkErrorMacro("Simulation refresh time has not been defined");
-  }
-
-  this->SimulationTimerId = this->Interactor->CreateRepeatingTimer(this->SimulationTimerRate);
-
   //Check for rendering rate
   if(this->RenderTimerRate == 0)
   {
@@ -229,7 +215,6 @@ void vtkSimulation::Initialize() {
   if(this->Collision)
   {
     this->CollisionDetection = vtkBioEngInterface::New();
-    this->CollisionDetection->Initialize();
 
     vtkScenarioObjectCollection * objects = this->Scenario->GetObjects();
     objects->InitTraversal();
@@ -239,15 +224,17 @@ void vtkSimulation::Initialize() {
       elements->InitTraversal();
       while(vtkScenarioElement * e = elements->GetNextElement())
       {
-        e->SetDeltaT(this->SimulationTimerRate);
+        e->SetDeltaT(this->RenderTimerRate);
         vtkCollisionModel *m = e->GetCollisionModel();
         if(m)
         {
-          m->SetDeltaT(this->SimulationTimerRate);
+          m->SetDeltaT(this->RenderTimerRate);
           this->CollisionDetection->AddModel(m);
         }
       }
     }
+
+    this->CollisionDetection->Initialize();
   }
 
   //FIXME: Redesign interaction
@@ -255,45 +242,57 @@ void vtkSimulation::Initialize() {
   if(this->Interaction)
   {
     this->Interactor = this->Scenario->GetRenderWindowInteractor();
+
     //Initialize simulation interactor style
     if(!this->InteractorStyle) {
       this->InteractorStyle = vtkDefaultInteractorStyle::New();
     }
-    this->InteractorStyle->SetScenario(this->Scenario);
-    this->InteractorStyle->Initialize();
     this->Interactor->SetInteractorStyle(this->InteractorStyle);
-
-  #ifndef VTKESQUI_USE_NO_HAPTICS
-    if(this->HapticDevice)
+    // Special treatment on each style
+    if (this->InteractorStyle->IsA("vtkDefaultInteractorStyle"))
     {
-      //Initialize haptic device
-      int connected = this->HapticDevice->Init();
-      if(connected > 0){
-        vtkDebugMacro("Haptic device is connected...");
-        //Set tools to be controlled by the device
-        vtkScenarioObjectCollection * objects = this->Scenario->GetObjects();
-        objects->InitTraversal();
-        while(vtkScenarioObject * o = objects->GetNextObject())
-        {
-          if(o && o->GetType() == vtkScenarioObject::Tool)
+      vtkDefaultInteractorStyle *style = vtkDefaultInteractorStyle::SafeDownCast(this->InteractorStyle);
+      style->SetScenario(this->Scenario);
+    }
+    else if (this->InteractorStyle->IsA("vtkSingleChannelInteractorStyle"))
+    {
+      vtkSingleChannelInteractorStyle *style = vtkSingleChannelInteractorStyle::SafeDownCast(this->InteractorStyle);
+      style->SetScenario(this->Scenario);
+      style->Initialize();
+    }
+
+    #ifdef VTKESQUI_USE_HAPTICS
+      if(this->HapticDevice)
+      {
+        //Initialize haptic device
+        int connected = this->HapticDevice->Init();
+        if(connected > 0){
+          vtkDebugMacro("Haptic device is connected...");
+          //Set tools to be controlled by the device
+          vtkScenarioObjectCollection * objects = this->Scenario->GetObjects();
+          objects->InitTraversal();
+          while(vtkScenarioObject * o = objects->GetNextObject())
           {
-            this->HapticDevice->AddTool(vtkTool::SafeDownCast(o));
+            if(o && o->GetType() == vtkScenarioObject::Tool)
+            {
+              this->HapticDevice->AddTool(vtkTool::SafeDownCast(o));
+            }
           }
         }
+        else
+        {
+          vtkErrorMacro("Haptic device is not connected...");
+          exit(0);
+        }
       }
-      else
-      {
-        vtkErrorMacro("Haptic device is not connected...");
-        exit(0);
-      }
-    }
-  #endif
+    #endif
   }
 }
 
 //----------------------------------------------------------------------------
 void vtkSimulation::Run()
 {
+  if (!this->Initialized) this->Initialize();
   this->Interactor->Start();
 }
 
@@ -310,7 +309,7 @@ void vtkSimulation::Step()
 //----------------------------------------------------------------------------
 void vtkSimulation::Interact() {
 
-#ifndef VTKESQUI_USE_NO_HAPTICS
+#ifdef VTKESQUI_USE_HAPTICS
   if(this->HapticDevice)
   {
     const char * name = HapticDevice->GetName();
@@ -329,11 +328,22 @@ void vtkSimulation::Render()
 void vtkSimulation::PrintSelf(ostream& os,vtkIndent indent) {
   //this->Superclass::PrintSelf(os,indent);
 
-  os << indent << "SimulationTimerRate: " << this->SimulationTimerRate << "\n";
-  os << indent << "HapticTimerRate: " << this->InteractionTimerRate << "\n";
   os << indent << "RenderTimerRate: " << this->RenderTimerRate << "\n";
   os << indent << "Gravity: " << this->Gravity[0] << ", " << this->Gravity[1] << ", " << this->Gravity[2] << "\n";
   os << indent << "UseHaptic: " << this->Interaction << "\n";
   os << indent << "Verbose: " << this->Collision << "\n";
 
 }
+
+#ifdef VTKESQUI_USE_HAPTICS
+void vtkSimulation::SetHapticDevice(vtkHaptic *Haptic)
+{
+	this->HapticDevice = Haptic;
+}
+
+vtkHaptic *vtkSimulation::GetHapticDevice()
+{
+	return this->HapticDevice;
+}
+#endif
+

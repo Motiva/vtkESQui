@@ -77,7 +77,8 @@ public:
     Laparoscopy = 0,
     Endovascular = 1,
     Arthroscopy = 2,
-    Camera = 3
+    Camera = 3,
+    SingleChannel = 4
   };
 
   //! Set tool type

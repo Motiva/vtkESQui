@@ -453,9 +453,6 @@ protected:
   //! Scale factor (size)
   double Scale[3];
 
-  //! Synchronization Map
-  vtkIdList * SynchronizationMap;
-
   //! Element transform
   vtkTransform * Transform;
 

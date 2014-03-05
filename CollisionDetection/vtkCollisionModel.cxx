@@ -125,10 +125,10 @@ void vtkCollisionModel::Initialize()
   this->LUT = vtkLookupTable::New();
   this->LUT->SetNumberOfColors(64);
   this->LUT->Build();
-  for(int i=0;i<8;i++)
+  for(int i=0;i<64;i++)
   {
-    double r = (8.0-i)/8.0;
-    this->LUT->SetTableValue(8*i,r,1.0,1.0);
+    double b = (64.0-i)/64.0;
+    this->LUT->SetTableValue(i,b,b,1.0);
   }
 }
 
@@ -229,7 +229,6 @@ int vtkCollisionModel::RequestData(
       //Update object position
       this->Normals->Update();
       output->ShallowCopy(this->Normals->GetOutput());
-
     }
     else
     {
@@ -246,7 +245,7 @@ int vtkCollisionModel::RequestData(
     //Display point collisions
     if(this->DisplayCollisions)
     {
-      this->Scalars->SetNumberOfTuples(input->GetNumberOfPoints());
+      this->Scalars->SetNumberOfTuples(output->GetNumberOfPoints());
       for(int i=0; i<this->Scalars->GetNumberOfTuples(); i++)
       {
         this->Scalars->SetTuple1(i,0);
@@ -263,6 +262,7 @@ int vtkCollisionModel::RequestData(
       this->Mapper->SetLookupTable(this->LUT);
     }
 
+    //Set Mapper Input with Glyphs
     this->Mapper->SetInput(this->Glyphs->GetOutput());
     
     this->Actor->SetUserMatrix(this->Matrix);

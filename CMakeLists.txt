@@ -8,83 +8,87 @@ ENDIF(COMMAND CMAKE_POLICY)
 # project set here.
 PROJECT (vtkESQui)
 
-#
+# 
 # Dart config
-#
+# 
 
 ENABLE_TESTING()
 
 #Dashboard testing
 #INCLUDE(CTest)
 
-#
+# 
 #Enabling/disabling Haptic use
-#
-OPTION (VTKESQUI_USE_HAPTICS "Set this option if you want to use an haptic device")
+# 
 
-#
+OPTION(VTKESQUI_USE_LSW "Set this to use LSW haptics" OFF)
+OPTION(VTKESQUI_USE_IHP "Set this to use IHP haptics" OFF)
+OPTION(VTKESQUI_USE_VSP "Set this to use VSP haptics" OFF)
+OPTION(VTKESQUI_USE_SBM "Set this to use SBM haptics" OFF)
+
+IF(VTKESQUI_USE_LSW OR VTKESQUI_USE_IHP OR VTKESQUI_USE_VSP OR VTKESQUI_USE_SBM)
+  SET(VTKESQUI_USE_HAPTICS 1)
+ELSE(VTKESQUI_USE_LSW OR VTKESQUI_USE_IHP OR VTKESQUI_USE_VSP OR VTKESQUI_USE_SBM)
+  SET(VTKESQUI_USE_HAPTICS 0)
+ENDIF(VTKESQUI_USE_LSW OR VTKESQUI_USE_IHP OR VTKESQUI_USE_VSP OR VTKESQUI_USE_SBM)
+
+# 
 #Enabling/disabling FEM use
-#
+# 
 OPTION (VTKESQUI_USE_FEM "Set this option if you want to enable FEM")
 
-#
-# Need to include class headers and the configuration header.
-#
-INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
-INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
-
-#
+# 
 # Setup output paths.
-#
+# 
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib CACHE PATH
     "Single output directory for building all libraries.")
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
     "Single output directory for building all executables.")
 MARK_AS_ADVANCED(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
 
-#
+# 
 # Find and load VTK settings.
-#
+# 
 FIND_PACKAGE(VTK REQUIRED)
 INCLUDE(${VTK_USE_FILE})
 
-#
+# 
 # Find and load ITK Settings
-#
+# 
 FIND_PACKAGE ( ITK QUIET )
 IF ( ITK_FOUND )
       INCLUDE( ${USE_ITK_FILE} )
 ENDIF( ITK_FOUND )
 
-#
+# 
 # Set Common Path Values
-#
+# 
 SET (VTKESQUI_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 SET (VTKESQUI_CMAKE_DIR "${PROJECT_SOURCE_DIR}/CMake")
 
-#
+# 
 # Set Common Prefixes
-#
+# 
 SET (UPROJECT_NAME "VTKESQUI")
 SET (UEXPORT_PREFIX "VTK_ESQUI_")
 
-#
+# 
 # Expand CMAKE_MODULE_PATH
-#
+# 
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/CMake/Modules/")
 
-#
+# 
 # Give user option of building shared or static libraries.  Default to
 # the choice made for VTK.
-#
+# 
 OPTION(BUILD_SHARED_LIBS "Build with shared libraries."
        ${VTK_BUILD_SHARED_LIBS})
 SET(VTKESQUI_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 
-#
+# 
 # Set VTKLOCAL_BUILD_SHARED_LIBS to 1 or 0 for use in creating the
 # configuration header.
-#
+# 
 IF(BUILD_SHARED_LIBS)
   SET(VTKESQUI_BUILD_SHARED_LIBS_CONFIG 1)
 ELSE(BUILD_SHARED_LIBS)
@@ -145,10 +149,11 @@ IF(VTK_FOUND)
     ENDIF (VTKESQUI_WRAP_PYTHON)
   ENDIF (VTK_WRAP_PYTHON)
  
-  #
+  # 
   # Include path(s) of the local classes of the project
-  #
+  # 
 
+  INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
   INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Common)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Scenario)
@@ -160,10 +165,11 @@ IF(VTK_FOUND)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkExplicitDeformableModel/Filters)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/CollisionDetection)
   INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/CollisionDetection/vtkbioeng)
+  INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/IO)
   
-  #
+  # 
   # Build examples too.
-  #
+  # 
 
   OPTION(BUILD_EXAMPLES "Build Examples." OFF)
   IF (BUILD_EXAMPLES)
@@ -172,24 +178,40 @@ IF(VTK_FOUND)
   
   IF(VTKESQUI_USE_HAPTICS)
     
+    MESSAGE(STATUS "Include_directories: haptics")
     INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Haptics)
     
-    #
+    # 
     # You may have to change the HAPTIC SDK's path in the FindHAPTIC.cmake located in src/CMake/Modules
     # Note: IHP & VSP may not be used simultaneously
-    #
+    # 
+	IF(VTKESQUI_USE_IHP AND VTKESQUI_USE_VSP)
+	  MESSAGE(FATAL_ERROR "IHP and VSP may not be used simultaneously.")
+	ENDIF(VTKESQUI_USE_IHP AND VTKESQUI_USE_VSP)
     
     # LSW Haptic libraries
-    FIND_PACKAGE(LSWSDK REQUIRED)
-    INCLUDE_DIRECTORIES(${LSWSDK_INCLUDE_DIRS})
+	IF(VTKESQUI_USE_LSW)
+      FIND_PACKAGE(LSWSDK REQUIRED)
+      INCLUDE_DIRECTORIES(${LSWSDK_INCLUDE_DIRS})
+	ENDIF(VTKESQUI_USE_LSW)
     
     # IHP Haptic libraries
-    FIND_PACKAGE(IHPSDK REQUIRED)
-    INCLUDE_DIRECTORIES(${IHPSDK_INCLUDE_DIRS})
+	IF(VTKESQUI_USE_IHP)
+      FIND_PACKAGE(IHPSDK REQUIRED)
+      INCLUDE_DIRECTORIES(${IHPSDK_INCLUDE_DIRS})
+	ENDIF(VTKESQUI_USE_IHP)
     
     # VSP Haptic libraries
-    FIND_PACKAGE(VSPSDK REQUIRED)
-    INCLUDE_DIRECTORIES(${VSPSDK_INCLUDE_DIRS})
+	IF(VTKESQUI_USE_VSP)
+      FIND_PACKAGE(VSPSDK REQUIRED)
+      INCLUDE_DIRECTORIES(${VSPSDK_INCLUDE_DIRS})
+	ENDIF(VTKESQUI_USE_VSP)
+    
+    # SBM Haptic libraries
+	IF(VTKESQUI_USE_SBM)
+      FIND_PACKAGE(SBMSDK REQUIRED)
+      INCLUDE_DIRECTORIES(${SBMSDK_INCLUDE_DIRS})
+	ENDIF(VTKESQUI_USE_SBM)
     
   ENDIF(VTKESQUI_USE_HAPTICS)
 
@@ -197,16 +219,16 @@ IF(VTK_FOUND)
     INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkFEMSystem)
   ENDIF(VTKESQUI_USE_FEM)
   
-  #
+  # 
   # Build Documentation
-  #
+  # 
   IF (BUILD_DOCUMENTATION)
     ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/Documentation)
   ENDIF (BUILD_DOCUMENTATION)
   
-  #
+  # 
   # Use CUDA
-  #
+  # 
   OPTION(VTKESQUI_USE_CUDA "Enable the use of CUDA GPU computation" OFF)
   IF(VTKESQUI_USE_CUDA)
     INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/BioMechanics/vtkCUDAParticleSystem)
@@ -219,6 +241,7 @@ IF(VTK_FOUND)
   ADD_SUBDIRECTORY(Scenario)
   ADD_SUBDIRECTORY(Interaction)
   ADD_SUBDIRECTORY(Simulation)
+  ADD_SUBDIRECTORY(IO)
   
   IF(VTKESQUI_USE_HAPTICS)
     ADD_SUBDIRECTORY(Haptics)

@@ -51,7 +51,6 @@ vtkCollisionDetectionFilter::vtkCollisionDetectionFilter()
 
   // Ask the superclass to set the number of connections.
   this->SetNumberOfInputPorts(2);
-  this->SetNumberOfInputConnections(0,1);
   this->SetNumberOfInputConnections(1,1);
   this->SetNumberOfOutputPorts(3);
   this->Transform[0] = NULL;
@@ -772,7 +771,6 @@ unsigned long vtkCollisionDetectionFilter::GetMTime()
     
   return mTime;
 }
-
 
 void vtkCollisionDetectionFilter::PrintSelf(ostream& os, vtkIndent indent)
 {

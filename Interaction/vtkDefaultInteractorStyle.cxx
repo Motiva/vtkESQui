@@ -133,6 +133,8 @@ void vtkDefaultInteractorStyle::Initialize()
 //--------------------------------------------------------------------------
 void vtkDefaultInteractorStyle::OnKeyPress()
 {
+  if (!this->Initialized) this->Initialize();
+  
   //get the pressed key
   vtkRenderWindowInteractor *rwi = this->Interactor;
   std::string key = rwi->GetKeySym();
@@ -147,13 +149,14 @@ void vtkDefaultInteractorStyle::OnKeyPress()
     }
     else vtkDebugMacro("Camera Mode On");
   }
+  // Exit
   else if(key.compare("q") == 0)
   {
     vtkDebugMacro("Exit Application");
     exit(0);
   }
-
-  if(this->Scenario)
+  // control key: tool/camera
+  else if(this->Scenario)
   {
     if(!this->Mode)
     {
@@ -162,49 +165,49 @@ void vtkDefaultInteractorStyle::OnKeyPress()
         vtkDebugMacro("Camera RotateX (Up)");
         this->Camera->Elevation(1);
       }
-      if(key.compare("Down") == 0)
+      else if(key.compare("Down") == 0)
       {
         vtkDebugMacro("Camera RotateX (Down)");
         this->Camera->Elevation(-1);
       }
-      if(key.compare("Left") == 0)
+      else if(key.compare("Left") == 0)
       {
         vtkDebugMacro("Camera RotateY (Left)");
         this->Camera->Azimuth(1);
       }
-      if(key.compare("Right") == 0)
+      else if(key.compare("Right") == 0)
       {
         vtkDebugMacro("Camera RotateY (Right)");
         this->Camera->Azimuth(-1);
       }
     }
-    else
+    else if (this->GetNumberOfTools() > 0)
     {
-      if(this->GetNumberOfTools() > 0)
+      //Tool selection
+      if(key.compare("0") == 0)
       {
-        //Tool selection
-        if(key.compare("0") == 0)
+        vtkDebugMacro("Select Tool (0)");
+        this->ActiveToolId = this->GetToolId(0);
+      }
+      else if(key.compare("1") == 0)
+      {
+        vtkDebugMacro("Select Tool (1)");
+        if (this->GetNumberOfTools() > 1)
         {
-          vtkDebugMacro("Select Tool (0)");
-          this->ActiveToolId = this->GetToolId(0);
+          this->ActiveToolId = this->GetToolId(1);
         }
-        if(key.compare("1") == 0)
+      }
+      else if(key.compare("2") == 0)
+      {
+        vtkDebugMacro("Select Tool (2)");
+        if (this->GetNumberOfTools() > 2)
         {
-          vtkDebugMacro("Select Tool (1)");
-          if (this->GetNumberOfTools() > 1)
-          {
-            this->ActiveToolId = this->GetToolId(1);
-          }
+          this->ActiveToolId = this->GetToolId(2);
         }
-        if(key.compare("2") == 0)
-        {
-          vtkDebugMacro("Select Tool (2)");
-          if (this->GetNumberOfTools() > 2)
-          {
-            this->ActiveToolId = this->GetToolId(2);
-          }
-        }
-
+      }
+      // Tool movement
+      else
+      {
         vtkTool * t = vtkTool::SafeDownCast(this->Scenario->GetObject(this->ActiveToolId));
 
         if(t && t->GetToolType() == vtkTool::Laparoscopy)
@@ -253,14 +256,14 @@ void vtkDefaultInteractorStyle::OnKeyPress()
             tool->Pull();
           }
           //Specific grasper movements
-          if(tool->GetToolModel() == vtkToolLaparoscopy::Grasper){
+          else if(tool->GetToolModel() == vtkToolLaparoscopy::Grasper){
             vtkToolGrasper * grasper = vtkToolGrasper::SafeDownCast(t);
             if(key.compare("a") == 0)
             {
               vtkDebugMacro("Open Tool");
               grasper->Open();
             }
-            if(key.compare("s") == 0)
+            else if(key.compare("s") == 0)
             {
               vtkDebugMacro("Close Tool");
               grasper->Close();
@@ -276,6 +279,8 @@ void vtkDefaultInteractorStyle::OnKeyPress()
 
 void vtkDefaultInteractorStyle::OnMouseMove()
 {
+  if (!this->Initialized) this->Initialize();
+  
   int pick[2];
   this->GetInteractor()->GetEventPosition(pick);
 
@@ -343,6 +348,7 @@ void vtkDefaultInteractorStyle::OnRightButtonUp()
 //--------------------------------------------------------------------------
 void vtkDefaultInteractorStyle::OnMouseWheelForward()
 {
+  if (!this->Initialized) this->Initialize();
   if(Mode)
   {
     if(this->Scenario && this->GetNumberOfTools() > 0)
@@ -361,6 +367,7 @@ void vtkDefaultInteractorStyle::OnMouseWheelForward()
 //--------------------------------------------------------------------------
 void vtkDefaultInteractorStyle::OnMouseWheelBackward()
 {
+  if (!this->Initialized) this->Initialize();
   if(Mode)
     {
       if(this->Scenario && this->GetNumberOfTools() > 0)

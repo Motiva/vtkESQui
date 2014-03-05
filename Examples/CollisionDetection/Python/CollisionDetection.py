@@ -2,9 +2,9 @@
 import vtk
 import vtkesqui
 
-fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp"
-fn1 ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp"
-fn2 ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
+fn ="/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp"
+fn1 ="/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp"
+fn2 ="/home/david/vtkESQuiData/Scenario/Organs/ball_col.vtp"
 
 # Collision Model
 reader = vtk.vtkXMLPolyDataReader()

@@ -2,10 +2,10 @@
 import vtk
 import vtkesqui
 
-fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
-tfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/steel.jpg"
-cfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
-dfn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp"
+fn ="/home/david/vtkESQuiData/Scenario/Organs/ball.vtp"
+tfn ="/home/david/vtkESQuiData/Scenario/Textures/steel.jpg"
+cfn ="/home/david/vtkESQuiData/Scenario/Organs/ball_col.vtp"
+dfn ="/home/david/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp"
 
 # Visualization Model
 vis = vtkesqui.vtkVisualizationModel()

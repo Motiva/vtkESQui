@@ -2,12 +2,12 @@
 import vtk
 import vtkesqui
 
-fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
-fnc ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
-fnd ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp"
-fntl = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg";
-fntr = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg";
-fntb = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/bothball.jpg";
+fn ="/home/david/vtkESQuiData/Scenario/Organs/ball.vtp"
+fnc ="/home/david/vtkESQuiData/Scenario/Organs/ball_col.vtp"
+fnd ="/home/david/vtkESQuiData/Scenario/Organs/ball_def_c10.vtp"
+fntl = "/home/david/vtkESQuiData/Scenario/Textures/leftball.jpg";
+fntr = "/home/david/vtkESQuiData/Scenario/Textures/rightball.jpg";
+fntb = "/home/david/vtkESQuiData/Scenario/Textures/bothball.jpg";
 
 ren = vtk.vtkRenderer()
 renWin = vtk.vtkRenderWindow()

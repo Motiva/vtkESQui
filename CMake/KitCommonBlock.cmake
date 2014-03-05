@@ -16,14 +16,14 @@ INCLUDE (${PROJECT_SOURCE_DIR}/${KIT}/LocalUserOptions.cmake OPTIONAL)
 
 # if we are wrapping into Tcl then add the library and extra
 # source files
-#
+# 
 IF (VTKESQUI_WRAP_TCL)
   INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonTclWrapBlock.cmake)
 ENDIF (VTKESQUI_WRAP_TCL)
 
 # if we are wrapping into Python then add the library and extra
 # source files
-#
+# 
 IF (VTKESQUI_WRAP_PYTHON)
   INCLUDE(${VTKESQUI_CMAKE_DIR}/KitCommonPythonWrapBlock.cmake)
 ENDIF (VTKESQUI_WRAP_PYTHON)
@@ -61,7 +61,7 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}${KIT} ${KIT_LIBS})
 #VTK_EXPORT_KIT("${KIT}" "${UKIT}" "${Kit_SRCS}")
 
 # If the user defined a custom macro, execute it now and pass in all the srcs
-#
+# 
 IF(LOCALUSERMACRODEFINED)
   LocalUserOptionsMacro( "${Kit_SRCS}"       "${Kit_EXTRA_SRCS}"
                          "${KitTCL_SRCS}"    "${Kit_TCL_EXTRA_SRCS}"

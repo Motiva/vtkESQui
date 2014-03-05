@@ -13,6 +13,11 @@
 #define VTKESQUI_USE_NO_HAPTICS
 #endif
 
+#cmakedefine VTKESQUI_USE_LSW
+#cmakedefine VTKESQUI_USE_IHP
+#cmakedefine VTKESQUI_USE_VSP
+#cmakedefine VTKESQUI_USE_SBM
+
 #if defined(_MSC_VER) && !defined(VTKESQUI_STATIC)
 #pragma warning ( disable : 4275 )
 #pragma warning ( disable : 4996 )

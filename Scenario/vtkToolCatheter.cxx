@@ -56,6 +56,7 @@ vtkStandardNewMacro(vtkToolCatheter);
 //----------------------------------------------------------------------------
 vtkToolCatheter::vtkToolCatheter()
 {
+  this->ToolModel = Catheter;
 }
 
 //----------------------------------------------------------------------------

@@ -44,6 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkESQuiCollisionDetectionWin32Header.h"
 #include "vtkCollisionDetection.h"
+#include "vtkIdList.h"
 
 class vtkCollisionDetectionFilter;
 class vtkMatrix4x4;
@@ -52,7 +53,6 @@ class vtkMatrix4x4;
 
 class VTK_ESQUI_COLLISIONDETECTION_EXPORT vtkBioEngInterface: public vtkCollisionDetection
 {
-
 
 public:
   //! Type revision macro
@@ -95,6 +95,11 @@ protected:
 
   //!Collision detection filter
   vtkCollisionDetectionFilter *DetectionFilter;
+
+  //!Synchronization maps
+  vtkIdList **SynchMaps;
+  vtkIdList **DefSynchMaps;
+  vtkIdType GetSynchId(vtkIdType mid, vtkIdType pid);
 
   //Box Tolerance
   double BoxTolerance;

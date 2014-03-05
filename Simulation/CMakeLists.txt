@@ -1,10 +1,15 @@
-#
+# 
 # CMakeLists file for a project kit (subdir). You will only need to set the Kit name and 
 # the source files and libraries
-#
+# 
 
 SET(KIT Simulation)   #Kit Name
-SET(UKIT MANAGER)  #Uppercase Kit Name
+SET(UKIT SIMULATION)  #Uppercase Kit Name
+
+CONFIGURE_FILE(
+      ${PROJECT_SOURCE_DIR}/Simulation/vtkSimulation.h.in
+      ${PROJECT_SOURCE_DIR}/Simulation/vtkSimulation.h
+)
 
 # Set your list of sources here.  Do not change the name of the
 # Kit_SRCS variable.
@@ -19,7 +24,7 @@ ${PROJECT_NAME}Scenario
 ${PROJECT_NAME}CollisionDetection
 ${PROJECT_NAME}Interaction
 vtkCommon
-vtkRendering 
+#vtkRendering 
 )
 
 # Set your list of TCL libraries here.
@@ -29,7 +34,7 @@ ${PROJECT_NAME}ScenarioTCL
 ${PROJECT_NAME}CollisionDetectionTCL
 ${PROJECT_NAME}InteractionTCL
 vtkCommonTCL
-vtkRenderingTCL
+#vtkRenderingTCL
 )
 
 # Set your list of Python libraries here.
@@ -39,21 +44,21 @@ ${PROJECT_NAME}ScenarioPythonD
 ${PROJECT_NAME}CollisionDetectionPythonD
 ${PROJECT_NAME}InteractionPythonD
 vtkCommonPythonD
-vtkRenderingPythonD
+#vtkRenderingPythonD
 )
 
-#
+# 
 # Uncomment the following code if you are plannig to add python and/or java support
-#
+# 
 
 
 #SET(KIT_PYTHON_LIBS)
 #SET(KIT_JAVA_LIBS)
 
 
-#
+# 
 # Uncomment the following code if you are plannig to add extra files, commands or dependencies
-#
+# 
 
 #SET(Kit_EXTRA_SRCS)
 #SET(Kit_EXTRA_CMDS)

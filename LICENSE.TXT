@@ -19,9 +19,13 @@ the Master Thesis of Graciela Santana Sosa, both at the CTM-ULPGC lab
 supported by the Institute of Technology (ITC). Also, Raul Santana (CTM-ULPGC) 
 developed code for this package.
 
-The final stable version of the package, with a new design and structure,
+The previous stable version of the package, with a new design and structure,
 has been implemented by Jorge Ballesteros (member of the MOTIVA and funded
 by the local foundation of health (FUNCIS)) and the ITC.
+
+The last stable version of the package was implemented as part of of the 
+Master Thesis Project of David Castillo Bolado in the ULPGC, in colaboration
+with the ITC.
 
 At this moment, this software is supported by the Institute of Technology at
 Canary Islands (ITC) under the innovation plan MOTIVA (http://motivando.me).

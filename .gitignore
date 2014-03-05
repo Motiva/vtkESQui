@@ -21,6 +21,10 @@ CVS
 
 # Temporary files
 *.swp
+*~
 
 # Logs
 *.log
+
+# Mac hidden files
+.DS_Store
