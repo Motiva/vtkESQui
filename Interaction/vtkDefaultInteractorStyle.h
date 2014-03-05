@@ -66,7 +66,7 @@ public:
   static vtkDefaultInteractorStyle *New();
 
   //! Return class name
-  const char *GetClassName() {return "vtkSimulationInteractorStyle";};
+  const char *GetClassName() {return "vtkDefaultInteractorStyle";};
 
   //! Initialization of the simulation style
   void Initialize();

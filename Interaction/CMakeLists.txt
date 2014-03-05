@@ -10,6 +10,7 @@ SET(UKIT INTERACTION)  #Uppercase Kit Name
 # Kit_SRCS variable.
 SET (Kit_SRCS 
 vtkDefaultInteractorStyle.cxx
+vtkSingleChannelInteractorStyle.cxx
 )
 
 # Set your list of libraries here.

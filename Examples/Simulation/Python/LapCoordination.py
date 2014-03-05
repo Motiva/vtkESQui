@@ -99,16 +99,16 @@ class vtkTimerCallback():
     
 def main():
 
-  fn0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
-  fn0c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
-  fn0t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
-  fn3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
-  fn3c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
-  fn4 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp";
-  fn4c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col_bb.vtp";
-  fn4tl = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg";
-  fn5 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/cavity.vtp";
-  fn5t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/intestine2.jpg";
+  fn0 = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
+  fn0c = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
+  fn0t = "/home/david/vtkESQuiData/Scenario/Textures/metal.jpg";
+  fn3 = "/home/david/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
+  fn3c = "/home/david/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
+  fn4 = "/home/david/vtkESQuiData/Scenario/Organs/ball.vtp";
+  fn4c = "/home/david/vtkESQuiData/Scenario/Organs/ball_col_bb.vtp";
+  fn4tl = "/home/david/vtkESQuiData/Scenario/Textures/leftball.jpg";
+  fn5 = "/home/david/vtkESQuiData/Scenario/Organs/cavity.vtp";
+  fn5t = "/home/david/vtkESQuiData/Scenario/Textures/intestine2.jpg";
 
   #Create scenario
   scenario = vtkesqui.vtkScenario()

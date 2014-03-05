@@ -65,6 +65,15 @@ public:
   //! Print class values
   void PrintSelf(ostream& os, vtkIndent indent);
 
+  //! Tool type definition
+  enum vtkToolEndovascularModel{
+    Catheter = 0
+  };
+
+  //! Set tool model
+  vtkSetMacro(ToolModel, vtkToolEndovascular::vtkToolEndovascularModel);
+  //! Return tool model
+  vtkGetMacro(ToolModel, vtkToolEndovascular::vtkToolEndovascularModel);
 
   //! Abstract initialization function
   /*!
@@ -161,6 +170,9 @@ protected:
 
   vtkToolEndovascular();
   ~vtkToolEndovascular();
+
+  //! Tool Type
+  vtkToolEndovascularModel ToolModel;
 
   //! Force Feedabck unit vector
   double ForceFeedback[3];

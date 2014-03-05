@@ -85,9 +85,7 @@ int TestvtkSimulation(int argc, char * argv[])
       vtkSmartPointer<vtkSimulation>::New();
   Simulation->SetInteractor(iren);
   Simulation->SetScenario(Scenario);
-  Simulation->SetInteractionTimerRate(1);
   Simulation->SetRenderTimerRate(25);
-  Simulation->SetSimulationTimerRate(25);
   Simulation->Initialize();
 
   Simulation->Print(cout);

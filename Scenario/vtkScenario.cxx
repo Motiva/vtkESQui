@@ -287,11 +287,11 @@ void vtkScenario::Initialize()
           this->Renderer->AddActor(e->GetDeformationModel()->GetActor());
         }
       }
-
-      this->RenderWindow->GetInteractor()->Initialize();
-
-      this->Initialized = 1;
     }
+
+		this->RenderWindow->GetInteractor()->Initialize();
+
+    this->Initialized = 1;
   }
 }
 
@@ -310,11 +310,7 @@ void vtkScenario::Update()
     elements->InitTraversal();
     while(vtkScenarioElement * e = elements->GetNextElement())
     {
-      if(e->GetDeformationModel())
-      {
-        //Update object deformation
-        e->Update();
-      }
+      e->Update();
     }
   }
 

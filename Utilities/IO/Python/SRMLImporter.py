@@ -42,26 +42,17 @@ class SRMLImporter:
     def __init__(self):
         self.filename = "";
         self.srml = "";
-                #Initialize rendering objects
-        self.ren = vtk.vtkRenderer();
-        #ren1.SetBackground(1.0,1.0,1.0);
 
-        self.renWin = vtk.vtkRenderWindow();
-        self.renWin.AddRenderer(self.ren);
-        #renWin->SetSize(840,480);
-
-        self.iren = vtk.vtkRenderWindowInteractor();
-        self.iren.SetRenderWindow(self.renWin);
+        #Initialize flags
+        self.processed = False
         
-        #Initialize vtkesqui simulation
-        self.simulation = vtkesqui.vtkSimulation()
         #Initialize vtkesqui scenario
         self.scenario = vtkesqui.vtkScenario()
-        self.scenario.SetRenderWindow(self.renWin)
-        
+        #Initialize vtkesqui simulation
+        self.simulation = vtkesqui.vtkSimulation()
         self.simulation.SetScenario(self.scenario)
         
-    def setFileName(self, name):
+    def SetFileName(self, name):
         self.filename = name;
         
     def parse(self):
@@ -73,16 +64,16 @@ class SRMLImporter:
         print 'importing camera...'
         cam = vtk.vtkCamera()
         
-        a = str(c.get('Position')).split(" ")
-        cam.SetPosition(float(a[0]), float(a[1]), float(a[2]));
-        a = str(c.get('FocalPoint')).split(" ")
-        cam.SetFocalPoint(float(a[0]), float(a[1]), float(a[2]));
+        p = str(c.get('Position')).split(" ")
+        cam.SetPosition(float(p[0]), float(p[1]), float(p[2]))
+        fp = str(c.get('FocalPoint')).split(" ")
+        cam.SetFocalPoint(float(fp[0]), float(fp[1]), float(fp[2]))
         cam.SetViewAngle(float(c.get('ViewAngle')))
         cam.Yaw(float(c.get('Yaw')))
         cam.Elevation(float(c.get('Elevation')))
         cam.Pitch(float(c.get('Pitch')))
         cam.Dolly(float(c.get('Dolly')))
-        cam.SetParallelProjection(float(c.get('ParallelProjection')))
+        cam.SetParallelProjection(int(c.get('ParallelProjection')))
         
         return cam
             
@@ -91,11 +82,11 @@ class SRMLImporter:
         light = vtk.vtkLight()
         
         a = str(l.get('AmbientColor')).split(" ")
-        light.SetAmbientColor(float(a[0]), float(a[1]), float(a[2]));
+        light.SetAmbientColor(float(a[0]), float(a[1]), float(a[2]))
         a = str(l.get('SpecularColor')).split(" ")
-        light.SetSpecularColor(float(a[0]), float(a[1]), float(a[2]));
+        light.SetSpecularColor(float(a[0]), float(a[1]), float(a[2]))
         a = str(l.get('DiffuseColor')).split(" ")
-        light.SetDiffuseColor(float(a[0]), float(a[1]), float(a[2]));
+        light.SetDiffuseColor(float(a[0]), float(a[1]), float(a[2]))
         light.SetIntensity(float(l.get('Intensity')))
         light.SetPositional(int(l.get('Positional')))
         light.SetConeAngle(float(l.get('ConeAngle')))
@@ -114,16 +105,16 @@ class SRMLImporter:
         
         if(o.get('Type') == 'Tool'):
             if(o.get('Model') == 'Probe'):
-                object = vtkesqui.vtkToolProbe()
+                obj = vtkesqui.vtkToolProbe()
             elif(o.get('Model') == 'Grasper'):
-                object = vtkesqui.vtkToolGrasper()
+                obj = vtkesqui.vtkToolGrasper()
             else:
-                object = vtkesqui.vtkToolDummy()
+                obj = vtkesqui.vtkToolDummy()
         elif(o.get('Type') == 'Organ'):
-            object = vtkesqui.vtkOrgan()
+            obj = vtkesqui.vtkOrgan()
         
-        object.SetName(o.get('Name'))
-        object.SetStatus(1)
+        obj.SetName(o.get('Name'))
+        obj.SetStatus(1)
         
         #Import object elements
         for child in o:
@@ -131,9 +122,9 @@ class SRMLImporter:
                 for e in child:
                     if (e.tag == "Element"):
                         element = self.importElement(e)
-                        object.AddElement(element)
+                        obj.AddElement(element)
         
-        return object
+        return obj
         
     def importElement(self, e):
         print '\telement: '+e.get('Name')+'...'
@@ -142,13 +133,13 @@ class SRMLImporter:
         element.SetStatus(e.get('Status'))
         
         a = str(e.get('Scale')).split(" ")
-        element.SetScale(float(a[0]), float(a[1]), float(a[2]));
+        element.SetScale(float(a[0]), float(a[1]), float(a[2]))
         a = str(e.get('Origin')).split(" ")
-        element.SetOrigin(float(a[0]), float(a[1]), float(a[2]));
+        element.SetOrigin(float(a[0]), float(a[1]), float(a[2]))
         a = str(e.get('Position')).split(" ")
-        element.SetPosition(float(a[0]), float(a[1]), float(a[2]));
+        element.SetPosition(float(a[0]), float(a[1]), float(a[2]))
         a = str(e.get('Orientation')).split(" ")
-        element.SetOrientation(float(a[0]), float(a[1]), float(a[2]));
+        element.SetOrientation(float(a[0]), float(a[1]), float(a[2]))
         #Import element models
         for child in e:
             if(child.tag == "Models"):
@@ -172,23 +163,34 @@ class SRMLImporter:
         elif(m.get('Type') == 'Collision'):
             model = vtkesqui.vtkCollisionModel()
         elif(m.get('Type') == 'Deformation'):
-            i = m.children[0]
-            #model = vtkesqui.vtkVisualizationModel()
+            dm = m[0]
+            if dm.tag == 'Interface':
+                if dm.get('Type') == 'PSS':
+                    model = vtkesqui.vtkParticleSpringSystemInterface()
+                    model.SetTimeStep(float(dm.get('DeltaT')))
+                    g = str(dm.get('Gravity')).split(' ')
+                    model.SetGravity(float(g[0]), float(g[1]), float(g[2]))
+                    model.SetSpring(float(dm.get('Spring')))
+                    model.SetDamping(float(dm.get('Damping')))
+                    model.SetDistance(float(dm.get('Distance')))
+                    model.SetMass(float(dm.get('Mass')))
         else:
             return
         
-        model.SetStatus(int(m.get('Status')))
+        #model.SetStatus(int(m.get('Status')))
         model.SetName(m.get('Name'))
         model.SetFileName(m.get('FileName'))
         
-        a = str(m.get('Color')).split(" ")
-        model.SetColor(float(a[0]), float(a[1]), float(a[2]))
-        model.SetVisibility(float(m.get('Visibility')))
+        c = str(m.get('Color')).split(" ")
+        model.SetColor(float(c[0]), float(c[1]), float(c[2]))
+        model.SetVisibility(bool(m.get('Visibility')))
         model.SetOpacity(float(m.get('Opacity')))
 
         return model
     
     def process(self):
+        self.processed = True
+
         if(self.srml == ""):
             self.parse()
         
@@ -198,16 +200,19 @@ class SRMLImporter:
         if(root.tag == 'Simulation'):
             print "\nImporting Simulation...\n"
             sim = self.simulation
-            sim.SetUseHaptic(int(root.get('UseHaptic')))
+            #sim.SetUseHaptic(int(root.get('UseHaptic')))
             sim.SetRenderTimerRate(float(root.get('RenderRate')))
-            sim.SetHapticTimerRate(float(root.get('HapticRate')))
+            sim.SetInteractionTimerRate(float(root.get('HapticRate')))
             sim.SetSimulationTimerRate(float(root.get('SimulationRate')))
         
         for child in root:
-            print "Importing "+child.tag+": "+child.get('Name')+"...\n"
+            print "Importing "+child.tag+": "+str(child.get('Name'))+"...\n"
             if(child.tag == 'Haptic'):
                 if(child.get('Type') == 'IHP'):
-                    haptic = vtkIHP()
+                    haptic = vtkesqui.vtkIHP()
+                    haptic.SetNumberOfTools(child.get('NumberOfTools'))
+                elif(child.get('Type') == 'SBM'):
+                    haptic = vtkesqui.vtkSBM()
                     haptic.SetNumberOfTools(child.get('NumberOfTools'))
             #elif(child.tag == 'Collision'):
                 #collision = vtkCollisionDetection()
@@ -219,28 +224,33 @@ class SRMLImporter:
                         #print el.tag
                         env = el;
                         bg = str(env.get('Background')).split(" ")
-                        self.ren.SetBackground(float(bg[0]), float(bg[1]), float(bg[2]));
+                        sc.SetBackground(float(bg[0]), float(bg[1]), float(bg[2]));
                         for e in env:
                             if(e.tag == 'Cameras'):
-                                for c in e:
-                                    cam = self.importCamera(c)
-                                    self.ren.SetActiveCamera(cam)
+                                # Only one camera per Scenario
+                                cam = self.importCamera(e[0])
+                                sc.SetCamera(cam)
                             if(e.tag == 'Lights'):
                                 for l in e:
                                     light = self.importLight(l)
-                                    self.ren.AddLight(light)
+                                    sc.AddLight(light)
                     elif(el.tag == 'Objects'):
                         for o in el:
-                            object = self.importObject(o)
-                            sc.AddObject(object)
+                            obj = self.importObject(o)
+                            sc.AddObject(obj)
+
+    def GetSimulation(self):
+        if self.filename != "" and not self.processed:
+            self.process()
+            
+        return self.simulation
                             
 
 def main():
     importer = SRMLImporter()
-    importer.setFileName('/home/jballesteros/Workspace/src/vtkESQui/Utilities/IO/Python/out.srml')
-    importer.parse()
-    
-    importer.process()
+    importer.SetFileName('/home/david/vtkESQuiData/SRML/Laparoscopy/lap_basic_2.srml')
+    simulation = importer.GetSimulation()
+    print simulation
     
 if __name__ == "__main__":
     main()

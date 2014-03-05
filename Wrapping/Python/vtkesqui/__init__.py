@@ -38,15 +38,16 @@ if dl and (os.name == 'posix'):
     sys.setdlopenflags(dl.RTLD_NOW|dl.RTLD_GLOBAL)
 
 # Load all required kits.
-from libvtkESQuiCommonPython import *
-from libvtkESQuiBioMechanicsPython import *
-from libvtkESQuiCollisionDetectionPython import *
-from libvtkESQuiScenarioPython import *
-from libvtkESQuiSimulationPython import *
-from libvtkESQuiInteractionPython import *
+from vtkESQuiCommonPython import *
+from vtkESQuiBioMechanicsPython import *
+from vtkESQuiCollisionDetectionPython import *
+from vtkESQuiScenarioPython import *
+from vtkESQuiSimulationPython import *
+from vtkESQuiInteractionPython import *
+from vtkESQuiIOPython import *
 
 # the vtk.kits variable tells us which kits we actually have
-kits = ['common', 'biomechanics', 'collision', 'scenario', 'simulation', 'interaction']
+kits = ['common', 'biomechanics', 'collision', 'scenario', 'simulation', 'interaction', 'io']
 
 # Try to load optional kits.  The helper function checks if the
 # ImportError is actually a link error.

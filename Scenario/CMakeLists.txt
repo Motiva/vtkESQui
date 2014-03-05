@@ -24,6 +24,7 @@ vtkToolDummy.cxx
 vtkToolGrasper.cxx
 vtkToolProbe.cxx
 vtkToolScissors.cxx
+vtkToolSingleChannel.cxx
 )
 
 SET_SOURCE_FILES_PROPERTIES(

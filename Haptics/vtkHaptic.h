@@ -19,10 +19,10 @@ Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 1) Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
+	 notice, this list of conditions and the following disclaimer.
 2) Redistributions in binary form must reproduce the above copyright 
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
+	 notice, this list of conditions and the following disclaimer in the
+	 documentation and/or other materials provided with the distribution.
 
 You should have received a copy of the GNU Lesser General Public License 
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -44,10 +44,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkESQuiHapticsWin32Header.h"
 #include "vtkObject.h"
+#include "vtkCamera.h"
 
 class vtkTool;
 class vtkScenarioObject;
 class vtkScenarioObjectCollection;
+class vtkToolSingleChannel;
 
 //! Generic haptic class for interface implementation
 /*!
@@ -62,111 +64,152 @@ class VTK_ESQUI_HAPTICS_EXPORT vtkHaptic: public vtkObject {
 
 public:
 
-  //! Type revision macro
-  vtkTypeRevisionMacro(vtkHaptic,vtkObject);
-  //! Return class name
-  const char *GetClassName() {return "vtkHaptics";}
-  //! Print tool info
-  void PrintSelf(ostream& os, vtkIndent indent);
+	//! Type revision macro
+	vtkTypeRevisionMacro(vtkHaptic,vtkObject);
+	//! Return class name
+	const char *GetClassName() {return "vtkHaptics";}
+	//! Print tool info
+	void PrintSelf(ostream& os, vtkIndent indent);
 
-  //! Set up the haptic device
-  /*!
-   * Abstract method that must be defined in the implementation class
-   */
-  virtual int Init() = 0;
+	//! Set up the haptic device
+	/*!
+	 * Abstract method that must be defined in the implementation class
+	 */
+	virtual int Init() = 0;
 
-  //! Executes the control of the haptic device, reimplemented in all subclasses
-  /*!
-   * Abstract method that must be defined in the implementation class
-   */
-  virtual void Update() = 0;
+	//! Executes the control of the haptic device, reimplemented in all subclasses
+	/*!
+	 * Abstract method that must be defined in the implementation class
+	 */
+	virtual void Update() = 0;
 
-  //! Liberates the haptic connection
-  /*!
-   * Abstract method that must be defined in the implementation class
-   */
-  virtual void Release() = 0;
+	//! Liberates the haptic connection
+	/*!
+	 * Abstract method that must be defined in the implementation class
+	 */
+	virtual void Release() = 0;
 
-  //! Set the haptic name
-  /*!
-   * \param name name of the haptic device
-   * \sa GetName()
-   */
-  void SetName(const char * name);
+	//! Set the haptic name
+	/*!
+	 * \param name name of the haptic device
+	 * \sa GetName()
+	 */
+	vtkSetStringMacro(Name);
 
-  //! Return the haptic name
-  /*!
-   * \return haptic device name
-   * \sa SetName(const char * name)
-   */
-  const char * GetName();
+	//! Return the haptic name
+	/*!
+	 * \return haptic device name
+	 * \sa SetName(const char * name)
+	 */
+	vtkGetStringMacro(Name);
 
-  //!Set the collection of tools of the haptic device
-  /*!
-   * \param collection collection of tools to be inserted to the haptic device
-   * \sa GetTools()
-   */
-  void SetTools(vtkScenarioObjectCollection * collection);
+	//!Set the collection of tools of the haptic device
+	/*!
+	 * \param collection collection of tools to be inserted to the haptic device
+	 * \sa GetTools()
+	 */
+	void SetTools(vtkScenarioObjectCollection * collection);
 
-  //!Get the collection of tools of the haptic device
-  /*!
-   * \sa SetTools(vtkScenarioObjectCollection * collection)
-   */
-  vtkScenarioObjectCollection * GetTools();
+	//!Get the collection of tools of the haptic device
+	/*!
+	 * \sa SetTools(vtkScenarioObjectCollection * collection)
+	 */
+	vtkScenarioObjectCollection * GetTools();
 
-  //!Add tool to the haptic device
-  /*!
-   * The tool will be inserted at the end of the list
-   * \param tool vtkScenarioObject tool to be inserted
-   * \return position of the added tool.
-   * \sa InsertTool(vtkScenarioObject * tool)
-   */
-  void AddTool(vtkTool * tool);
+	//!Add tool to the haptic device
+	/*!
+	 * The tool will be inserted at the end of the list
+	 * \param tool vtkScenarioObject tool to be inserted
+	 * \return position of the added tool.
+	 * \sa InsertTool(vtkScenarioObject * tool)
+	 */
+	void AddTool(vtkTool * tool);
 
-  //!Insert a tool in the specified position
-  /*!
-   * If the given position is not empty, the content is replaced by the new model
-   * \param index index of the list where the tool will be added
-   * \param tool vtkScenarioObject tool to be inserted
-   * \sa InsertNextTool(vtkScenarioObject * tool)
-   */
-  void ReplaceTool(vtkIdType index, vtkTool * tool);
+	//!Insert a tool in the specified position
+	/*!
+	 * If the given position is not empty, the content is replaced by the new model
+	 * \param index index of the list where the tool will be added
+	 * \param tool vtkScenarioObject tool to be inserted
+	 * \sa InsertNextTool(vtkScenarioObject * tool)
+	 */
+	void ReplaceTool(vtkIdType index, vtkTool * tool);
 
-  //!Remove the tool at the specified id from the haptic
-  /*!
-   * It will only remove the tool from the collection, it does not free memory
-   * \param index index of the tool to be removed
-   */
-  void RemoveTool(vtkIdType index);
+	//!Remove the tool at the specified id from the haptic
+	/*!
+	 * It will only remove the tool from the collection, it does not free memory
+	 * \param index index of the tool to be removed
+	 */
+	void RemoveTool(vtkIdType index);
 
-  //!Return the tool at the specified position
-  /*!
-   * \param id index of the tool to be returned
-   * \return vtkScenarioObject tool
-   */
-  vtkTool * GetTool(vtkIdType id);
+	//!Return the tool at the specified position
+	/*!
+	 * \param id index of the tool to be returned
+	 * \return vtkScenarioObject tool
+	 */
+	vtkTool * GetTool(vtkIdType id);
 
-  //!Return number of tools in the haptic device
-  vtkIdType GetNumberOfTools();
+	//!Return number of tools in the haptic device
+	vtkIdType GetNumberOfTools();
+	//!Set a limit on NumberOfTools
+	vtkSetMacro(NumberOfTools, unsigned int);
+
+	//!Set haptic mode.
+	vtkSetMacro(SingleChannel, bool);
+	//! Get haptic mode
+	vtkGetMacro(SingleChannel, bool);
+
+	//!Set camera used in single channel mode.
+	vtkSetMacro(Camera, vtkCamera *);
+	//!Get camera used in single channel mode.
+	vtkGetMacro(Camera, vtkCamera *);
+
+	//!Set camera volume object used in single channel mode.
+	void SetCameraObject(vtkToolSingleChannel *object);
+	//!Get camera volume object used in single channel mode.
+	vtkGetMacro(CameraObject, vtkToolSingleChannel *);
+
+	//!Set lens inclination of the camera used in single channel mode.
+	virtual void SetLensAngle(double angle);
+	//!Get lens inclination of the camera used in single channel mode.
+	vtkGetMacro(LensAngle, double);
 
 protected:  
 
-  vtkHaptic();
-  ~vtkHaptic();
+	vtkHaptic();
+	~vtkHaptic();
 
-  //! Haptic device name
-  const char * Name;
+	//! Haptic device name
+	char * Name;
 
-  //! Scenario tools
-  vtkScenarioObjectCollection * Tools;
+	//! Scenario tools
+	vtkScenarioObjectCollection * Tools;
 
-  //! Number of tools of the haptic device
-  int  NumberOfTools;
+	//! Number of tools of the haptic device
+	unsigned int  NumberOfTools;
+
+	//! Turn this flag on to use the single-channel haptic mode
+	bool SingleChannel;
+
+	//! Camera used in single channel mode
+	vtkCamera *Camera;
+	//! Camera's last roll angle
+	double LastRoll;
+	//! Camera's last pitch angle
+	double LastPitch;
+	//! Camera's last yaw angle
+	double LastYaw;
+	//! Camera origin
+	double *CameraOrigin;
+	//! Lens inclination
+	double LensAngle;
+
+	//! Camera volume object used in single channel mode.
+	vtkToolSingleChannel *CameraObject;
 
 private:
 
-  vtkHaptic(const vtkHaptic &);
-  void operator=(const vtkHaptic &);
+	vtkHaptic(const vtkHaptic &);
+	void operator=(const vtkHaptic &);
 
 };
 #endif

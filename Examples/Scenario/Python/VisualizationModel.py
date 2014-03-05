@@ -22,10 +22,10 @@ model = vtkesqui.vtkVisualizationModel()
 model.SetInput(input)
 model.SetSource(smooth.GetOutput())
 #model.SetColor(0.5, 0.5, 1.0)
-model.SetTextureFileName("/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/stomach.jpg")
+model.SetTextureFileName("/Users/davidcastillobolado/vtkESQuiData/Scenario/Textures/stomach.jpg")
 
 #A call to update method is made to force the model to be at its last state
-model.Update();
+#model.Update();
 
 ren = vtk.vtkRenderer()
 renWin = vtk.vtkRenderWindow()

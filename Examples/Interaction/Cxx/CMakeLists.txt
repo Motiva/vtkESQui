@@ -2,12 +2,13 @@
 # CMakeLists file for a project kit (subdir). You will only need to set the Kit name and 
 # the source files and libraries
 #
+cmake_minimum_required(VERSION 2.8)
 
 SET(KIT ESQUIExamples)   #Kit Name
 SET(UKIT ESQUIEXAMPLES)  #Uppercase Kit Name
 
 SET(Kit_SRCS
-    SimulationLaparoscopy
+    SimulationInteractor
     #SimulationLaparoscopyVR
 )
 
@@ -21,12 +22,12 @@ ENDIF(VTKESQUI_USE_HAPTICS)
 
  # Set your list of libraries here.
 SET(KIT_LIBS 
-  ${PROJECT_NAME}Scenario
-  ${PROJECT_NAME}Common
   vtkRendering
   vtkGraphics 
   vtkCommon
   vtkHybrid
+  ${PROJECT_NAME}Scenario
+  ${PROJECT_NAME}Common
 )
 
 IF(APPLE)

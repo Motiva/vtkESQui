@@ -63,6 +63,7 @@ vtkSyncPolyDataFilter::vtkSyncPolyDataFilter()
   this->HashMap = NULL;
   this->Locator = NULL;
   this->Smoothing = 0;
+	this->Initialized = 0;
 
   //optional second input
   this->SetNumberOfInputPorts(2);
@@ -162,9 +163,9 @@ int vtkSyncPolyDataFilter::RequestData(
 
   //Get the input and output
   vtkPolyData *input = vtkPolyData::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
+
   //Optional input
   vtkPolyData * source = 0;
-
   if(sourceInfo){
     source = vtkPolyData::SafeDownCast(sourceInfo->Get(vtkDataObject::DATA_OBJECT()));
   }
@@ -196,7 +197,6 @@ int vtkSyncPolyDataFilter::RequestData(
     {
       output->ShallowCopy(input);
     }
-
   }
   else
   {

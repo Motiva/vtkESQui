@@ -20,15 +20,15 @@ class vtkTimerCallback():
 
 def main():
 
-  fn0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
-  fn0c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
-  fn1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l.vtp";
-  fn1c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp";
-  fn2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r.vtp";
-  fn2c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp";
-  fn0t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
-  fn3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
-  fn3c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
+  fn0 = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
+  fn0c = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
+  fn1 = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_l.vtp";
+  fn1c = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp";
+  fn2 = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_r.vtp";
+  fn2c = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp";
+  fn0t = "/home/david/vtkESQuiData/Scenario/Textures/metal.jpg";
+  fn3 = "/home/david/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
+  fn3c = "/home/david/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
 
   # Left Tool (Probe)
   # Visualization model

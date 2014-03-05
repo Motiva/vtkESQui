@@ -31,7 +31,7 @@ PROJECT_NAME = vtkESQui
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER = 0.6.5
+PROJECT_NUMBER = 0.7.5
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -534,7 +534,7 @@ WARN_LOGFILE =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT = CollisionDetection Common Haptics BioMechanics BioMechanics/vtkParticleSpringSystem BioMechanics/vtkExplicitDeformableModel Interaction Scenario Simulation Utilities
+INPUT = CollisionDetection Common Haptics BioMechanics BioMechanics/vtkParticleSpringSystem BioMechanics/vtkExplicitDeformableModel Interaction IO Scenario Simulation Utilities
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
@@ -551,7 +551,7 @@ INPUT_ENCODING = UTF-8
 # *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h *.hh *.hxx 
 # *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm *.py *.f90
 
-FILE_PATTERNS = 
+FILE_PATTERNS =
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories 
 # should be searched for input files as well. Possible values are YES and NO. 

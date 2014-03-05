@@ -20,24 +20,24 @@ class vtkTimerCallback():
 
 def createBall(i):
   
-  fn ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp"
-  fnc ="/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball_col.vtp"
-  fntl = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg";
-  fntr = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/rightball.jpg";
-  fntb = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/bothball.jpg";
+  fn ="/home/david/vtkESQuiData/Scenario/Organs/ball.vtp"
+  fnc ="/home/david/vtkESQuiData/Scenario/Organs/ball_col.vtp"
+  fntl = "/home/david/vtkESQuiData/Scenario/Textures/leftball.jpg";
+  fntr = "/home/david/vtkESQuiData/Scenario/Textures/rightball.jpg";
+  fntb = "/home/david/vtkESQuiData/Scenario/Textures/bothball.jpg";
   
   # Add an Organ
   # Visualization model
   vis_ball = vtkesqui.vtkVisualizationModel()
   #vis_ball.SetName("vis_ball"+str(i))
-  vis_ball.SetFileName("/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp")
-  vis_ball.SetTextureFileName("/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/leftball.jpg")
+  vis_ball.SetFileName("/home/david/vtkESQuiData/Scenario/Organs/ball.vtp")
+  vis_ball.SetTextureFileName("/home/david/vtkESQuiData/Scenario/Textures/leftball.jpg")
   vis_ball.SetOpacity(1.0)
 
   # Collision model
   col_ball = vtkesqui.vtkCollisionModel()
   col_ball.SetName("col_ball_vtkbioeng"+str(i))
-  col_ball.SetFileName("/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Organs/ball.vtp")
+  col_ball.SetFileName("/home/david/vtkESQuiData/Scenario/Organs/ball.vtp")
   col_ball.SetOpacity(1.0)
 
   # Organ element (ball)
@@ -57,15 +57,15 @@ def createBall(i):
   
 def main():
 
-  fn0 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
-  fn0c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
-  fn1 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l.vtp";
-  fn1c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp";
-  fn2 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r.vtp";
-  fn2c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp";
-  fn0t = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Textures/metal.jpg";
-  fn3 = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
-  fn3c = "/home/jballesteros/Workspace/data/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
+  fn0 = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/stick.vtp";
+  fn0c = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/stick_col.vtp";
+  fn1 = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_l.vtp";
+  fn1c = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_l_col.vtp";
+  fn2 = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_r.vtp";
+  fn2c = "/home/david/vtkESQuiData/Scenario/Tools/Grasper/lever_r_col.vtp";
+  fn0t = "/home/david/vtkESQuiData/Scenario/Textures/metal.jpg";
+  fn3 = "/home/david/vtkESQuiData/Scenario/Tools/Probe/tip.vtp";
+  fn3c = "/home/david/vtkESQuiData/Scenario/Tools/Probe/tip_col.vtp";
 
   #Create scenario
   scenario = vtkesqui.vtkScenario()
